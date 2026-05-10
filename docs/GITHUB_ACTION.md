@@ -1,6 +1,12 @@
 # GitHub Action
 
-Tautest ships a JavaScript GitHub Action package in `packages/github-action`. It is designed so it can be mirrored into a standalone action repository such as `tautest-dev/tautest-action`.
+Tautest ships a JavaScript GitHub Action in this repository at `packages/github-action`.
+
+There is no separate public `tautest-dev/tautest-action` repository for v1. After the `v1` tag is created in `canblmz1/tautest`, use the monorepo action path:
+
+```yaml
+uses: canblmz1/tautest/packages/github-action@v1
+```
 
 ## Minimal Workflow
 
@@ -26,21 +32,24 @@ jobs:
         with:
           node-version: 20
 
-      # Add pnpm/action-setup, yarn setup, or oven-sh/setup-bun when your
-      # repository uses a package manager that is not already on PATH.
-
-      - uses: tautest-dev/tautest-action@v1
+      - uses: pnpm/action-setup@v4
         with:
-          working-directory: .
-          package-manager: auto
-          install: true
-          cache: true
-          comment: changes
+          version: 10
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: canblmz1/tautest/packages/github-action@v1
+        with:
+          base: ${{ github.base_ref }}
           threshold: 60
-          fail-on-threshold: true
+          comment: changes
+          cache: true
 ```
 
-`fetch-depth: 0` matters because Tautest compares the PR with the base ref. Shallow clones often do not contain enough history for `git diff`.
+`fetch-depth: 0` is required because Tautest compares the pull request with the base ref. Shallow clones often do not contain enough history for `git diff`.
+
+`pull-requests: write` is required for sticky pull request comments. If the token cannot write comments, mutation testing and artifacts can still run, but the comment step will warn instead of updating the PR.
 
 ## Inputs
 
@@ -49,12 +58,12 @@ jobs:
 | `base` | PR base SHA | Base ref or SHA passed to `tautest run --base`. |
 | `threshold` | `60` | Minimum mutation score expected by CI. |
 | `fail-on-threshold` | `true` | Fails the job when the score is below threshold. |
-| `comment` | `changes` | `always`, `changes`, or `never`. |
+| `comment` | `changes` | PR comment mode: `always`, `changes`, or `never`. |
 | `config` | empty | Optional path to `tautest.config.ts/js/mjs/json`. |
 | `working-directory` | `.` | Project directory where Tautest runs. |
 | `package-manager` | `auto` | `auto`, `npm`, `pnpm`, `yarn`, or `bun`. |
-| `install` | `false` | Runs dependency install before Tautest. |
-| `cache` | `true` | Restores/saves `.tautest/stryker-incremental.json`. |
+| `install` | `false` | Runs dependency install before Tautest. Most workflows should install dependencies explicitly before invoking the action. |
+| `cache` | `true` | Restores and saves `.tautest/stryker-incremental.json` when available. |
 | `github-token` | `${{ github.token }}` | Token used for sticky PR comments. |
 
 ## Outputs
