@@ -1,7 +1,11 @@
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildCacheKey } from '../src/cache';
 import { parseInputs } from '../src/inputs';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
+import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
 
 describe('action inputs', () => {
   it('parses booleans, enums, and threshold values', () => {
@@ -44,6 +48,80 @@ describe('cache key', () => {
     });
 
     expect(key).toMatch(/^tautest-Linux-pnpm-refs-heads-main-feature-report-[a-f0-9]{12}$/);
+  });
+});
+
+describe('Tautest CLI invocation', () => {
+  it('uses the built local workspace CLI before package-manager shims', () => {
+    const workspaceRoot = mkdtempSync(path.join(os.tmpdir(), 'tautest-action-'));
+    const localCliPath = path.join(workspaceRoot, 'packages', 'cli', 'dist', 'index.js');
+
+    try {
+      mkdirSync(path.dirname(localCliPath), { recursive: true });
+      writeFileSync(localCliPath, '#!/usr/bin/env node\n');
+
+      const command = resolveTautestCommand(workspaceRoot);
+
+      expect(command).toMatchObject({
+        command: 'node',
+        args: [localCliPath],
+        strategy: 'local-workspace-cli',
+        localCliPath,
+        localCliExists: true
+      });
+    } finally {
+      rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('falls back to pnpm exec when the built local CLI is missing', () => {
+    const workspaceRoot = mkdtempSync(path.join(os.tmpdir(), 'tautest-action-'));
+
+    try {
+      const command = resolveTautestCommand(workspaceRoot);
+
+      expect(command.command).toBe('pnpm');
+      expect(command.args).toEqual(['exec', 'tautest']);
+      expect(command.strategy).toBe('pnpm-exec');
+      expect(command.localCliExists).toBe(false);
+      expect(command.localCliPath).toBe(path.join(workspaceRoot, 'packages', 'cli', 'dist', 'index.js'));
+    } finally {
+      rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('extracts JSON from CLI output with surrounding logs', () => {
+    expect(extractJson('Starting Tautest\n{"status":"passed"}\n')).toBe('{"status":"passed"}');
+  });
+
+  it('formats parse failures with command, local CLI, version, stdout, and stderr details', () => {
+    const message = formatTautestCliDiagnostics({
+      reason: 'Tautest did not produce JSON output.',
+      command: {
+        command: 'pnpm',
+        args: ['exec', 'tautest', 'run', '--json'],
+        strategy: 'pnpm-exec',
+        localCliPath: '/repo/packages/cli/dist/index.js',
+        localCliExists: false
+      },
+      result: {
+        exitCode: 0,
+        stdout: 'line 1\nline 2',
+        stderr: 'warning'
+      },
+      versionCheck: {
+        exitCode: 1,
+        stdout: '',
+        stderr: 'tautest not found'
+      }
+    });
+
+    expect(message).toContain('Attempted command: pnpm exec tautest run --json');
+    expect(message).toContain('Local CLI exists: no');
+    expect(message).toContain('exit code: 1');
+    expect(message).toContain('tautest not found');
+    expect(message).toContain('line 2');
+    expect(message).toContain('warning');
   });
 });
 
