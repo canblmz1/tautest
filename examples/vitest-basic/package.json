@@ -1,0 +1,10 @@
+{
+  "name": "tautest-example-vitest-basic",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts"
+  }
+}
+

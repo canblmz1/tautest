@@ -1,0 +1,7 @@
+node_modules/
+.tautest/
+.stryker-tmp/
+coverage/
+dist/
+npm-debug.log*
+
