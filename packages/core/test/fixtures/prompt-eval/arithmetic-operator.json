@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "framework": { "name": "StrykerJS", "version": "9.6.1" },
+  "files": {
+    "src/cart.ts": {
+      "language": "typescript",
+      "source": "export function lineTotal(price: number, quantity: number): number {\n  return price * quantity;\n}\n",
+      "mutants": [
+        {
+          "id": "arithmetic-1",
+          "mutatorName": "ArithmeticOperator",
+          "replacement": "price / quantity",
+          "status": "Survived",
+          "coveredBy": ["quantity-one"],
+          "location": {
+            "start": { "line": 2, "column": 10 },
+            "end": { "line": 2, "column": 26 }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {
+    "src/cart.test.ts": {
+      "tests": [{ "id": "quantity-one", "name": "calculates total for quantity one" }]
+    }
+  }
+}

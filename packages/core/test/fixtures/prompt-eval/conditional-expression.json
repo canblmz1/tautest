@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "framework": { "name": "StrykerJS", "version": "9.6.1" },
+  "files": {
+    "src/shipping.ts": {
+      "language": "typescript",
+      "source": "export function shippingCost(subtotal: number): number {\n  if (subtotal >= 100) {\n    return 0;\n  }\n\n  return 7;\n}\n",
+      "mutants": [
+        {
+          "id": "conditional-1",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "coveredBy": ["below-threshold"],
+          "location": {
+            "start": { "line": 2, "column": 7 },
+            "end": { "line": 2, "column": 22 }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {
+    "src/shipping.test.ts": {
+      "tests": [{ "id": "below-threshold", "name": "charges shipping below the free shipping threshold" }]
+    }
+  }
+}

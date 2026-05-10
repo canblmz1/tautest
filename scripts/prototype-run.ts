@@ -309,16 +309,18 @@ function extractOriginal(source: string, location: MutationMutant['location']): 
   const sourceLines = source.split(/\r?\n/);
   const startLine = location.start.line;
   const endLine = location.end.line;
+  const startColumn = Math.max(0, location.start.column - 1);
+  const endColumn = Math.max(startColumn, location.end.column - 1);
   const firstLine = sourceLines[startLine - 1] ?? '';
 
   if (startLine === endLine) {
-    const original = firstLine.slice(location.start.column, location.end.column);
+    const original = firstLine.slice(startColumn, endColumn);
     return original.trim() || firstLine.trim();
   }
 
   const selected = sourceLines.slice(startLine - 1, endLine);
-  selected[0] = selected[0]?.slice(location.start.column) ?? '';
-  selected[selected.length - 1] = selected.at(-1)?.slice(0, location.end.column) ?? '';
+  selected[0] = selected[0]?.slice(startColumn) ?? '';
+  selected[selected.length - 1] = selected.at(-1)?.slice(0, endColumn) ?? '';
   return selected.join('\n').trim();
 }
 

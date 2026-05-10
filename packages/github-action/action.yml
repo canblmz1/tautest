@@ -1,0 +1,57 @@
+name: Tautest
+description: Run PR-focused mutation testing with Tautest and publish a sticky pull request report.
+author: tautest-dev
+
+inputs:
+  base:
+    description: Base ref or SHA passed to `tautest run --base`. Defaults to the pull request base SHA.
+    required: false
+  threshold:
+    description: Minimum mutation score required by `tautest run --threshold`.
+    required: false
+    default: '60'
+  fail-on-threshold:
+    description: Fail the job when Tautest completes but the score is below threshold.
+    required: false
+    default: 'true'
+  comment:
+    description: Pull request comment mode. One of `always`, `changes`, or `never`.
+    required: false
+    default: changes
+  config:
+    description: Optional path to tautest.config.ts/js/mjs/json.
+    required: false
+  working-directory:
+    description: Project directory where Tautest should run.
+    required: false
+    default: .
+  package-manager:
+    description: Package manager to use. One of `auto`, `npm`, `pnpm`, `yarn`, or `bun`.
+    required: false
+    default: auto
+  install:
+    description: Run package-manager install before running Tautest.
+    required: false
+    default: 'false'
+  cache:
+    description: Restore and save the Tautest/Stryker incremental cache.
+    required: false
+    default: 'true'
+  github-token:
+    description: GitHub token used for sticky pull request comments.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  score:
+    description: Mutation score reported by Tautest.
+  verdict:
+    description: Tautest verdict.
+  surviving:
+    description: Number of surviving mutants.
+  report-path:
+    description: Path to the generated markdown report.
+
+runs:
+  using: node20
+  main: dist/index.js

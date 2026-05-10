@@ -1,7 +1,57 @@
+# dependencies
 node_modules/
-.tautest/
-.stryker-tmp/
-coverage/
-dist/
-npm-debug.log*
+.pnpm-store/
 
+# environment
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# test/build/cache
+coverage/
+.vitest/
+.vite/
+.cache/
+.turbo/
+.nx/
+.parcel-cache/
+playwright-report/
+test-results/
+*.tsbuildinfo
+*.tmp
+*.temp
+
+# Tautest / Stryker runtime artifacts
+.tautest/
+reports/
+.stryker-tmp/
+stryker.log
+mutation.json
+stryker-incremental.json
+
+# package artifacts
+*.tgz
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# build output
+dist/
+packages/*/dist/
+
+# GitHub Action bundle must be committed
+!packages/github-action/dist/
+!packages/github-action/dist/index.js
+!packages/github-action/dist/index.js.map

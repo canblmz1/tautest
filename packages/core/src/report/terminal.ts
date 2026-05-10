@@ -1,0 +1,55 @@
+import type { MutationSummary, ScoreResult, SurvivingMutant, TestRunner } from '../types';
+
+export function buildTerminalSummary(
+  summary: MutationSummary,
+  score: ScoreResult,
+  context: {
+    threshold?: number;
+    runner?: TestRunner;
+    runtimeMs?: number;
+    mutatedFiles?: string[];
+    topMutants?: SurvivingMutant[];
+    reportPath?: string;
+    jsonReportPath?: string;
+    fixPromptPath?: string;
+  } = {}
+): string {
+  const topMutants = context.topMutants?.slice(0, 3) ?? [];
+  const lines = [
+    `Tautest: ${score.verdict} (${formatScore(summary.score)}${context.threshold === undefined ? '' : `, threshold ${context.threshold.toFixed(2)}%`})`,
+    [
+      context.runner ? `Runner: ${context.runner}` : null,
+      context.runtimeMs === undefined ? null : `Runtime: ${formatDuration(context.runtimeMs)}`,
+      context.mutatedFiles ? `Files: ${context.mutatedFiles.length}` : null
+    ]
+      .filter(Boolean)
+      .join(' | '),
+    `Killed: ${summary.killed} | Survived: ${summary.survived} | No coverage: ${summary.noCoverage} | Timeout: ${summary.timeout}`
+  ].filter(Boolean);
+
+  if (topMutants.length > 0) {
+    lines.push('', 'Top surviving mutants:', ...topMutants.map((mutant) => `- ${mutant.filePath}:${mutant.line} ${mutant.mutatorName}`));
+  }
+
+  if (context.fixPromptPath) {
+    lines.push('', `Fix prompt: ${context.fixPromptPath}`);
+  }
+
+  if (context.reportPath) {
+    lines.push(`Report: ${context.reportPath}`);
+  }
+
+  if (context.jsonReportPath) {
+    lines.push(`JSON: ${context.jsonReportPath}`);
+  }
+
+  return lines.slice(0, 25).join('\n');
+}
+
+function formatScore(score: number | null): string {
+  return score === null ? 'unknown' : `${score.toFixed(2)}%`;
+}
+
+function formatDuration(runtimeMs: number): string {
+  return runtimeMs < 1000 ? `${runtimeMs}ms` : `${(runtimeMs / 1000).toFixed(1)}s`;
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "framework": { "name": "StrykerJS", "version": "9.6.1" },
+  "files": {
+    "src/weekend.ts": {
+      "language": "typescript",
+      "source": "export function isWeekend(day: number): boolean {\n  return day === 0 || day === 6;\n}\n",
+      "mutants": [
+        {
+          "id": "coverage-1",
+          "mutatorName": "EqualityOperator",
+          "replacement": "day !== 0",
+          "status": "NoCoverage",
+          "location": {
+            "start": { "line": 2, "column": 10 },
+            "end": { "line": 2, "column": 19 }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {}
+}

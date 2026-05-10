@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "framework": { "name": "StrykerJS", "version": "9.6.1" },
+  "files": {
+    "src/senior-discount.ts": {
+      "language": "typescript",
+      "source": "export function isSenior(age: number): boolean {\n  return age >= 65;\n}\n",
+      "mutants": [
+        {
+          "id": "boundary-1",
+          "mutatorName": "EqualityOperator",
+          "replacement": "age > 65",
+          "status": "Survived",
+          "coveredBy": ["senior-over"],
+          "location": {
+            "start": { "line": 2, "column": 10 },
+            "end": { "line": 2, "column": 19 }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {
+    "src/senior-discount.test.ts": {
+      "tests": [{ "id": "senior-over", "name": "returns true for customers older than 65" }]
+    }
+  }
+}

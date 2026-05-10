@@ -1,0 +1,45 @@
+name: Tautest
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  mutation-testing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build local Tautest packages
+        run: pnpm build
+
+      - name: Run Tautest
+        uses: ./packages/github-action
+        with:
+          working-directory: examples/vitest-basic
+          package-manager: pnpm
+          install: false
+          cache: true
+          comment: changes
+          threshold: 60
+          fail-on-threshold: true

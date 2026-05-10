@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "framework": {
+    "name": "StrykerJS",
+    "version": "9.6.1"
+  },
+  "files": {
+    "src/discount.ts": {
+      "language": "typescript",
+      "source": "export function calculateDiscount(age: number, subtotal: number): number {\n  if (age >= 65) {\n    return subtotal * 0.2;\n  }\n\n  return 0;\n}\n",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Killed",
+          "location": {
+            "start": { "line": 2, "column": 7 },
+            "end": { "line": 2, "column": 16 }
+          }
+        },
+        {
+          "id": "1",
+          "mutatorName": "EqualityOperator",
+          "replacement": "age > 65",
+          "status": "Survived",
+          "coveredBy": ["senior-above"],
+          "location": {
+            "start": { "line": 2, "column": 7 },
+            "end": { "line": 2, "column": 16 }
+          }
+        },
+        {
+          "id": "2",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "NoCoverage",
+          "location": {
+            "start": { "line": 3, "column": 5 },
+            "end": { "line": 3, "column": 27 }
+          }
+        },
+        {
+          "id": "3",
+          "mutatorName": "ArithmeticOperator",
+          "replacement": "subtotal / 0.2",
+          "status": "Timeout",
+          "location": {
+            "start": { "line": 3, "column": 12 },
+            "end": { "line": 3, "column": 26 }
+          }
+        }
+      ]
+    }
+  }
+  ,
+  "testFiles": {
+    "src/discount.test.ts": {
+      "tests": [
+        {
+          "id": "senior-above",
+          "name": "calculateDiscount applies the senior discount for customers above 65"
+        }
+      ]
+    }
+  }
+}

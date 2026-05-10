@@ -1,0 +1,18 @@
+diff --git a/src/foo.ts b/src/foo.ts
+index 111..222 100644
+--- a/src/foo.ts
++++ b/src/foo.ts
+@@ -1 +1 @@
+-export const value = 1
++export const value = 2
+@@ -8,0 +9,2 @@
++export const next = 3
++export const more = 4
+diff --git a/src/foo.test.ts b/src/foo.test.ts
+index 111..222 100644
+--- a/src/foo.test.ts
++++ b/src/foo.test.ts
+@@ -1 +1 @@
+-expect(value).toBe(1)
++expect(value).toBe(2)
+

@@ -1,0 +1,104 @@
+name: Release Readiness
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/release-readiness.yml"
+      - "docs/**"
+      - "examples/**"
+      - "packages/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Production dependency audit
+        run: pnpm audit --prod
+
+      - name: Pack npm packages
+        run: |
+          mkdir -p .tautest/release-packs
+          pnpm --filter @tautest/core pack --pack-destination .tautest/release-packs
+          pnpm --filter tautest pack --pack-destination .tautest/release-packs
+
+      - name: Smoke packed npm packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$(mktemp -d)"
+          core_tgz="$(pwd)/.tautest/release-packs/tautest-core-1.0.0.tgz"
+          cli_tgz="$(pwd)/.tautest/release-packs/tautest-1.0.0.tgz"
+          cat > "$smoke_dir/package.json" <<JSON
+          {
+            "name": "tautest-release-smoke",
+            "private": true,
+            "type": "module",
+            "dependencies": {
+              "@tautest/core": "file:$core_tgz",
+              "tautest": "file:$cli_tgz"
+            },
+            "pnpm": {
+              "overrides": {
+                "@tautest/core": "file:$core_tgz"
+              }
+            }
+          }
+          JSON
+          pnpm -C "$smoke_dir" install --ignore-scripts
+          pnpm -C "$smoke_dir" exec tautest --version
+          cd "$smoke_dir"
+          node --input-type=module -e "import('@tautest/core').then((m) => { if (!m.buildMarkdownReport) throw new Error('missing core export'); })"
+
+      - name: Create local diff for action smoke
+        shell: bash
+        run: perl -0pi -e "s/age >= 65/age >= 65 /" examples/vitest-basic/src/discount.ts
+
+      - name: Local GitHub Action smoke
+        uses: ./packages/github-action
+        with:
+          base: HEAD
+          threshold: 60
+          fail-on-threshold: false
+          comment: never
+          working-directory: examples/vitest-basic
+          package-manager: pnpm
+          install: false
+          cache: false

@@ -1,0 +1,61 @@
+{
+  "name": "tautest",
+  "version": "1.0.0",
+  "description": "PR-focused mutation testing CLI powered by StrykerJS",
+  "license": "MIT",
+  "author": "Tautest contributors",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mutation-testing",
+    "stryker",
+    "vitest",
+    "jest",
+    "testing",
+    "cli",
+    "ai"
+  ],
+  "homepage": "https://github.com/tautest-dev/tautest#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tautest-dev/tautest.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/tautest-dev/tautest/issues"
+  },
+  "bin": {
+    "tautest": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tautest/core": "workspace:*",
+    "commander": "^14.0.2",
+    "zod": "3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  }
+}

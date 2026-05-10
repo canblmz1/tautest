@@ -1,0 +1,18 @@
+diff --git a/src/old.ts b/src/new.ts
+similarity index 88%
+rename from src/old.ts
+rename to src/new.ts
+--- a/src/old.ts
++++ b/src/new.ts
+@@ -1 +1 @@
+-export const name = 'old'
++export const name = 'new'
+diff --git a/src/deleted.ts b/src/deleted.ts
+deleted file mode 100644
+--- a/src/deleted.ts
++++ /dev/null
+@@ -1 +0,0 @@
+-export const gone = true
+diff --git a/assets/logo.png b/assets/logo.png
+Binary files a/assets/logo.png and b/assets/logo.png differ
+

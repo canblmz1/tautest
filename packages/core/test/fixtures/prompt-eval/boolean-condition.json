@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "framework": { "name": "StrykerJS", "version": "9.6.1" },
+  "files": {
+    "src/access.ts": {
+      "language": "typescript",
+      "source": "export function canEnter(isActive: boolean, hasBadge: boolean): boolean {\n  return isActive && hasBadge;\n}\n",
+      "mutants": [
+        {
+          "id": "boolean-1",
+          "mutatorName": "LogicalOperator",
+          "replacement": "isActive || hasBadge",
+          "status": "Survived",
+          "coveredBy": ["both-true"],
+          "location": {
+            "start": { "line": 2, "column": 10 },
+            "end": { "line": 2, "column": 31 }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {
+    "src/access.test.ts": {
+      "tests": [{ "id": "both-true", "name": "allows active users with a badge" }]
+    }
+  }
+}
