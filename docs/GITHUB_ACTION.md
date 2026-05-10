@@ -1,14 +1,14 @@
 # GitHub Action
 
-Tautest ships a JavaScript GitHub Action in this repository at `packages/github-action`.
+Tautest ships a JavaScript GitHub Action from this monorepo at `packages/github-action`.
 
-There is no separate public `tautest-dev/tautest-action` repository for v1. After the `v1` tag is created in `canblmz1/tautest`, use the monorepo action path:
+Use the monorepo action path:
 
 ```yaml
 uses: canblmz1/tautest/packages/github-action@v1
 ```
 
-## Minimal Workflow
+## Workflow Example
 
 ```yaml
 name: Tautest
@@ -47,7 +47,7 @@ jobs:
           cache: true
 ```
 
-`fetch-depth: 0` is required because Tautest compares the pull request with the base ref. Shallow clones often do not contain enough history for `git diff`.
+`fetch-depth: 0` is required because Tautest compares the pull request with the base ref.
 
 `pull-requests: write` is required for sticky pull request comments. If the token cannot write comments, mutation testing and artifacts can still run, but the comment step will warn instead of updating the PR.
 
@@ -104,15 +104,23 @@ When `cache: true`, the action restores and saves:
 .tautest/stryker-incremental.json
 ```
 
-The cache key includes runner OS, package manager, base ref, head ref, and working-directory hash.
+The v1 source PR smoke validated graceful cache handling. A real cache hit was not proven before v1, so better cache observability is tracked as follow-up work.
 
 ## Security Notes
 
 - Do not log `github-token` or secrets. The action masks the token before use.
 - PR comments sanitize dynamic markdown from reports and prompts.
-- Avoid `pull_request_target` unless you fully understand the risk. Running untrusted fork code with write-scoped tokens can expose secrets or allow repository mutation.
 - Prefer `pull_request` with `contents: read` and `pull-requests: write`.
-- Do not use an unsafe checkout of untrusted fork code with elevated credentials.
+- Avoid `pull_request_target` unless you fully understand the risk.
+- Running StrykerJS on pull request code is code execution by design.
+
+## Troubleshooting
+
+- If no changed production files are found, confirm the PR changes source files and that `base` points to the expected branch or SHA.
+- If Git diff fails, confirm `actions/checkout` uses `fetch-depth: 0`.
+- If no sticky comment appears, confirm `pull-requests: write` is present and the PR token has permission to write comments.
+- If the action cannot find the CLI, make sure dependencies are installed and `pnpm build` completed before the action step.
+- If mutation testing is slow, start with smaller PRs and review StrykerJS runner configuration.
 
 ## Local Development
 

@@ -23,7 +23,7 @@
 - [ ] Verify `.tautest` artifact upload.
 - [ ] Verify cache restore/save for `.tautest/stryker-incremental.json`.
 - [ ] Verify fork PR or restricted-token behavior degrades to warning, not hard failure.
-- [ ] Mirror `packages/github-action` to `tautest-dev/tautest-action`.
+- [ ] Use `canblmz1/tautest/packages/github-action@v1` as the v1 action path.
 - [ ] Commit `action.yml`, `dist/index.js`, `dist/index.js.map`, source, tests, and docs.
 - [ ] Create immutable `v1.0.0` tag.
 - [ ] Move/create major `v1` tag.

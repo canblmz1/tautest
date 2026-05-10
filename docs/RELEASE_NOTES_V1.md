@@ -4,7 +4,7 @@
 
 Tautest is a PR-focused mutation testing workflow layer powered by StrykerJS.
 
-It reads changed source lines from a Git diff, runs StrykerJS mutation testing on that focused scope, turns surviving mutants into readable reports, and generates deterministic test-fix prompts for AI coding agents such as Claude Code, Cursor, and Codex.
+It reads changed source lines from a Git diff, runs StrykerJS mutation testing on that focused scope, turns surviving mutants into readable reports, and generates deterministic test-fix prompts for Claude Code, Cursor, Codex, or humans.
 
 Tautest is not a mutation engine. StrykerJS performs the mutation testing.
 
@@ -17,7 +17,7 @@ Tautest is not a mutation engine. StrykerJS performs the mutation testing.
 - Deterministic AI fix prompt generation.
 - GitHub Action with sticky PR comments.
 - `.tautest` artifact upload.
-- Incremental cache handling for StrykerJS reports.
+- Graceful incremental cache handling.
 - Example projects for Vitest, Vitest React, and Jest beta.
 
 ## Install
@@ -46,7 +46,7 @@ npx tautest@latest --help
 
 ## GitHub Action usage
 
-After the `v1` tag is created, use the monorepo action path:
+Use the v1 monorepo action path:
 
 ```yaml
 name: Tautest
@@ -92,13 +92,12 @@ Important notes:
 
 ## Validation before release
 
-- Local typecheck, lint, test, build, and production audit passed.
-- npm package versions verified:
-  - `tautest@1.0.0`
-  - `@tautest/core@1.0.0`
+- `tautest@1.0.0` published to npm.
+- `@tautest/core@1.0.0` published to npm.
 - Main branch Release Readiness workflow passed.
 - Source-changing PR smoke passed.
-- Mutation run completed and JSON output parsed in GitHub Actions.
+- Mutation run completed in GitHub Actions.
+- JSON output parsed.
 - Sticky PR comment create/update verified.
 - Artifact upload verified.
 - Same-repository PR permissions verified.
@@ -111,13 +110,14 @@ Important notes:
 - Runtime depends on project size and test speed.
 - Vitest browser mode and unusual runner setups may need manual StrykerJS config.
 - GitHub PR comments depend on repository token permissions.
-- Cache handling is graceful, but a real cache hit was not proven in the v1 source PR smoke.
+- GitHub Action currently uses Node 20; Node 24 migration is planned.
+- Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 
 ## Next roadmap
 
-- Harden Jest beta with more fixtures.
-- Improve monorepo package selection.
-- Add richer ESM/CJS and path alias recipes.
-- Improve GitHub Action cache observability.
-- Migrate the GitHub Action runtime from Node 20 to Node 24 after validation.
-- Explore richer review-tool and IDE integrations.
+- Node 24 action runtime migration.
+- Better cache observability.
+- Monorepo beta.
+- Standalone GitHub Action repository, maybe.
+- PR line annotations.
+- More Jest fixtures.

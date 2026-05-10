@@ -11,3 +11,5 @@
 - Complex path aliases, custom loaders, Babel transforms, ts-jest, and ESM/CJS mixed projects may need explicit Stryker config.
 - GitHub Action PR comments depend on repository permissions.
 - `pull_request_target` can be dangerous for untrusted code and is not the default recommendation.
+- GitHub Action currently uses Node 20; Node 24 migration is planned.
+- Cache hit was not proven in the v1 smoke, but graceful cache handling was validated.

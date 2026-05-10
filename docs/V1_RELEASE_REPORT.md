@@ -11,7 +11,7 @@ Release status: **release candidate with two launch gates**.
 Launch gates:
 
 - **Live GitHub Action PR smoke**: run the action on a real same-repo pull request to verify sticky comment create/update, artifact upload, and cache restore/save in GitHub-hosted Actions.
-- **Standalone action mirror/tag**: mirror `packages/github-action` to `tautest-dev/tautest-action`, commit `dist/`, and create the moving `v1` tag.
+- **GitHub Action tag**: release the monorepo action path `canblmz1/tautest/packages/github-action@v1` from the moving `v1` tag.
 
 Added release support:
 
@@ -77,20 +77,19 @@ Current state:
 - Action dependency audit is clean.
 - Local action smoke passed.
 - A release-readiness workflow exists for repeatable CI/manual validation.
-- README and docs use `tautest-dev/tautest-action@v1`.
+- README and docs use `canblmz1/tautest/packages/github-action@v1`.
 
 Release steps:
 
-1. Mirror `packages/github-action` into `tautest-dev/tautest-action`.
-2. Commit `action.yml`, `dist/index.js`, `dist/index.js.map`, source, tests, and docs.
-3. Create immutable tag `v1.0.0`.
-4. Create or move major tag `v1` to the `v1.0.0` commit.
-5. Run a same-repo PR smoke with:
+1. Keep `packages/github-action` committed with `action.yml`, `dist/index.js`, `dist/index.js.map`, source, tests, and docs.
+2. Create immutable tag `v1.0.0`.
+3. Create or move major tag `v1` to the `v1.0.0` commit.
+4. Run a same-repo PR smoke with:
    - `contents: read`
    - `pull-requests: write`
    - `actions/checkout` with `fetch-depth: 0`
-6. Verify sticky comment create, sticky comment update, artifact upload, and cache restore/save.
-7. Run `.github/workflows/release-readiness.yml` manually before moving the `v1` tag.
+5. Verify sticky comment create, sticky comment update, artifact upload, and cache restore/save.
+6. Run `.github/workflows/release-readiness.yml` manually before moving the `v1` tag.
 
 ## Security Audit
 
@@ -199,5 +198,5 @@ Watch these issue categories closely:
 - Vitest is the primary supported runner; Jest is beta.
 - Monorepo support remains detect-and-warn in v1.
 - The public npm packages will be `@tautest/core` and `tautest`.
-- The GitHub Action will be released from a mirrored standalone repository at `tautest-dev/tautest-action`.
+- The GitHub Action will be released from the monorepo path `canblmz1/tautest/packages/github-action@v1`.
 - A real GitHub PR runner is required to complete final action comment, artifact, and cache verification.

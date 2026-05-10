@@ -237,7 +237,7 @@ The action should support two patterns.
 Pattern A: Tautest internal workspace runner:
 
 ```yaml
-- uses: tautest-dev/tautest-action@v1
+- uses: canblmz1/tautest/packages/github-action@v1
   with:
     working-directory: .
     package-manager: pnpm
@@ -262,7 +262,7 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
-      - uses: tautest-dev/tautest-action@v1
+      - uses: canblmz1/tautest/packages/github-action@v1
         with:
           working-directory: ${{ matrix.packagePath }}
 ```

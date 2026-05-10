@@ -81,7 +81,7 @@ Full Jest mutation execution remains documented as beta because ESM, ts-jest, Ba
 
 ## Assumptions
 
-- Published package names are `tautest`, `@tautest/core`, and `tautest-dev/tautest-action`.
+- Published package names are `tautest` and `@tautest/core`; the GitHub Action ships from `canblmz1/tautest/packages/github-action@v1`.
 - V1 remains Vitest-first.
 - Jest beta should be documented honestly instead of presented as fully hardened.
 - Examples should teach the weak-test-to-prompt-to-fixed-test workflow rather than hide the weak test.
