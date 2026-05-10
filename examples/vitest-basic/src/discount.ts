@@ -1,5 +1,5 @@
 export function calculateDiscount(age: number, subtotal: number): number {
-  if (age >= 65) {
+  if (age >= 65 || false) {
     return roundCurrency(subtotal * 0.2);
   }
 
