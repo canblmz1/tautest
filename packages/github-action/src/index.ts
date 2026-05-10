@@ -7,8 +7,10 @@ import * as github from '@actions/github';
 import { restoreTautestCache, saveTautestCache, type TautestCache } from './cache';
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildPrComment, type CommentReport, upsertStickyComment } from './pr-comment';
+import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
 
 interface PreflightResult {
+  workspaceRoot: string;
   workingDirectory: string;
   base: string;
   isPullRequest: boolean;
@@ -21,6 +23,10 @@ interface ExecResult {
   exitCode: number;
   stdout: string;
   stderr: string;
+}
+
+interface TautestRunResult extends ExecResult {
+  attemptedCommand: TautestCommand;
 }
 
 interface TautestActionOutput {
@@ -77,13 +83,27 @@ export async function run(): Promise<void> {
     });
   }
 
-  const runResult = await runTautest(preflight.workingDirectory, inputs, preflight.base);
+  const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base);
 
   if (runResult.exitCode !== 0 && runResult.exitCode !== 1 && runResult.exitCode !== 2) {
-    throw new Error(`Tautest failed with exit code ${runResult.exitCode}.\n${runResult.stderr || runResult.stdout}`);
+    throw new Error(
+      await buildTautestFailureMessage('Tautest failed before producing an accepted exit code.', preflight.workingDirectory, runResult)
+    );
   }
 
-  const parsedOutput = parseTautestOutput(runResult.stdout);
+  let parsedOutput: TautestActionOutput;
+
+  try {
+    parsedOutput = parseTautestOutput(runResult.stdout);
+  } catch (error) {
+    throw new Error(
+      await buildTautestFailureMessage(
+        error instanceof Error ? error.message : 'Tautest did not produce parseable JSON output.',
+        preflight.workingDirectory,
+        runResult
+      )
+    );
+  }
 
   await uploadTautestArtifact(preflight.workingDirectory);
 
@@ -131,6 +151,7 @@ async function runPreflight(inputs: ActionInputs): Promise<PreflightResult> {
   const packageManager = inputs.packageManager === 'auto' ? detectPackageManager(workingDirectory) : inputs.packageManager;
 
   return {
+    workspaceRoot,
     workingDirectory,
     base,
     isPullRequest,
@@ -186,8 +207,8 @@ async function ensurePackageManagerAvailable(packageManager: Exclude<PackageMana
   throw new Error(`Package manager ${packageManager} is not available on PATH. Install it before this action or use a setup action.`);
 }
 
-async function runTautest(cwd: string, inputs: ActionInputs, base: string): Promise<ExecResult> {
-  const command = findTautestCommand(cwd);
+async function runTautest(workspaceRoot: string, cwd: string, inputs: ActionInputs, base: string): Promise<TautestRunResult> {
+  const command = resolveTautestCommand(workspaceRoot);
   const args = [
     ...command.args,
     'run',
@@ -202,8 +223,9 @@ async function runTautest(cwd: string, inputs: ActionInputs, base: string): Prom
     args.push('--config', inputs.config);
   }
 
-  core.info(`Running Tautest in ${cwd}.`);
-  return execCommand(command.command, args, cwd);
+  core.info(`Running Tautest in ${cwd} using ${command.strategy}.`);
+  const result = await execCommand(command.command, args, cwd);
+  return { ...result, attemptedCommand: command };
 }
 
 function parseTautestOutput(stdout: string): TautestActionOutput {
@@ -214,6 +236,22 @@ function parseTautestOutput(stdout: string): TautestActionOutput {
   }
 
   return JSON.parse(jsonText) as TautestActionOutput;
+}
+
+async function buildTautestFailureMessage(reason: string, cwd: string, result: TautestRunResult): Promise<string> {
+  const versionCheck = await execCommand('pnpm', ['exec', 'tautest', '--version'], cwd);
+  const message = formatTautestCliDiagnostics({
+    reason,
+    command: result.attemptedCommand,
+    result,
+    versionCheck
+  });
+
+  core.startGroup('Tautest CLI diagnostics');
+  core.info(message);
+  core.endGroup();
+
+  return message;
 }
 
 async function maybeComment(inputs: ActionInputs, preflight: PreflightResult, output: TautestActionOutput): Promise<void> {
@@ -349,16 +387,6 @@ function installCommand(packageManager: Exclude<PackageManagerInput, 'auto'>): {
   return { command: 'npm', args: ['ci'] };
 }
 
-function findTautestCommand(cwd: string): { command: string; args: string[] } {
-  const localBin = findUp(cwd, path.join('node_modules', '.bin', process.platform === 'win32' ? 'tautest.cmd' : 'tautest'));
-
-  if (localBin) {
-    return { command: localBin, args: [] };
-  }
-
-  return { command: 'npx', args: ['--yes', 'tautest@latest'] };
-}
-
 function findUp(startDir: string, relativePath: string): string | null {
   let current = path.resolve(startDir);
 
@@ -402,19 +430,6 @@ async function execCommand(command: string, args: string[], cwd: string, silent 
   });
 
   return { exitCode, stdout, stderr };
-}
-
-function extractJson(stdout: string): string | null {
-  const trimmed = stdout.trim();
-
-  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-    return trimmed;
-  }
-
-  const start = trimmed.indexOf('{');
-  const end = trimmed.lastIndexOf('}');
-
-  return start >= 0 && end > start ? trimmed.slice(start, end + 1) : null;
 }
 
 run().catch((error: unknown) => {
