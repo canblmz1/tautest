@@ -22,10 +22,7 @@ Important release nuance: `main` did not yet include the earlier P0 GitHub Actio
 
 Source smoke change:
 
-```diff
--  if (age >= 65) {
-+  if (age >= 65 || false) {
-```
+The source smoke temporarily added a hardcoded false disjunct to the senior-discount condition. That change was used only to force a source-line mutation scope and must not be merged as product behavior.
 
 Local validation before opening the PR:
 

@@ -24,7 +24,7 @@ Main contains the deterministic GitHub Action CLI invocation fix and the source-
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `git grep -n "age >= 65 || false"` | PASS | No temporary smoke source change found on main. |
+| `git grep` for the temporary senior-condition smoke expression | PASS | No temporary smoke source change found in production source on main. |
 | `git grep -n "OPENAI_API_KEY\|OPENROUTER_API_KEY\|GITHUB_TOKEN\|NPM_TOKEN\|SECRET\|PASSWORD\|PRIVATE_KEY\|BEGIN RSA\|BEGIN OPENSSH"` | PASS | No real secrets found. Matches were documentation examples of the scan command. |
 | `git grep -n "sk-\|ghp_\|github_pat_\|xoxb-\|AKIA"` | PASS | No real secrets found. Matches were documentation examples and bundled binary/base64 action content. |
 | `pnpm typecheck` | PASS | Workspace typecheck passed. |
