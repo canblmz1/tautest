@@ -55,3 +55,4 @@ packages/*/dist/
 !packages/github-action/dist/
 !packages/github-action/dist/index.js
 !packages/github-action/dist/index.js.map
+.claude/
