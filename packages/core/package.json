@@ -1,6 +1,6 @@
 {
   "name": "@tautest/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core engine for Tautest, a PR-focused mutation testing workflow layer on top of StrykerJS",
   "license": "MIT",
   "author": "Tautest contributors",
@@ -16,14 +16,14 @@
     "testing",
     "ai"
   ],
-  "homepage": "https://github.com/tautest-dev/tautest#readme",
+  "homepage": "https://github.com/canblmz1/tautest#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tautest-dev/tautest.git",
+    "url": "git+https://github.com/canblmz1/tautest.git",
     "directory": "packages/core"
   },
   "bugs": {
-    "url": "https://github.com/tautest-dev/tautest/issues"
+    "url": "https://github.com/canblmz1/tautest/issues"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -14,4 +14,4 @@ This package exposes the reusable pieces used by the CLI and GitHub Action:
 
 Most users should install the `tautest` CLI package instead.
 
-Docs: https://github.com/tautest-dev/tautest#readme
+Docs: https://github.com/canblmz1/tautest#readme

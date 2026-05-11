@@ -6,9 +6,9 @@
 [![Release Readiness](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml/badge.svg)](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml)
 [![Node >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
 
-PR-focused mutation testing workflow layer powered by StrykerJS.
+Tautest runs mutation testing only on lines a PR changed, then reports surviving mutants in a PR-friendly format.
 
-Tautest runs StrykerJS mutation testing on changed source lines, turns surviving mutants into readable reports, and generates test-fix prompts for Claude Code, Cursor, Codex, or humans.
+It uses StrykerJS as the mutation engine. Tautest adds changed-line scoping from `git diff`, Markdown/JSON reports, deterministic fix prompts, and optional GitHub PR sticky comments.
 
 ## Demo
 
@@ -35,9 +35,11 @@ Tautest focuses that feedback on the code changed in a pull request, so reviewer
 
 - Does not implement its own mutation engine.
 - Does not call LLM APIs.
+- Does not detect which lines were written by AI.
 - Does not prove tests are perfect.
 - Does not fully support monorepos in v1.
-- Does not classify AI-written tests with certainty.
+
+Fix prompts are generated Markdown files. They are grounded in the actual surviving mutants and can be pasted into any coding agent or used manually. No LLM is called at generation time.
 
 ## Relationship to StrykerJS
 

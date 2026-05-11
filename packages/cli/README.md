@@ -10,4 +10,4 @@ npx tautest run --base origin/main
 
 Tautest is not a mutation engine. It uses StrykerJS and adds changed-line scoping, readable reports, AI test-fix prompts, and GitHub PR workflow support.
 
-Docs: https://github.com/tautest-dev/tautest#readme
+Docs: https://github.com/canblmz1/tautest#readme
