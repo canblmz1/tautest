@@ -57766,11 +57766,11 @@ var Summary = class {
    */
   addTable(rows) {
     const tableBody = rows.map((row) => {
-      const cells = row.map((cell) => {
-        if (typeof cell === "string") {
-          return this.wrap("td", cell);
+      const cells = row.map((cell2) => {
+        if (typeof cell2 === "string") {
+          return this.wrap("td", cell2);
         }
-        const { header, data, colspan, rowspan } = cell;
+        const { header, data, colspan, rowspan } = cell2;
         const tag = header ? "th" : "td";
         const attrs = Object.assign(Object.assign({}, colspan && { colspan }), rowspan && { rowspan });
         return this.wrap(tag, data, attrs);
@@ -57866,6 +57866,7 @@ var Summary = class {
   }
 };
 var _summary = new Summary();
+var summary = _summary;
 
 // ../../node_modules/.pnpm/@actions+core@3.0.1/node_modules/@actions/core/lib/platform.js
 var import_os2 = __toESM(require("os"), 1);
@@ -101106,6 +101107,66 @@ function sanitize2(value) {
   return value.replace(/<!--/g, "&lt;!--").replace(/-->/g, "--&gt;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// src/summary.ts
+function buildStepSummary(output) {
+  const summary2 = output.report?.summary;
+  const verdict = summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : output.status || "UNKNOWN");
+  const score = formatScore(summary2?.mutationScore);
+  const killed = summary2?.killed ?? 0;
+  const survived = summary2?.survived ?? 0;
+  const noCoverage = summary2?.noCoverage ?? 0;
+  const topMutants = output.report?.surviving?.slice(0, 10) ?? [];
+  return [
+    "# Tautest",
+    "",
+    "| Verdict | Score | Killed | Survived | No coverage |",
+    "| --- | ---: | ---: | ---: | ---: |",
+    `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
+    "",
+    ...output.message ? ["## Message", "", sanitize3(output.message), ""] : [],
+    "## Top Surviving Mutants",
+    "",
+    topMutants.length > 0 ? [
+      "| File | Line | Mutator | Original | Replacement |",
+      "| --- | ---: | --- | --- | --- |",
+      ...topMutants.map((mutant) => `| \`${cell(mutant.filePath)}\` | ${mutant.line} | ${cell(mutant.mutatorName)} | ${codeCell2(mutant.original)} | ${codeCell2(mutant.replacement)} |`)
+    ].join("\n") : "No surviving mutants found.",
+    "",
+    ...output.paths?.report || output.paths?.json || output.paths?.prompt ? [
+      "## Generated Files",
+      "",
+      ...output.paths.report ? [`- Report: \`${cell(output.paths.report)}\``] : [],
+      ...output.paths.json ? [`- JSON: \`${cell(output.paths.json)}\``] : [],
+      ...output.paths.prompt ? [`- Fix prompt: \`${cell(output.paths.prompt)}\``] : [],
+      ""
+    ] : []
+  ].join("\n");
+}
+async function writeStepSummary(output) {
+  if (!process.env.GITHUB_STEP_SUMMARY) {
+    info("Skipping Tautest job summary because GITHUB_STEP_SUMMARY is not available.");
+    return;
+  }
+  try {
+    await summary.addRaw(buildStepSummary(output), true).write();
+    info("Wrote Tautest job summary.");
+  } catch (error2) {
+    warning(`Could not write Tautest job summary: ${error2 instanceof Error ? error2.message : String(error2)}`);
+  }
+}
+function formatScore(score) {
+  return score === null || score === void 0 ? "unknown" : `${score.toFixed(2)}%`;
+}
+function codeCell2(value) {
+  return cell(value).replace(/\s+/g, " ");
+}
+function cell(value) {
+  return sanitize3(value).replace(/\|/g, "\\|").replace(/`/g, "'");
+}
+function sanitize3(value) {
+  return value.replace(/<!--/g, "&lt;!--").replace(/-->/g, "--&gt;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 // src/tautest-cli.ts
 var import_node_fs4 = require("node:fs");
 var import_node_path2 = __toESM(require("node:path"));
@@ -101227,6 +101288,7 @@ async function run() {
     await saveTautestCache(cacheState);
   }
   setActionOutputs(parsedOutput);
+  await writeStepSummary(parsedOutput);
   await maybeComment(inputs, preflight, parsedOutput);
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
     setFailed("Tautest completed, but the mutation score is below the configured threshold.");

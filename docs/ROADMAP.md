@@ -5,7 +5,8 @@
 - Harden Jest beta with more fixtures.
 - Add more config examples for ESM/CJS and path aliases.
 - Improve no-coverage explanations.
-- Publish the standalone GitHub Action mirror.
+- Improve GitHub Action cache observability.
+- Validate GitHub Action Node 24 runtime migration.
 
 ## V1 Scope
 
@@ -19,6 +20,7 @@
 ## Later
 
 - Better monorepo orchestration.
+- Evaluate a standalone GitHub Action repository if the monorepo action path remains adoption friction.
 - Report format plugins.
 - IDE integrations.
 - Richer PR review annotations.

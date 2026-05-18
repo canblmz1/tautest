@@ -82,6 +82,7 @@ describe('prompt and report commands', () => {
     expect(runPromptCommand(root, {})).toContain('Do not change production code.');
     expect(runPromptCommand(root, {})).toContain('You are Codex working in the current workspace.');
     expect(runPromptCommand(root, { style: 'human' })).toContain('Use this as a human test-writing checklist.');
+    expect(runPromptCommand(root, { style: 'opencode' })).toContain('You are OpenCode working in an existing repository.');
     expect(runReportCommand(root, {})).toBe('# Report\n');
   });
 });

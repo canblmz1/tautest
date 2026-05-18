@@ -45,7 +45,7 @@ Flags:
 - `--config <path>`
 - `--json`
 - `--dry-run`
-- `--prompt-style agent|human|claude-code|cursor|codex`
+- `--prompt-style agent|human|claude-code|cursor|codex|opencode`
 
 ## `tautest prompt`
 
@@ -53,6 +53,7 @@ Prints a fix prompt from `.tautest/report.json`.
 
 ```bash
 tautest prompt --style codex
+tautest prompt --style opencode
 tautest prompt --from path/to/report.json
 ```
 

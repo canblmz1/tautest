@@ -87,6 +87,17 @@ If a previous Tautest comment exists, it is updated. Otherwise, a new comment is
 
 Fork PRs may not have `pull-requests: write` permission. In that case the action warns and continues; mutation testing and artifacts still work.
 
+## Job Summary
+
+When `GITHUB_STEP_SUMMARY` is available, the action writes a GitHub job summary with:
+
+- verdict and mutation score
+- killed, survived, and no-coverage counts
+- top surviving mutants
+- generated report file paths
+
+This summary is useful when PR comments are disabled, unavailable for fork PRs, or hidden in a busy pull request discussion.
+
 ## Artifacts
 
 The action uploads a `tautest-report` artifact when files are present under `.tautest/`:

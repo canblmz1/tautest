@@ -18,7 +18,7 @@ Core responsibilities:
 - Consumes StrykerJS machine-readable output, especially JSON mutation reports.
 - Filters and summarizes surviving mutants that intersect the changed source lines.
 - Produces a readable local report for developers.
-- Produces an AI test-fix prompt for tools such as Claude Code, Cursor, and Codex.
+- Produces an AI test-fix prompt for tools such as Claude Code, Cursor, Codex, and OpenCode.
 - In CI, posts or updates a sticky GitHub PR comment with the mutation result.
 
 The product promise is not "mutation testing from scratch." The promise is "make StrykerJS useful at PR speed, with output shaped for humans and AI coding agents."
@@ -101,7 +101,7 @@ Best-fit early adopters:
 
 - Small to mid-size TypeScript projects using Vitest or Jest.
 - Teams already using GitHub PR review as the main quality gate.
-- Teams experimenting with Claude Code, Cursor, Codex, or similar coding agents.
+- Teams experimenting with Claude Code, Cursor, Codex, OpenCode, or similar coding agents.
 - Libraries and services where unit tests are fast enough that mutation testing on changed lines can complete inside a PR workflow.
 
 Poor-fit early adopters:

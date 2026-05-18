@@ -13,7 +13,7 @@ Post:
 ```text
 I built Tautest, a workflow layer on top of StrykerJS.
 
-It reads the Git diff for a PR, scopes mutation testing to changed source lines, turns surviving mutants into a readable report, and writes a test-fix prompt you can hand to Claude Code, Cursor, Codex, or a human.
+It reads the Git diff for a PR, scopes mutation testing to changed source lines, turns surviving mutants into a readable report, and writes a test-fix prompt you can hand to Claude Code, Cursor, Codex, OpenCode, or a human.
 
 The goal is not to replace Stryker. Stryker is the mutation engine. Tautest is the PR and AI-agent workflow around it.
 
@@ -39,7 +39,7 @@ What it does:
 - mutates only changed production source lines
 - runs StrykerJS
 - writes a readable report for surviving mutants
-- generates a test-fix prompt for Claude Code, Cursor, Codex, or a human
+- generates a test-fix prompt for Claude Code, Cursor, Codex, OpenCode, or a human
 - can post a sticky GitHub PR comment
 
 It does not implement a mutation engine. StrykerJS does that work.
@@ -62,7 +62,7 @@ Tautest is a workflow layer on top of StrykerJS:
 2. Convert changed source lines into Stryker mutate ranges.
 3. Run StrykerJS.
 4. Convert surviving mutants into readable markdown/json reports.
-5. Generate a deterministic test-fix prompt for Claude Code, Cursor, Codex, or humans.
+5. Generate a deterministic test-fix prompt for Claude Code, Cursor, Codex, OpenCode, or humans.
 6. Optionally post a sticky GitHub PR comment.
 
 Tautest does not replace Stryker. It gives Stryker a PR-shaped workflow and gives AI coding agents a safer, narrower test-fix task.
@@ -75,7 +75,7 @@ Vitest is the primary supported runner. Jest is beta.
 ```text
 Launching Tautest v1.
 
-It reads your PR diff, runs StrykerJS only on changed source lines, explains surviving mutants, and generates a test-fix prompt for Claude Code/Cursor/Codex.
+It reads your PR diff, runs StrykerJS only on changed source lines, explains surviving mutants, and generates a test-fix prompt for Claude Code/Cursor/Codex/OpenCode.
 
 Vitest first. Jest beta. No LLM API. Stryker gets full credit as the engine.
 ```

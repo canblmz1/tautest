@@ -86,5 +86,9 @@ function styleIntro(style: PromptStyle): string {
     return 'You are Codex working in the current workspace. Modify tests only, run verification, and report any suspected production bug instead of changing implementation.';
   }
 
+  if (style === 'opencode') {
+    return 'You are OpenCode working in an existing repository. Keep the patch test-only, preserve the current test style, run verification, and report any suspected production bug instead of changing implementation.';
+  }
+
   return 'You are an AI coding agent improving tests based on Tautest mutation results.';
 }

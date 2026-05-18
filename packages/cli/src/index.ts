@@ -59,7 +59,7 @@ export function buildProgram(): Command {
     .option('--config <path>', 'path to tautest config')
     .option('--json', 'print machine-readable JSON summary')
     .option('--dry-run', 'show mutate scope without running Stryker')
-    .option('--prompt-style <style>', 'prompt style: agent, human, claude-code, cursor, or codex', parsePromptStyle)
+    .option('--prompt-style <style>', 'prompt style: agent, human, claude-code, cursor, codex, or opencode', parsePromptStyle)
     .action(async (options) => {
       await runAction(program, async () => {
         const result = await runMutationCommand(process.cwd(), options);
@@ -72,7 +72,7 @@ export function buildProgram(): Command {
     .command('prompt')
     .description('print an AI fix prompt from a Tautest report JSON')
     .option('--from <path>', 'path to report.json')
-    .option('--style <style>', 'prompt style: agent, human, claude-code, cursor, or codex', parsePromptStyle)
+    .option('--style <style>', 'prompt style: agent, human, claude-code, cursor, codex, or opencode', parsePromptStyle)
     .action(async (options) => {
       await runAction(program, async () => {
         writeStdout(runPromptCommand(process.cwd(), options));
@@ -121,11 +121,11 @@ function parsePackageManager(value: string): PackageManager {
 }
 
 function parsePromptStyle(value: string): PromptStyle {
-  if (value === 'agent' || value === 'human' || value === 'claude-code' || value === 'cursor' || value === 'codex') {
+  if (value === 'agent' || value === 'human' || value === 'claude-code' || value === 'cursor' || value === 'codex' || value === 'opencode') {
     return value;
   }
 
-  throw new Error('--prompt-style/--style must be "agent", "human", "claude-code", "cursor", or "codex".');
+  throw new Error('--prompt-style/--style must be "agent", "human", "claude-code", "cursor", "codex", or "opencode".');
 }
 
 function writeStdout(value: string): void {

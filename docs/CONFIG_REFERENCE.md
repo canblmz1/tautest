@@ -54,6 +54,6 @@ export default defineConfig({
 - `stryker.concurrency`: Stryker concurrency.
 - `stryker.userConfig`: safely merged Stryker options.
 - `prompt.maxMutants`: max mutants in prompt.
-- `prompt.style`: `agent`, `human`, `claude-code`, `cursor`, or `codex`.
+- `prompt.style`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
 
 Protected Stryker fields such as `mutate`, `reporters`, `jsonReporter`, and `testRunner` are owned by Tautest for the run.

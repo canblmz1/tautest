@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- GitHub Action job summary output for mutation score and top surviving mutants.
+- OpenCode prompt style for deterministic test-fix prompts.
+
+### Fixed
+
+- Release Readiness package smoke now discovers packed tarballs without hardcoding the package version.
+
 ## 1.0.0 - 2026-05-10
 
 ### Added

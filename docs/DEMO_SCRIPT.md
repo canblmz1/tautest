@@ -52,7 +52,7 @@ Narration:
 
 > The prompt tells the agent to edit tests only, avoid filler tests, and prove that the new test passes on original code but fails on the mutant.
 
-Paste prompt into Claude Code, Cursor, or Codex.
+Paste prompt into Claude Code, Cursor, Codex, or OpenCode.
 
 ## 75-90s: Verify
 

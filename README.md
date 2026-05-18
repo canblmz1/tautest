@@ -8,7 +8,7 @@
 
 Tautest runs mutation testing only on lines a PR changed, then reports surviving mutants in a PR-friendly format.
 
-It uses StrykerJS as the mutation engine. Tautest adds changed-line scoping from `git diff`, Markdown/JSON reports, deterministic fix prompts, and optional GitHub PR sticky comments.
+It uses StrykerJS as the mutation engine. Tautest adds changed-line scoping from `git diff`, Markdown/JSON reports, deterministic fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans, and optional GitHub PR sticky comments.
 
 ## Demo
 
@@ -30,6 +30,7 @@ Tautest focuses that feedback on the code changed in a pull request, so reviewer
 - Writes Markdown, JSON, and terminal reports.
 - Generates AI-ready fix prompts.
 - Can post GitHub PR comments.
+- Writes a GitHub job summary when used in GitHub Actions.
 
 ## What Tautest does not do
 
@@ -104,7 +105,7 @@ Common options:
 - `--base <ref>`: Git base ref used for changed-line detection.
 - `--threshold <number>`: minimum mutation score.
 - `--report-dir <dir>`: output directory, default `.tautest`.
-- `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, or `codex`.
+- `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
 - `--dry-run`: show mutate scope without running StrykerJS.
 - `--json`: print machine-readable run output.
 
@@ -189,7 +190,7 @@ Killed: 4 | Survived: 0
 
 1. Run Tautest.
 2. Open `.tautest/fix-prompt.md`.
-3. Paste it into Claude Code, Cursor, Codex, or use it yourself.
+3. Paste it into Claude Code, Cursor, Codex, OpenCode, or use it yourself.
 4. Add or strengthen tests only.
 5. Re-run the normal test suite.
 6. Re-run Tautest.
@@ -199,6 +200,7 @@ Agent workflow docs:
 - [Claude Code workflow](docs/CLAUDE_CODE_WORKFLOW.md)
 - [Cursor workflow](docs/CURSOR_WORKFLOW.md)
 - [Codex workflow](docs/CODEX_WORKFLOW.md)
+- [OpenCode workflow](docs/OPENCODE_WORKFLOW.md)
 
 ## Example projects
 
@@ -214,6 +216,8 @@ Tautest writes run outputs to `.tautest/` by default:
 - `.tautest/report.json`
 - `.tautest/fix-prompt.md`
 - `.tautest/stryker-incremental.json`
+
+GitHub Actions also writes a job summary with the mutation score and top surviving mutants when summary output is available.
 
 These files are generated artifacts and normally should not be committed.
 
@@ -253,6 +257,8 @@ See [roadmap](docs/ROADMAP.md).
 
 ## Contributing
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the local development flow.
+
 ```bash
 pnpm install --frozen-lockfile
 pnpm typecheck
@@ -262,6 +268,8 @@ pnpm build
 ```
 
 Small reproducible examples are the most useful issue reports. Include your test runner, package manager, Node version, StrykerJS version, and generated `.tautest/report.json` when possible.
+
+Security reports should follow [SECURITY.md](SECURITY.md).
 
 ## License
 

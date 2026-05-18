@@ -4,7 +4,7 @@
 
 Tautest is a PR-focused mutation testing workflow layer powered by StrykerJS.
 
-It reads changed source lines from a Git diff, runs StrykerJS mutation testing on that focused scope, turns surviving mutants into readable reports, and generates deterministic test-fix prompts for Claude Code, Cursor, Codex, or humans.
+It reads changed source lines from a Git diff, runs StrykerJS mutation testing on that focused scope, turns surviving mutants into readable reports, and generates deterministic test-fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans.
 
 Tautest is not a mutation engine. StrykerJS performs the mutation testing.
 

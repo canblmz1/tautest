@@ -8,7 +8,7 @@ export type ChangedFileStatus = 'added' | 'modified' | 'renamed' | 'deleted' | '
 
 export type MutationVerdict = 'STRONG' | 'MIXED' | 'WEAK' | 'UNKNOWN';
 
-export type PromptStyle = 'agent' | 'human' | 'claude-code' | 'cursor' | 'codex';
+export type PromptStyle = 'agent' | 'human' | 'claude-code' | 'cursor' | 'codex' | 'opencode';
 
 export interface ChangedRange {
   start: number;
