@@ -64,8 +64,11 @@ jobs:
         run: |
           set -euo pipefail
           smoke_dir="$(mktemp -d)"
-          core_tgz="$(pwd)/.tautest/release-packs/tautest-core-1.0.0.tgz"
-          cli_tgz="$(pwd)/.tautest/release-packs/tautest-1.0.0.tgz"
+          pack_dir="$(pwd)/.tautest/release-packs"
+          core_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
+          cli_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-[0-9]*.tgz' -print -quit)"
+          test -n "$core_tgz"
+          test -n "$cli_tgz"
           cat > "$smoke_dir/package.json" <<JSON
           {
             "name": "tautest-release-smoke",
