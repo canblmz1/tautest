@@ -17,7 +17,7 @@ export function buildProgram(): Command {
   program
     .name('tautest')
     .description('PR-focused mutation testing workflow layer powered by StrykerJS')
-    .version('1.0.1')
+    .version('1.1.0')
     .option('--debug', 'print debug details for errors');
 
   program

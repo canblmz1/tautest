@@ -1,0 +1,153 @@
+name: Publish npm
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-npm-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Ensure npm supports trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate release version
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag_version="${GITHUB_REF_NAME#v}"
+          cli_version="$(node -p "require('./packages/cli/package.json').version")"
+          core_version="$(node -p "require('./packages/core/package.json').version")"
+
+          if [ "$cli_version" != "$tag_version" ]; then
+            echo "tautest package version $cli_version does not match tag $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+          if [ "$core_version" != "$tag_version" ]; then
+            echo "@tautest/core package version $core_version does not match tag $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+          if npm view "tautest@$tag_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
+            echo "tautest@$tag_version already exists on npm" >&2
+            exit 1
+          fi
+
+          if npm view "@tautest/core@$tag_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
+            echo "@tautest/core@$tag_version already exists on npm" >&2
+            exit 1
+          fi
+
+          echo "version=$tag_version" >> "$GITHUB_OUTPUT"
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Production dependency audit
+        run: pnpm audit --prod
+
+      - name: Pack npm packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tautest/release-packs
+          pnpm --filter @tautest/core pack --pack-destination .tautest/release-packs
+          pnpm --filter tautest pack --pack-destination .tautest/release-packs
+
+      - name: Smoke packed npm packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$(mktemp -d)"
+          pack_dir="$(pwd)/.tautest/release-packs"
+          core_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
+          cli_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-[0-9]*.tgz' -print -quit)"
+          test -n "$core_tgz"
+          test -n "$cli_tgz"
+
+          cat > "$smoke_dir/package.json" <<JSON
+          {
+            "name": "tautest-publish-smoke",
+            "private": true,
+            "type": "module",
+            "dependencies": {
+              "@tautest/core": "file:$core_tgz",
+              "tautest": "file:$cli_tgz"
+            },
+            "pnpm": {
+              "overrides": {
+                "@tautest/core": "file:$core_tgz"
+              }
+            }
+          }
+          JSON
+
+          pnpm -C "$smoke_dir" install --ignore-scripts
+          pnpm -C "$smoke_dir" exec tautest --version
+          cd "$smoke_dir"
+          node --input-type=module -e "import('@tautest/core').then((m) => { if (!m.buildMarkdownReport) throw new Error('missing core export'); })"
+
+      - name: Publish @tautest/core
+        shell: bash
+        run: |
+          set -euo pipefail
+          core_tgz="$(find .tautest/release-packs -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
+          npm publish "$core_tgz" --access public
+
+      - name: Publish tautest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cli_tgz="$(find .tautest/release-packs -maxdepth 1 -name 'tautest-[0-9]*.tgz' -print -quit)"
+          npm publish "$cli_tgz" --access public
+
+      - name: Verify published packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm view "tautest@${{ steps.release.outputs.version }}" version --registry=https://registry.npmjs.org/
+          npm view "@tautest/core@${{ steps.release.outputs.version }}" version --registry=https://registry.npmjs.org/
