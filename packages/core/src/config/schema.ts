@@ -27,7 +27,7 @@ export const tautestConfigSchema = z
     prompt: z
       .object({
         maxMutants: z.number().int().min(1).optional(),
-        style: z.enum(['agent', 'human', 'claude-code', 'cursor', 'codex']).optional()
+        style: z.enum(['agent', 'human', 'claude-code', 'cursor', 'codex', 'opencode']).optional()
       })
       .optional()
   })

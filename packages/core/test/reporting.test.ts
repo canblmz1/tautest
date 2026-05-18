@@ -132,6 +132,20 @@ describe('prompt builder', () => {
     expect(prompt).toContain('src/discount.test.ts - calculateDiscount applies the senior discount for customers above 65');
   });
 
+  it('builds an OpenCode-oriented prompt style', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+
+    const prompt = buildFixPrompt({
+      mutants: getActionableMutants(summary),
+      testRunner: 'vitest',
+      style: 'opencode'
+    });
+
+    expect(prompt).toContain('You are OpenCode working in an existing repository.');
+    expect(prompt).toContain('Keep the patch test-only');
+    expect(prompt).toContain('Do not change production code.');
+  });
+
   it('generates useful deterministic prompts for the phase 4 eval fixtures', () => {
     const evalDir = path.join(import.meta.dirname, 'fixtures', 'prompt-eval');
     const prompts = readdirSync(evalDir)

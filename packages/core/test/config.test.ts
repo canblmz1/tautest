@@ -45,15 +45,15 @@ describe('config loader', () => {
   });
 
   it('exposes defineConfig helper and schema validation', () => {
-    const input = defineConfig({ testRunner: 'vitest', prompt: { maxMutants: 3 } });
+    const input = defineConfig({ testRunner: 'vitest', prompt: { maxMutants: 3, style: 'opencode' } });
 
     expect(resolveTautestConfig(input)).toMatchObject({
       testRunner: 'vitest',
       prompt: {
-        maxMutants: 3
+        maxMutants: 3,
+        style: 'opencode'
       }
     });
     expect(() => tautestConfigSchema.parse({ testRunner: 'mocha' })).toThrow();
   });
 });
-
