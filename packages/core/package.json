@@ -1,6 +1,6 @@
 {
   "name": "@tautest/core",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Core engine for Tautest, a PR-focused mutation testing workflow layer on top of StrykerJS",
   "license": "MIT",
   "author": "Tautest contributors",
