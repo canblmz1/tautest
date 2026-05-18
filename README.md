@@ -257,6 +257,8 @@ See [roadmap](docs/ROADMAP.md).
 
 ## Contributing
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the local development flow.
+
 ```bash
 pnpm install --frozen-lockfile
 pnpm typecheck
@@ -266,6 +268,8 @@ pnpm build
 ```
 
 Small reproducible examples are the most useful issue reports. Include your test runner, package manager, Node version, StrykerJS version, and generated `.tautest/report.json` when possible.
+
+Security reports should follow [SECURITY.md](SECURITY.md).
 
 ## License
 
