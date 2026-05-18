@@ -30,6 +30,7 @@ Tautest focuses that feedback on the code changed in a pull request, so reviewer
 - Writes Markdown, JSON, and terminal reports.
 - Generates AI-ready fix prompts.
 - Can post GitHub PR comments.
+- Writes a GitHub job summary when used in GitHub Actions.
 
 ## What Tautest does not do
 
@@ -214,6 +215,8 @@ Tautest writes run outputs to `.tautest/` by default:
 - `.tautest/report.json`
 - `.tautest/fix-prompt.md`
 - `.tautest/stryker-incremental.json`
+
+GitHub Actions also writes a job summary with the mutation score and top surviving mutants when summary output is available.
 
 These files are generated artifacts and normally should not be committed.
 

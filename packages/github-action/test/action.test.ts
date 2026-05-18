@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { buildCacheKey } from '../src/cache';
 import { parseInputs } from '../src/inputs';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
+import { buildStepSummary } from '../src/summary';
 import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
 
 describe('action inputs', () => {
@@ -158,5 +159,52 @@ describe('PR comment', () => {
     const comments = [{ id: 1, body: 'hello' }, { id: 2, body: `${COMMENT_MARKER}\nold report` }];
 
     expect(findStickyComment(comments)?.id).toBe(2);
+  });
+});
+
+describe('step summary', () => {
+  it('builds a sanitized GitHub job summary', () => {
+    const summary = buildStepSummary({
+      status: 'threshold-failed',
+      report: {
+        summary: {
+          verdict: 'MIXED',
+          mutationScore: 75,
+          killed: 3,
+          survived: 1,
+          noCoverage: 0
+        },
+        surviving: [
+          {
+            filePath: 'src/discount.ts',
+            line: 2,
+            mutatorName: 'EqualityOperator',
+            original: 'age >= 65',
+            replacement: 'age > 65'
+          }
+        ]
+      },
+      paths: {
+        report: '.tautest/report.md',
+        json: '.tautest/report.json',
+        prompt: '.tautest/fix-prompt.md'
+      }
+    });
+
+    expect(summary).toContain('# Tautest');
+    expect(summary).toContain('| MIXED | 75.00% | 3 | 1 | 0 |');
+    expect(summary).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 |');
+    expect(summary).toContain('Fix prompt: `.tautest/fix-prompt.md`');
+  });
+
+  it('summarizes no-op runs without mutants', () => {
+    const summary = buildStepSummary({
+      status: 'no-op',
+      message: 'No changed production source files found.'
+    });
+
+    expect(summary).toContain('| NO_CHANGES | unknown | 0 | 0 | 0 |');
+    expect(summary).toContain('No surviving mutants found.');
+    expect(summary).toContain('No changed production source files found.');
   });
 });

@@ -7,6 +7,7 @@ import * as github from '@actions/github';
 import { restoreTautestCache, saveTautestCache, type TautestCache } from './cache';
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildPrComment, type CommentReport, upsertStickyComment } from './pr-comment';
+import { writeStepSummary } from './summary';
 import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
 
 interface PreflightResult {
@@ -112,6 +113,7 @@ export async function run(): Promise<void> {
   }
 
   setActionOutputs(parsedOutput);
+  await writeStepSummary(parsedOutput);
   await maybeComment(inputs, preflight, parsedOutput);
 
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
