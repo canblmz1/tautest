@@ -2,6 +2,8 @@
 
 90-second video flow.
 
+For a copy-paste local version of this flow, see [Demo](DEMO.md).
+
 ## 0-10s: Setup
 
 Open a small Vitest project. Show tests passing and normal coverage-looking confidence.
