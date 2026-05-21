@@ -43,9 +43,20 @@ Flags:
 - `--report-dir <dir>`
 - `--no-cache`
 - `--config <path>`
+- `--workspace <path>`
 - `--json`
 - `--dry-run`
 - `--prompt-style agent|human|claude-code|cursor|codex|opencode`
+
+### Workspace path beta
+
+Use `--workspace <path>` from a repository root to run Tautest as if it started inside a package or workspace directory:
+
+```bash
+tautest run --workspace packages/api --base origin/main
+```
+
+This is a small monorepo beta step. The workspace path must stay inside the current repository directory. Full changed-workspace graph detection is still future work.
 
 ### Dry-run preview
 

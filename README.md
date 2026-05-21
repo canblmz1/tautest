@@ -129,6 +129,7 @@ Common options:
 - `--threshold <number>`: minimum mutation score.
 - `--report-dir <dir>`: output directory, default `.tautest`.
 - `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
+- `--workspace <path>`: run from a workspace/package directory inside the current repository.
 - `--dry-run`: preview included/excluded changed files and mutate scope without running StrykerJS.
 - `--json`: print machine-readable run output.
 

@@ -57,6 +57,7 @@ export function buildProgram(): Command {
     .option('--report-dir <dir>', 'directory for report outputs')
     .option('--no-cache', 'disable Stryker incremental mode for this run')
     .option('--config <path>', 'path to tautest config')
+    .option('--workspace <path>', 'run from a workspace/package directory inside the current repository')
     .option('--json', 'print machine-readable JSON summary')
     .option('--dry-run', 'show mutate scope without running Stryker')
     .option('--prompt-style <style>', 'prompt style: agent, human, claude-code, cursor, codex, or opencode', parsePromptStyle)
