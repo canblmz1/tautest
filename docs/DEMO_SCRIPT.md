@@ -31,7 +31,7 @@ Show terminal summary:
 ```text
 Tautest: MIXED
 Top surviving mutants:
-- src/discount.ts:2 EqualityOperator
+- src/discount.ts:2 EqualityOperator - The exact boundary value 65 is not protected.
 ```
 
 ## 40-55s: Explain Report

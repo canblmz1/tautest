@@ -135,6 +135,8 @@ export interface CoveringTest {
 }
 
 export interface MutationInsight {
+  category: 'boundary' | 'boolean' | 'arithmetic' | 'branch' | 'coverage' | 'generic';
+  missingBehavior: string;
   whyThisMatters: string;
   suggestedTestIdea: string;
 }

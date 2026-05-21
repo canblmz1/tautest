@@ -199,7 +199,7 @@ Tautest: MIXED (75.00%, threshold 60.00%)
 Killed: 3 | Survived: 1 | No coverage: 0
 
 Top surviving mutants:
-- src/discount.ts:2 EqualityOperator
+- src/discount.ts:2 EqualityOperator - The exact boundary value 65 is not protected by a test that distinguishes the original expression from the mutant.
 ```
 
 After the missing boundary test is added:

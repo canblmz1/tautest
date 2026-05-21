@@ -75,6 +75,8 @@ function formatMutantDetails(mutant: ReturnType<typeof enrichMutants>[number], i
     '',
     '- Covering tests:',
     ...formatCoveringTests(mutant.coveringTests),
+    `- Category: ${mutant.insight.category}`,
+    `- Likely missing behavior: ${mutant.insight.missingBehavior}`,
     `- Why this matters: ${mutant.insight.whyThisMatters}`,
     `- Suggested test idea: ${mutant.insight.suggestedTestIdea}`,
     ''
