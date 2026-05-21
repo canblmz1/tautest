@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { realpathSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { PackageManager, PromptStyle, TestRunner } from '@tautest/core';
 import { runDoctorCommand } from './commands/doctor';
@@ -17,7 +17,7 @@ export function buildProgram(): Command {
   program
     .name('tautest')
     .description('PR-focused mutation testing workflow layer powered by StrykerJS')
-    .version('1.1.0')
+    .version(readCliVersion())
     .option('--debug', 'print debug details for errors');
 
   program
@@ -132,6 +132,17 @@ function parsePromptStyle(value: string): PromptStyle {
 
 function writeStdout(value: string): void {
   process.stdout.write(value);
+}
+
+function readCliVersion(): string {
+  const packageJsonPath = fileURLToPath(new URL('../package.json', import.meta.url));
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { version?: unknown };
+
+  if (typeof packageJson.version !== 'string' || packageJson.version.length === 0) {
+    throw new Error('tautest package.json must include a version string.');
+  }
+
+  return packageJson.version;
 }
 
 if (isDirectExecution()) {

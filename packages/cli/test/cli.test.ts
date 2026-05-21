@@ -1,7 +1,8 @@
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { buildProgram } from '../src/index';
 import { runInit } from '../src/commands/init';
@@ -13,6 +14,12 @@ import { assertChangedSourceLineBudget, buildDryRunOutput, countChangedSourceLin
 describe('CLI program', () => {
   it('registers expected commands', () => {
     expect(buildProgram().commands.map((command) => command.name())).toEqual(['init', 'doctor', 'run', 'prompt', 'report']);
+  });
+
+  it('uses the package.json version', () => {
+    const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')) as { version: string };
+
+    expect(buildProgram().version()).toBe(packageJson.version);
   });
 });
 

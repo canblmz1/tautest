@@ -43,27 +43,52 @@ jobs:
         with:
           run_install: false
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Validate release version
+      - name: Derive release version
         id: release
         shell: bash
         run: |
           set -euo pipefail
           tag_version="${GITHUB_REF_NAME#v}"
-          cli_version="$(node -p "require('./packages/cli/package.json').version")"
-          core_version="$(node -p "require('./packages/core/package.json').version")"
 
-          if [ "$cli_version" != "$tag_version" ]; then
-            echo "tautest package version $cli_version does not match tag $GITHUB_REF_NAME" >&2
+          if ! node -e "const semver = process.argv[1]; if (!/^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$/.test(semver)) process.exit(1)" "$tag_version"; then
+            echo "Tag $GITHUB_REF_NAME must use npm semver format like v1.2.3 or v1.2.3-beta.1" >&2
             exit 1
           fi
 
-          if [ "$core_version" != "$tag_version" ]; then
-            echo "@tautest/core package version $core_version does not match tag $GITHUB_REF_NAME" >&2
-            exit 1
-          fi
+          echo "version=$tag_version" >> "$GITHUB_OUTPUT"
+
+      - name: Apply tag version to packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${{ steps.release.outputs.version }}"
+
+          node - "$version" <<'NODE'
+          const fs = require('node:fs');
+          const version = process.argv[2];
+          const packagePaths = [
+            'packages/core/package.json',
+            'packages/cli/package.json',
+            'packages/github-action/package.json',
+          ];
+
+          for (const packagePath of packagePaths) {
+            const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+            pkg.version = version;
+            fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+            console.log(`${pkg.name}@${version}`);
+          }
+          NODE
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate release availability
+        id: availability
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag_version="${{ steps.release.outputs.version }}"
 
           cli_exists=false
           core_exists=false
@@ -87,8 +112,6 @@ jobs:
           else
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
-
-          echo "version=$tag_version" >> "$GITHUB_OUTPUT"
 
       - name: Typecheck
         run: pnpm typecheck
@@ -117,6 +140,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          version="${{ steps.release.outputs.version }}"
           smoke_dir="$(mktemp -d)"
           pack_dir="$(pwd)/.tautest/release-packs"
           core_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
@@ -142,12 +166,16 @@ jobs:
           JSON
 
           pnpm -C "$smoke_dir" install --ignore-scripts
-          pnpm -C "$smoke_dir" exec tautest --version
+          cli_version="$(pnpm -C "$smoke_dir" exec tautest --version)"
+          if [ "$cli_version" != "$version" ]; then
+            echo "Packed tautest CLI reported $cli_version, expected $version from $GITHUB_REF_NAME." >&2
+            exit 1
+          fi
           cd "$smoke_dir"
           node --input-type=module -e "import('@tautest/core').then((m) => { if (!m.buildMarkdownReport) throw new Error('missing core export'); })"
 
       - name: Publish @tautest/core
-        if: steps.release.outputs.already_published != 'true'
+        if: steps.availability.outputs.already_published != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -155,7 +183,7 @@ jobs:
           npm publish "$core_tgz" --access public
 
       - name: Publish tautest
-        if: steps.release.outputs.already_published != 'true'
+        if: steps.availability.outputs.already_published != 'true'
         shell: bash
         run: |
           set -euo pipefail
