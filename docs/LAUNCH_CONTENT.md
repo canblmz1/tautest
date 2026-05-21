@@ -49,6 +49,34 @@ The prompt is deterministic and file-based; there is no LLM API integration. It 
 Vitest is the primary path. Jest support is beta.
 ```
 
+## Reddit objection reply
+
+Question:
+
+```text
+How is this different from all the other mutation testing tools? Pretty sure agents can read the reports?
+```
+
+Reply:
+
+```text
+Fair question.
+
+Tautest is not trying to be a new mutation engine. StrykerJS is the engine and gets full credit for mutation testing.
+
+The difference is the PR workflow around it:
+- start from the Git diff
+- mutate changed production lines only
+- turn the surviving mutants into a short review report
+- explain the likely missing behavior
+- generate a deterministic test-fix prompt with hard rules like "do not change production code"
+- post that in GitHub as a sticky PR comment/artifact
+
+You're right that capable agents can read Stryker reports. The problem is that raw mutation output is not the whole workflow. You still need to decide which changed lines matter, what the agent is allowed to edit, what validation loop it should run, and how reviewers see it in CI.
+
+Tautest packages that into a repeatable local-first loop. If a team already runs Stryker directly on PRs and their agents/reviewers reliably act on those reports, they may not need Tautest.
+```
+
 ## dev.to
 
 ```markdown

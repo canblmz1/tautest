@@ -69,7 +69,7 @@ Tautest is not different because it invents new mutation testing. It is differen
 - Compared with coverage gates, Tautest checks whether changed behavior is defended by tests, not just whether changed lines executed.
 - Compared with handing raw reports to an AI agent, Tautest creates a smaller deterministic task packet: these changed lines survived mutation, strengthen tests only, do not change production code, then rerun validation.
 
-Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md).
+Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md) and the [Positioning FAQ](docs/POSITIONING_FAQ.md).
 
 ## Install
 
