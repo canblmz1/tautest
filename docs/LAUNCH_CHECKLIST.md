@@ -4,6 +4,7 @@
 
 - [ ] README badges point to the published npm packages and Release Readiness workflow.
 - [ ] README explains that StrykerJS is the mutation engine.
+- [ ] README links to the Positioning FAQ for "why not just StrykerJS?" and "agents can read reports" objections.
 - [ ] README GitHub Action example uses `canblmz1/tautest/packages/github-action@v1`.
 - [ ] GitHub About description is set to `PR-focused mutation testing workflow layer powered by StrykerJS.`
 - [ ] GitHub homepage is set to `https://www.npmjs.com/package/tautest`.
