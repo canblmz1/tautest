@@ -43,6 +43,7 @@ jobs:
         with:
           base: ${{ github.base_ref }}
           threshold: 60
+          max-changed-lines: 25
           comment: changes
           cache: true
 ```
@@ -57,9 +58,12 @@ jobs:
 | --- | --- | --- |
 | `base` | PR base SHA | Base ref or SHA passed to `tautest run --base`. |
 | `threshold` | `60` | Minimum mutation score expected by CI. |
+| `max-files` | empty | Optional changed source file budget passed to `tautest run --max-files`. |
+| `max-changed-lines` | empty | Optional changed production line budget passed to `tautest run --max-changed-lines`. |
 | `fail-on-threshold` | `true` | Fails the job when the score is below threshold. |
 | `comment` | `changes` | PR comment mode: `always`, `changes`, or `never`. |
 | `config` | empty | Optional path to `tautest.config.ts/js/mjs/json`. |
+| `prompt-style` | config default | Optional fix-prompt style: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`. |
 | `working-directory` | `.` | Project directory where Tautest runs. |
 | `package-manager` | `auto` | `auto`, `npm`, `pnpm`, `yarn`, or `bun`. |
 | `install` | `false` | Runs dependency install before Tautest. Most workflows should install dependencies explicitly before invoking the action. |
@@ -74,6 +78,19 @@ jobs:
 | `verdict` | Tautest verdict. |
 | `surviving` | Surviving mutant count. |
 | `report-path` | Markdown report path. |
+
+## CI Budgets
+
+Use `max-files` and `max-changed-lines` to keep CI predictable on large PRs:
+
+```yaml
+with:
+  threshold: 60
+  max-files: 5
+  max-changed-lines: 25
+```
+
+When a budget is exceeded, Tautest stops before StrykerJS starts and the action fails with CLI diagnostics. Developers can run `tautest run --dry-run` locally to inspect the changed mutation scope.
 
 ## PR Comments
 

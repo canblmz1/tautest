@@ -100956,13 +100956,17 @@ function sanitize(value) {
 }
 
 // src/inputs.ts
+var PROMPT_STYLES = ["agent", "human", "claude-code", "cursor", "codex", "opencode"];
 function readInputs() {
   return parseInputs({
     base: getInput("base"),
     threshold: getInput("threshold"),
+    maxFiles: getInput("max-files"),
+    maxChangedLines: getInput("max-changed-lines"),
     failOnThreshold: getInput("fail-on-threshold"),
     comment: getInput("comment"),
     config: getInput("config"),
+    promptStyle: getInput("prompt-style"),
     workingDirectory: getInput("working-directory"),
     packageManager: getInput("package-manager"),
     install: getInput("install"),
@@ -100975,9 +100979,12 @@ function parseInputs(raw) {
   return {
     base: blankToUndefined(raw.base),
     threshold,
+    maxFiles: parseOptionalPositiveInteger(raw.maxFiles, "max-files"),
+    maxChangedLines: parseOptionalPositiveInteger(raw.maxChangedLines, "max-changed-lines"),
     failOnThreshold: parseBoolean(raw.failOnThreshold || "true", "fail-on-threshold"),
     comment: parseCommentMode(raw.comment || "changes"),
     config: blankToUndefined(raw.config),
+    promptStyle: parsePromptStyle(raw.promptStyle),
     workingDirectory: raw.workingDirectory?.trim() || ".",
     packageManager: parsePackageManager(raw.packageManager || "auto"),
     install: parseBoolean(raw.install || "false", "install"),
@@ -100991,6 +100998,17 @@ function parseThreshold(value) {
     throw new Error("Input `threshold` must be a number between 0 and 100.");
   }
   return threshold;
+}
+function parseOptionalPositiveInteger(value, inputName) {
+  const trimmed = blankToUndefined(value);
+  if (!trimmed) {
+    return void 0;
+  }
+  const parsed = Number(trimmed);
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    throw new Error(`Input \`${inputName}\` must be a positive integer.`);
+  }
+  return String(parsed);
 }
 function parseBoolean(value, inputName) {
   const normalized = value.trim().toLowerCase();
@@ -101007,6 +101025,16 @@ function parseCommentMode(value) {
     return value;
   }
   throw new Error("Input `comment` must be one of always, changes, or never.");
+}
+function parsePromptStyle(value) {
+  const trimmed = blankToUndefined(value);
+  if (!trimmed) {
+    return void 0;
+  }
+  if (PROMPT_STYLES.includes(trimmed)) {
+    return trimmed;
+  }
+  throw new Error("Input `prompt-style` must be one of agent, human, claude-code, cursor, codex, or opencode.");
 }
 function parsePackageManager(value) {
   if (value === "auto" || value === "npm" || value === "pnpm" || value === "yarn" || value === "bun") {
@@ -101197,6 +101225,22 @@ function resolveTautestCommand(workspaceRoot) {
     localCliExists
   };
 }
+function buildTautestRunArgs(command, inputs, base) {
+  const args = [...command.args, "run", "--base", base, "--threshold", String(inputs.threshold), "--json"];
+  if (inputs.maxFiles) {
+    args.push("--max-files", inputs.maxFiles);
+  }
+  if (inputs.maxChangedLines) {
+    args.push("--max-changed-lines", inputs.maxChangedLines);
+  }
+  if (inputs.config) {
+    args.push("--config", inputs.config);
+  }
+  if (inputs.promptStyle) {
+    args.push("--prompt-style", inputs.promptStyle);
+  }
+  return args;
+}
 function extractJson(stdout) {
   const trimmed = stdout.trim();
   if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
@@ -101371,18 +101415,7 @@ async function ensurePackageManagerAvailable(packageManager, cwd) {
 }
 async function runTautest(workspaceRoot, cwd, inputs, base) {
   const command = resolveTautestCommand(workspaceRoot);
-  const args = [
-    ...command.args,
-    "run",
-    "--base",
-    base,
-    "--threshold",
-    String(inputs.threshold),
-    "--json"
-  ];
-  if (inputs.config) {
-    args.push("--config", inputs.config);
-  }
+  const args = buildTautestRunArgs(command, inputs, base);
   info(`Running Tautest in ${cwd} using ${command.strategy}.`);
   const result = await execCommand(command.command, args, cwd);
   return { ...result, attemptedCommand: command };

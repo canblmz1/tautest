@@ -8,7 +8,7 @@ import { restoreTautestCache, saveTautestCache, type TautestCache } from './cach
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildPrComment, type CommentReport, upsertStickyComment } from './pr-comment';
 import { writeStepSummary } from './summary';
-import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
+import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
 
 interface PreflightResult {
   workspaceRoot: string;
@@ -214,19 +214,7 @@ async function ensurePackageManagerAvailable(packageManager: Exclude<PackageMana
 
 async function runTautest(workspaceRoot: string, cwd: string, inputs: ActionInputs, base: string): Promise<TautestRunResult> {
   const command = resolveTautestCommand(workspaceRoot);
-  const args = [
-    ...command.args,
-    'run',
-    '--base',
-    base,
-    '--threshold',
-    String(inputs.threshold),
-    '--json'
-  ];
-
-  if (inputs.config) {
-    args.push('--config', inputs.config);
-  }
+  const args = buildTautestRunArgs(command, inputs, base);
 
   core.info(`Running Tautest in ${cwd} using ${command.strategy}.`);
   const result = await execCommand(command.command, args, cwd);

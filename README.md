@@ -190,6 +190,7 @@ Notes:
 - The v1 action currently ships from this monorepo path.
 - `fetch-depth: 0` is required.
 - `pull-requests: write` is required for sticky comments.
+- `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
 - The Node 20 action runtime warning is a post-v1 roadmap item.
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md).
