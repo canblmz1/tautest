@@ -2,6 +2,8 @@
 
 This guide assumes a TypeScript or JavaScript project that already uses Vitest or Jest.
 
+If you want to see the value before wiring Tautest into your own project, run the [copy-paste demo](DEMO.md) first.
+
 ## 1. Install
 
 Vitest:
