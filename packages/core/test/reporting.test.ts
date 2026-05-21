@@ -5,6 +5,7 @@ import { buildFixPrompt } from '../src/prompt/builder';
 import { buildJsonReport } from '../src/report/json';
 import { buildMarkdownReport } from '../src/report/markdown';
 import { buildTerminalSummary } from '../src/report/terminal';
+import { buildMutationInsight } from '../src/report/insights';
 import { getActionableMutants, getMutationVerdict, selectTopMutants } from '../src/score/score';
 import { extractOriginal, parseStrykerMutationReport } from '../src/stryker/report-parser';
 import type { MutationLocation } from '../src/types';
@@ -85,6 +86,8 @@ describe('report builders', () => {
 
     expect(markdown).toContain('| `src/discount.ts` | 2 | EqualityOperator | age >= 65 | age > 65 |');
     expect(markdown).toContain('## Mutant Details');
+    expect(markdown).toContain('Likely missing behavior');
+    expect(markdown).toContain('The exact boundary value 65 is not protected');
     expect(markdown).toContain('Suggested test idea');
     const jsonReport = buildJsonReport({ summary, score, topMutants, createdAt: new Date('2026-05-10T00:00:00Z'), threshold: 60 });
     expect(jsonReport).toMatchObject({
@@ -96,6 +99,10 @@ describe('report builders', () => {
       }
     });
     expect(jsonReport.surviving[0]?.insight.suggestedTestIdea).toContain('boundary');
+    expect(jsonReport.surviving[0]?.insight).toMatchObject({
+      category: 'boundary',
+      missingBehavior: expect.stringContaining('exact boundary value 65')
+    });
     const terminal = buildTerminalSummary(summary, score, {
       threshold: 60,
       runner: 'vitest',
@@ -104,8 +111,30 @@ describe('report builders', () => {
       topMutants
     });
     expect(terminal).toContain('Tautest: WEAK');
+    expect(terminal).toContain('exact boundary value 65');
     expect(terminal).toContain('Fix prompt: .tautest/fix-prompt.md');
     expect(terminal.split('\n').length).toBeLessThanOrEqual(25);
+  });
+
+  it('explains equality boundary mutants as missing boundary behavior', () => {
+    const insight = buildMutationInsight({
+      filePath: 'src/discount.ts',
+      line: 2,
+      mutatorName: 'EqualityOperator',
+      original: 'age >= 65',
+      replacement: 'age > 65',
+      status: 'Survived',
+      location: {
+        start: { line: 2, column: 7 },
+        end: { line: 2, column: 16 }
+      }
+    });
+
+    expect(insight).toMatchObject({
+      category: 'boundary',
+      missingBehavior: expect.stringContaining('exact boundary value 65'),
+      suggestedTestIdea: expect.stringContaining('exact value 65')
+    });
   });
 });
 
@@ -128,6 +157,8 @@ describe('prompt builder', () => {
     expect(prompt).toContain('Do not add new dependencies.');
     expect(prompt).toContain('If you find a real production bug, stop and report it');
     expect(prompt).toContain('mutation score increased');
+    expect(prompt).toContain('Likely missing behavior');
+    expect(prompt).toContain('exact boundary value 65');
     expect(prompt).toContain('Suggested test idea');
     expect(prompt).toContain('src/discount.test.ts - calculateDiscount applies the senior discount for customers above 65');
   });

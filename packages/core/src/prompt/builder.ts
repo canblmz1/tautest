@@ -53,6 +53,7 @@ function formatMutant(mutant: ReportMutant, index: number): string {
    - Original: ${inlineCode(mutant.original)}
    - Replacement: ${inlineCode(mutant.replacement)}
    - Covering tests: ${formatCoveringTests(mutant)}
+   - Likely missing behavior: ${mutant.insight.missingBehavior}
    - Why this matters: ${mutant.insight.whyThisMatters}
    - Suggested test idea: ${mutant.insight.suggestedTestIdea}`;
 }

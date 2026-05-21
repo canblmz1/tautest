@@ -1,4 +1,5 @@
 import type { MutationSummary, ScoreResult, SurvivingMutant, TestRunner } from '../types';
+import { enrichMutant } from './insights';
 
 export function buildTerminalSummary(
   summary: MutationSummary,
@@ -28,7 +29,7 @@ export function buildTerminalSummary(
   ].filter(Boolean);
 
   if (topMutants.length > 0) {
-    lines.push('', 'Top surviving mutants:', ...topMutants.map((mutant) => `- ${mutant.filePath}:${mutant.line} ${mutant.mutatorName}`));
+    lines.push('', 'Top surviving mutants:', ...topMutants.map(formatTopMutant));
   }
 
   if (context.fixPromptPath) {
@@ -44,6 +45,11 @@ export function buildTerminalSummary(
   }
 
   return lines.slice(0, 25).join('\n');
+}
+
+function formatTopMutant(mutant: SurvivingMutant): string {
+  const enriched = enrichMutant(mutant);
+  return `- ${mutant.filePath}:${mutant.line} ${mutant.mutatorName} - ${enriched.insight.missingBehavior}`;
 }
 
 function formatScore(score: number | null): string {

@@ -15,6 +15,8 @@ export function enrichMutants(mutants: SurvivingMutant[]): ReportMutant[] {
 export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
   if (mutant.status === 'NoCoverage') {
     return {
+      category: 'coverage',
+      missingBehavior: `The code path around ${mutant.filePath}:${mutant.line} is not executed by the current test suite.`,
       whyThisMatters: 'This production branch was not executed by the current test suite, so behavior can change without any failing test.',
       suggestedTestIdea: `Add a focused test that calls the code path around ${mutant.filePath}:${mutant.line} and asserts the observable result.`
     };
@@ -23,6 +25,10 @@ export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
   if (isBoundaryMutation(mutant)) {
     const boundary = findBoundaryValue(mutant.original, mutant.replacement);
     return {
+      category: 'boundary',
+      missingBehavior: boundary
+        ? `The exact boundary value ${boundary} is not protected by a test that distinguishes the original expression from the mutant.`
+        : 'The comparison boundary is not protected by tests on both sides of the decision point.',
       whyThisMatters: 'A comparison boundary can move by one value while existing tests still pass.',
       suggestedTestIdea: boundary
         ? `Add a boundary test for the exact value ${boundary} and assert the expected behavior before and after that boundary.`
@@ -32,6 +38,8 @@ export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
 
   if (isBooleanMutation(mutant)) {
     return {
+      category: 'boolean',
+      missingBehavior: 'At least one true/false combination is not asserted by the current tests.',
       whyThisMatters: 'Boolean logic changed, which usually means one truth-table case is missing from the tests.',
       suggestedTestIdea: 'Add a table-driven test covering the missing true/false combination that distinguishes the original expression from the mutant.'
     };
@@ -39,6 +47,8 @@ export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
 
   if (isArithmeticMutation(mutant)) {
     return {
+      category: 'arithmetic',
+      missingBehavior: 'A concrete numeric result is not asserted strongly enough to catch this operator change.',
       whyThisMatters: 'Arithmetic operator changes often keep types valid while producing subtly wrong business values.',
       suggestedTestIdea: 'Add an assertion with concrete non-zero inputs and the exact expected numeric result.'
     };
@@ -46,12 +56,16 @@ export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
 
   if (mutant.mutatorName === 'ConditionalExpression') {
     return {
+      category: 'branch',
+      missingBehavior: 'One branch direction can be forced without the current tests failing.',
       whyThisMatters: 'A branch condition can be forced to true or false without the current tests noticing.',
       suggestedTestIdea: 'Add one test for the branch that should be taken and one nearby case for the branch that should not be taken.'
     };
   }
 
   return {
+    category: 'generic',
+    missingBehavior: 'The observable behavior changed by this mutant is not fully specified by the current tests.',
     whyThisMatters: 'The mutant survived, so the current tests do not fully specify this observable behavior.',
     suggestedTestIdea: 'Add the smallest behavior-focused assertion that would pass on the original code and fail on this replacement.'
   };
