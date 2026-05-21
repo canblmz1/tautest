@@ -22,6 +22,8 @@ Tautest runs tests and StrykerJS on user code. That is code execution by design.
 
 Tautest does not call LLM APIs and does not send source code to AI services.
 
+For operational safety guidance, see [docs/TRUST_AND_SAFETY.md](docs/TRUST_AND_SAFETY.md).
+
 ## Supported Versions
 
 Security fixes target the latest released version.

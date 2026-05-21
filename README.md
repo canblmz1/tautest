@@ -273,6 +273,10 @@ These files are generated artifacts and normally should not be committed.
 
 See [limitations](docs/LIMITATIONS.md).
 
+## Trust and safety
+
+Tautest is local-first, does not call LLM APIs, and writes generated artifacts under `.tautest/`. See [trust and safety](docs/TRUST_AND_SAFETY.md) for CI permissions, token handling, generated file boundaries, and safe agent-use rules.
+
 ## Roadmap
 
 - Node 24 action runtime migration.
