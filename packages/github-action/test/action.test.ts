@@ -134,6 +134,7 @@ describe('PR comment', () => {
       killed: 3,
       survived: 1,
       noCoverage: 0,
+      threshold: 80,
       reportPath: '.tautest/report.md',
       topMutants: [
         {
@@ -141,14 +142,18 @@ describe('PR comment', () => {
           line: 2,
           mutatorName: 'EqualityOperator',
           original: 'age >= 65',
-          replacement: 'age > 65'
+          replacement: 'age > 65',
+          insight: {
+            missingBehavior: 'The exact boundary value 65 is not protected.'
+          }
         }
       ]
     });
 
     expect(body).toContain(COMMENT_MARKER);
-    expect(body).toContain('**Verdict:** MIXED');
-    expect(body).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 |');
+    expect(body).toContain('## Tautest Patch Mutation Gate: MIXED');
+    expect(body).toContain('| MIXED | 75.00% | 80.00% | 3 | 1 | 0 |');
+    expect(body).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 | The exact boundary value 65 is not protected. |');
   });
 
   it('escapes html comments and tags from dynamic markdown', () => {
