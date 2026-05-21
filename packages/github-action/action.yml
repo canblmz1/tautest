@@ -1,6 +1,6 @@
 name: Tautest
 description: Run PR-focused mutation testing with Tautest and publish a sticky pull request report.
-author: tautest-dev
+author: canblmz1
 
 inputs:
   base:
@@ -10,6 +10,12 @@ inputs:
     description: Minimum mutation score required by `tautest run --threshold`.
     required: false
     default: '60'
+  max-files:
+    description: Optional maximum changed source file count passed to `tautest run --max-files`.
+    required: false
+  max-changed-lines:
+    description: Optional maximum changed production line count passed to `tautest run --max-changed-lines`.
+    required: false
   fail-on-threshold:
     description: Fail the job when Tautest completes but the score is below threshold.
     required: false
@@ -20,6 +26,9 @@ inputs:
     default: changes
   config:
     description: Optional path to tautest.config.ts/js/mjs/json.
+    required: false
+  prompt-style:
+    description: Optional fix-prompt style. One of `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
     required: false
   working-directory:
     description: Project directory where Tautest should run.
@@ -55,3 +64,7 @@ outputs:
 runs:
   using: node20
   main: dist/index.js
+
+branding:
+  icon: activity
+  color: blue

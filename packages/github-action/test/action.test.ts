@@ -6,15 +6,18 @@ import { buildCacheKey } from '../src/cache';
 import { parseInputs } from '../src/inputs';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
 import { buildStepSummary } from '../src/summary';
-import { extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
+import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
 
 describe('action inputs', () => {
   it('parses booleans, enums, and threshold values', () => {
     expect(
       parseInputs({
         threshold: '75',
+        maxFiles: '4',
+        maxChangedLines: '25',
         failOnThreshold: 'false',
         comment: 'always',
+        promptStyle: 'codex',
         workingDirectory: 'examples/vitest-basic',
         packageManager: 'pnpm',
         install: 'true',
@@ -22,8 +25,11 @@ describe('action inputs', () => {
       })
     ).toMatchObject({
       threshold: 75,
+      maxFiles: '4',
+      maxChangedLines: '25',
       failOnThreshold: false,
       comment: 'always',
+      promptStyle: 'codex',
       workingDirectory: 'examples/vitest-basic',
       packageManager: 'pnpm',
       install: true,
@@ -35,6 +41,8 @@ describe('action inputs', () => {
     expect(() => parseInputs({ threshold: '101' })).toThrow('threshold');
     expect(() => parseInputs({ comment: 'sometimes' })).toThrow('comment');
     expect(() => parseInputs({ install: 'yes' })).toThrow('install');
+    expect(() => parseInputs({ maxChangedLines: '0' })).toThrow('max-changed-lines');
+    expect(() => parseInputs({ promptStyle: 'robot' })).toThrow('prompt-style');
   });
 });
 
@@ -93,6 +101,51 @@ describe('Tautest CLI invocation', () => {
 
   it('extracts JSON from CLI output with surrounding logs', () => {
     expect(extractJson('Starting Tautest\n{"status":"passed"}\n')).toBe('{"status":"passed"}');
+  });
+
+  it('passes CI budgets and prompt style to the CLI', () => {
+    const args = buildTautestRunArgs(
+      {
+        command: 'pnpm',
+        args: ['exec', 'tautest'],
+        strategy: 'pnpm-exec',
+        localCliPath: '/repo/packages/cli/dist/index.js',
+        localCliExists: false
+      },
+      {
+        threshold: 70,
+        maxFiles: '4',
+        maxChangedLines: '25',
+        failOnThreshold: true,
+        comment: 'changes',
+        config: 'tautest.config.ts',
+        promptStyle: 'codex',
+        workingDirectory: '.',
+        packageManager: 'pnpm',
+        install: false,
+        cache: true
+      },
+      'origin/main'
+    );
+
+    expect(args).toEqual([
+      'exec',
+      'tautest',
+      'run',
+      '--base',
+      'origin/main',
+      '--threshold',
+      '70',
+      '--json',
+      '--max-files',
+      '4',
+      '--max-changed-lines',
+      '25',
+      '--config',
+      'tautest.config.ts',
+      '--prompt-style',
+      'codex'
+    ]);
   });
 
   it('formats parse failures with command, local CLI, version, stdout, and stderr details', () => {

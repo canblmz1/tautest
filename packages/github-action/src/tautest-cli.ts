@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import type { ActionInputs } from './inputs';
 
 export interface TautestCommand {
   command: string;
@@ -43,6 +44,28 @@ export function resolveTautestCommand(workspaceRoot: string): TautestCommand {
     localCliPath,
     localCliExists
   };
+}
+
+export function buildTautestRunArgs(command: TautestCommand, inputs: ActionInputs, base: string): string[] {
+  const args = [...command.args, 'run', '--base', base, '--threshold', String(inputs.threshold), '--json'];
+
+  if (inputs.maxFiles) {
+    args.push('--max-files', inputs.maxFiles);
+  }
+
+  if (inputs.maxChangedLines) {
+    args.push('--max-changed-lines', inputs.maxChangedLines);
+  }
+
+  if (inputs.config) {
+    args.push('--config', inputs.config);
+  }
+
+  if (inputs.promptStyle) {
+    args.push('--prompt-style', inputs.promptStyle);
+  }
+
+  return args;
 }
 
 export function extractJson(stdout: string): string | null {
