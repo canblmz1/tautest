@@ -8,7 +8,7 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
-import { buildDryRunOutput } from '../src/commands/run';
+import { buildDryRunOutput, resolveWorkspaceCwd } from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -144,6 +144,22 @@ describe('dry-run output', () => {
     expect(output).toContain('Excluded changed files:');
     expect(output).toContain('- src/discount.test.ts: test file');
     expect(output).toContain('- README.md: non-source file');
+  });
+});
+
+describe('workspace path resolution', () => {
+  it('resolves workspace paths inside the current directory', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-workspace-'));
+    const workspace = path.join(root, 'packages', 'api');
+    mkdirSync(workspace, { recursive: true });
+
+    expect(resolveWorkspaceCwd(root, 'packages/api')).toBe(workspace);
+  });
+
+  it('rejects workspace paths outside the current directory', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-workspace-'));
+
+    expect(() => resolveWorkspaceCwd(root, '..')).toThrow('--workspace must stay inside');
   });
 });
 

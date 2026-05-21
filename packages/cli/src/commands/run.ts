@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { existsSync, statSync } from 'node:fs';
 import {
   buildFixPrompt,
   buildJsonReport,
@@ -40,6 +41,7 @@ export interface RunOptions {
   json?: boolean;
   dryRun?: boolean;
   promptStyle?: PromptStyle;
+  workspace?: string;
 }
 
 export interface RunResult {
@@ -53,7 +55,7 @@ export interface RunResult {
 }
 
 export async function runMutationCommand(cwd: string, options: RunOptions): Promise<RunResult> {
-  const project = detectProject(cwd);
+  const project = detectProject(resolveWorkspaceCwd(cwd, options.workspace));
 
   if (!project.packageJsonPath || !project.packageJson) {
     throw new CliError('No package.json found.', EXIT_CODES.detectionError, 'Run Tautest from a Node.js project.');
@@ -227,6 +229,30 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
     promptPath,
     mutationJsonPath
   };
+}
+
+export function resolveWorkspaceCwd(cwd: string, workspace?: string): string {
+  if (!workspace) {
+    return cwd;
+  }
+
+  const root = path.resolve(cwd);
+  const resolved = path.resolve(root, workspace);
+  const relative = path.relative(root, resolved);
+
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+    throw new CliError('--workspace must stay inside the current repository directory.', EXIT_CODES.configError, 'Pass a package/workspace path under the current directory.');
+  }
+
+  if (!existsSync(resolved)) {
+    throw new CliError('Workspace path does not exist.', EXIT_CODES.configError, `Check the --workspace path: ${workspace}`);
+  }
+
+  if (!statSync(resolved).isDirectory()) {
+    throw new CliError('Workspace path is not a directory.', EXIT_CODES.configError, `Check the --workspace path: ${workspace}`);
+  }
+
+  return resolved;
 }
 
 function resolveRunner(options: RunOptions, configured: TestRunner | 'auto', project: ReturnType<typeof detectProject>): TestRunner {
