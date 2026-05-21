@@ -8,6 +8,7 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
+import { buildDryRunOutput } from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -84,6 +85,65 @@ describe('prompt and report commands', () => {
     expect(runPromptCommand(root, { style: 'human' })).toContain('Use this as a human test-writing checklist.');
     expect(runPromptCommand(root, { style: 'opencode' })).toContain('You are OpenCode working in an existing repository.');
     expect(runReportCommand(root, {})).toBe('# Report\n');
+  });
+});
+
+describe('dry-run output', () => {
+  it('explains included and excluded changed files', () => {
+    const output = buildDryRunOutput({
+      baseRef: 'origin/main',
+      runner: 'vitest',
+      reportDir: '.tautest',
+      mutatePatterns: ['src/discount.ts:2-2'],
+      json: false,
+      changedFiles: [
+        {
+          path: 'src/discount.ts',
+          status: 'modified',
+          ranges: [{ start: 2, end: 2 }],
+          isSource: true,
+          isTest: false,
+          isBinary: false,
+          warnings: []
+        },
+        {
+          path: 'src/discount.test.ts',
+          status: 'modified',
+          ranges: [{ start: 8, end: 10 }],
+          isSource: false,
+          isTest: true,
+          isBinary: false,
+          warnings: []
+        },
+        {
+          path: 'README.md',
+          status: 'modified',
+          ranges: [{ start: 1, end: 1 }],
+          isSource: false,
+          isTest: false,
+          isBinary: false,
+          warnings: []
+        }
+      ],
+      sourceFiles: [
+        {
+          path: 'src/discount.ts',
+          status: 'modified',
+          ranges: [{ start: 2, end: 2 }],
+          isSource: true,
+          isTest: false,
+          isBinary: false,
+          warnings: []
+        }
+      ]
+    });
+
+    expect(output).toContain('Estimated mutation scope: small');
+    expect(output).toContain('Changed production files:');
+    expect(output).toContain('- src/discount.ts lines 2 (1 changed line)');
+    expect(output).toContain('Excluded changed files:');
+    expect(output).toContain('- src/discount.test.ts: test file');
+    expect(output).toContain('- README.md: non-source file');
   });
 });
 

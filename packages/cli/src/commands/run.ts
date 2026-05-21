@@ -17,6 +17,7 @@ import {
   readStrykerJsonReport,
   runStryker,
   selectTopMutants,
+  type ChangedFile,
   type PackageManager,
   type PromptStyle,
   type TestRunner,
@@ -97,7 +98,15 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   const mutatePatterns = changedFilesToStrykerMutate(sourceFiles, config.rangeCoalesceGap);
 
   if (options.dryRun) {
-    const output = buildDryRunOutput({ baseRef, runner, reportDir, mutatePatterns, json: Boolean(options.json) });
+    const output = buildDryRunOutput({
+      baseRef,
+      runner,
+      reportDir,
+      mutatePatterns,
+      changedFiles,
+      sourceFiles,
+      json: Boolean(options.json)
+    });
     return {
       exitCode: EXIT_CODES.ok,
       output,
@@ -262,18 +271,98 @@ function parseOptionalInteger(value: string | undefined, flag: string): number |
   return parsed;
 }
 
-function buildDryRunOutput(input: {
+export function buildDryRunOutput(input: {
   baseRef: string;
   runner: TestRunner;
   reportDir: string;
   mutatePatterns: string[];
+  changedFiles: ChangedFile[];
+  sourceFiles: ChangedFile[];
   json: boolean;
 }): string {
+  const included = input.sourceFiles.map((file) => ({
+    path: file.path,
+    ranges: file.ranges,
+    lines: countChangedLines(file)
+  }));
+  const excluded = input.changedFiles
+    .filter((file) => !input.sourceFiles.some((sourceFile) => sourceFile.path === file.path))
+    .map((file) => ({
+      path: file.path,
+      reason: exclusionReason(file)
+    }));
+  const totalLines = included.reduce((sum, file) => sum + file.lines, 0);
+  const estimatedScope = estimateMutationScope(totalLines, included.length);
+
   if (input.json) {
-    return `${JSON.stringify({ status: 'dry-run', ...input }, null, 2)}\n`;
+    return `${JSON.stringify({ status: 'dry-run', ...input, included, excluded, estimatedScope }, null, 2)}\n`;
   }
 
-  return ['Tautest dry run', '', `Base ref: ${input.baseRef}`, `Runner: ${input.runner}`, `Report dir: ${input.reportDir}`, 'Mutate scope:', ...input.mutatePatterns.map((pattern) => `- ${pattern}`)].join('\n');
+  return [
+    'Tautest dry run',
+    '',
+    `Base ref: ${input.baseRef}`,
+    `Runner: ${input.runner}`,
+    `Report dir: ${input.reportDir}`,
+    `Estimated mutation scope: ${estimatedScope}`,
+    '',
+    'Changed production files:',
+    ...(included.length > 0 ? included.map((file) => `- ${file.path} lines ${formatRanges(file.ranges)} (${file.lines} changed ${file.lines === 1 ? 'line' : 'lines'})`) : ['- None']),
+    '',
+    'Excluded changed files:',
+    ...(excluded.length > 0 ? excluded.map((file) => `- ${file.path}: ${file.reason}`) : ['- None']),
+    '',
+    'Stryker mutate scope:',
+    ...input.mutatePatterns.map((pattern) => `- ${pattern}`)
+  ].join('\n');
+}
+
+function countChangedLines(file: ChangedFile): number {
+  return file.ranges.reduce((sum, range) => sum + range.end - range.start + 1, 0);
+}
+
+function formatRanges(ranges: ChangedFile['ranges']): string {
+  return ranges.map((range) => (range.start === range.end ? String(range.start) : `${range.start}-${range.end}`)).join(', ');
+}
+
+function exclusionReason(file: ChangedFile): string {
+  if (file.status === 'deleted') {
+    return 'deleted file';
+  }
+
+  if (file.isBinary) {
+    return 'binary file';
+  }
+
+  if (file.isTest) {
+    return 'test file';
+  }
+
+  if (!file.isSource) {
+    return 'non-source file';
+  }
+
+  if (file.ranges.length === 0) {
+    return 'no changed current source lines';
+  }
+
+  return 'not selected for mutation';
+}
+
+function estimateMutationScope(totalLines: number, fileCount: number): 'none' | 'small' | 'medium' | 'large' {
+  if (totalLines === 0 || fileCount === 0) {
+    return 'none';
+  }
+
+  if (totalLines <= 5 && fileCount <= 2) {
+    return 'small';
+  }
+
+  if (totalLines <= 25 && fileCount <= 5) {
+    return 'medium';
+  }
+
+  return 'large';
 }
 
 function packageManagerForStryker(packageManager: PackageManager): Exclude<PackageManager, 'bun'> | undefined {

@@ -47,6 +47,35 @@ Flags:
 - `--dry-run`
 - `--prompt-style agent|human|claude-code|cursor|codex|opencode`
 
+### Dry-run preview
+
+Use `--dry-run` to inspect what Tautest would mutate before paying the cost of a StrykerJS run:
+
+```bash
+tautest run --base origin/main --dry-run
+```
+
+Example output:
+
+```text
+Tautest dry run
+
+Base ref: origin/main
+Runner: vitest
+Report dir: .tautest
+Estimated mutation scope: small
+
+Changed production files:
+- src/discount.ts lines 2 (1 changed line)
+
+Excluded changed files:
+- src/discount.test.ts: test file
+- README.md: non-source file
+
+Stryker mutate scope:
+- src/discount.ts:2-2
+```
+
 ## `tautest prompt`
 
 Prints a fix prompt from `.tautest/report.json`.
