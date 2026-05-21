@@ -130,6 +130,7 @@ Common options:
 - `--report-dir <dir>`: output directory, default `.tautest`.
 - `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
 - `--workspace <path>`: run from a workspace/package directory inside the current repository.
+- `--max-changed-lines <number>`: fail before StrykerJS runs if the changed production line count exceeds the budget.
 - `--dry-run`: preview included/excluded changed files and mutate scope without running StrykerJS.
 - `--json`: print machine-readable run output.
 

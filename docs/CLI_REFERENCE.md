@@ -40,6 +40,7 @@ Flags:
 - `--threshold <number>`
 - `--ai`
 - `--max-files <number>`
+- `--max-changed-lines <number>`
 - `--report-dir <dir>`
 - `--no-cache`
 - `--config <path>`
@@ -57,6 +58,20 @@ tautest run --workspace packages/api --base origin/main
 ```
 
 This is a small monorepo beta step. The workspace path must stay inside the current repository directory. Full changed-workspace graph detection is still future work.
+
+### Mutation budget
+
+Use `--max-changed-lines <number>` to stop large mutation runs before StrykerJS starts:
+
+```bash
+tautest run --base origin/main --max-changed-lines 25
+```
+
+This budget counts changed production source lines after Tautest filters out tests, docs, deleted files, binaries, and non-source files. Pair it with `--dry-run` to preview the current scope:
+
+```bash
+tautest run --base origin/main --dry-run
+```
 
 ### Dry-run preview
 

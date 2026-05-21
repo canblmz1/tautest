@@ -8,7 +8,7 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
-import { buildDryRunOutput, resolveWorkspaceCwd } from '../src/commands/run';
+import { assertChangedSourceLineBudget, buildDryRunOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -139,11 +139,64 @@ describe('dry-run output', () => {
     });
 
     expect(output).toContain('Estimated mutation scope: small');
+    expect(output).toContain('Changed production lines: 1');
     expect(output).toContain('Changed production files:');
     expect(output).toContain('- src/discount.ts lines 2 (1 changed line)');
     expect(output).toContain('Excluded changed files:');
     expect(output).toContain('- src/discount.test.ts: test file');
     expect(output).toContain('- README.md: non-source file');
+  });
+});
+
+describe('mutation budget helpers', () => {
+  it('counts changed source lines across ranges and files', () => {
+    const files = [
+      {
+        path: 'src/discount.ts',
+        status: 'modified' as const,
+        ranges: [
+          { start: 2, end: 4 },
+          { start: 9, end: 9 }
+        ],
+        isSource: true,
+        isTest: false,
+        isBinary: false,
+        warnings: []
+      },
+      {
+        path: 'src/tax.ts',
+        status: 'modified' as const,
+        ranges: [{ start: 1, end: 2 }],
+        isSource: true,
+        isTest: false,
+        isBinary: false,
+        warnings: []
+      }
+    ];
+
+    expect(countChangedSourceLines(files)).toBe(6);
+  });
+
+  it('rejects changed source line budgets before mutation runs', () => {
+    expect(() =>
+      assertChangedSourceLineBudget(
+        [
+          {
+            path: 'src/discount.ts',
+            status: 'modified',
+            ranges: [
+              { start: 2, end: 4 },
+              { start: 9, end: 9 }
+            ],
+            isSource: true,
+            isTest: false,
+            isBinary: false,
+            warnings: []
+          }
+        ],
+        1
+      )
+    ).toThrow('--max-changed-lines 1');
   });
 });
 
