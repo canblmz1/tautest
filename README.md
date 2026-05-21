@@ -6,9 +6,11 @@
 [![Release Readiness](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml/badge.svg)](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml)
 [![Node >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
 
-Tautest runs mutation testing only on lines a PR changed, then reports surviving mutants in a PR-friendly format.
+Mutation testing for changed code in pull requests, powered by StrykerJS.
 
-It uses StrykerJS as the mutation engine. Tautest adds changed-line scoping from `git diff`, Markdown/JSON reports, deterministic fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans, and optional GitHub PR sticky comments.
+Coverage shows that changed code ran. Tautest checks whether tests fail when changed behavior is mutated.
+
+Tautest is a PR mutation quality gate for JavaScript and TypeScript projects. It uses StrykerJS as the mutation engine, scopes mutation testing to changed source lines from `git diff`, and turns surviving mutants into review-ready reports, GitHub feedback, and deterministic test-fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans.
 
 ## Demo
 
@@ -18,15 +20,23 @@ Regular tests pass, but Tautest finds a surviving mutant that the tests missed. 
 
 ## Why Tautest?
 
-Passing tests can still miss behavior. Coverage tells you that code ran; mutation testing checks whether tests fail when meaningful changes are introduced.
+Passing tests can still miss changed behavior. Line coverage can tell you that a changed branch or function executed, but it cannot tell you whether the test suite would fail if that behavior were subtly wrong.
 
-Tautest focuses that feedback on the code changed in a pull request, so reviewers and coding agents can act on a smaller, more relevant report.
+Tautest focuses mutation testing on the code changed in a pull request. The result is a smaller, more relevant signal for code review:
+
+- Which changed lines still have surviving mutants?
+- What test behavior is probably missing?
+- Should this PR pass the mutation quality threshold?
+- What small test-only task should a human or coding agent do next?
+
+See [Why Tautest?](docs/WHY_TAUTEST.md) for the longer positioning and comparison with StrykerJS, coverage gates, and coding agents.
 
 ## What Tautest does
 
 - Scopes mutation testing to changed source lines from `git diff`.
 - Runs StrykerJS as the mutation testing engine.
 - Parses surviving mutants into review-friendly findings.
+- Summarizes patch-scoped mutation quality for pull requests.
 - Writes Markdown, JSON, and terminal reports.
 - Generates AI-ready fix prompts.
 - Can post GitHub PR comments.
@@ -37,6 +47,7 @@ Tautest focuses that feedback on the code changed in a pull request, so reviewer
 - Does not implement its own mutation engine.
 - Does not call LLM APIs.
 - Does not detect which lines were written by AI.
+- Does not replace StrykerJS, coverage tools, or normal test suites.
 - Does not prove tests are perfect.
 - Does not fully support monorepos in v1.
 
@@ -46,7 +57,17 @@ Fix prompts are generated Markdown files. They are grounded in the actual surviv
 
 Tautest uses StrykerJS as the mutation testing engine. StrykerJS performs the mutation testing, provides the mutators, and integrates with test runners.
 
-Tautest is the workflow layer around PR scoping, reports, prompts, and GitHub feedback.
+Tautest is the workflow layer around PR scoping, reports, prompts, and GitHub feedback. If you already run StrykerJS directly on every pull request and your reviewers or agents reliably act on the raw reports, Tautest may not add much. It is mainly for teams that want mutation testing to behave like a changed-code PR quality gate.
+
+## How Tautest is different
+
+Tautest is not different because it invents new mutation testing. It is different because it packages StrykerJS results for the pull request loop:
+
+- Compared with running StrykerJS directly, Tautest starts from the Git diff and focuses on changed source lines.
+- Compared with coverage gates, Tautest checks whether changed behavior is defended by tests, not just whether changed lines executed.
+- Compared with handing raw reports to an AI agent, Tautest creates a smaller deterministic task packet: these changed lines survived mutation, strengthen tests only, do not change production code, then rerun validation.
+
+Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md).
 
 ## Install
 
