@@ -238,6 +238,7 @@ export type UserTautestConfig = Partial<{
 
 export interface TautestJsonReport {
   version: '1';
+  schemaVersion: '1';
   createdAt: string;
   summary: {
     verdict: MutationVerdict;

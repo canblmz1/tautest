@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/canblmz1/tautest/main/docs/report.schema.json",
+  "title": "Tautest report.json",
+  "description": "Stable machine-readable Tautest report contract for .tautest/report.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "schemaVersion", "createdAt", "summary", "scope", "aiSignals", "surviving", "stryker"],
+  "properties": {
+    "version": {
+      "const": "1",
+      "description": "Report format major version."
+    },
+    "schemaVersion": {
+      "const": "1",
+      "description": "JSON schema version for consumers that validate report.json."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "mutationScore",
+        "total",
+        "killed",
+        "survived",
+        "noCoverage",
+        "timeout",
+        "runtimeError",
+        "compileError",
+        "ignored"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": ["STRONG", "MIXED", "WEAK", "UNKNOWN"]
+        },
+        "mutationScore": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "killed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "survived": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "noCoverage": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "runtimeError": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compileError": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ignored": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mutatePatterns", "mutatedFiles"],
+      "properties": {
+        "baseRef": {
+          "type": "string"
+        },
+        "runner": {
+          "enum": ["vitest", "jest"]
+        },
+        "mutatePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mutatedFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "aiSignals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promptStyle", "hardRules", "validationLoop", "commands"],
+      "properties": {
+        "promptStyle": {
+          "enum": ["agent", "human", "claude-code", "cursor", "codex", "opencode"]
+        },
+        "author": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["author", "confidence", "reason"],
+          "properties": {
+            "author": {
+              "enum": ["codex", "cursor", "claude", "unknown"]
+            },
+            "confidence": {
+              "enum": ["high", "medium", "low"]
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        },
+        "hardRules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validationLoop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "surviving": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["filePath", "line", "mutatorName", "original", "replacement", "status", "location", "coveringTests", "insight"],
+        "properties": {
+          "filePath": {
+            "type": "string"
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "mutatorName": {
+            "type": "string"
+          },
+          "original": {
+            "type": "string"
+          },
+          "replacement": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object"
+          },
+          "coveringTests": {
+            "type": "array"
+          },
+          "insight": {
+            "type": "object",
+            "required": ["category", "missingBehavior", "whyThisMatters", "suggestedTestIdea"],
+            "properties": {
+              "category": {
+                "enum": ["boundary", "boolean", "arithmetic", "branch", "coverage", "generic"]
+              },
+              "missingBehavior": {
+                "type": "string"
+              },
+              "whyThisMatters": {
+                "type": "string"
+              },
+              "suggestedTestIdea": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "stryker": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    }
+  }
+}

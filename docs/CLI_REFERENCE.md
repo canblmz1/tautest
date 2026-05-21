@@ -90,6 +90,7 @@ Base ref: origin/main
 Runner: vitest
 Report dir: .tautest
 Estimated mutation scope: small
+Changed production lines: 1
 
 Changed production files:
 - src/discount.ts lines 2 (1 changed line)
@@ -101,6 +102,12 @@ Excluded changed files:
 Stryker mutate scope:
 - src/discount.ts:2-2
 ```
+
+### Machine-readable report
+
+`tautest run` writes `.tautest/report.json` with `version: "1"` and `schemaVersion: "1"`.
+
+The JSON Schema lives at [`docs/report.schema.json`](report.schema.json). Use it when another tool, CI step, or agent workflow consumes Tautest output directly.
 
 ## `tautest prompt`
 

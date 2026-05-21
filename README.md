@@ -242,6 +242,8 @@ Tautest writes run outputs to `.tautest/` by default:
 - `.tautest/fix-prompt.md`
 - `.tautest/stryker-incremental.json`
 
+The machine-readable `.tautest/report.json` file uses schema version `1`. See [docs/report.schema.json](docs/report.schema.json) for the JSON Schema contract.
+
 GitHub Actions also writes a job summary with the mutation score and top surviving mutants when summary output is available.
 
 These files are generated artifacts and normally should not be committed.
