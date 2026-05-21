@@ -222,6 +222,7 @@ Killed: 4 | Survived: 0
 
 Agent workflow docs:
 
+- [Agent workflow packs](docs/AGENT_WORKFLOWS.md)
 - [Claude Code workflow](docs/CLAUDE_CODE_WORKFLOW.md)
 - [Cursor workflow](docs/CURSOR_WORKFLOW.md)
 - [Codex workflow](docs/CODEX_WORKFLOW.md)
