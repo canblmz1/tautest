@@ -35,6 +35,7 @@ export interface RunOptions {
   threshold?: string;
   ai?: boolean;
   maxFiles?: string;
+  maxChangedLines?: string;
   reportDir?: string;
   cache?: boolean;
   config?: string;
@@ -88,6 +89,7 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   }
 
   const maxFiles = parseOptionalInteger(options.maxFiles, '--max-files');
+  const maxChangedLines = parseOptionalInteger(options.maxChangedLines, '--max-changed-lines');
 
   if (maxFiles !== undefined && sourceFiles.length > maxFiles) {
     throw new CliError(
@@ -96,6 +98,8 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
       'Increase --max-files or split the change into a smaller diff.'
     );
   }
+
+  assertChangedSourceLineBudget(sourceFiles, maxChangedLines);
 
   const mutatePatterns = changedFilesToStrykerMutate(sourceFiles, config.rangeCoalesceGap);
 
@@ -309,7 +313,7 @@ export function buildDryRunOutput(input: {
   const included = input.sourceFiles.map((file) => ({
     path: file.path,
     ranges: file.ranges,
-    lines: countChangedLines(file)
+    lines: countChangedSourceLines([file])
   }));
   const excluded = input.changedFiles
     .filter((file) => !input.sourceFiles.some((sourceFile) => sourceFile.path === file.path))
@@ -321,7 +325,18 @@ export function buildDryRunOutput(input: {
   const estimatedScope = estimateMutationScope(totalLines, included.length);
 
   if (input.json) {
-    return `${JSON.stringify({ status: 'dry-run', ...input, included, excluded, estimatedScope }, null, 2)}\n`;
+    return `${JSON.stringify(
+      {
+        status: 'dry-run',
+        ...input,
+        included,
+        excluded,
+        totalChangedSourceLines: totalLines,
+        estimatedScope
+      },
+      null,
+      2
+    )}\n`;
   }
 
   return [
@@ -331,6 +346,7 @@ export function buildDryRunOutput(input: {
     `Runner: ${input.runner}`,
     `Report dir: ${input.reportDir}`,
     `Estimated mutation scope: ${estimatedScope}`,
+    `Changed production lines: ${totalLines}`,
     '',
     'Changed production files:',
     ...(included.length > 0 ? included.map((file) => `- ${file.path} lines ${formatRanges(file.ranges)} (${file.lines} changed ${file.lines === 1 ? 'line' : 'lines'})`) : ['- None']),
@@ -343,8 +359,22 @@ export function buildDryRunOutput(input: {
   ].join('\n');
 }
 
-function countChangedLines(file: ChangedFile): number {
-  return file.ranges.reduce((sum, range) => sum + range.end - range.start + 1, 0);
+export function countChangedSourceLines(files: ChangedFile[]): number {
+  return files.reduce((sum, file) => {
+    return sum + file.ranges.reduce((fileSum, range) => fileSum + range.end - range.start + 1, 0);
+  }, 0);
+}
+
+export function assertChangedSourceLineBudget(files: ChangedFile[], maxChangedLines?: number): void {
+  const changedSourceLines = countChangedSourceLines(files);
+
+  if (maxChangedLines !== undefined && changedSourceLines > maxChangedLines) {
+    throw new CliError(
+      `Changed production line count (${changedSourceLines}) exceeds --max-changed-lines ${maxChangedLines}.`,
+      EXIT_CODES.detectionError,
+      'Run `tautest run --dry-run` to inspect scope, raise --max-changed-lines, or split the PR.'
+    );
+  }
 }
 
 function formatRanges(ranges: ChangedFile['ranges']): string {

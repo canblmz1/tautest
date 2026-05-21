@@ -54,6 +54,7 @@ export function buildProgram(): Command {
     .option('--threshold <number>', 'minimum mutation score required to exit 0')
     .option('--ai', 'generate AI fix prompt output')
     .option('--max-files <number>', 'maximum changed source files to mutate')
+    .option('--max-changed-lines <number>', 'maximum changed production lines to mutate')
     .option('--report-dir <dir>', 'directory for report outputs')
     .option('--no-cache', 'disable Stryker incremental mode for this run')
     .option('--config <path>', 'path to tautest config')
