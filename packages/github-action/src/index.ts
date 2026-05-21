@@ -34,10 +34,10 @@ interface TautestActionOutput {
   status: 'passed' | 'threshold-failed' | 'no-op' | string;
   threshold?: number;
   message?: string;
-  report?: {
-    summary?: {
-      verdict?: string;
-      mutationScore?: number | null;
+    report?: {
+      summary?: {
+        verdict?: string;
+        mutationScore?: number | null;
       killed?: number;
       survived?: number;
       noCoverage?: number;
@@ -48,6 +48,9 @@ interface TautestActionOutput {
       mutatorName: string;
       original: string;
       replacement: string;
+      insight?: {
+        missingBehavior?: string;
+      };
     }>;
   };
   paths?: {
@@ -324,6 +327,7 @@ function buildCommentReport(output: TautestActionOutput): CommentReport {
 
   return {
     score: summary?.mutationScore ?? null,
+    threshold: output.threshold,
     verdict: summary?.verdict || (output.status === 'no-op' ? 'NO_CHANGES' : 'UNKNOWN'),
     killed: summary?.killed ?? 0,
     survived: summary?.survived ?? 0,

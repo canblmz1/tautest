@@ -6,6 +6,7 @@ export const COMMENT_MARKER = '<!-- tautest:report v=1 -->';
 
 export interface CommentReport {
   score: number | null;
+  threshold?: number;
   verdict: string;
   killed: number;
   survived: number;
@@ -18,6 +19,9 @@ export interface CommentReport {
     mutatorName: string;
     original: string;
     replacement: string;
+    insight?: {
+      missingBehavior?: string;
+    };
   }>;
 }
 
@@ -29,18 +33,22 @@ export function buildPrComment(report: CommentReport): string {
   return [
     COMMENT_MARKER,
     '',
-    '## Tautest Mutation Report',
+    `## Tautest Patch Mutation Gate: ${sanitize(report.verdict)}`,
     '',
-    `**Verdict:** ${sanitize(report.verdict)}  `,
-    `**Score:** ${sanitize(score)}  `,
-    `**Killed:** ${report.killed} | **Survived:** ${report.survived} | **No coverage:** ${report.noCoverage}`,
+    '| Verdict | Patch Mutation Score | Threshold | Killed | Survived | No coverage |',
+    '| --- | ---: | ---: | ---: | ---: | ---: |',
+    `| ${sanitize(report.verdict)} | ${sanitize(score)} | ${sanitize(formatThreshold(report.threshold))} | ${report.killed} | ${report.survived} | ${report.noCoverage} |`,
     '',
     report.reportPath ? `Report: \`${sanitize(report.reportPath)}\`` : '',
     '',
     '### Top Surviving Mutants',
     '',
     topMutants.length > 0
-      ? ['| File | Line | Mutator | Original | Replacement |', '| --- | ---: | --- | --- | --- |', ...topMutants.map(formatMutantRow)].join('\n')
+      ? [
+          '| File | Line | Mutator | Original | Replacement | Likely missing behavior |',
+          '| --- | ---: | --- | --- | --- | --- |',
+          ...topMutants.map(formatMutantRow)
+        ].join('\n')
       : 'No surviving mutants found.',
     '',
     '<details>',
@@ -108,7 +116,7 @@ export function findStickyComment<T extends { body?: string | null }>(comments: 
 }
 
 function formatMutantRow(mutant: CommentReport['topMutants'][number]): string {
-  return `| \`${sanitize(mutant.filePath)}\` | ${mutant.line} | ${sanitize(mutant.mutatorName)} | ${codeCell(mutant.original)} | ${codeCell(mutant.replacement)} |`;
+  return `| \`${sanitize(mutant.filePath)}\` | ${mutant.line} | ${sanitize(mutant.mutatorName)} | ${codeCell(mutant.original)} | ${codeCell(mutant.replacement)} | ${codeCell(mutant.insight?.missingBehavior ?? 'Review this surviving mutant and add the smallest behavior-focused test that kills it.')} |`;
 }
 
 function codeCell(value: string): string {
@@ -121,6 +129,10 @@ function safeReadFile(filePath: string): string {
   } catch {
     return '';
   }
+}
+
+function formatThreshold(threshold: number | undefined): string {
+  return threshold === undefined ? 'not set' : `${threshold.toFixed(2)}%`;
 }
 
 export function sanitize(value: string): string {

@@ -85,6 +85,15 @@ The action writes a sticky PR comment with this marker:
 
 If a previous Tautest comment exists, it is updated. Otherwise, a new comment is created.
 
+The comment is formatted as a patch mutation quality gate. It shows:
+
+- `Tautest Patch Mutation Gate: <verdict>`
+- patch mutation score and threshold
+- killed, survived, and no-coverage counts
+- top surviving mutants
+- likely missing behavior when the JSON report includes mutant insight data
+- a collapsible fix prompt
+
 Fork PRs may not have `pull-requests: write` permission. In that case the action warns and continues; mutation testing and artifacts still work.
 
 ## Job Summary

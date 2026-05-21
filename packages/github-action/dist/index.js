@@ -101029,17 +101029,21 @@ function buildPrComment(report) {
   return [
     COMMENT_MARKER,
     "",
-    "## Tautest Mutation Report",
+    `## Tautest Patch Mutation Gate: ${sanitize2(report.verdict)}`,
     "",
-    `**Verdict:** ${sanitize2(report.verdict)}  `,
-    `**Score:** ${sanitize2(score)}  `,
-    `**Killed:** ${report.killed} | **Survived:** ${report.survived} | **No coverage:** ${report.noCoverage}`,
+    "| Verdict | Patch Mutation Score | Threshold | Killed | Survived | No coverage |",
+    "| --- | ---: | ---: | ---: | ---: | ---: |",
+    `| ${sanitize2(report.verdict)} | ${sanitize2(score)} | ${sanitize2(formatThreshold(report.threshold))} | ${report.killed} | ${report.survived} | ${report.noCoverage} |`,
     "",
     report.reportPath ? `Report: \`${sanitize2(report.reportPath)}\`` : "",
     "",
     "### Top Surviving Mutants",
     "",
-    topMutants.length > 0 ? ["| File | Line | Mutator | Original | Replacement |", "| --- | ---: | --- | --- | --- |", ...topMutants.map(formatMutantRow)].join("\n") : "No surviving mutants found.",
+    topMutants.length > 0 ? [
+      "| File | Line | Mutator | Original | Replacement | Likely missing behavior |",
+      "| --- | ---: | --- | --- | --- | --- |",
+      ...topMutants.map(formatMutantRow)
+    ].join("\n") : "No surviving mutants found.",
     "",
     "<details>",
     "<summary>Fix prompt</summary>",
@@ -101091,7 +101095,7 @@ function findStickyComment(comments) {
   return comments.find((comment) => comment.body?.includes(COMMENT_MARKER));
 }
 function formatMutantRow(mutant) {
-  return `| \`${sanitize2(mutant.filePath)}\` | ${mutant.line} | ${sanitize2(mutant.mutatorName)} | ${codeCell(mutant.original)} | ${codeCell(mutant.replacement)} |`;
+  return `| \`${sanitize2(mutant.filePath)}\` | ${mutant.line} | ${sanitize2(mutant.mutatorName)} | ${codeCell(mutant.original)} | ${codeCell(mutant.replacement)} | ${codeCell(mutant.insight?.missingBehavior ?? "Review this surviving mutant and add the smallest behavior-focused test that kills it.")} |`;
 }
 function codeCell(value) {
   return sanitize2(value).replace(/\s+/g, " ").replace(/\|/g, "\\|");
@@ -101102,6 +101106,9 @@ function safeReadFile(filePath) {
   } catch {
     return "";
   }
+}
+function formatThreshold(threshold) {
+  return threshold === void 0 ? "not set" : `${threshold.toFixed(2)}%`;
 }
 function sanitize2(value) {
   return value.replace(/<!--/g, "&lt;!--").replace(/-->/g, "--&gt;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -101454,6 +101461,7 @@ function buildCommentReport(output) {
   const summary2 = output.report?.summary;
   return {
     score: summary2?.mutationScore ?? null,
+    threshold: output.threshold,
     verdict: summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "UNKNOWN"),
     killed: summary2?.killed ?? 0,
     survived: summary2?.survived ?? 0,
