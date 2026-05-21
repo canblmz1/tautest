@@ -47,6 +47,7 @@ export function buildJsonReport(input: {
 
   return {
     version: REPORT_SCHEMA_VERSION,
+    schemaVersion: REPORT_SCHEMA_VERSION,
     createdAt: (input.createdAt ?? new Date()).toISOString(),
     summary: {
       verdict: input.score.verdict,

@@ -92,6 +92,7 @@ describe('report builders', () => {
     const jsonReport = buildJsonReport({ summary, score, topMutants, createdAt: new Date('2026-05-10T00:00:00Z'), threshold: 60 });
     expect(jsonReport).toMatchObject({
       version: '1',
+      schemaVersion: '1',
       createdAt: '2026-05-10T00:00:00.000Z',
       summary: {
         verdict: 'WEAK',
