@@ -105,6 +105,24 @@ export interface GenerateStrykerConfigOptions {
   tsconfigFile?: string;
 }
 
+export interface StrykerConfigDiagnostic {
+  severity: 'warning';
+  key: string;
+  message: string;
+  suggestion: string;
+}
+
+export interface RunMetrics {
+  runtimeMs?: number;
+  changedFileCount?: number;
+  changedSourceFileCount?: number;
+  changedSourceLineCount?: number;
+  mutatedFileCount?: number;
+  mutatePatternCount?: number;
+  partial?: boolean;
+  partialReason?: string;
+}
+
 export interface RunStrykerOptions {
   cwd: string;
   config: PartialStrykerOptions;
@@ -258,6 +276,10 @@ export interface TautestJsonReport {
     runner?: TestRunner;
     mutatePatterns: string[];
     mutatedFiles: string[];
+  };
+  metrics?: RunMetrics;
+  diagnostics?: {
+    strykerConfig: StrykerConfigDiagnostic[];
   };
   aiSignals: {
     promptStyle: PromptStyle;

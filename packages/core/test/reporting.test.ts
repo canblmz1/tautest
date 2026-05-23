@@ -81,15 +81,53 @@ describe('report builders', () => {
       threshold: 60,
       runner: 'vitest',
       runtimeMs: 1250,
-      mutatePatterns: ['src/discount.ts:2-2']
+      mutatePatterns: ['src/discount.ts:2-2'],
+      metrics: {
+        runtimeMs: 1250,
+        changedFileCount: 2,
+        changedSourceFileCount: 1,
+        changedSourceLineCount: 1,
+        mutatedFileCount: 1,
+        mutatePatternCount: 1,
+        partial: false
+      },
+      strykerConfigDiagnostics: [
+        {
+          severity: 'warning',
+          key: 'timeoutMS',
+          message: 'Tautest run settings override Stryker `timeoutMS` from stryker.userConfig.',
+          suggestion: 'Move supported settings into the Tautest stryker config block.'
+        }
+      ]
     });
 
     expect(markdown).toContain('| `src/discount.ts` | 2 | EqualityOperator | age >= 65 | age > 65 |');
+    expect(markdown).toContain('Changed production lines: **1**');
+    expect(markdown).toContain('## Stryker Config Diagnostics');
     expect(markdown).toContain('## Mutant Details');
     expect(markdown).toContain('Likely missing behavior');
     expect(markdown).toContain('The exact boundary value 65 is not protected');
     expect(markdown).toContain('Suggested test idea');
-    const jsonReport = buildJsonReport({ summary, score, topMutants, createdAt: new Date('2026-05-10T00:00:00Z'), threshold: 60 });
+    const jsonReport = buildJsonReport({
+      summary,
+      score,
+      topMutants,
+      createdAt: new Date('2026-05-10T00:00:00Z'),
+      threshold: 60,
+      metrics: {
+        changedSourceLineCount: 1
+      },
+      diagnostics: {
+        strykerConfig: [
+          {
+            severity: 'warning',
+            key: 'timeoutMS',
+            message: 'Tautest run settings override Stryker `timeoutMS` from stryker.userConfig.',
+            suggestion: 'Move supported settings into the Tautest stryker config block.'
+          }
+        ]
+      }
+    });
     expect(jsonReport).toMatchObject({
       version: '1',
       schemaVersion: '1',
@@ -97,6 +135,16 @@ describe('report builders', () => {
       summary: {
         verdict: 'WEAK',
         threshold: 60
+      },
+      metrics: {
+        changedSourceLineCount: 1
+      },
+      diagnostics: {
+        strykerConfig: [
+          {
+            key: 'timeoutMS'
+          }
+        ]
       }
     });
     expect(jsonReport.surviving[0]?.insight.suggestedTestIdea).toContain('boundary');
@@ -109,9 +157,23 @@ describe('report builders', () => {
       runner: 'vitest',
       runtimeMs: 1250,
       fixPromptPath: '.tautest/fix-prompt.md',
+      metrics: {
+        changedSourceLineCount: 1,
+        mutatePatternCount: 1
+      },
+      strykerConfigDiagnostics: [
+        {
+          severity: 'warning',
+          key: 'timeoutMS',
+          message: 'Tautest run settings override Stryker `timeoutMS` from stryker.userConfig.',
+          suggestion: 'Move supported settings into the Tautest stryker config block.'
+        }
+      ],
       topMutants
     });
     expect(terminal).toContain('Tautest: WEAK');
+    expect(terminal).toContain('Changed lines: 1');
+    expect(terminal).toContain('Stryker config diagnostics:');
     expect(terminal).toContain('exact boundary value 65');
     expect(terminal).toContain('Fix prompt: .tautest/fix-prompt.md');
     expect(terminal.split('\n').length).toBeLessThanOrEqual(25);

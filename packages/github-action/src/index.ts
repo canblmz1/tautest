@@ -34,6 +34,24 @@ interface TautestActionOutput {
   status: 'passed' | 'threshold-failed' | 'no-op' | string;
   threshold?: number;
   message?: string;
+  metrics?: {
+    runtimeMs?: number;
+    changedFileCount?: number;
+    changedSourceFileCount?: number;
+    changedSourceLineCount?: number;
+    mutatedFileCount?: number;
+    mutatePatternCount?: number;
+    partial?: boolean;
+    partialReason?: string;
+  };
+  diagnostics?: {
+    strykerConfig?: Array<{
+      severity: string;
+      key: string;
+      message: string;
+      suggestion: string;
+    }>;
+  };
     report?: {
       summary?: {
         verdict?: string;

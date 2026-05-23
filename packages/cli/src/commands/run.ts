@@ -11,6 +11,7 @@ import {
   detectProject,
   detectTestRunner,
   generateStrykerConfig,
+  getStrykerConfigDiagnostics,
   getActionableMutants,
   getChangedFiles,
   getChangedSourceFiles,
@@ -19,6 +20,7 @@ import {
   runStryker,
   selectTopMutants,
   type ChangedFile,
+  type GenerateStrykerConfigOptions,
   type PackageManager,
   type PromptStyle,
   type TestRunner,
@@ -108,6 +110,14 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   assertChangedSourceLineBudget(sourceFiles, maxChangedLines);
 
   const mutatePatterns = changedFilesToStrykerMutate(sourceFiles, config.rangeCoalesceGap);
+  const runMetrics = {
+    changedFileCount: changedFiles.length,
+    changedSourceFileCount: sourceFiles.length,
+    changedSourceLineCount: countChangedSourceLines(sourceFiles),
+    mutatedFileCount: new Set(sourceFiles.map((file) => file.path)).size,
+    mutatePatternCount: mutatePatterns.length,
+    partial: false
+  };
 
   if (options.dryRun) {
     const output = buildDryRunOutput({
@@ -128,7 +138,7 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
 
   ensureDir(reportDir);
 
-  const strykerConfig = generateStrykerConfig({
+  const strykerConfigOptions: GenerateStrykerConfigOptions = {
     mutate: mutatePatterns,
     jsonReportPath: relative(project.rootDir, mutationJsonPath),
     testRunner: runner,
@@ -142,7 +152,9 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
     timeoutMS: config.stryker.timeoutMS,
     dryRunTimeoutMinutes: config.stryker.dryRunTimeoutMinutes,
     tsconfigFile: relativeMaybe(project.rootDir, project.tsconfig.path ?? undefined)
-  });
+  };
+  const strykerConfig = generateStrykerConfig(strykerConfigOptions);
+  const strykerConfigDiagnostics = getStrykerConfigDiagnostics(strykerConfigOptions);
 
   const runResult = await runStryker({
     cwd: project.rootDir,
@@ -155,6 +167,10 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   const topMutants = selectTopMutants(getActionableMutants(summary), config.score.topMutants);
   const threshold = parseThreshold(options.threshold, config.score.mixed);
   const runtimeMs = runResult.endedAt.getTime() - runResult.startedAt.getTime();
+  const metrics = {
+    ...runMetrics,
+    runtimeMs
+  };
   const promptStyle = options.promptStyle ?? config.prompt.style;
   const promptCommands = buildPromptCommands(baseRef, runner);
   const mutatedFiles = [...new Set(sourceFiles.map((file) => file.path))].sort();
@@ -170,6 +186,10 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
       mutatePatterns,
       mutatedFiles
     },
+    metrics,
+    diagnostics: {
+      strykerConfig: strykerConfigDiagnostics
+    },
     aiSignals: {
       promptStyle,
       author: aiAuthor,
@@ -184,6 +204,8 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
     threshold,
     runner,
     runtimeMs,
+    metrics,
+    strykerConfigDiagnostics,
     mutatePatterns,
     mutatedFiles
   });
@@ -212,6 +234,10 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
             json: reportJsonPath,
             prompt: promptPath,
             mutationJson: mutationJsonPath
+          },
+          metrics,
+          diagnostics: {
+            strykerConfig: strykerConfigDiagnostics
           }
         },
         null,
@@ -223,6 +249,8 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
           runner,
           runtimeMs,
           mutatedFiles,
+          metrics,
+          strykerConfigDiagnostics,
           topMutants,
           reportPath,
           jsonReportPath: reportJsonPath,

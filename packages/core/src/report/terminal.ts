@@ -1,4 +1,4 @@
-import type { MutationSummary, ScoreResult, SurvivingMutant, TestRunner } from '../types';
+import type { MutationSummary, RunMetrics, ScoreResult, StrykerConfigDiagnostic, SurvivingMutant, TestRunner } from '../types';
 import { enrichMutant } from './insights';
 
 export function buildTerminalSummary(
@@ -8,6 +8,8 @@ export function buildTerminalSummary(
     threshold?: number;
     runner?: TestRunner;
     runtimeMs?: number;
+    metrics?: RunMetrics;
+    strykerConfigDiagnostics?: StrykerConfigDiagnostic[];
     mutatedFiles?: string[];
     topMutants?: SurvivingMutant[];
     reportPath?: string;
@@ -16,17 +18,24 @@ export function buildTerminalSummary(
   } = {}
 ): string {
   const topMutants = context.topMutants?.slice(0, 3) ?? [];
+  const diagnostics = context.strykerConfigDiagnostics ?? [];
   const lines = [
     `Tautest: ${score.verdict} (${formatScore(summary.score)}${context.threshold === undefined ? '' : `, threshold ${context.threshold.toFixed(2)}%`})`,
     [
       context.runner ? `Runner: ${context.runner}` : null,
       context.runtimeMs === undefined ? null : `Runtime: ${formatDuration(context.runtimeMs)}`,
-      context.mutatedFiles ? `Files: ${context.mutatedFiles.length}` : null
+      context.mutatedFiles ? `Files: ${context.mutatedFiles.length}` : null,
+      context.metrics?.changedSourceLineCount === undefined ? null : `Changed lines: ${context.metrics.changedSourceLineCount}`,
+      context.metrics?.mutatePatternCount === undefined ? null : `Mutate patterns: ${context.metrics.mutatePatternCount}`
     ]
       .filter(Boolean)
       .join(' | '),
     `Killed: ${summary.killed} | Survived: ${summary.survived} | No coverage: ${summary.noCoverage} | Timeout: ${summary.timeout}`
   ].filter(Boolean);
+
+  if (diagnostics.length > 0) {
+    lines.push('', 'Stryker config diagnostics:', ...diagnostics.slice(0, 3).map((diagnostic) => `- ${diagnostic.key}: ${diagnostic.message}`));
+  }
 
   if (topMutants.length > 0) {
     lines.push('', 'Top surviving mutants:', ...topMutants.map(formatTopMutant));

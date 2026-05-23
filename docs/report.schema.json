@@ -107,6 +107,71 @@
         }
       }
     },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runtimeMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changedFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changedSourceFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changedSourceLineCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutatedFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutatePatternCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "partial": {
+          "type": "boolean"
+        },
+        "partialReason": {
+          "type": "string"
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strykerConfig"],
+      "properties": {
+        "strykerConfig": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["severity", "key", "message", "suggestion"],
+            "properties": {
+              "severity": {
+                "const": "warning"
+              },
+              "key": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "suggestion": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "aiSignals": {
       "type": "object",
       "additionalProperties": false,

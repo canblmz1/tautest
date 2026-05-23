@@ -4,6 +4,24 @@ export interface StepSummaryOutput {
   status: string;
   message?: string;
   cache?: StepSummaryCache;
+  metrics?: {
+    runtimeMs?: number;
+    changedFileCount?: number;
+    changedSourceFileCount?: number;
+    changedSourceLineCount?: number;
+    mutatedFileCount?: number;
+    mutatePatternCount?: number;
+    partial?: boolean;
+    partialReason?: string;
+  };
+  diagnostics?: {
+    strykerConfig?: Array<{
+      severity: string;
+      key: string;
+      message: string;
+      suggestion: string;
+    }>;
+  };
   report?: {
     summary?: {
       verdict?: string;
@@ -53,6 +71,8 @@ export function buildStepSummary(output: StepSummaryOutput): string {
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     '',
     ...(output.message ? ['## Message', '', sanitize(output.message), ''] : []),
+    ...buildMetricsSection(output.metrics),
+    ...buildDiagnosticsSection(output.diagnostics),
     ...buildCacheSection(output.cache),
     '## Top Surviving Mutants',
     '',
@@ -75,6 +95,38 @@ export function buildStepSummary(output: StepSummaryOutput): string {
         ]
       : [])
   ].join('\n');
+}
+
+function buildMetricsSection(metrics: StepSummaryOutput['metrics']): string[] {
+  if (!metrics) {
+    return [];
+  }
+
+  return [
+    '## Runtime and Scope',
+    '',
+    '| Runtime | Changed files | Production files | Production lines | Mutated files | Mutate patterns | Partial |',
+    '| ---: | ---: | ---: | ---: | ---: | ---: | --- |',
+    `| ${cell(formatDuration(metrics.runtimeMs))} | ${metrics.changedFileCount ?? 0} | ${metrics.changedSourceFileCount ?? 0} | ${metrics.changedSourceLineCount ?? 0} | ${metrics.mutatedFileCount ?? 0} | ${metrics.mutatePatternCount ?? 0} | ${metrics.partial ? cell(metrics.partialReason || 'yes') : 'no'} |`,
+    ''
+  ];
+}
+
+function buildDiagnosticsSection(diagnostics: StepSummaryOutput['diagnostics']): string[] {
+  const strykerConfig = diagnostics?.strykerConfig ?? [];
+
+  if (strykerConfig.length === 0) {
+    return [];
+  }
+
+  return [
+    '## Stryker Config Diagnostics',
+    '',
+    '| Key | Message | Suggestion |',
+    '| --- | --- | --- |',
+    ...strykerConfig.slice(0, 10).map((diagnostic) => `| \`${cell(diagnostic.key)}\` | ${cell(diagnostic.message)} | ${cell(diagnostic.suggestion)} |`),
+    ''
+  ];
 }
 
 function buildCacheSection(cache: StepSummaryCache | undefined): string[] {
@@ -115,6 +167,14 @@ export async function writeStepSummary(output: StepSummaryOutput): Promise<void>
 
 function formatScore(score: number | null | undefined): string {
   return score === null || score === undefined ? 'unknown' : `${score.toFixed(2)}%`;
+}
+
+function formatDuration(runtimeMs: number | undefined): string {
+  if (runtimeMs === undefined) {
+    return 'unknown';
+  }
+
+  return runtimeMs < 1000 ? `${runtimeMs}ms` : `${(runtimeMs / 1000).toFixed(1)}s`;
 }
 
 function codeCell(value: string): string {

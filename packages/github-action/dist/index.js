@@ -101178,6 +101178,8 @@ function buildStepSummary(output) {
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     "",
     ...output.message ? ["## Message", "", sanitize3(output.message), ""] : [],
+    ...buildMetricsSection(output.metrics),
+    ...buildDiagnosticsSection(output.diagnostics),
     ...buildCacheSection(output.cache),
     "## Top Surviving Mutants",
     "",
@@ -101196,6 +101198,33 @@ function buildStepSummary(output) {
       ""
     ] : []
   ].join("\n");
+}
+function buildMetricsSection(metrics) {
+  if (!metrics) {
+    return [];
+  }
+  return [
+    "## Runtime and Scope",
+    "",
+    "| Runtime | Changed files | Production files | Production lines | Mutated files | Mutate patterns | Partial |",
+    "| ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+    `| ${cell(formatDuration(metrics.runtimeMs))} | ${metrics.changedFileCount ?? 0} | ${metrics.changedSourceFileCount ?? 0} | ${metrics.changedSourceLineCount ?? 0} | ${metrics.mutatedFileCount ?? 0} | ${metrics.mutatePatternCount ?? 0} | ${metrics.partial ? cell(metrics.partialReason || "yes") : "no"} |`,
+    ""
+  ];
+}
+function buildDiagnosticsSection(diagnostics) {
+  const strykerConfig = diagnostics?.strykerConfig ?? [];
+  if (strykerConfig.length === 0) {
+    return [];
+  }
+  return [
+    "## Stryker Config Diagnostics",
+    "",
+    "| Key | Message | Suggestion |",
+    "| --- | --- | --- |",
+    ...strykerConfig.slice(0, 10).map((diagnostic) => `| \`${cell(diagnostic.key)}\` | ${cell(diagnostic.message)} | ${cell(diagnostic.suggestion)} |`),
+    ""
+  ];
 }
 function buildCacheSection(cache) {
   if (!cache) {
@@ -101229,6 +101258,12 @@ async function writeStepSummary(output) {
 }
 function formatScore(score) {
   return score === null || score === void 0 ? "unknown" : `${score.toFixed(2)}%`;
+}
+function formatDuration(runtimeMs) {
+  if (runtimeMs === void 0) {
+    return "unknown";
+  }
+  return runtimeMs < 1e3 ? `${runtimeMs}ms` : `${(runtimeMs / 1e3).toFixed(1)}s`;
 }
 function codeCell2(value) {
   return cell(value).replace(/\s+/g, " ");

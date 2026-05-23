@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateStrykerConfig, mergeStrykerConfig } from '../src/stryker/config-generator';
+import { diagnoseStrykerConfig, generateStrykerConfig, getStrykerConfigDiagnostics, mergeStrykerConfig } from '../src/stryker/config-generator';
 import { mapStrykerError } from '../src/stryker/runner';
 
 describe('Stryker config generator', () => {
@@ -77,6 +77,48 @@ describe('Stryker config generator', () => {
       timeoutMS: 1000,
       ignoreStatic: true
     });
+  });
+
+  it('reports Stryker user config options that Tautest overrides', () => {
+    const diagnostics = diagnoseStrykerConfig(
+      {
+        mutate: ['src/foo.ts:1-1'],
+        reporters: ['json'],
+        jsonReporter: { fileName: 'core.json' },
+        testRunner: 'vitest',
+        timeoutMS: 1000,
+        vitest: {
+          configFile: 'vitest.config.ts',
+          related: false
+        }
+      },
+      {
+        mutate: ['src/other.ts'],
+        reporters: ['html'],
+        timeoutMS: 9000,
+        vitest: {
+          related: true
+        }
+      }
+    );
+
+    expect(diagnostics.map((diagnostic) => diagnostic.key)).toEqual(['mutate', 'reporters', 'timeoutMS', 'vitest.related']);
+    expect(diagnostics[0]?.message).toContain('Tautest owns Stryker `mutate`');
+    expect(diagnostics[2]?.suggestion).toContain('Tautest stryker config block');
+  });
+
+  it('builds diagnostics from full Stryker config generation options', () => {
+    expect(
+      getStrykerConfigDiagnostics({
+        mutate: ['src/foo.ts:1-1'],
+        jsonReportPath: '.tautest/mutation.json',
+        testRunner: 'vitest',
+        userConfig: {
+          reporters: ['html'],
+          timeoutMS: 9000
+        }
+      }).map((diagnostic) => diagnostic.key)
+    ).toEqual(['reporters', 'timeoutMS']);
   });
 });
 

@@ -1,4 +1,4 @@
-import type { MutationSummary, ScoreResult, SurvivingMutant, TestRunner } from '../types';
+import type { MutationSummary, RunMetrics, ScoreResult, StrykerConfigDiagnostic, SurvivingMutant, TestRunner } from '../types';
 import { selectTopMutants } from '../score/score';
 import { enrichMutants } from './insights';
 
@@ -11,11 +11,15 @@ export function buildMarkdownReport(input: {
   threshold?: number;
   runner?: TestRunner;
   runtimeMs?: number;
+  metrics?: RunMetrics;
+  strykerConfigDiagnostics?: StrykerConfigDiagnostic[];
   title?: string;
 }): string {
   const topMutants = input.topMutants ?? selectTopMutants(input.summary.survivingMutants, 10);
   const enrichedMutants = enrichMutants(topMutants);
   const mutatedFiles = input.mutatedFiles ?? uniqueFilesFromPatterns(input.mutatePatterns ?? []);
+  const metrics = input.metrics;
+  const diagnostics = input.strykerConfigDiagnostics ?? [];
 
   return [
     `# ${input.title ?? 'Tautest Mutation Report'}`,
@@ -30,10 +34,17 @@ export function buildMarkdownReport(input: {
     `- No coverage: **${input.summary.noCoverage}**`,
     ...(input.runner ? [`- Runner: **${input.runner}**`] : []),
     ...(input.runtimeMs === undefined ? [] : [`- Runtime: **${formatDuration(input.runtimeMs)}**`]),
+    ...(metrics?.changedFileCount === undefined ? [] : [`- Changed files inspected: **${metrics.changedFileCount}**`]),
+    ...(metrics?.changedSourceFileCount === undefined ? [] : [`- Changed production files: **${metrics.changedSourceFileCount}**`]),
+    ...(metrics?.changedSourceLineCount === undefined ? [] : [`- Changed production lines: **${metrics.changedSourceLineCount}**`]),
+    ...(metrics?.mutatePatternCount === undefined ? [] : [`- Stryker mutate patterns: **${metrics.mutatePatternCount}**`]),
     `- Timeout: **${input.summary.timeout}**`,
     `- Runtime error: **${input.summary.runtimeError}**`,
     `- Compile error: **${input.summary.compileError}**`,
     '',
+    ...(diagnostics.length
+      ? ['## Stryker Config Diagnostics', '', ...diagnostics.map((diagnostic) => `- **${diagnostic.key}**: ${diagnostic.message} ${diagnostic.suggestion}`), '']
+      : []),
     ...(mutatedFiles.length ? ['## Mutated Files', '', ...mutatedFiles.map((filePath) => `- \`${filePath}\``), ''] : []),
     ...(input.mutatePatterns?.length
       ? ['## Stryker Mutate Scope', '', ...input.mutatePatterns.map((pattern) => `- \`${pattern}\``), '']

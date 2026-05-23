@@ -1,4 +1,15 @@
-import type { AiAuthorDetection, MutationSummary, PromptStyle, ScoreResult, StrykerReportMetadata, SurvivingMutant, TautestJsonReport, TestRunner } from '../types';
+import type {
+  AiAuthorDetection,
+  MutationSummary,
+  PromptStyle,
+  RunMetrics,
+  ScoreResult,
+  StrykerConfigDiagnostic,
+  StrykerReportMetadata,
+  SurvivingMutant,
+  TautestJsonReport,
+  TestRunner
+} from '../types';
 import { enrichMutants } from './insights';
 
 export const REPORT_SCHEMA_VERSION = '1';
@@ -32,6 +43,10 @@ export function buildJsonReport(input: {
     runner?: TestRunner;
     mutatePatterns?: string[];
     mutatedFiles?: string[];
+  };
+  metrics?: RunMetrics;
+  diagnostics?: {
+    strykerConfig?: StrykerConfigDiagnostic[];
   };
   aiSignals?: {
     promptStyle?: PromptStyle;
@@ -67,6 +82,10 @@ export function buildJsonReport(input: {
       runner: input.scope?.runner,
       mutatePatterns: input.scope?.mutatePatterns ?? [],
       mutatedFiles: input.scope?.mutatedFiles ?? uniqueFiles(input.topMutants)
+    },
+    metrics: input.metrics,
+    diagnostics: {
+      strykerConfig: input.diagnostics?.strykerConfig ?? []
     },
     aiSignals: {
       promptStyle: input.aiSignals?.promptStyle ?? 'agent',

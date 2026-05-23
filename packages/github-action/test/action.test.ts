@@ -268,6 +268,25 @@ describe('step summary', () => {
   it('builds a sanitized GitHub job summary', () => {
     const summary = buildStepSummary({
       status: 'threshold-failed',
+      metrics: {
+        runtimeMs: 1250,
+        changedFileCount: 2,
+        changedSourceFileCount: 1,
+        changedSourceLineCount: 1,
+        mutatedFileCount: 1,
+        mutatePatternCount: 1,
+        partial: false
+      },
+      diagnostics: {
+        strykerConfig: [
+          {
+            severity: 'warning',
+            key: 'timeoutMS',
+            message: 'Tautest run settings override Stryker `timeoutMS` from stryker.userConfig.',
+            suggestion: 'Move supported settings into the Tautest stryker config block.'
+          }
+        ]
+      },
       cache: {
         enabled: true,
         cacheKey: 'tautest-Linux-pnpm-main-feature-123456789abc',
@@ -303,6 +322,10 @@ describe('step summary', () => {
 
     expect(summary).toContain('# Tautest');
     expect(summary).toContain('| MIXED | 75.00% | 3 | 1 | 0 |');
+    expect(summary).toContain('## Runtime and Scope');
+    expect(summary).toContain('| 1.3s | 2 | 1 | 1 | 1 | 1 | no |');
+    expect(summary).toContain('## Stryker Config Diagnostics');
+    expect(summary).toContain('`timeoutMS`');
     expect(summary).toContain('## Cache');
     expect(summary).toContain('| hit | already-exists |');
     expect(summary).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 |');

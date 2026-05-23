@@ -57,3 +57,5 @@ export default defineConfig({
 - `prompt.style`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
 
 Protected Stryker fields such as `mutate`, `reporters`, `jsonReporter`, and `testRunner` are owned by Tautest for the run.
+
+When `stryker.userConfig` contains a value that Tautest overrides for a changed-line run, Tautest now reports a Stryker config diagnostic in terminal, Markdown, JSON, and the GitHub Action job summary. Move supported settings such as `timeoutMS`, `dryRunTimeoutMinutes`, `concurrency`, and `incremental` into the top-level `stryker` block instead of duplicating them in `stryker.userConfig`.
