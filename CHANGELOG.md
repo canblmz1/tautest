@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.3.0 - 2026-05-23
+
+### Added
+
+- Added `tautest demo` to show the local passing-tests-but-surviving-mutant demo path.
+- Added cache restore/save visibility to the GitHub Action job summary.
+
+### Fixed
+
+- GitHub Action CLI fallback now prefers a local `node_modules/.bin/tautest` binary and respects the detected package manager instead of assuming `pnpm`.
+- GitHub Action diagnostics now run the version check through the same resolved CLI command path used by the failed run.
+
+### Changed
+
+- Refreshed package metadata keywords for changed-line mutation testing, test quality, GitHub Actions, and AI-assisted testing discovery.
+
+## 1.2.0 - 2026-05-23
+
+### Added
+
+- Release workflow now derives npm package versions from the pushed semver tag before packing and publishing.
+
+### Changed
+
+- Prepared the repository positioning, trust/safety, and AI-agent workflow documentation for the v1 launch line.
+
 ## 1.1.0 - 2026-05-18
 
 ### Added
