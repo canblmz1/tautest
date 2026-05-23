@@ -12,6 +12,11 @@
     "test:example": "vitest run --config examples/vitest-basic/vitest.config.ts",
     "prototype": "tsx scripts/prototype-run.ts"
   },
+  "pnpm": {
+    "overrides": {
+      "qs": "6.15.2"
+    }
+  },
   "devDependencies": {
     "tautest": "workspace:*",
     "@stryker-mutator/core": "^9.6.1",
