@@ -83,6 +83,30 @@ describe('Tautest CLI invocation', () => {
     }
   });
 
+  it('uses a local node_modules bin when the workspace CLI is missing', () => {
+    const workspaceRoot = mkdtempSync(path.join(os.tmpdir(), 'tautest-action-'));
+    const workingDirectory = path.join(workspaceRoot, 'app');
+    const localBinPath = path.join(workingDirectory, 'node_modules', '.bin', process.platform === 'win32' ? 'tautest.cmd' : 'tautest');
+
+    try {
+      mkdirSync(path.dirname(localBinPath), { recursive: true });
+      writeFileSync(localBinPath, '#!/usr/bin/env node\n');
+
+      const command = resolveTautestCommand(workspaceRoot, { workingDirectory, packageManager: 'npm' });
+
+      expect(command).toMatchObject({
+        command: localBinPath,
+        args: [],
+        strategy: 'local-node-modules-bin',
+        nodeModulesBinPath: localBinPath,
+        nodeModulesBinExists: true,
+        packageManager: 'npm'
+      });
+    } finally {
+      rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
   it('falls back to pnpm exec when the built local CLI is missing', () => {
     const workspaceRoot = mkdtempSync(path.join(os.tmpdir(), 'tautest-action-'));
 
@@ -91,9 +115,24 @@ describe('Tautest CLI invocation', () => {
 
       expect(command.command).toBe('pnpm');
       expect(command.args).toEqual(['exec', 'tautest']);
-      expect(command.strategy).toBe('pnpm-exec');
+      expect(command.strategy).toBe('package-manager-exec');
       expect(command.localCliExists).toBe(false);
       expect(command.localCliPath).toBe(path.join(workspaceRoot, 'packages', 'cli', 'dist', 'index.js'));
+    } finally {
+      rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('uses the configured package manager for CLI fallback', () => {
+    const workspaceRoot = mkdtempSync(path.join(os.tmpdir(), 'tautest-action-'));
+
+    try {
+      const command = resolveTautestCommand(workspaceRoot, { packageManager: 'npm' });
+
+      expect(command.command).toBe('npm');
+      expect(command.args).toEqual(['exec', '--', 'tautest']);
+      expect(command.strategy).toBe('package-manager-exec');
+      expect(command.packageManager).toBe('npm');
     } finally {
       rmSync(workspaceRoot, { recursive: true, force: true });
     }
@@ -108,7 +147,7 @@ describe('Tautest CLI invocation', () => {
       {
         command: 'pnpm',
         args: ['exec', 'tautest'],
-        strategy: 'pnpm-exec',
+        strategy: 'package-manager-exec',
         localCliPath: '/repo/packages/cli/dist/index.js',
         localCliExists: false
       },
@@ -154,9 +193,13 @@ describe('Tautest CLI invocation', () => {
       command: {
         command: 'pnpm',
         args: ['exec', 'tautest', 'run', '--json'],
-        strategy: 'pnpm-exec',
+        strategy: 'package-manager-exec',
         localCliPath: '/repo/packages/cli/dist/index.js',
         localCliExists: false
+      },
+      versionCommand: {
+        command: 'pnpm',
+        args: ['exec', 'tautest', 'run', '--json', '--version']
       },
       result: {
         exitCode: 0,
@@ -171,6 +214,7 @@ describe('Tautest CLI invocation', () => {
     });
 
     expect(message).toContain('Attempted command: pnpm exec tautest run --json');
+    expect(message).toContain('pnpm exec tautest run --json --version');
     expect(message).toContain('Local CLI exists: no');
     expect(message).toContain('exit code: 1');
     expect(message).toContain('tautest not found');

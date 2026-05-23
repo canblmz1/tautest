@@ -89,7 +89,7 @@ export async function run(): Promise<void> {
     cacheSummary = buildCacheSummary(cacheState);
   }
 
-  const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base);
+  const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base, preflight.packageManager);
 
   if (runResult.exitCode !== 0 && runResult.exitCode !== 1 && runResult.exitCode !== 2) {
     throw new Error(
@@ -236,8 +236,17 @@ async function ensurePackageManagerAvailable(packageManager: Exclude<PackageMana
   throw new Error(`Package manager ${packageManager} is not available on PATH. Install it before this action or use a setup action.`);
 }
 
-async function runTautest(workspaceRoot: string, cwd: string, inputs: ActionInputs, base: string): Promise<TautestRunResult> {
-  const command = resolveTautestCommand(workspaceRoot);
+async function runTautest(
+  workspaceRoot: string,
+  cwd: string,
+  inputs: ActionInputs,
+  base: string,
+  packageManager: Exclude<PackageManagerInput, 'auto'>
+): Promise<TautestRunResult> {
+  const command = resolveTautestCommand(workspaceRoot, {
+    workingDirectory: cwd,
+    packageManager
+  });
   const args = buildTautestRunArgs(command, inputs, base);
 
   core.info(`Running Tautest in ${cwd} using ${command.strategy}.`);
@@ -256,11 +265,16 @@ function parseTautestOutput(stdout: string): TautestActionOutput {
 }
 
 async function buildTautestFailureMessage(reason: string, cwd: string, result: TautestRunResult): Promise<string> {
-  const versionCheck = await execCommand('pnpm', ['exec', 'tautest', '--version'], cwd);
+  const versionCommand = {
+    command: result.attemptedCommand.command,
+    args: [...result.attemptedCommand.args, '--version']
+  };
+  const versionCheck = await execCommand(versionCommand.command, versionCommand.args, cwd);
   const message = formatTautestCliDiagnostics({
     reason,
     command: result.attemptedCommand,
     result,
+    versionCommand,
     versionCheck
   });
 

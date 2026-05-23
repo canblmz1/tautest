@@ -101243,24 +101243,46 @@ function sanitize3(value) {
 // src/tautest-cli.ts
 var import_node_fs4 = require("node:fs");
 var import_node_path2 = __toESM(require("node:path"));
-function resolveTautestCommand(workspaceRoot) {
+function resolveTautestCommand(workspaceRoot, options = {}) {
   const localCliPath = import_node_path2.default.join(import_node_path2.default.resolve(workspaceRoot), "packages", "cli", "dist", "index.js");
   const localCliExists = (0, import_node_fs4.existsSync)(localCliPath);
+  const packageManager = options.packageManager ?? "pnpm";
+  const nodeModulesBinPath = options.workingDirectory ? import_node_path2.default.join(import_node_path2.default.resolve(options.workingDirectory), "node_modules", ".bin", binName("tautest")) : void 0;
+  const nodeModulesBinExists = nodeModulesBinPath ? (0, import_node_fs4.existsSync)(nodeModulesBinPath) : false;
   if (localCliExists) {
     return {
       command: "node",
       args: [localCliPath],
       strategy: "local-workspace-cli",
       localCliPath,
-      localCliExists
+      localCliExists,
+      nodeModulesBinPath,
+      nodeModulesBinExists,
+      packageManager
     };
   }
+  if (nodeModulesBinPath && nodeModulesBinExists) {
+    return {
+      command: nodeModulesBinPath,
+      args: [],
+      strategy: "local-node-modules-bin",
+      localCliPath,
+      localCliExists,
+      nodeModulesBinPath,
+      nodeModulesBinExists,
+      packageManager
+    };
+  }
+  const fallback = packageManagerExec(packageManager);
   return {
-    command: "pnpm",
-    args: ["exec", "tautest"],
-    strategy: "pnpm-exec",
+    command: fallback.command,
+    args: fallback.args,
+    strategy: "package-manager-exec",
     localCliPath,
-    localCliExists
+    localCliExists,
+    nodeModulesBinPath,
+    nodeModulesBinExists,
+    packageManager
   };
 }
 function buildTautestRunArgs(command, inputs, base) {
@@ -101298,7 +101320,7 @@ function formatTautestCliDiagnostics(input) {
     `Local CLI path: ${input.command.localCliPath}`,
     `Local CLI exists: ${input.command.localCliExists ? "yes" : "no"}`,
     "",
-    "pnpm exec tautest --version:",
+    `${input.versionCommand ? formatCommand(input.versionCommand.command, input.versionCommand.args) : formatCommand(input.command.command, [...input.command.args, "--version"])}:`,
     input.versionCheck ? [
       `  exit code: ${input.versionCheck.exitCode}`,
       `  stdout: ${singleLineOrEmpty(input.versionCheck.stdout)}`,
@@ -101331,6 +101353,21 @@ function quoteArg(value) {
 function singleLineOrEmpty(value) {
   return value.trim().replace(/\s+/g, " ") || "(empty)";
 }
+function binName(command) {
+  return process.platform === "win32" ? `${command}.cmd` : command;
+}
+function packageManagerExec(packageManager) {
+  if (packageManager === "npm") {
+    return { command: "npm", args: ["exec", "--", "tautest"] };
+  }
+  if (packageManager === "yarn") {
+    return { command: "yarn", args: ["exec", "tautest"] };
+  }
+  if (packageManager === "bun") {
+    return { command: "bunx", args: ["tautest"] };
+  }
+  return { command: "pnpm", args: ["exec", "tautest"] };
+}
 
 // src/index.ts
 async function run() {
@@ -101356,7 +101393,7 @@ async function run() {
     });
     cacheSummary = buildCacheSummary(cacheState);
   }
-  const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base);
+  const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base, preflight.packageManager);
   if (runResult.exitCode !== 0 && runResult.exitCode !== 1 && runResult.exitCode !== 2) {
     throw new Error(
       await buildTautestFailureMessage("Tautest failed before producing an accepted exit code.", preflight.workingDirectory, runResult)
@@ -101473,8 +101510,11 @@ async function ensurePackageManagerAvailable(packageManager, cwd) {
   }
   throw new Error(`Package manager ${packageManager} is not available on PATH. Install it before this action or use a setup action.`);
 }
-async function runTautest(workspaceRoot, cwd, inputs, base) {
-  const command = resolveTautestCommand(workspaceRoot);
+async function runTautest(workspaceRoot, cwd, inputs, base, packageManager) {
+  const command = resolveTautestCommand(workspaceRoot, {
+    workingDirectory: cwd,
+    packageManager
+  });
   const args = buildTautestRunArgs(command, inputs, base);
   info(`Running Tautest in ${cwd} using ${command.strategy}.`);
   const result = await execCommand(command.command, args, cwd);
@@ -101488,11 +101528,16 @@ function parseTautestOutput(stdout) {
   return JSON.parse(jsonText);
 }
 async function buildTautestFailureMessage(reason, cwd, result) {
-  const versionCheck = await execCommand("pnpm", ["exec", "tautest", "--version"], cwd);
+  const versionCommand = {
+    command: result.attemptedCommand.command,
+    args: [...result.attemptedCommand.args, "--version"]
+  };
+  const versionCheck = await execCommand(versionCommand.command, versionCommand.args, cwd);
   const message = formatTautestCliDiagnostics({
     reason,
     command: result.attemptedCommand,
     result,
+    versionCommand,
     versionCheck
   });
   startGroup("Tautest CLI diagnostics");

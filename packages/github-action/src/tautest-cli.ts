@@ -1,13 +1,16 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import type { ActionInputs } from './inputs';
+import type { ActionInputs, PackageManagerInput } from './inputs';
 
 export interface TautestCommand {
   command: string;
   args: string[];
-  strategy: 'local-workspace-cli' | 'pnpm-exec';
+  strategy: 'local-workspace-cli' | 'local-node-modules-bin' | 'package-manager-exec';
   localCliPath: string;
   localCliExists: boolean;
+  nodeModulesBinPath?: string;
+  nodeModulesBinExists?: boolean;
+  packageManager?: Exclude<PackageManagerInput, 'auto'>;
 }
 
 export interface ExecSnapshot {
@@ -20,12 +23,24 @@ export interface TautestDiagnosticInput {
   reason: string;
   command: TautestCommand;
   result: ExecSnapshot;
+  versionCommand?: {
+    command: string;
+    args: string[];
+  };
   versionCheck?: ExecSnapshot;
 }
 
-export function resolveTautestCommand(workspaceRoot: string): TautestCommand {
+export interface ResolveTautestCommandOptions {
+  workingDirectory?: string;
+  packageManager?: Exclude<PackageManagerInput, 'auto'>;
+}
+
+export function resolveTautestCommand(workspaceRoot: string, options: ResolveTautestCommandOptions = {}): TautestCommand {
   const localCliPath = path.join(path.resolve(workspaceRoot), 'packages', 'cli', 'dist', 'index.js');
   const localCliExists = existsSync(localCliPath);
+  const packageManager = options.packageManager ?? 'pnpm';
+  const nodeModulesBinPath = options.workingDirectory ? path.join(path.resolve(options.workingDirectory), 'node_modules', '.bin', binName('tautest')) : undefined;
+  const nodeModulesBinExists = nodeModulesBinPath ? existsSync(nodeModulesBinPath) : false;
 
   if (localCliExists) {
     return {
@@ -33,16 +48,37 @@ export function resolveTautestCommand(workspaceRoot: string): TautestCommand {
       args: [localCliPath],
       strategy: 'local-workspace-cli',
       localCliPath,
-      localCliExists
+      localCliExists,
+      nodeModulesBinPath,
+      nodeModulesBinExists,
+      packageManager
     };
   }
 
+  if (nodeModulesBinPath && nodeModulesBinExists) {
+    return {
+      command: nodeModulesBinPath,
+      args: [],
+      strategy: 'local-node-modules-bin',
+      localCliPath,
+      localCliExists,
+      nodeModulesBinPath,
+      nodeModulesBinExists,
+      packageManager
+    };
+  }
+
+  const fallback = packageManagerExec(packageManager);
+
   return {
-    command: 'pnpm',
-    args: ['exec', 'tautest'],
-    strategy: 'pnpm-exec',
+    command: fallback.command,
+    args: fallback.args,
+    strategy: 'package-manager-exec',
     localCliPath,
-    localCliExists
+    localCliExists,
+    nodeModulesBinPath,
+    nodeModulesBinExists,
+    packageManager
   };
 }
 
@@ -91,7 +127,7 @@ export function formatTautestCliDiagnostics(input: TautestDiagnosticInput): stri
     `Local CLI path: ${input.command.localCliPath}`,
     `Local CLI exists: ${input.command.localCliExists ? 'yes' : 'no'}`,
     '',
-    'pnpm exec tautest --version:',
+    `${input.versionCommand ? formatCommand(input.versionCommand.command, input.versionCommand.args) : formatCommand(input.command.command, [...input.command.args, '--version'])}:`,
     input.versionCheck
       ? [
           `  exit code: ${input.versionCheck.exitCode}`,
@@ -132,4 +168,24 @@ function quoteArg(value: string): string {
 
 function singleLineOrEmpty(value: string): string {
   return value.trim().replace(/\s+/g, ' ') || '(empty)';
+}
+
+function binName(command: string): string {
+  return process.platform === 'win32' ? `${command}.cmd` : command;
+}
+
+function packageManagerExec(packageManager: Exclude<PackageManagerInput, 'auto'>): { command: string; args: string[] } {
+  if (packageManager === 'npm') {
+    return { command: 'npm', args: ['exec', '--', 'tautest'] };
+  }
+
+  if (packageManager === 'yarn') {
+    return { command: 'yarn', args: ['exec', 'tautest'] };
+  }
+
+  if (packageManager === 'bun') {
+    return { command: 'bunx', args: ['tautest'] };
+  }
+
+  return { command: 'pnpm', args: ['exec', 'tautest'] };
 }
