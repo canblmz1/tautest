@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 - 2026-05-23
+
+### Added
+
+- Added `tautest demo --run` to execute the local Vitest demo flow end to end and restore fixture files afterward.
+- Added richer no-op guidance for runs with no changed production source files, including excluded file reasons and machine-readable `guidance`.
+
+### Changed
+
+- `tautest demo` now points directly to the runnable demo path before listing manual steps.
+- CLI no-op output now explains docs-only, test-only, deleted-only, binary-only, and non-source changes more clearly.
+
 ## 1.3.0 - 2026-05-23
 
 ### Added
