@@ -10,7 +10,7 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
-import { assertChangedSourceLineBudget, buildDryRunOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
+import { assertChangedSourceLineBudget, buildDryRunOutput, buildNoOpOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -238,6 +238,64 @@ describe('dry-run output', () => {
     expect(output).toContain('Excluded changed files:');
     expect(output).toContain('- src/discount.test.ts: test file');
     expect(output).toContain('- README.md: non-source file');
+  });
+});
+
+describe('no-op output', () => {
+  it('explains why changed files were not mutated', () => {
+    const output = buildNoOpOutput({
+      baseRef: 'origin/main',
+      runner: 'vitest',
+      reportDir: '.tautest',
+      json: false,
+      changedFiles: [
+        {
+          path: 'src/discount.test.ts',
+          status: 'modified',
+          ranges: [{ start: 8, end: 10 }],
+          isSource: false,
+          isTest: true,
+          isBinary: false,
+          warnings: []
+        },
+        {
+          path: 'README.md',
+          status: 'modified',
+          ranges: [{ start: 1, end: 1 }],
+          isSource: false,
+          isTest: false,
+          isBinary: false,
+          warnings: []
+        }
+      ]
+    });
+
+    expect(output).toContain('Tautest no-op');
+    expect(output).toContain('Changed files inspected: 2');
+    expect(output).toContain('- src/discount.test.ts: test file');
+    expect(output).toContain('- README.md: non-source file');
+    expect(output).toContain('Changed tests are not mutated by Tautest');
+    expect(output).toContain('add its extension to sourceFileExtensions');
+  });
+
+  it('prints machine-readable no-op guidance', () => {
+    const output = JSON.parse(
+      buildNoOpOutput({
+        baseRef: 'HEAD',
+        runner: 'vitest',
+        reportDir: '.tautest',
+        json: true,
+        changedFiles: []
+      })
+    ) as {
+      status: string;
+      changedFiles: unknown[];
+      guidance: string[];
+    };
+
+    expect(output.status).toBe('no-op');
+    expect(output.changedFiles).toEqual([]);
+    expect(output.guidance[0]).toContain('No changed files were found');
   });
 });
 

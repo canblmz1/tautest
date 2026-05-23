@@ -117,6 +117,22 @@ Stryker mutate scope:
 - src/discount.ts:2-2
 ```
 
+### No-op guidance
+
+When Tautest finds no changed production source files, it exits with code `2` and prints why the changed files were skipped:
+
+```text
+Tautest no-op
+
+No changed production source files found. Nothing to mutate.
+
+Excluded changed files:
+- src/discount.test.ts: test file
+- README.md: non-source file
+```
+
+This is expected for docs-only, config-only, deleted-only, binary-only, or test-only changes. Use `--json` for machine-readable `changedFiles` and `guidance` fields.
+
 ### Machine-readable report
 
 `tautest run` writes `.tautest/report.json` with `version: "1"` and `schemaVersion: "1"`.

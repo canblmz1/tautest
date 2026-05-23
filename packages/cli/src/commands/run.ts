@@ -80,10 +80,16 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   const sourceFiles = getChangedSourceFiles(changedFiles);
 
   if (sourceFiles.length === 0) {
-    const message = 'No changed production source files found. Nothing to mutate.';
+    const output = buildNoOpOutput({
+      baseRef,
+      runner,
+      reportDir,
+      changedFiles,
+      json: Boolean(options.json)
+    });
     return {
       exitCode: EXIT_CODES.noOp,
-      output: options.json ? `${JSON.stringify({ status: 'no-op', message, baseRef }, null, 2)}\n` : message,
+      output,
       reportDir
     };
   }
@@ -359,10 +365,89 @@ export function buildDryRunOutput(input: {
   ].join('\n');
 }
 
+export function buildNoOpOutput(input: {
+  baseRef: string;
+  runner: TestRunner;
+  reportDir: string;
+  changedFiles: ChangedFile[];
+  json: boolean;
+}): string {
+  const message = 'No changed production source files found. Nothing to mutate.';
+  const excluded = input.changedFiles.map((file) => ({
+    path: file.path,
+    status: file.status,
+    ranges: file.ranges,
+    reason: exclusionReason(file),
+    warnings: file.warnings
+  }));
+  const guidance = buildNoOpGuidance(excluded);
+
+  if (input.json) {
+    return `${JSON.stringify(
+      {
+        status: 'no-op',
+        message,
+        baseRef: input.baseRef,
+        runner: input.runner,
+        reportDir: input.reportDir,
+        changedFiles: excluded,
+        guidance
+      },
+      null,
+      2
+    )}\n`;
+  }
+
+  return [
+    'Tautest no-op',
+    '',
+    message,
+    '',
+    `Base ref: ${input.baseRef}`,
+    `Runner: ${input.runner}`,
+    `Report dir: ${input.reportDir}`,
+    `Changed files inspected: ${input.changedFiles.length}`,
+    '',
+    'Excluded changed files:',
+    ...(excluded.length > 0 ? excluded.map((file) => `- ${file.path}: ${file.reason}`) : ['- None']),
+    '',
+    'Guidance:',
+    ...guidance.map((item) => `- ${item}`)
+  ].join('\n');
+}
+
 export function countChangedSourceLines(files: ChangedFile[]): number {
   return files.reduce((sum, file) => {
     return sum + file.ranges.reduce((fileSum, range) => fileSum + range.end - range.start + 1, 0);
   }, 0);
+}
+
+function buildNoOpGuidance(excluded: Array<{ reason: string }>): string[] {
+  if (excluded.length === 0) {
+    return ['No changed files were found against the selected base ref. Check --base or fetch the target branch with full history.'];
+  }
+
+  const reasons = new Set(excluded.map((file) => file.reason));
+  const guidance = ['This is expected for docs-only, config-only, deleted-only, binary-only, or test-only changes.'];
+
+  if (reasons.has('test file')) {
+    guidance.push('Changed tests are not mutated by Tautest; change production source or run your normal test suite for test-only PRs.');
+  }
+
+  if (reasons.has('deleted file')) {
+    guidance.push('Deleted files have no current source lines to mutate; review deleted behavior with normal tests or add replacement coverage.');
+  }
+
+  if (reasons.has('non-source file')) {
+    guidance.push('If a production file was excluded as non-source, add its extension to sourceFileExtensions in tautest.config.ts.');
+  }
+
+  if (reasons.has('no changed current source lines')) {
+    guidance.push('If this was a rename or whitespace-only change, there may be no current changed lines for mutation.');
+  }
+
+  guidance.push('Run `tautest run --dry-run` to inspect included and excluded files before a mutation run.');
+  return guidance;
 }
 
 export function assertChangedSourceLineBudget(files: ChangedFile[], maxChangedLines?: number): void {
