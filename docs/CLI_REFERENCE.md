@@ -58,20 +58,43 @@ Flags:
 - `--report-dir <dir>`
 - `--no-cache`
 - `--config <path>`
-- `--workspace <path>`
+- `--workspace`
+- `--workspace-path <path>`
+- `--packages <selectors>`
+- `--affected`
+- `--all`
 - `--json`
 - `--dry-run`
 - `--prompt-style agent|human|claude-code|cursor|codex|opencode`
 
-### Workspace path beta
+### Workspace planner beta
 
-Use `--workspace <path>` from a repository root to run Tautest as if it started inside a package or workspace directory:
+Use `--workspace --dry-run --json` from a repository root to inspect the monorepo package plan without running Stryker:
 
 ```bash
-tautest run --workspace packages/api --base origin/main
+tautest run --workspace --dry-run --json --base origin/main
 ```
 
-This is a small monorepo beta step. The workspace path must stay inside the current repository directory. Full changed-workspace graph detection is still future work.
+The planner currently supports `pnpm-workspace.yaml` and root `package.json` workspaces. It prints selected packages, why each package was selected, unselected packages, changed files, workspace confidence, and warnings for conservative selections.
+
+Selection flags:
+
+- `--workspace --dry-run`: select packages affected by changed files.
+- `--workspace --packages @repo/api,packages/web --dry-run`: select explicit package names or paths.
+- `--workspace --all --dry-run`: select every detected workspace package.
+- `--workspace --affected --dry-run`: explicit spelling for the default affected package plan.
+
+Workspace mutation execution is intentionally not enabled in this beta. That is the next phase; this command is for reviewable planning and CI matrix generation.
+
+### Workspace path compatibility
+
+Use `--workspace-path <path>` from a repository root to run Tautest as if it started inside a package or workspace directory:
+
+```bash
+tautest run --workspace-path packages/api --base origin/main
+```
+
+For backward compatibility, `--workspace packages/api` still behaves as the legacy path option. New workflows should prefer `--workspace-path` for package-path runs and `--workspace` for workspace planning.
 
 ### Mutation budget
 

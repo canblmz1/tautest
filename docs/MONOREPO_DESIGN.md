@@ -107,11 +107,12 @@ Selection modes:
 - `explicit`: run packages selected by name or path.
 - `all`: run every compatible package.
 
-Default for v1.2 beta:
+Implemented planner beta:
 
-- Local CLI: `changed`.
-- GitHub Action: `changed`.
-- `affected` requires opt-in until graph confidence is proven.
+- Local CLI: `tautest run --workspace --dry-run --json`.
+- Package sources: `pnpm-workspace.yaml` and root `package.json` workspaces.
+- Selection: affected packages by path, explicit package selectors, or all packages.
+- Execution: intentionally deferred to the workspace runner phase.
 
 CLI flags:
 
@@ -120,7 +121,7 @@ tautest run --workspace
 tautest run --workspace --packages @repo/api,@repo/ui
 tautest run --workspace --affected
 tautest run --workspace --all
-tautest run --workspace --dry-run
+tautest run --workspace --dry-run --json
 ```
 
 Dry-run output must show:
@@ -143,7 +144,7 @@ Algorithm:
 5. Select package if it owns changed production source.
 6. If changed file is package config, select that package with reason `config-change`.
 7. If changed file is root config that may affect all packages, expand or warn.
-8. If `--affected` is enabled, add reverse dependents from the workspace graph.
+8. If `--affected` is enabled, add reverse dependents from the workspace graph. The planner beta currently does path ownership first; dependency expansion is reserved for the execution beta.
 
 Ambiguity handling:
 

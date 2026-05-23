@@ -294,7 +294,7 @@ Tautest is local-first, does not call LLM APIs, and writes generated artifacts u
 
 - Node 24 action runtime migration.
 - Better cache observability.
-- Monorepo beta.
+- Workspace planner beta.
 - Standalone GitHub Action repository, maybe.
 - Richer PR review annotations beyond survivor workflow annotations.
 - More Jest fixtures.

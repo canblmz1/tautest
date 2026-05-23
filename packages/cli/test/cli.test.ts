@@ -10,11 +10,19 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
-import { assertChangedSourceLineBudget, buildDryRunOutput, buildNoOpOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
+import { assertChangedSourceLineBudget, buildDryRunOutput, buildNoOpOutput, buildWorkspacePlanOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
     expect(buildProgram().commands.map((command) => command.name())).toEqual(['demo', 'init', 'doctor', 'run', 'prompt', 'report']);
+  });
+
+  it('registers workspace planning flags on run', () => {
+    const runCommand = buildProgram().commands.find((command) => command.name() === 'run');
+
+    expect(runCommand?.options.map((option) => option.long)).toEqual(
+      expect.arrayContaining(['--workspace', '--workspace-path', '--packages', '--affected', '--all'])
+    );
   });
 
   it('uses the package.json version', () => {
@@ -364,6 +372,69 @@ describe('workspace path resolution', () => {
     const root = mkdtempSync(path.join(tmpdir(), 'tautest-workspace-'));
 
     expect(() => resolveWorkspaceCwd(root, '..')).toThrow('--workspace must stay inside');
+  });
+});
+
+describe('workspace plan output', () => {
+  it('prints machine-readable selected package plans', () => {
+    const output = JSON.parse(
+      buildWorkspacePlanOutput({
+        baseRef: 'origin/main',
+        reportDir: '.tautest',
+        json: true,
+        plan: {
+          mode: 'affected',
+          workspace: {
+            detected: true,
+            rootDir: '/repo',
+            source: 'pnpm-workspace.yaml',
+            packageManager: 'pnpm',
+            patterns: ['packages/*'],
+            packages: [],
+            confidence: 'high',
+            warnings: []
+          },
+          changedFiles: [
+            {
+              path: 'packages/api/src/index.ts',
+              status: 'modified',
+              ranges: [{ start: 1, end: 1 }],
+              isSource: true,
+              isTest: false,
+              isBinary: false,
+              warnings: []
+            }
+          ],
+          selectedPackages: [
+            {
+              name: '@fixture/api',
+              path: 'packages/api',
+              absolutePath: '/repo/packages/api',
+              packageJsonPath: '/repo/packages/api/package.json',
+              packageJson: { name: '@fixture/api' },
+              selected: true,
+              reasons: ['changed packages/api/src/index.ts']
+            }
+          ],
+          unselectedPackages: [],
+          warnings: []
+        }
+      })
+    ) as {
+      status: string;
+      mode: string;
+      selectedPackages: Array<{ name: string; path: string; reasons: string[] }>;
+    };
+
+    expect(output.status).toBe('workspace-plan');
+    expect(output.mode).toBe('affected');
+    expect(output.selectedPackages).toEqual([
+      {
+        name: '@fixture/api',
+        path: 'packages/api',
+        reasons: ['changed packages/api/src/index.ts']
+      }
+    ]);
   });
 });
 

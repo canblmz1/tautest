@@ -17,3 +17,6 @@ export * from './prompt/builder';
 export * from './config/defaults';
 export * from './config/schema';
 export * from './config/load';
+export * from './workspace/detect';
+export * from './workspace/affected';
+export * from './workspace/plan';

@@ -5,10 +5,12 @@ import {
   buildJsonReport,
   buildMarkdownReport,
   buildTerminalSummary,
+  buildWorkspacePlan,
   changedFilesToStrykerMutate,
   detectAiAuthor,
   detectPackageManager,
   detectProject,
+  detectWorkspace,
   detectTestRunner,
   generateStrykerConfig,
   getStrykerConfigDiagnostics,
@@ -19,12 +21,14 @@ import {
   readStrykerJsonReport,
   runStryker,
   selectTopMutants,
+  parsePackageSelectors,
   type ChangedFile,
   type GenerateStrykerConfigOptions,
   type PackageManager,
   type PromptStyle,
   type TestRunner,
-  type TautestJsonReport
+  type TautestJsonReport,
+  type WorkspacePlan
 } from '@tautest/core';
 import { loadCliConfig } from '../lib/config';
 import { CliError } from '../lib/errors';
@@ -44,7 +48,11 @@ export interface RunOptions {
   json?: boolean;
   dryRun?: boolean;
   promptStyle?: PromptStyle;
-  workspace?: string;
+  workspace?: boolean | string;
+  workspacePath?: string;
+  packages?: string;
+  affected?: boolean;
+  all?: boolean;
 }
 
 export interface RunResult {
@@ -58,7 +66,11 @@ export interface RunResult {
 }
 
 export async function runMutationCommand(cwd: string, options: RunOptions): Promise<RunResult> {
-  const project = detectProject(resolveWorkspaceCwd(cwd, options.workspace));
+  if (isWorkspacePlanMode(options)) {
+    return runWorkspacePlanCommand(cwd, options);
+  }
+
+  const project = detectProject(resolveWorkspaceCwd(cwd, resolveWorkspacePathOption(options)));
 
   if (!project.packageJsonPath || !project.packageJson) {
     throw new CliError('No package.json found.', EXIT_CODES.detectionError, 'Run Tautest from a Node.js project.');
@@ -269,6 +281,55 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   };
 }
 
+async function runWorkspacePlanCommand(cwd: string, options: RunOptions): Promise<RunResult> {
+  if (!options.dryRun) {
+    throw new CliError(
+      'Workspace execution is not available in this beta phase.',
+      EXIT_CODES.configError,
+      'Use `tautest run --workspace --dry-run --json` to inspect the package plan before Phase 5 workspace execution.'
+    );
+  }
+
+  const workspace = detectWorkspace(cwd);
+
+  if (!workspace.detected) {
+    throw new CliError(
+      'No workspace root was detected.',
+      EXIT_CODES.detectionError,
+      'Add pnpm-workspace.yaml or package.json workspaces, or use --workspace-path for a single package path.'
+    );
+  }
+
+  const config = await loadCliConfig(workspace.rootDir, options.config);
+  const baseRef = options.base ?? config.baseRef;
+  const reportDir = path.resolve(workspace.rootDir, options.reportDir ?? config.outputDir);
+  const packageSelectors = parsePackageSelectors(options.packages);
+  const mode = options.all ? 'all' : packageSelectors.length > 0 ? 'packages' : 'affected';
+  const changedFiles = getChangedFiles({
+    cwd: workspace.rootDir,
+    baseRef,
+    relative: true,
+    sourceFileExtensions: config.sourceFileExtensions
+  });
+  const plan = buildWorkspacePlan({
+    cwd: workspace.rootDir,
+    changedFiles,
+    mode,
+    packages: packageSelectors
+  });
+
+  return {
+    exitCode: EXIT_CODES.ok,
+    output: buildWorkspacePlanOutput({
+      plan,
+      baseRef,
+      reportDir,
+      json: Boolean(options.json)
+    }),
+    reportDir
+  };
+}
+
 export function resolveWorkspaceCwd(cwd: string, workspace?: string): string {
   if (!workspace) {
     return cwd;
@@ -291,6 +352,14 @@ export function resolveWorkspaceCwd(cwd: string, workspace?: string): string {
   }
 
   return resolved;
+}
+
+function resolveWorkspacePathOption(options: RunOptions): string | undefined {
+  return typeof options.workspace === 'string' ? options.workspace : options.workspacePath;
+}
+
+function isWorkspacePlanMode(options: RunOptions): boolean {
+  return options.workspace === true || Boolean(options.packages) || Boolean(options.affected) || Boolean(options.all);
 }
 
 function resolveRunner(options: RunOptions, configured: TestRunner | 'auto', project: ReturnType<typeof detectProject>): TestRunner {
@@ -444,6 +513,74 @@ export function buildNoOpOutput(input: {
   ].join('\n');
 }
 
+export function buildWorkspacePlanOutput(input: { plan: WorkspacePlan; baseRef: string; reportDir: string; json: boolean }): string {
+  const selectedPackages = input.plan.selectedPackages.map((workspacePackage) => ({
+    name: workspacePackage.name,
+    path: workspacePackage.path,
+    reasons: workspacePackage.reasons
+  }));
+  const unselectedPackages = input.plan.unselectedPackages.map((workspacePackage) => ({
+    name: workspacePackage.name,
+    path: workspacePackage.path
+  }));
+  const workspace = {
+    rootDir: input.plan.workspace.rootDir,
+    source: input.plan.workspace.source,
+    packageManager: input.plan.workspace.packageManager,
+    patterns: input.plan.workspace.patterns,
+    packageCount: input.plan.workspace.packages.length,
+    confidence: input.plan.workspace.confidence
+  };
+
+  if (input.json) {
+    return `${JSON.stringify(
+      {
+        status: 'workspace-plan',
+        baseRef: input.baseRef,
+        reportDir: input.reportDir,
+        mode: input.plan.mode,
+        workspace,
+        selectedPackages,
+        unselectedPackages,
+        changedFiles: input.plan.changedFiles.map((file) => ({
+          path: file.path,
+          oldPath: file.oldPath,
+          status: file.status,
+          ranges: file.ranges,
+          isSource: file.isSource,
+          isTest: file.isTest,
+          warnings: file.warnings
+        })),
+        warnings: input.plan.warnings
+      },
+      null,
+      2
+    )}\n`;
+  }
+
+  return [
+    'Tautest workspace plan',
+    '',
+    `Base ref: ${input.baseRef}`,
+    `Workspace root: ${workspace.rootDir}`,
+    `Workspace source: ${workspace.source}`,
+    `Package manager: ${workspace.packageManager ?? 'unknown'}`,
+    `Mode: ${input.plan.mode}`,
+    `Report dir: ${input.reportDir}`,
+    '',
+    'Selected packages:',
+    ...(selectedPackages.length > 0
+      ? selectedPackages.map((workspacePackage) => `- ${formatWorkspacePackage(workspacePackage)}: ${workspacePackage.reasons.join('; ')}`)
+      : ['- None']),
+    '',
+    'Unselected packages:',
+    ...(unselectedPackages.length > 0 ? unselectedPackages.map((workspacePackage) => `- ${formatWorkspacePackage(workspacePackage)}`) : ['- None']),
+    '',
+    'Warnings:',
+    ...(input.plan.warnings.length > 0 ? input.plan.warnings.map((warning) => `- ${warning}`) : ['- None'])
+  ].join('\n');
+}
+
 export function countChangedSourceLines(files: ChangedFile[]): number {
   return files.reduce((sum, file) => {
     return sum + file.ranges.reduce((fileSum, range) => fileSum + range.end - range.start + 1, 0);
@@ -532,6 +669,10 @@ function estimateMutationScope(totalLines: number, fileCount: number): 'none' | 
   }
 
   return 'large';
+}
+
+function formatWorkspacePackage(workspacePackage: { name: string | null; path: string }): string {
+  return workspacePackage.name ? `${workspacePackage.name} (${workspacePackage.path})` : workspacePackage.path;
 }
 
 function packageManagerForStryker(packageManager: PackageManager): Exclude<PackageManager, 'bun'> | undefined {

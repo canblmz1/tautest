@@ -51,6 +51,8 @@
     "@stryker-mutator/api": "^9.6.1",
     "@stryker-mutator/core": "^9.6.1",
     "jiti": "^2.4.2",
+    "tinyglobby": "^0.2.16",
+    "yaml": "^2.9.0",
     "zod": "^3.24.4"
   },
   "peerDependencies": {

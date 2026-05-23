@@ -5,7 +5,7 @@
 - Runtime depends on project size and test speed.
 - AI-author detection is best effort and can be wrong.
 - The fix prompt is deterministic text. Tautest does not call an LLM.
-- Monorepo support is limited in v1. Tautest detects and warns, but does not orchestrate all workspace packages.
+- Monorepo support includes a workspace planner beta for pnpm and package.json workspaces. It explains selected packages in dry-run mode, but does not execute mutation testing across packages yet.
 - Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms, custom environments, ts-jest, and complex ESM/CJS mixes may still need explicit Jest/Stryker configuration.
 - Vitest browser mode may need manual configuration or may not work in v1.
 - Complex path aliases, custom loaders, Babel transforms, ts-jest, and ESM/CJS mixed projects may need explicit Stryker config.

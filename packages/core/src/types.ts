@@ -70,6 +70,45 @@ export interface PackageJson {
   [key: string]: unknown;
 }
 
+export type WorkspaceSource = 'pnpm-workspace.yaml' | 'package.json workspaces' | 'none';
+
+export type WorkspaceConfidence = 'high' | 'medium' | 'low';
+
+export interface WorkspacePackage {
+  name: string | null;
+  path: string;
+  absolutePath: string;
+  packageJsonPath: string;
+  packageJson: PackageJson;
+}
+
+export interface WorkspaceDetection {
+  detected: boolean;
+  rootDir: string;
+  source: WorkspaceSource;
+  packageManager: PackageManager | null;
+  patterns: string[];
+  packages: WorkspacePackage[];
+  confidence: WorkspaceConfidence;
+  warnings: string[];
+}
+
+export type WorkspaceSelectionMode = 'affected' | 'all' | 'packages';
+
+export interface WorkspacePackageSelection extends WorkspacePackage {
+  selected: boolean;
+  reasons: string[];
+}
+
+export interface WorkspacePlan {
+  mode: WorkspaceSelectionMode;
+  workspace: WorkspaceDetection;
+  changedFiles: ChangedFile[];
+  selectedPackages: WorkspacePackageSelection[];
+  unselectedPackages: WorkspacePackageSelection[];
+  warnings: string[];
+}
+
 export interface PackageManagerDetection {
   packageManager: PackageManager;
   reason: string;
