@@ -43,7 +43,7 @@ jobs:
         with:
           run_install: false
 
-      - name: Derive release version
+      - name: Validate release tag
         id: release
         shell: bash
         run: |
@@ -57,7 +57,7 @@ jobs:
 
           echo "version=$tag_version" >> "$GITHUB_OUTPUT"
 
-      - name: Apply tag version to packages
+      - name: Validate package versions
         shell: bash
         run: |
           set -euo pipefail
@@ -65,18 +65,25 @@ jobs:
 
           node - "$version" <<'NODE'
           const fs = require('node:fs');
-          const version = process.argv[2];
+          const expected = process.argv[2];
           const packagePaths = [
             'packages/core/package.json',
             'packages/cli/package.json',
-            'packages/github-action/package.json',
           ];
 
+          let failed = false;
           for (const packagePath of packagePaths) {
             const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-            pkg.version = version;
-            fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
-            console.log(`${pkg.name}@${version}`);
+            if (pkg.version !== expected) {
+              console.error(`${pkg.name} is ${pkg.version}, but ${process.env.GITHUB_REF_NAME} expects ${expected}. Run pnpm changeset and merge the version PR before tagging.`);
+              failed = true;
+            } else {
+              console.log(`${pkg.name}@${pkg.version}`);
+            }
+          }
+
+          if (failed) {
+            process.exit(1);
           }
           NODE
 

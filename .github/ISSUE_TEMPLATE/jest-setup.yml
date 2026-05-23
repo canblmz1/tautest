@@ -1,0 +1,71 @@
+name: Jest setup problem
+description: Report a Jest project that Tautest cannot detect, configure, or run.
+title: "[Jest]: "
+labels:
+  - jest
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing Jest support. Small reproducible projects are the fastest path to a fix.
+  - type: input
+    id: tautest-version
+    attributes:
+      label: Tautest version
+      placeholder: "1.4.0"
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: "20.19.0"
+    validations:
+      required: true
+  - type: input
+    id: package-manager
+    attributes:
+      label: Package manager
+      placeholder: "pnpm 10.33.1, npm 11.x, yarn 4.x, bun 1.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: module-system
+    attributes:
+      label: Module system
+      options:
+        - CommonJS
+        - ESM
+        - Mixed ESM/CommonJS
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: jest-config
+    attributes:
+      label: Jest configuration
+      description: Paste the relevant Jest config or link to a minimal reproduction.
+      render: js
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands and output
+      description: Include `tautest doctor`, `tautest run --dry-run`, and the failing command output.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

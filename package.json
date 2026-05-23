@@ -6,11 +6,14 @@
   "packageManager": "pnpm@10.33.1",
   "scripts": {
     "build": "pnpm -r build",
+    "changeset": "changeset",
     "lint": "pnpm -r --if-present lint",
+    "release": "changeset publish",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "test:example": "vitest run --config examples/vitest-basic/vitest.config.ts",
-    "prototype": "tsx scripts/prototype-run.ts"
+    "prototype": "tsx scripts/prototype-run.ts",
+    "version-packages": "changeset version && pnpm install --lockfile-only"
   },
   "pnpm": {
     "overrides": {
@@ -18,10 +21,11 @@
     }
   },
   "devDependencies": {
-    "tautest": "workspace:*",
+    "@changesets/cli": "^2.31.0",
     "@stryker-mutator/core": "^9.6.1",
     "@stryker-mutator/vitest-runner": "^9.6.1",
     "@types/node": "^22.15.17",
+    "tautest": "workspace:*",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "vitest": "^3.1.3"

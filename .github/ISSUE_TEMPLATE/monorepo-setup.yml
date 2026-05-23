@@ -1,0 +1,67 @@
+name: Monorepo setup problem
+description: Report package selection, workspace detection, or monorepo configuration issues.
+title: "[Monorepo]: "
+labels:
+  - monorepo
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tautest monorepo support is intentionally conservative. Please include enough structure for us to reproduce package detection.
+  - type: input
+    id: tautest-version
+    attributes:
+      label: Tautest version
+      placeholder: "1.4.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: workspace-kind
+    attributes:
+      label: Workspace type
+      options:
+        - pnpm workspace
+        - npm workspaces
+        - Yarn workspaces
+        - Turborepo
+        - Nx
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: workspace-files
+    attributes:
+      label: Workspace files
+      description: Paste relevant `pnpm-workspace.yaml`, root `package.json` workspaces, `turbo.json`, or `nx.json`.
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: tree
+    attributes:
+      label: Package layout
+      description: Show the package folders and changed files.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands and output
+      description: Include `tautest doctor` and `tautest run --dry-run`.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected selected packages
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual selected packages or warning
+    validations:
+      required: true

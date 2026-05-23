@@ -1,0 +1,148 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Ensure npm supports trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Production dependency audit
+        run: pnpm audit --prod
+
+      - name: Pack npm packages
+        run: |
+          mkdir -p .tautest/release-packs
+          pnpm --filter @tautest/core pack --pack-destination .tautest/release-packs
+          pnpm --filter tautest pack --pack-destination .tautest/release-packs
+
+      - name: Smoke packed npm packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$(mktemp -d)"
+          pack_dir="$(pwd)/.tautest/release-packs"
+          core_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
+          cli_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-[0-9]*.tgz' -print -quit)"
+          test -n "$core_tgz"
+          test -n "$cli_tgz"
+          cat > "$smoke_dir/package.json" <<JSON
+          {
+            "name": "tautest-release-smoke",
+            "private": true,
+            "type": "module",
+            "dependencies": {
+              "@tautest/core": "file:$core_tgz",
+              "tautest": "file:$cli_tgz"
+            },
+            "pnpm": {
+              "overrides": {
+                "@tautest/core": "file:$core_tgz"
+              }
+            }
+          }
+          JSON
+          pnpm -C "$smoke_dir" install --ignore-scripts
+          pnpm -C "$smoke_dir" exec tautest --version
+          cd "$smoke_dir"
+          node --input-type=module -e "import('@tautest/core').then((m) => { if (!m.buildMarkdownReport) throw new Error('missing core export'); })"
+
+      - name: Validate npm publish availability
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cli_version="$(node -p "require('./packages/cli/package.json').version")"
+          core_version="$(node -p "require('./packages/core/package.json').version")"
+
+          if [ "$cli_version" != "$core_version" ]; then
+            echo "tautest@$cli_version and @tautest/core@$core_version must stay version-aligned." >&2
+            exit 1
+          fi
+
+          cli_exists=false
+          core_exists=false
+
+          if npm view "tautest@$cli_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
+            cli_exists=true
+          fi
+
+          if npm view "@tautest/core@$core_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
+            core_exists=true
+          fi
+
+          if [ "$cli_exists" = true ] && [ "$core_exists" = true ]; then
+            echo "tautest@$cli_version and @tautest/core@$core_version already exist on npm."
+          elif [ "$cli_exists" = true ] || [ "$core_exists" = true ]; then
+            echo "Partial npm publish detected for $cli_version; refusing to continue automatically." >&2
+            echo "tautest exists: $cli_exists" >&2
+            echo "@tautest/core exists: $core_exists" >&2
+            exit 1
+          else
+            echo "tautest@$cli_version and @tautest/core@$core_version are available for publish."
+          fi
+
+      - name: Create release PR or publish packages
+        uses: changesets/action@v1
+        with:
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          version: pnpm version-packages
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,40 @@
+name: Docs or example request
+description: Request a guide, example project, comparison page, or troubleshooting note.
+title: "[Docs]: "
+labels:
+  - docs
+  - needs-triage
+body:
+  - type: dropdown
+    id: docs-kind
+    attributes:
+      label: Request type
+      options:
+        - Quickstart
+        - GitHub Action
+        - Example project
+        - Troubleshooting
+        - Comparison
+        - Release or publishing
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack or tool
+      placeholder: "Next.js, React, Vue, pnpm workspace, Jest ESM"
+    validations:
+      required: false
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is missing or unclear?
+    validations:
+      required: true
+  - type: textarea
+    id: ideal
+    attributes:
+      label: What would a useful example show?
+    validations:
+      required: true

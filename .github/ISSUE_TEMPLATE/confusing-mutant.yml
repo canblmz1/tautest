@@ -1,0 +1,49 @@
+name: Confusing mutant or explanation
+description: Report a surviving mutant that produced confusing, noisy, or wrong guidance.
+title: "[Mutant]: "
+labels:
+  - mutant-explanation
+  - needs-triage
+body:
+  - type: input
+    id: tautest-version
+    attributes:
+      label: Tautest version
+      placeholder: "1.4.0"
+    validations:
+      required: true
+  - type: input
+    id: runner
+    attributes:
+      label: Test runner
+      placeholder: "vitest, jest"
+    validations:
+      required: true
+  - type: textarea
+    id: mutant
+    attributes:
+      label: Mutant details
+      description: Paste the safe subset of `.tautest/report.json` or the report row for this mutant.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Relevant source and test context
+      description: Paste the smallest safe snippet that explains the behavior.
+      render: ts
+    validations:
+      required: false
+  - type: textarea
+    id: issue
+    attributes:
+      label: What was confusing?
+    validations:
+      required: true
+  - type: textarea
+    id: better
+    attributes:
+      label: Better expected guidance
+    validations:
+      required: false
