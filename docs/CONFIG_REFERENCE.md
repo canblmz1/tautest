@@ -28,7 +28,8 @@ export default defineConfig({
     incremental: false,
     timeoutMS: 5000,
     dryRunTimeoutMinutes: 2,
-    concurrency: 2
+    concurrency: 2,
+    jestConfigFile: 'config/jest.config.cjs'
   },
   prompt: {
     maxMutants: 10,
@@ -52,6 +53,8 @@ export default defineConfig({
 - `stryker.timeoutMS`: per-test timeout.
 - `stryker.dryRunTimeoutMinutes`: dry run timeout.
 - `stryker.concurrency`: Stryker concurrency.
+- `stryker.vitestConfigFile`: explicit Vitest config path relative to the project root.
+- `stryker.jestConfigFile`: explicit Jest config path relative to the project root.
 - `stryker.userConfig`: safely merged Stryker options.
 - `prompt.maxMutants`: max mutants in prompt.
 - `prompt.style`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.

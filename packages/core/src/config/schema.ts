@@ -21,6 +21,8 @@ export const tautestConfigSchema = z
         timeoutMS: z.number().int().positive().optional(),
         dryRunTimeoutMinutes: z.number().positive().optional(),
         concurrency: z.union([z.number().int().positive(), z.string().min(1)]).optional(),
+        vitestConfigFile: z.string().min(1).optional(),
+        jestConfigFile: z.string().min(1).optional(),
         userConfig: z.record(z.unknown()).optional()
       })
       .optional(),

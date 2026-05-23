@@ -7,8 +7,10 @@ import {
   detectTestRunner,
   type PackageManagerDetection,
   type ProjectInfo,
+  type TautestConfig,
   type TestRunnerDetection
 } from '@tautest/core';
+import { loadCliConfig } from './config';
 
 export type DoctorStatus = 'ok' | 'warning' | 'error';
 
@@ -26,8 +28,9 @@ export interface DoctorReport {
   checks: DoctorCheck[];
 }
 
-export function runDoctor(cwd: string): DoctorReport {
+export async function runDoctor(cwd: string): Promise<DoctorReport> {
   const project = safeDetectProject(cwd);
+  const config = await safeLoadTautestConfig(project);
   const packageManager = project.packageJson ? detectPackageManager(project.rootDir, project.packageJson) : null;
   const testRunner = project.packageJson ? detectTestRunner(project) : null;
   const checks: DoctorCheck[] = [
@@ -38,8 +41,8 @@ export function runDoctor(cwd: string): DoctorReport {
     checkPackageJson(project),
     checkTestRunner(testRunner),
     checkStrykerDependencies(project),
-    checkRunnerConfig(project, testRunner),
-    checkJestBeta(testRunner),
+    checkRunnerConfig(project, testRunner, config),
+    checkJestCompatibility(project, testRunner),
     checkMonorepo(project),
     checkExistingStrykerConfig(project),
     checkTautestGitignored(project),
@@ -72,6 +75,18 @@ export function formatDoctorReport(report: DoctorReport): string {
 
 function safeDetectProject(cwd: string): ProjectInfo {
   return detectProject(cwd);
+}
+
+async function safeLoadTautestConfig(project: ProjectInfo): Promise<TautestConfig | null> {
+  if (!project.packageJsonPath) {
+    return null;
+  }
+
+  try {
+    return await loadCliConfig(project.rootDir);
+  } catch {
+    return null;
+  }
 }
 
 function checkNodeVersion(): DoctorCheck {
@@ -195,13 +210,21 @@ function checkStrykerDependencies(project: ProjectInfo): DoctorCheck {
   };
 }
 
-function checkRunnerConfig(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
+function checkRunnerConfig(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): DoctorCheck {
   if (testRunner?.runner === 'vitest' && project.vitestConfigFiles.length > 0) {
     return { name: 'Runner config', status: 'ok', message: project.vitestConfigFiles[0] };
   }
 
   if (testRunner?.runner === 'jest' && project.jestConfigFiles.length > 0) {
     return { name: 'Runner config', status: 'ok', message: project.jestConfigFiles[0] };
+  }
+
+  if (testRunner?.runner === 'vitest' && config?.stryker.vitestConfigFile) {
+    return checkConfiguredRunnerConfig(project, config.stryker.vitestConfigFile, 'Vitest');
+  }
+
+  if (testRunner?.runner === 'jest' && config?.stryker.jestConfigFile) {
+    return checkConfiguredRunnerConfig(project, config.stryker.jestConfigFile, 'Jest');
   }
 
   return {
@@ -212,16 +235,46 @@ function checkRunnerConfig(project: ProjectInfo, testRunner: TestRunnerDetection
   };
 }
 
-function checkJestBeta(testRunner: TestRunnerDetection | null): DoctorCheck {
-  if (testRunner?.runner !== 'jest') {
-    return { name: 'Jest beta', status: 'ok', message: 'Not using Jest.' };
+function checkConfiguredRunnerConfig(project: ProjectInfo, configuredPath: string, runnerName: string): DoctorCheck {
+  const resolved = path.resolve(project.rootDir, configuredPath);
+
+  if (existsSync(resolved)) {
+    return {
+      name: 'Runner config',
+      status: 'ok',
+      message: `${runnerName} config from tautest config: ${resolved}`
+    };
   }
 
   return {
-    name: 'Jest beta',
+    name: 'Runner config',
     status: 'warning',
-    message: 'Jest support is beta.',
-    suggestion: 'Prefer a plain Node Jest setup first. ESM, ts-jest, Babel, custom environments, and path aliases may need explicit Jest/Stryker configuration.'
+    message: `${runnerName} config from tautest config was not found: ${resolved}`,
+    suggestion: `Check stryker.${runnerName.toLowerCase()}ConfigFile in tautest.config.*.`
+  };
+}
+
+function checkJestCompatibility(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
+  if (testRunner?.runner !== 'jest') {
+    return { name: 'Jest compatibility', status: 'ok', message: 'Not using Jest.' };
+  }
+
+  const configFile = testRunner.configFile ?? project.jestConfigFiles[0];
+
+  if (configFile?.endsWith('.ts')) {
+    return {
+      name: 'Jest compatibility',
+      status: 'warning',
+      message: 'Jest was detected with a TypeScript Jest config file.',
+      suggestion: 'Prefer jest.config.cjs, jest.config.js, jest.config.mjs, or jest.config.json for Tautest. TypeScript Jest config files may need custom loader/Stryker configuration.'
+    };
+  }
+
+  return {
+    name: 'Jest compatibility',
+    status: 'ok',
+    message: 'Jest detected. Tested fixture paths include CommonJS, ESM, and Babel TypeScript.',
+    suggestion: 'Use stryker.jestConfigFile in tautest.config.* when the Jest config is not at the project root.'
   };
 }
 

@@ -37,7 +37,7 @@ Tautest does not mutate code itself. It passes this scope to StrykerJS.
 StrykerJS runs mutation testing with the detected runner:
 
 - Vitest
-- Jest beta
+- Jest
 
 Stryker produces mutation JSON.
 

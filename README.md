@@ -89,12 +89,14 @@ pnpm exec tautest doctor
 pnpm exec tautest run --base origin/main
 ```
 
-### Jest beta
+### Jest
 
 ```bash
 pnpm add -D tautest @stryker-mutator/core @stryker-mutator/jest-runner
 pnpm exec tautest init --yes --runner jest --no-install
 ```
+
+Tested Jest fixture paths include CommonJS, native ESM, and Babel-powered TypeScript. For non-root Jest config files, set `stryker.jestConfigFile` in `tautest.config.*`.
 
 ### npx
 
@@ -273,10 +275,10 @@ These files are generated artifacts and normally should not be committed.
 ## Limitations
 
 - Tautest uses StrykerJS; it is not a mutation engine.
-- Jest support is beta.
+- Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms may still need explicit Stryker/Jest config.
 - Monorepo support is detect-and-warn in v1.
 - Runtime depends on project size and test speed.
-- GitHub Action currently uses Node 20; Node 24 migration is planned.
+- CLI support is validated on Node 20 and 24. GitHub Action currently uses the Node 20 action runtime.
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 

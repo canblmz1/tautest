@@ -25,7 +25,8 @@ describe('config loader', () => {
           strong: 90
         },
         stryker: {
-          incremental: true
+          incremental: true,
+          jestConfigFile: 'config/jest.config.cjs'
         }
       })
     );
@@ -39,7 +40,8 @@ describe('config loader', () => {
       },
       stryker: {
         incremental: true,
-        timeoutMS: 5000
+        timeoutMS: 5000,
+        jestConfigFile: 'config/jest.config.cjs'
       }
     });
   });
@@ -55,5 +57,6 @@ describe('config loader', () => {
       }
     });
     expect(() => tautestConfigSchema.parse({ testRunner: 'mocha' })).toThrow();
+    expect(() => tautestConfigSchema.parse({ stryker: { jestConfigFile: '' } })).toThrow();
   });
 });

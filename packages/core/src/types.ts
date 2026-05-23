@@ -235,6 +235,8 @@ export interface TautestConfig {
     timeoutMS: number;
     dryRunTimeoutMinutes: number;
     concurrency?: number | string;
+    vitestConfigFile?: string;
+    jestConfigFile?: string;
     userConfig?: PartialStrykerOptions;
   };
   prompt: {

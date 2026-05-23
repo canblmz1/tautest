@@ -1,10 +1,6 @@
-# Jest Basic Example
+# Jest CommonJS Example
 
-Small CommonJS + Jest project for Tautest's Jest beta path.
-
-## Beta Note
-
-Jest support is beta. This example intentionally avoids ESM, Babel, ts-jest, custom environments, and path aliases.
+Small CommonJS + Jest project for Tautest's tested Jest path.
 
 ## Weak Test
 
@@ -28,10 +24,7 @@ pnpm --dir examples/jest-basic exec tautest run --base HEAD
 
 ## Expected Tautest Output
 
-```text
-Jest beta warning appears in `tautest doctor`.
 Top surviving mutants should include the cart total boundary when the file is part of the Git diff.
-```
 
 ## Fixed Test Example
 

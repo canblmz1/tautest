@@ -145,12 +145,12 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
     packageManager: packageManagerForStryker(packageManager),
     incremental: options.cache === false ? false : config.stryker.incremental,
     incrementalFile: config.stryker.incrementalFile,
-    vitestConfigFile: runner === 'vitest' ? relativeMaybe(project.rootDir, project.vitestConfigFiles[0]) : undefined,
-    jestConfigFile: runner === 'jest' ? relativeMaybe(project.rootDir, project.jestConfigFiles[0]) : undefined,
     userConfig: config.stryker.userConfig,
     concurrency: config.stryker.concurrency,
     timeoutMS: config.stryker.timeoutMS,
     dryRunTimeoutMinutes: config.stryker.dryRunTimeoutMinutes,
+    vitestConfigFile: runner === 'vitest' ? resolveRunnerConfigFile(project.rootDir, config.stryker.vitestConfigFile, project.vitestConfigFiles[0]) : undefined,
+    jestConfigFile: runner === 'jest' ? resolveRunnerConfigFile(project.rootDir, config.stryker.jestConfigFile, project.jestConfigFiles[0]) : undefined,
     tsconfigFile: relativeMaybe(project.rootDir, project.tsconfig.path ?? undefined)
   };
   const strykerConfig = generateStrykerConfig(strykerConfigOptions);
@@ -544,4 +544,23 @@ function relative(rootDir: string, filePath: string): string {
 
 function relativeMaybe(rootDir: string, filePath?: string): string | undefined {
   return filePath ? relative(rootDir, filePath) : undefined;
+}
+
+function resolveRunnerConfigFile(rootDir: string, configuredPath: string | undefined, detectedPath: string | undefined): string | undefined {
+  if (!configuredPath) {
+    return relativeMaybe(rootDir, detectedPath);
+  }
+
+  const resolved = path.resolve(rootDir, configuredPath);
+  const relativePath = path.relative(rootDir, resolved);
+
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+    throw new CliError(
+      'Runner config path must stay inside the project directory.',
+      EXIT_CODES.configError,
+      'Use a path relative to the project root, such as config/jest.config.cjs.'
+    );
+  }
+
+  return relativePath.replace(/\\/g, '/');
 }

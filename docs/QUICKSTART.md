@@ -12,7 +12,7 @@ Vitest:
 pnpm add -D tautest @stryker-mutator/core @stryker-mutator/vitest-runner
 ```
 
-Jest beta:
+Jest:
 
 ```bash
 pnpm add -D tautest @stryker-mutator/core @stryker-mutator/jest-runner
@@ -33,6 +33,17 @@ pnpm exec tautest init --yes --runner jest --no-install
 ```
 
 This creates `tautest.config.ts`, adds `.tautest/` to `.gitignore`, and adds missing Stryker dependencies to `package.json`.
+
+Tautest includes tested Jest examples for CommonJS, native ESM, and Babel TypeScript. If your Jest config is not at the project root, add an explicit config path:
+
+```ts
+export default defineConfig({
+  testRunner: 'jest',
+  stryker: {
+    jestConfigFile: 'config/jest.config.cjs'
+  }
+});
+```
 
 ## 3. Check Setup
 

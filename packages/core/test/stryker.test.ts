@@ -32,7 +32,7 @@ describe('Stryker config generator', () => {
     });
   });
 
-  it('generates Jest beta Stryker config with a config file path', () => {
+  it('generates Jest Stryker config with a config file path', () => {
     expect(
       generateStrykerConfig({
         mutate: ['src/shipping.js:2-2'],

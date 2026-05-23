@@ -47,9 +47,22 @@ V1 detects monorepo signals and warns. Run Tautest from the package root and pas
 
 If tests pass normally but fail under Stryker, make sure your runner config and `tsconfig.json` are discoverable from the package root.
 
-## ESM/CJS
+## Jest ESM/CJS
 
-Vitest ESM setups are usually smoother. Jest ESM setups are beta and may require explicit Jest/Stryker configuration.
+Native Jest ESM usually needs Node's `--experimental-vm-modules` flag in the test command. See `examples/jest-esm`.
+
+If Jest config lives outside the project root, set `stryker.jestConfigFile`:
+
+```ts
+export default defineConfig({
+  testRunner: 'jest',
+  stryker: {
+    jestConfigFile: 'config/jest.config.cjs'
+  }
+});
+```
+
+For TypeScript transforms, start from `examples/jest-typescript`. `ts-jest`, custom Babel stacks, custom environments, and path aliases can still require explicit Stryker/Jest configuration.
 
 ## Permission Denied GitHub Comment
 

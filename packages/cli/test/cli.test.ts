@@ -368,7 +368,7 @@ describe('workspace path resolution', () => {
 });
 
 describe('doctor command', () => {
-  it('warns that Jest support is beta', () => {
+  it('reports tested Jest compatibility paths', async () => {
     const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-jest-'));
     writeFileSync(
       path.join(root, 'package.json'),
@@ -384,8 +384,30 @@ describe('doctor command', () => {
     writeFileSync(path.join(root, 'jest.config.cjs'), 'module.exports = {};');
     writeFileSync(path.join(root, '.gitignore'), '.tautest/\n');
 
-    const result = runDoctorCommand(root, { json: false });
+    const result = await runDoctorCommand(root, { json: false });
 
-    expect(result.output).toContain('WARN Jest beta: Jest support is beta.');
+    expect(result.output).toContain('OK Jest compatibility: Jest detected.');
+    expect(result.output).toContain('Use stryker.jestConfigFile');
+  });
+
+  it('warns about TypeScript Jest config files', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-jest-ts-config-'));
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({
+        name: 'jest-ts-config-fixture',
+        devDependencies: {
+          jest: '^30.0.0',
+          '@stryker-mutator/core': '^9.6.1',
+          '@stryker-mutator/jest-runner': '^9.6.1'
+        }
+      })
+    );
+    writeFileSync(path.join(root, 'jest.config.ts'), 'export default {};');
+    writeFileSync(path.join(root, '.gitignore'), '.tautest/\n');
+
+    const result = await runDoctorCommand(root, { json: false });
+
+    expect(result.output).toContain('WARN Jest compatibility: Jest was detected with a TypeScript Jest config file.');
   });
 });

@@ -54,7 +54,7 @@ export function buildProgram(): Command {
     .option('--json', 'print machine-readable JSON')
     .action(async (options) => {
       await runAction(program, async () => {
-        const result = runDoctorCommand(process.cwd(), options);
+        const result = await runDoctorCommand(process.cwd(), options);
         writeStdout(result.output);
         return result.hasErrors ? EXIT_CODES.detectionError : EXIT_CODES.ok;
       });
