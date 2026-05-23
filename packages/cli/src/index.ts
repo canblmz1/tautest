@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { readFileSync, realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { PackageManager, PromptStyle, TestRunner } from '@tautest/core';
+import { runDemoCommand } from './commands/demo';
 import { runDoctorCommand } from './commands/doctor';
 import { formatInitResult, runInit } from './commands/init';
 import { runPromptCommand } from './commands/prompt';
@@ -19,6 +20,17 @@ export function buildProgram(): Command {
     .description('PR-focused mutation testing workflow layer powered by StrykerJS')
     .version(readCliVersion())
     .option('--debug', 'print debug details for errors');
+
+  program
+    .command('demo')
+    .description('show the copy-paste demo for a passing test suite with a surviving mutant')
+    .option('--json', 'print machine-readable JSON')
+    .action(async (options) => {
+      await runAction(program, async () => {
+        writeStdout(runDemoCommand(options));
+        return EXIT_CODES.ok;
+      });
+    });
 
   program
     .command('init')

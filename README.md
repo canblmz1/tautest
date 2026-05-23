@@ -20,6 +20,12 @@ Regular tests pass, but Tautest finds a surviving mutant that the tests missed. 
 
 Want to try the same flow locally? See the [copy-paste demo](docs/DEMO.md).
 
+If you have the CLI installed, `tautest demo` prints the same short demo path:
+
+```bash
+pnpm exec tautest demo
+```
+
 ## Why Tautest?
 
 Passing tests can still miss changed behavior. Line coverage can tell you that a changed branch or function executed, but it cannot tell you whether the test suite would fail if that behavior were subtly wrong.
@@ -116,6 +122,7 @@ See [Quickstart](docs/QUICKSTART.md).
 ## CLI usage
 
 ```bash
+tautest demo
 tautest init --yes --runner vitest --no-install
 tautest doctor
 tautest run --base origin/main --threshold 60

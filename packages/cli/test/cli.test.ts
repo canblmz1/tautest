@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { buildProgram } from '../src/index';
+import { runDemoCommand } from '../src/commands/demo';
 import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
@@ -13,13 +14,40 @@ import { assertChangedSourceLineBudget, buildDryRunOutput, countChangedSourceLin
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
-    expect(buildProgram().commands.map((command) => command.name())).toEqual(['init', 'doctor', 'run', 'prompt', 'report']);
+    expect(buildProgram().commands.map((command) => command.name())).toEqual(['demo', 'init', 'doctor', 'run', 'prompt', 'report']);
   });
 
   it('uses the package.json version', () => {
     const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')) as { version: string };
 
     expect(buildProgram().version()).toBe(packageJson.version);
+  });
+});
+
+describe('demo command', () => {
+  it('prints the local passing-tests-but-surviving-mutant demo', () => {
+    const output = runDemoCommand();
+
+    expect(output).toContain('tests can pass while a changed-line mutant survives');
+    expect(output).toContain('examples/vitest-basic');
+    expect(output).toContain('age >= 65');
+    expect(output).toContain('age > 65');
+    expect(output).toContain('Create a tiny production diff');
+    expect(output).toContain('pnpm --dir examples/vitest-basic exec tautest run --base HEAD --threshold 80 --prompt-style codex || true');
+  });
+
+  it('prints machine-readable demo metadata', () => {
+    const output = JSON.parse(runDemoCommand({ json: true })) as {
+      example: string;
+      mutant: {
+        original: string;
+        replacement: string;
+      };
+    };
+
+    expect(output.example).toBe('examples/vitest-basic');
+    expect(output.mutant.original).toBe('age >= 65');
+    expect(output.mutant.replacement).toBe('age > 65');
   });
 });
 

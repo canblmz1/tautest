@@ -1,5 +1,16 @@
 # CLI Reference
 
+## `tautest demo`
+
+Prints a copy-paste demo that shows the core Tautest loop: normal tests pass, changed-line mutation testing finds a surviving boundary mutant, and the generated prompt points to the missing test.
+
+```bash
+tautest demo
+tautest demo --json
+```
+
+The demo uses the local `examples/vitest-basic` fixture in this repository.
+
 ## `tautest init`
 
 Creates a local config and prepares Stryker dependencies.
