@@ -6,10 +6,13 @@ Prints a copy-paste demo that shows the core Tautest loop: normal tests pass, ch
 
 ```bash
 tautest demo
+tautest demo --run
 tautest demo --json
 ```
 
-The demo uses the local `examples/vitest-basic` fixture in this repository.
+`tautest demo` prints the short path without changing files.
+
+`tautest demo --run` runs the local `examples/vitest-basic` fixture in a Tautest repository checkout. It temporarily creates the demo source diff, runs the weak test suite, runs Tautest, adds the missing boundary test, runs Tautest again, and restores the fixture files afterward.
 
 ## `tautest init`
 

@@ -25,9 +25,10 @@ export function buildProgram(): Command {
     .command('demo')
     .description('show the copy-paste demo for a passing test suite with a surviving mutant')
     .option('--json', 'print machine-readable JSON')
+    .option('--run', 'run the repository demo fixture and restore it afterward')
     .action(async (options) => {
       await runAction(program, async () => {
-        writeStdout(runDemoCommand(options));
+        writeStdout(await runDemoCommand(process.cwd(), options));
         return EXIT_CODES.ok;
       });
     });

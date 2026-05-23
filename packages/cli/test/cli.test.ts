@@ -25,19 +25,20 @@ describe('CLI program', () => {
 });
 
 describe('demo command', () => {
-  it('prints the local passing-tests-but-surviving-mutant demo', () => {
-    const output = runDemoCommand();
+  it('prints the local passing-tests-but-surviving-mutant demo', async () => {
+    const output = await runDemoCommand(process.cwd());
 
     expect(output).toContain('tests can pass while a changed-line mutant survives');
     expect(output).toContain('examples/vitest-basic');
     expect(output).toContain('age >= 65');
     expect(output).toContain('age > 65');
+    expect(output).toContain('tautest demo --run');
     expect(output).toContain('Create a tiny production diff');
     expect(output).toContain('pnpm --dir examples/vitest-basic exec tautest run --base HEAD --threshold 80 --prompt-style codex || true');
   });
 
-  it('prints machine-readable demo metadata', () => {
-    const output = JSON.parse(runDemoCommand({ json: true })) as {
+  it('prints machine-readable demo metadata', async () => {
+    const output = JSON.parse(await runDemoCommand(process.cwd(), { json: true })) as {
       example: string;
       mutant: {
         original: string;
@@ -48,6 +49,63 @@ describe('demo command', () => {
     expect(output.example).toBe('examples/vitest-basic');
     expect(output.mutant.original).toBe('age >= 65');
     expect(output.mutant.replacement).toBe('age > 65');
+  });
+
+  it('runs the repository demo fixture and restores temporary edits', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-demo-run-'));
+    const fixtureRoot = path.join(root, 'examples', 'vitest-basic', 'src');
+    const sourcePath = path.join(fixtureRoot, 'discount.ts');
+    const testPath = path.join(fixtureRoot, 'discount.test.ts');
+    const source = `export function calculateDiscount(age: number, subtotal: number): number {
+  if (age >= 65) {
+    return subtotal * 0.2;
+  }
+
+  if (subtotal >= 100) {
+    return subtotal * 0.1;
+  }
+
+  return 0;
+}
+`;
+    const test = `import { describe, expect, it } from 'vitest';
+import { calculateDiscount } from './discount';
+
+describe('calculateDiscount', () => {
+  it('applies the senior discount for customers above 65', () => {
+    expect(calculateDiscount(70, 100)).toBe(20);
+  });
+
+  it('applies the subtotal discount at 100', () => {
+    expect(calculateDiscount(30, 100)).toBe(10);
+  });
+});
+`;
+    const commands: string[] = [];
+
+    mkdirSync(fixtureRoot, { recursive: true });
+    writeFileSync(sourcePath, source);
+    writeFileSync(testPath, test);
+
+    const output = await runDemoCommand(
+      root,
+      { run: true },
+      (command, args) => {
+        commands.push([command, ...args].join(' '));
+        if (command === 'git') {
+          return { exitCode: 0, stdout: '', stderr: '' };
+        }
+        return { exitCode: 0, stdout: `${command} ok\n`, stderr: '' };
+      }
+    );
+
+    expect(output).toContain('Tautest demo run completed');
+    expect(output).toContain('Working tree restored: yes');
+    expect(commands).toContain('git status --porcelain -- examples/vitest-basic/src/discount.ts examples/vitest-basic/src/discount.test.ts');
+    expect(commands).toContain('pnpm --dir examples/vitest-basic test');
+    expect(commands).toContain('pnpm --dir examples/vitest-basic exec tautest run --base HEAD --threshold 80 --prompt-style codex');
+    expect(readFileSync(sourcePath, 'utf8')).toBe(source);
+    expect(readFileSync(testPath, 'utf8')).toBe(test);
   });
 });
 

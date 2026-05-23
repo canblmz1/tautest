@@ -20,10 +20,11 @@ Regular tests pass, but Tautest finds a surviving mutant that the tests missed. 
 
 Want to try the same flow locally? See the [copy-paste demo](docs/DEMO.md).
 
-If you have the CLI installed, `tautest demo` prints the same short demo path:
+If you have the CLI installed, `tautest demo` prints the same short demo path. From a Tautest repository checkout, `tautest demo --run` runs the fixture and restores it afterward.
 
 ```bash
 pnpm exec tautest demo
+pnpm exec tautest demo --run
 ```
 
 ## Why Tautest?
@@ -123,6 +124,7 @@ See [Quickstart](docs/QUICKSTART.md).
 
 ```bash
 tautest demo
+tautest demo --run
 tautest init --yes --runner vitest --no-install
 tautest doctor
 tautest run --base origin/main --threshold 60

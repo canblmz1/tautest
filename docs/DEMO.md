@@ -8,6 +8,18 @@ regular tests pass -> changed line survives mutation -> add missing boundary tes
 
 It uses the repository's small Vitest example project. The example is intentionally missing one boundary test so Tautest has something useful to find.
 
+## Fast path
+
+From a Tautest repository checkout:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+pnpm exec tautest demo --run
+```
+
+The command temporarily edits `examples/vitest-basic/src/discount.ts` and `examples/vitest-basic/src/discount.test.ts`, runs the weak and fixed mutation-testing loops, then restores both files.
+
 ## What the demo proves
 
 Coverage can tell you that code ran. Tautest checks whether tests fail when changed behavior is mutated.
