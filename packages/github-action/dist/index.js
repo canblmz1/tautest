@@ -97621,6 +97621,37 @@ If the error persists, please check whether Actions and API requests are operati
 // ../../node_modules/.pnpm/@actions+artifact@6.2.1/node_modules/@actions/artifact/lib/artifact.js
 var client = new DefaultArtifactClient();
 
+// src/annotations.ts
+function buildSurvivorAnnotations(mutants, options = {}) {
+  const maxAnnotations = options.maxAnnotations ?? 10;
+  return mutants.slice(0, maxAnnotations).map((mutant) => ({
+    file: mutant.filePath,
+    line: mutant.line,
+    title: `Tautest survivor: ${mutant.mutatorName}`,
+    message: [
+      `${mutant.mutatorName} survived mutation testing.`,
+      `Original: ${compact(mutant.original)}`,
+      `Replacement: ${compact(mutant.replacement)}`,
+      `Likely missing behavior: ${compact(mutant.insight?.missingBehavior || "Add the smallest behavior-focused test that kills this mutant.")}`
+    ].join("\n")
+  }));
+}
+function emitSurvivorAnnotations(mutants, options = {}) {
+  const annotations = buildSurvivorAnnotations(mutants, options);
+  for (const annotation of annotations) {
+    warning(annotation.message, {
+      title: annotation.title,
+      file: annotation.file,
+      startLine: annotation.line,
+      endLine: annotation.line
+    });
+  }
+  return annotations.length;
+}
+function compact(value) {
+  return value.replace(/\s+/g, " ").trim();
+}
+
 // src/cache.ts
 var import_node_crypto4 = __toESM(require("node:crypto"));
 var import_node_fs2 = require("node:fs");
@@ -100984,6 +101015,7 @@ function readInputs() {
     maxChangedLines: getInput("max-changed-lines"),
     failOnThreshold: getInput("fail-on-threshold"),
     comment: getInput("comment"),
+    annotations: getInput("annotations"),
     config: getInput("config"),
     promptStyle: getInput("prompt-style"),
     workingDirectory: getInput("working-directory"),
@@ -101002,6 +101034,7 @@ function parseInputs(raw) {
     maxChangedLines: parseOptionalPositiveInteger(raw.maxChangedLines, "max-changed-lines"),
     failOnThreshold: parseBoolean(raw.failOnThreshold || "true", "fail-on-threshold"),
     comment: parseCommentMode(raw.comment || "changes"),
+    annotations: parseAnnotationMode(raw.annotations || "never"),
     config: blankToUndefined(raw.config),
     promptStyle: parsePromptStyle(raw.promptStyle),
     workingDirectory: raw.workingDirectory?.trim() || ".",
@@ -101044,6 +101077,12 @@ function parseCommentMode(value) {
     return value;
   }
   throw new Error("Input `comment` must be one of always, changes, or never.");
+}
+function parseAnnotationMode(value) {
+  if (value === "never" || value === "survivors") {
+    return value;
+  }
+  throw new Error("Input `annotations` must be one of never or survivors.");
 }
 function parsePromptStyle(value) {
   const trimmed = blankToUndefined(value);
@@ -101457,11 +101496,24 @@ async function run() {
   }
   setActionOutputs(parsedOutput);
   await writeStepSummary({ ...parsedOutput, cache: cacheSummary });
+  maybeAnnotate(inputs, parsedOutput);
   await maybeComment(inputs, preflight, parsedOutput);
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
     setFailed("Tautest completed, but the mutation score is below the configured threshold.");
     return;
   }
+}
+function maybeAnnotate(inputs, output) {
+  if (inputs.annotations === "never") {
+    info("Skipping annotations because input `annotations` is never.");
+    return;
+  }
+  if (output.status === "no-op") {
+    info("Skipping annotations because Tautest found no changed production source files.");
+    return;
+  }
+  const count = emitSurvivorAnnotations(output.report?.surviving ?? []);
+  info(`Tautest annotations emitted: ${count}.`);
 }
 function buildCacheSummary(cacheState) {
   if (!cacheState) {
@@ -101625,10 +101677,20 @@ function setActionOutputs(output) {
   const score = summary2?.mutationScore;
   const verdict = summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "");
   const surviving = summary2?.survived ?? output.report?.surviving?.length ?? 0;
+  const killed = summary2?.killed ?? 0;
+  const noCoverage = summary2?.noCoverage ?? 0;
   setOutput("score", score === null || score === void 0 ? "" : String(score));
   setOutput("verdict", verdict);
+  setOutput("threshold", output.threshold === void 0 ? "" : String(output.threshold));
+  setOutput("killed", String(killed));
   setOutput("surviving", String(surviving));
+  setOutput("no-coverage", String(noCoverage));
   setOutput("report-path", output.paths?.report || "");
+  setOutput("json-path", output.paths?.json || "");
+  setOutput("prompt-path", output.paths?.prompt || "");
+  setOutput("mutation-json-path", output.paths?.mutationJson || "");
+  setOutput("runtime-ms", output.metrics?.runtimeMs === void 0 ? "" : String(output.metrics.runtimeMs));
+  setOutput("changed-source-lines", output.metrics?.changedSourceLineCount === void 0 ? "" : String(output.metrics.changedSourceLineCount));
 }
 function buildCommentReport(output) {
   const summary2 = output.report?.summary;

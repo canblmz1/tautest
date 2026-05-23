@@ -193,6 +193,7 @@ jobs:
           base: ${{ github.base_ref }}
           threshold: 60
           comment: changes
+          annotations: survivors
           cache: true
 ```
 
@@ -201,6 +202,7 @@ Notes:
 - The v1 action currently ships from this monorepo path.
 - `fetch-depth: 0` is required.
 - `pull-requests: write` is required for sticky comments.
+- `annotations: survivors` adds capped line annotations in the Checks UI.
 - `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
 - The Node 20 action runtime warning is a post-v1 roadmap item.
 
@@ -294,7 +296,7 @@ Tautest is local-first, does not call LLM APIs, and writes generated artifacts u
 - Better cache observability.
 - Monorepo beta.
 - Standalone GitHub Action repository, maybe.
-- PR line annotations.
+- Richer PR review annotations beyond survivor workflow annotations.
 - More Jest fixtures.
 
 See [roadmap](docs/ROADMAP.md).

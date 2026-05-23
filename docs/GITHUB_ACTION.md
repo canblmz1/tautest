@@ -45,6 +45,7 @@ jobs:
           threshold: 60
           max-changed-lines: 25
           comment: changes
+          annotations: survivors
           cache: true
 ```
 
@@ -62,6 +63,7 @@ jobs:
 | `max-changed-lines` | empty | Optional changed production line budget passed to `tautest run --max-changed-lines`. |
 | `fail-on-threshold` | `true` | Fails the job when the score is below threshold. |
 | `comment` | `changes` | PR comment mode: `always`, `changes`, or `never`. |
+| `annotations` | `never` | Inline annotation mode: `never` or `survivors`. |
 | `config` | empty | Optional path to `tautest.config.ts/js/mjs/json`. |
 | `prompt-style` | config default | Optional fix-prompt style: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`. |
 | `working-directory` | `.` | Project directory where Tautest runs. |
@@ -76,8 +78,16 @@ jobs:
 | --- | --- |
 | `score` | Mutation score. |
 | `verdict` | Tautest verdict. |
+| `threshold` | Configured mutation score threshold. |
+| `killed` | Killed mutant count. |
 | `surviving` | Surviving mutant count. |
+| `no-coverage` | No-coverage mutant count. |
 | `report-path` | Markdown report path. |
+| `json-path` | JSON report path. |
+| `prompt-path` | Fix prompt path. |
+| `mutation-json-path` | Raw mutation report path. |
+| `runtime-ms` | Tautest runtime in milliseconds. |
+| `changed-source-lines` | Changed production source lines considered by Tautest. |
 
 ## CI Budgets
 
@@ -112,6 +122,12 @@ The comment is formatted as a patch mutation quality gate. It shows:
 - a collapsible fix prompt
 
 Fork PRs may not have `pull-requests: write` permission. In that case the action warns and continues; mutation testing and artifacts still work.
+
+## Inline Annotations
+
+Set `annotations: survivors` to emit GitHub workflow annotations for the top surviving mutants. Each annotation points to the mutant file and line when GitHub can map the path, and includes the original expression, replacement, and likely missing behavior.
+
+Annotations are intentionally separate from sticky comments. Keep `comment: never` for quiet PR threads while still surfacing file-level mutation feedback in the Checks UI.
 
 ## Job Summary
 

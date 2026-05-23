@@ -24,6 +24,10 @@ inputs:
     description: Pull request comment mode. One of `always`, `changes`, or `never`.
     required: false
     default: changes
+  annotations:
+    description: Inline annotation mode. One of `never` or `survivors`.
+    required: false
+    default: never
   config:
     description: Optional path to tautest.config.ts/js/mjs/json.
     required: false
@@ -56,10 +60,26 @@ outputs:
     description: Mutation score reported by Tautest.
   verdict:
     description: Tautest verdict.
+  threshold:
+    description: Configured mutation score threshold.
+  killed:
+    description: Number of killed mutants.
   surviving:
     description: Number of surviving mutants.
+  no-coverage:
+    description: Number of mutants with no test coverage.
   report-path:
     description: Path to the generated markdown report.
+  json-path:
+    description: Path to the generated JSON report.
+  prompt-path:
+    description: Path to the generated fix prompt.
+  mutation-json-path:
+    description: Path to the generated raw mutation report.
+  runtime-ms:
+    description: Tautest runtime in milliseconds.
+  changed-source-lines:
+    description: Number of changed production source lines considered by Tautest.
 
 runs:
   using: node20

@@ -4,6 +4,7 @@ import { DefaultArtifactClient } from '@actions/artifact';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
+import { emitSurvivorAnnotations } from './annotations';
 import { restoreTautestCache, saveTautestCache, type TautestCache } from './cache';
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildPrComment, type CommentReport, upsertStickyComment } from './pr-comment';
@@ -52,10 +53,10 @@ interface TautestActionOutput {
       suggestion: string;
     }>;
   };
-    report?: {
-      summary?: {
-        verdict?: string;
-        mutationScore?: number | null;
+  report?: {
+    summary?: {
+      verdict?: string;
+      mutationScore?: number | null;
       killed?: number;
       survived?: number;
       noCoverage?: number;
@@ -142,6 +143,7 @@ export async function run(): Promise<void> {
 
   setActionOutputs(parsedOutput);
   await writeStepSummary({ ...parsedOutput, cache: cacheSummary });
+  maybeAnnotate(inputs, parsedOutput);
   await maybeComment(inputs, preflight, parsedOutput);
 
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
@@ -149,6 +151,21 @@ export async function run(): Promise<void> {
     return;
   }
 
+}
+
+function maybeAnnotate(inputs: ActionInputs, output: TautestActionOutput): void {
+  if (inputs.annotations === 'never') {
+    core.info('Skipping annotations because input `annotations` is never.');
+    return;
+  }
+
+  if (output.status === 'no-op') {
+    core.info('Skipping annotations because Tautest found no changed production source files.');
+    return;
+  }
+
+  const count = emitSurvivorAnnotations(output.report?.surviving ?? []);
+  core.info(`Tautest annotations emitted: ${count}.`);
 }
 
 function buildCacheSummary(cacheState: TautestCache | null): StepSummaryCache {
@@ -359,11 +376,21 @@ function setActionOutputs(output: TautestActionOutput): void {
   const score = summary?.mutationScore;
   const verdict = summary?.verdict || (output.status === 'no-op' ? 'NO_CHANGES' : '');
   const surviving = summary?.survived ?? output.report?.surviving?.length ?? 0;
+  const killed = summary?.killed ?? 0;
+  const noCoverage = summary?.noCoverage ?? 0;
 
   core.setOutput('score', score === null || score === undefined ? '' : String(score));
   core.setOutput('verdict', verdict);
+  core.setOutput('threshold', output.threshold === undefined ? '' : String(output.threshold));
+  core.setOutput('killed', String(killed));
   core.setOutput('surviving', String(surviving));
+  core.setOutput('no-coverage', String(noCoverage));
   core.setOutput('report-path', output.paths?.report || '');
+  core.setOutput('json-path', output.paths?.json || '');
+  core.setOutput('prompt-path', output.paths?.prompt || '');
+  core.setOutput('mutation-json-path', output.paths?.mutationJson || '');
+  core.setOutput('runtime-ms', output.metrics?.runtimeMs === undefined ? '' : String(output.metrics.runtimeMs));
+  core.setOutput('changed-source-lines', output.metrics?.changedSourceLineCount === undefined ? '' : String(output.metrics.changedSourceLineCount));
 }
 
 function buildCommentReport(output: TautestActionOutput): CommentReport {

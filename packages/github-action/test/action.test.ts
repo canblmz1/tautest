@@ -2,6 +2,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { buildSurvivorAnnotations } from '../src/annotations';
 import { buildCacheKey } from '../src/cache';
 import { parseInputs } from '../src/inputs';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
@@ -17,6 +18,7 @@ describe('action inputs', () => {
         maxChangedLines: '25',
         failOnThreshold: 'false',
         comment: 'always',
+        annotations: 'survivors',
         promptStyle: 'codex',
         workingDirectory: 'examples/vitest-basic',
         packageManager: 'pnpm',
@@ -29,6 +31,7 @@ describe('action inputs', () => {
       maxChangedLines: '25',
       failOnThreshold: false,
       comment: 'always',
+      annotations: 'survivors',
       promptStyle: 'codex',
       workingDirectory: 'examples/vitest-basic',
       packageManager: 'pnpm',
@@ -40,9 +43,50 @@ describe('action inputs', () => {
   it('rejects invalid input values', () => {
     expect(() => parseInputs({ threshold: '101' })).toThrow('threshold');
     expect(() => parseInputs({ comment: 'sometimes' })).toThrow('comment');
+    expect(() => parseInputs({ annotations: 'all' })).toThrow('annotations');
     expect(() => parseInputs({ install: 'yes' })).toThrow('install');
     expect(() => parseInputs({ maxChangedLines: '0' })).toThrow('max-changed-lines');
     expect(() => parseInputs({ promptStyle: 'robot' })).toThrow('prompt-style');
+  });
+});
+
+describe('annotations', () => {
+  it('builds capped line annotations for surviving mutants', () => {
+    const annotations = buildSurvivorAnnotations(
+      [
+        {
+          filePath: 'src/discount.ts',
+          line: 2,
+          mutatorName: 'EqualityOperator',
+          original: 'age >= 65',
+          replacement: 'age > 65',
+          insight: {
+            missingBehavior: 'The exact boundary value 65 is not protected.'
+          }
+        },
+        {
+          filePath: 'src/cart.ts',
+          line: 12,
+          mutatorName: 'ArithmeticOperator',
+          original: 'total + fee',
+          replacement: 'total - fee'
+        }
+      ],
+      { maxAnnotations: 1 }
+    );
+
+    expect(annotations).toEqual([
+      {
+        file: 'src/discount.ts',
+        line: 2,
+        title: 'Tautest survivor: EqualityOperator',
+        message:
+          'EqualityOperator survived mutation testing.\n' +
+          'Original: age >= 65\n' +
+          'Replacement: age > 65\n' +
+          'Likely missing behavior: The exact boundary value 65 is not protected.'
+      }
+    ]);
   });
 });
 
@@ -157,6 +201,7 @@ describe('Tautest CLI invocation', () => {
         maxChangedLines: '25',
         failOnThreshold: true,
         comment: 'changes',
+        annotations: 'never',
         config: 'tautest.config.ts',
         promptStyle: 'codex',
         workingDirectory: '.',

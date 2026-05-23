@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 
 export type CommentMode = 'always' | 'changes' | 'never';
+export type AnnotationMode = 'never' | 'survivors';
 export type PackageManagerInput = 'auto' | 'npm' | 'pnpm' | 'yarn' | 'bun';
 export type PromptStyleInput = 'agent' | 'human' | 'claude-code' | 'cursor' | 'codex' | 'opencode';
 
@@ -13,6 +14,7 @@ export interface ActionInputs {
   maxChangedLines?: string;
   failOnThreshold: boolean;
   comment: CommentMode;
+  annotations: AnnotationMode;
   config?: string;
   promptStyle?: PromptStyleInput;
   workingDirectory: string;
@@ -30,6 +32,7 @@ export function readInputs(): ActionInputs {
     maxChangedLines: core.getInput('max-changed-lines'),
     failOnThreshold: core.getInput('fail-on-threshold'),
     comment: core.getInput('comment'),
+    annotations: core.getInput('annotations'),
     config: core.getInput('config'),
     promptStyle: core.getInput('prompt-style'),
     workingDirectory: core.getInput('working-directory'),
@@ -50,6 +53,7 @@ export function parseInputs(raw: Record<string, string | undefined>): ActionInpu
     maxChangedLines: parseOptionalPositiveInteger(raw.maxChangedLines, 'max-changed-lines'),
     failOnThreshold: parseBoolean(raw.failOnThreshold || 'true', 'fail-on-threshold'),
     comment: parseCommentMode(raw.comment || 'changes'),
+    annotations: parseAnnotationMode(raw.annotations || 'never'),
     config: blankToUndefined(raw.config),
     promptStyle: parsePromptStyle(raw.promptStyle),
     workingDirectory: raw.workingDirectory?.trim() || '.',
@@ -106,6 +110,14 @@ function parseCommentMode(value: string): CommentMode {
   }
 
   throw new Error('Input `comment` must be one of always, changes, or never.');
+}
+
+function parseAnnotationMode(value: string): AnnotationMode {
+  if (value === 'never' || value === 'survivors') {
+    return value;
+  }
+
+  throw new Error('Input `annotations` must be one of never or survivors.');
 }
 
 function parsePromptStyle(value: string | undefined): PromptStyleInput | undefined {

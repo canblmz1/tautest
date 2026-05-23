@@ -23,7 +23,7 @@
 - Evaluate a standalone GitHub Action repository if the monorepo action path remains adoption friction.
 - Report format plugins.
 - IDE integrations.
-- Richer PR review annotations.
+- Richer PR review annotations beyond survivor workflow annotations.
 - More test-runner recipes.
 
 ## Explicitly Out Of Scope For V1
