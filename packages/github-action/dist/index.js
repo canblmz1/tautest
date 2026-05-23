@@ -100934,21 +100934,40 @@ async function restoreTautestCache(context5) {
 }
 async function saveTautestCache(state3) {
   if (!state3) {
-    return;
+    return {
+      status: "skipped-no-state",
+      message: "Cache restore did not produce a cache state."
+    };
   }
   if (!(0, import_node_fs2.existsSync)(state3.cachePath)) {
-    info("No Tautest incremental cache file found to save.");
-    return;
+    const message = "No Tautest incremental cache file found to save.";
+    info(message);
+    return {
+      status: "skipped-missing-file",
+      message
+    };
   }
   try {
     await saveCache2([state3.cachePath], state3.cacheKey);
+    return {
+      status: "saved",
+      message: "Saved Tautest incremental cache."
+    };
   } catch (error2) {
     const message = error2 instanceof Error ? error2.message : String(error2);
     if (/already exists|reserve/i.test(message)) {
-      info("Tautest cache already exists for this key.");
-      return;
+      const alreadyExistsMessage = "Tautest cache already exists for this key.";
+      info(alreadyExistsMessage);
+      return {
+        status: "already-exists",
+        message: alreadyExistsMessage
+      };
     }
     warning(`Could not save Tautest cache: ${message}`);
+    return {
+      status: "failed",
+      message
+    };
   }
 }
 function sanitize(value) {
@@ -101159,6 +101178,7 @@ function buildStepSummary(output) {
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     "",
     ...output.message ? ["## Message", "", sanitize3(output.message), ""] : [],
+    ...buildCacheSection(output.cache),
     "## Top Surviving Mutants",
     "",
     topMutants.length > 0 ? [
@@ -101176,6 +101196,24 @@ function buildStepSummary(output) {
       ""
     ] : []
   ].join("\n");
+}
+function buildCacheSection(cache) {
+  if (!cache) {
+    return [];
+  }
+  if (!cache.enabled) {
+    return ["## Cache", "", "Disabled for this run.", ""];
+  }
+  const restoreStatus = cache.matchedKey ? "hit" : "miss";
+  return [
+    "## Cache",
+    "",
+    "| Restore | Save | Key | Matched key | Cache file |",
+    "| --- | --- | --- | --- | --- |",
+    `| ${restoreStatus} | ${cell(cache.saveStatus || "not-saved")} | ${codeCell2(cache.cacheKey || "unknown")} | ${codeCell2(cache.matchedKey || "none")} | ${codeCell2(cache.cachePath || "unknown")} |`,
+    ...cache.saveMessage ? ["", sanitize3(cache.saveMessage)] : [],
+    ""
+  ];
 }
 async function writeStepSummary(output) {
   if (!process.env.GITHUB_STEP_SUMMARY) {
@@ -101302,6 +101340,7 @@ async function run() {
   }
   const preflight = await runPreflight(inputs);
   let cacheState = null;
+  let cacheSummary = inputs.cache ? void 0 : { enabled: false };
   if (inputs.install) {
     await ensurePackageManagerAvailable(preflight.packageManager, preflight.workingDirectory);
     await installDependencies(preflight.workingDirectory, preflight.packageManager);
@@ -101315,6 +101354,7 @@ async function run() {
       headRef: preflight.headRef,
       packageManager: preflight.packageManager
     });
+    cacheSummary = buildCacheSummary(cacheState);
   }
   const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base);
   if (runResult.exitCode !== 0 && runResult.exitCode !== 1 && runResult.exitCode !== 2) {
@@ -101336,15 +101376,35 @@ async function run() {
   }
   await uploadTautestArtifact(preflight.workingDirectory);
   if (inputs.cache) {
-    await saveTautestCache(cacheState);
+    const saveResult = await saveTautestCache(cacheState);
+    cacheSummary = {
+      ...cacheSummary ?? { enabled: true },
+      saveStatus: saveResult.status,
+      saveMessage: saveResult.message
+    };
   }
   setActionOutputs(parsedOutput);
-  await writeStepSummary(parsedOutput);
+  await writeStepSummary({ ...parsedOutput, cache: cacheSummary });
   await maybeComment(inputs, preflight, parsedOutput);
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
     setFailed("Tautest completed, but the mutation score is below the configured threshold.");
     return;
   }
+}
+function buildCacheSummary(cacheState) {
+  if (!cacheState) {
+    return {
+      enabled: true,
+      saveStatus: "not-restored",
+      saveMessage: "Cache restore was unavailable."
+    };
+  }
+  return {
+    enabled: true,
+    cacheKey: cacheState.cacheKey,
+    cachePath: cacheState.cachePath,
+    matchedKey: cacheState.matchedKey
+  };
 }
 async function runPreflight(inputs) {
   const workspace = process.env.GITHUB_WORKSPACE || process.cwd();

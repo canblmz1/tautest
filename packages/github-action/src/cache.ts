@@ -18,6 +18,11 @@ export interface TautestCache {
   matchedKey?: string;
 }
 
+export interface TautestCacheSaveResult {
+  status: 'saved' | 'skipped-no-state' | 'skipped-missing-file' | 'already-exists' | 'failed';
+  message: string;
+}
+
 export function buildCacheKey(context: CacheContext): string {
   const runnerOs = sanitize(context.runnerOs || process.env.RUNNER_OS || process.platform);
   const base = sanitize(context.base);
@@ -45,27 +50,46 @@ export async function restoreTautestCache(context: CacheContext): Promise<Tautes
   }
 }
 
-export async function saveTautestCache(state: TautestCache | null): Promise<void> {
+export async function saveTautestCache(state: TautestCache | null): Promise<TautestCacheSaveResult> {
   if (!state) {
-    return;
+    return {
+      status: 'skipped-no-state',
+      message: 'Cache restore did not produce a cache state.'
+    };
   }
 
   if (!existsSync(state.cachePath)) {
-    core.info('No Tautest incremental cache file found to save.');
-    return;
+    const message = 'No Tautest incremental cache file found to save.';
+    core.info(message);
+    return {
+      status: 'skipped-missing-file',
+      message
+    };
   }
 
   try {
     await cache.saveCache([state.cachePath], state.cacheKey);
+    return {
+      status: 'saved',
+      message: 'Saved Tautest incremental cache.'
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
     if (/already exists|reserve/i.test(message)) {
-      core.info('Tautest cache already exists for this key.');
-      return;
+      const alreadyExistsMessage = 'Tautest cache already exists for this key.';
+      core.info(alreadyExistsMessage);
+      return {
+        status: 'already-exists',
+        message: alreadyExistsMessage
+      };
     }
 
     core.warning(`Could not save Tautest cache: ${message}`);
+    return {
+      status: 'failed',
+      message
+    };
   }
 }
 

@@ -3,6 +3,7 @@ import * as core from '@actions/core';
 export interface StepSummaryOutput {
   status: string;
   message?: string;
+  cache?: StepSummaryCache;
   report?: {
     summary?: {
       verdict?: string;
@@ -26,6 +27,15 @@ export interface StepSummaryOutput {
   };
 }
 
+export interface StepSummaryCache {
+  enabled: boolean;
+  cacheKey?: string;
+  cachePath?: string;
+  matchedKey?: string;
+  saveStatus?: string;
+  saveMessage?: string;
+}
+
 export function buildStepSummary(output: StepSummaryOutput): string {
   const summary = output.report?.summary;
   const verdict = summary?.verdict || (output.status === 'no-op' ? 'NO_CHANGES' : output.status || 'UNKNOWN');
@@ -43,6 +53,7 @@ export function buildStepSummary(output: StepSummaryOutput): string {
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     '',
     ...(output.message ? ['## Message', '', sanitize(output.message), ''] : []),
+    ...buildCacheSection(output.cache),
     '## Top Surviving Mutants',
     '',
     topMutants.length > 0
@@ -64,6 +75,28 @@ export function buildStepSummary(output: StepSummaryOutput): string {
         ]
       : [])
   ].join('\n');
+}
+
+function buildCacheSection(cache: StepSummaryCache | undefined): string[] {
+  if (!cache) {
+    return [];
+  }
+
+  if (!cache.enabled) {
+    return ['## Cache', '', 'Disabled for this run.', ''];
+  }
+
+  const restoreStatus = cache.matchedKey ? 'hit' : 'miss';
+
+  return [
+    '## Cache',
+    '',
+    '| Restore | Save | Key | Matched key | Cache file |',
+    '| --- | --- | --- | --- | --- |',
+    `| ${restoreStatus} | ${cell(cache.saveStatus || 'not-saved')} | ${codeCell(cache.cacheKey || 'unknown')} | ${codeCell(cache.matchedKey || 'none')} | ${codeCell(cache.cachePath || 'unknown')} |`,
+    ...(cache.saveMessage ? ['', sanitize(cache.saveMessage)] : []),
+    ''
+  ];
 }
 
 export async function writeStepSummary(output: StepSummaryOutput): Promise<void> {

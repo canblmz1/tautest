@@ -7,7 +7,7 @@ import * as github from '@actions/github';
 import { restoreTautestCache, saveTautestCache, type TautestCache } from './cache';
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildPrComment, type CommentReport, upsertStickyComment } from './pr-comment';
-import { writeStepSummary } from './summary';
+import { writeStepSummary, type StepSummaryCache } from './summary';
 import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
 
 interface PreflightResult {
@@ -70,6 +70,7 @@ export async function run(): Promise<void> {
 
   const preflight = await runPreflight(inputs);
   let cacheState: TautestCache | null = null;
+  let cacheSummary: StepSummaryCache | undefined = inputs.cache ? undefined : { enabled: false };
 
   if (inputs.install) {
     await ensurePackageManagerAvailable(preflight.packageManager, preflight.workingDirectory);
@@ -85,6 +86,7 @@ export async function run(): Promise<void> {
       headRef: preflight.headRef,
       packageManager: preflight.packageManager
     });
+    cacheSummary = buildCacheSummary(cacheState);
   }
 
   const runResult = await runTautest(preflight.workspaceRoot, preflight.workingDirectory, inputs, preflight.base);
@@ -112,11 +114,16 @@ export async function run(): Promise<void> {
   await uploadTautestArtifact(preflight.workingDirectory);
 
   if (inputs.cache) {
-    await saveTautestCache(cacheState);
+    const saveResult = await saveTautestCache(cacheState);
+    cacheSummary = {
+      ...(cacheSummary ?? { enabled: true }),
+      saveStatus: saveResult.status,
+      saveMessage: saveResult.message
+    };
   }
 
   setActionOutputs(parsedOutput);
-  await writeStepSummary(parsedOutput);
+  await writeStepSummary({ ...parsedOutput, cache: cacheSummary });
   await maybeComment(inputs, preflight, parsedOutput);
 
   if (runResult.exitCode === 1 && inputs.failOnThreshold) {
@@ -124,6 +131,23 @@ export async function run(): Promise<void> {
     return;
   }
 
+}
+
+function buildCacheSummary(cacheState: TautestCache | null): StepSummaryCache {
+  if (!cacheState) {
+    return {
+      enabled: true,
+      saveStatus: 'not-restored',
+      saveMessage: 'Cache restore was unavailable.'
+    };
+  }
+
+  return {
+    enabled: true,
+    cacheKey: cacheState.cacheKey,
+    cachePath: cacheState.cachePath,
+    matchedKey: cacheState.matchedKey
+  };
 }
 
 async function runPreflight(inputs: ActionInputs): Promise<PreflightResult> {

@@ -224,6 +224,14 @@ describe('step summary', () => {
   it('builds a sanitized GitHub job summary', () => {
     const summary = buildStepSummary({
       status: 'threshold-failed',
+      cache: {
+        enabled: true,
+        cacheKey: 'tautest-Linux-pnpm-main-feature-123456789abc',
+        cachePath: '.tautest/stryker-incremental.json',
+        matchedKey: 'tautest-Linux-pnpm-main-feature-123456789abc',
+        saveStatus: 'already-exists',
+        saveMessage: 'Tautest cache already exists for this key.'
+      },
       report: {
         summary: {
           verdict: 'MIXED',
@@ -251,8 +259,22 @@ describe('step summary', () => {
 
     expect(summary).toContain('# Tautest');
     expect(summary).toContain('| MIXED | 75.00% | 3 | 1 | 0 |');
+    expect(summary).toContain('## Cache');
+    expect(summary).toContain('| hit | already-exists |');
     expect(summary).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 |');
     expect(summary).toContain('Fix prompt: `.tautest/fix-prompt.md`');
+  });
+
+  it('summarizes disabled cache runs', () => {
+    const summary = buildStepSummary({
+      status: 'passed',
+      cache: {
+        enabled: false
+      }
+    });
+
+    expect(summary).toContain('## Cache');
+    expect(summary).toContain('Disabled for this run.');
   });
 
   it('summarizes no-op runs without mutants', () => {
