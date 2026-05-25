@@ -163,12 +163,38 @@ describe('prompt and report commands', () => {
       path.join(outputDir, 'report.json'),
       JSON.stringify({
         version: '1',
+        schemaVersion: '1',
+        createdAt: '2026-05-25T00:00:00.000Z',
+        summary: {
+          verdict: 'WEAK',
+          mutationScore: 50,
+          threshold: 60,
+          total: 2,
+          killed: 1,
+          survived: 1,
+          noCoverage: 0,
+          timeout: 0,
+          runtimeError: 0,
+          compileError: 0,
+          ignored: 0
+        },
         scope: {
           baseRef: 'HEAD',
-          runner: 'vitest'
+          runner: 'vitest',
+          mutatePatterns: ['src/discount.ts:2-2'],
+          mutatedFiles: ['src/discount.ts']
+        },
+        metrics: {
+          runtimeMs: 250,
+          changedSourceLineCount: 1
+        },
+        diagnostics: {
+          strykerConfig: []
         },
         aiSignals: {
           promptStyle: 'codex',
+          hardRules: ['Do not change production code.'],
+          validationLoop: ['Run Tautest again.'],
           commands: ['tautest run --base HEAD', 'vitest run']
         },
         surviving: [
@@ -182,9 +208,17 @@ describe('prompt and report commands', () => {
             location: {
               start: { line: 2, column: 7 },
               end: { line: 2, column: 16 }
+            },
+            coveringTests: [],
+            insight: {
+              category: 'boundary',
+              missingBehavior: 'The exact boundary value 65 is not protected.',
+              whyThisMatters: 'Boundary regressions can change discounts.',
+              suggestedTestIdea: 'Add a test for age 65.'
             }
           }
-        ]
+        ],
+        stryker: null
       })
     );
     writeFileSync(path.join(outputDir, 'report.md'), '# Report\n');
@@ -194,6 +228,11 @@ describe('prompt and report commands', () => {
     await expect(runPromptCommand(root, { style: 'human' })).resolves.toContain('Use this as a human test-writing checklist.');
     await expect(runPromptCommand(root, { style: 'opencode' })).resolves.toContain('You are OpenCode working in an existing repository.');
     expect(runReportCommand(root, {})).toBe('# Report\n');
+    expect(runReportCommand(root, { html: true })).toContain('HTML report written');
+    const html = readFileSync(path.join(outputDir, 'report.html'), 'utf8');
+    expect(html).toContain('Tautest mutation report');
+    expect(html).toContain('data-tautest-file="src/discount.ts"');
+    expect(html).toContain('age &gt; 65');
   });
 
   it('writes an opt-in LLM suggestion artifact through an external command', async () => {

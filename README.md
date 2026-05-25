@@ -47,6 +47,7 @@ See [Why Tautest?](docs/WHY_TAUTEST.md) for the longer positioning and compariso
 - Parses surviving mutants into review-friendly findings.
 - Summarizes patch-scoped mutation quality for pull requests.
 - Writes Markdown, JSON, and terminal reports.
+- Can generate a local static HTML report viewer.
 - Generates AI-ready fix prompts.
 - Can post GitHub PR comments.
 - Writes a GitHub job summary when used in GitHub Actions.
@@ -132,6 +133,7 @@ tautest doctor
 tautest run --base origin/main --threshold 60
 tautest prompt --style codex
 tautest report
+tautest report --html
 ```
 
 Common options:
@@ -257,11 +259,14 @@ Tautest writes run outputs to `.tautest/` by default:
 
 - `.tautest/report.md`
 - `.tautest/report.json`
+- `.tautest/report.html` when `tautest report --html` is used
 - `.tautest/fix-prompt.md`
 - `.tautest/llm-suggestion.md` when `tautest prompt --suggest` is explicitly enabled
 - `.tautest/stryker-incremental.json`
 
 The machine-readable `.tautest/report.json` file uses schema version `1`. See [docs/report.schema.json](docs/report.schema.json) for the JSON Schema contract.
+
+IDE and editor integrations should use `.tautest/report.json` as the source of truth. See [IDE integration contract](docs/IDE_INTEGRATION.md).
 
 GitHub Actions also writes a job summary with the mutation score and top surviving mutants when summary output is available.
 

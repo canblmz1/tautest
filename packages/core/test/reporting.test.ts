@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildFixPrompt } from '../src/prompt/builder';
+import { buildHtmlReport } from '../src/report/html';
 import { buildJsonReport } from '../src/report/json';
 import { buildMarkdownReport } from '../src/report/markdown';
 import { buildTerminalSummary } from '../src/report/terminal';
@@ -152,6 +153,13 @@ describe('report builders', () => {
       category: 'boundary',
       missingBehavior: expect.stringContaining('exact boundary value 65')
     });
+    const html = buildHtmlReport(jsonReport);
+    expect(html).toContain('<!doctype html>');
+    expect(html).toContain('data-tautest-schema-version="1"');
+    expect(html).toContain('Tautest mutation report');
+    expect(html).toContain('data-tautest-file="src/discount.ts"');
+    expect(html).toContain('age &gt; 65');
+    expect(html).toContain('"surviving"');
     const terminal = buildTerminalSummary(summary, score, {
       threshold: 60,
       runner: 'vitest',

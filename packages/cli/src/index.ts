@@ -112,8 +112,10 @@ export function buildProgram(): Command {
 
   program
     .command('report')
-    .description('print a markdown report')
-    .option('--from <path>', 'path to report.md')
+    .description('print a markdown report or write a static HTML report')
+    .option('--from <path>', 'path to report.md, or report.json when --html is used')
+    .option('--html', 'write a static HTML report from report.json')
+    .option('--out <path>', 'output path for --html, defaulting to report.html next to report.json')
     .action(async (options) => {
       await runAction(program, async () => {
         writeStdout(runReportCommand(process.cwd(), options));

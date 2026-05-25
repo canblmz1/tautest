@@ -10,6 +10,7 @@ export * from './stryker/runner';
 export * from './stryker/report-parser';
 export * from './score/score';
 export * from './report/markdown';
+export * from './report/html';
 export * from './report/json';
 export * from './report/terminal';
 export * from './report/insights';

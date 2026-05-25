@@ -207,12 +207,19 @@ See [LLM suggestions](LLM_SUGGESTIONS.md) and [trust and safety](TRUST_AND_SAFET
 
 ## `tautest report`
 
-Prints markdown report content.
+Prints markdown report content, or writes a static HTML report from `report.json`.
 
 ```bash
 tautest report
 tautest report --from path/to/report.md
+tautest report --html
+tautest report --html --from .tautest/report.json --out .tautest/report.html
 ```
+
+HTML report flags:
+
+- `--html`: generate a static HTML viewer from `report.json`.
+- `--out <path>`: output path for the generated HTML file. Defaults to `report.html` next to the JSON report.
 
 ## Exit Codes
 
