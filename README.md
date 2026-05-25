@@ -288,12 +288,14 @@ These files are generated artifacts and normally should not be committed.
 - Tautest uses StrykerJS; it is not a mutation engine.
 - Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms may still need explicit Stryker/Jest config.
 - Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
+- Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
 - Runtime depends on project size and test speed.
 - CLI support is validated on Node 20 and 24. GitHub Action currently uses the Node 20 action runtime.
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 
 See [limitations](docs/LIMITATIONS.md).
+See [multi-language alpha](docs/MULTI_LANGUAGE_ALPHA.md) for runner plugin groundwork.
 
 ## Trust and safety
 

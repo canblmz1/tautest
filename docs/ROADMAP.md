@@ -23,6 +23,7 @@
 - Evaluate a standalone GitHub Action repository if the monorepo action path remains adoption friction.
 - Report format plugins.
 - IDE integrations on top of the `report.json` contract and static HTML viewer.
+- Runner plugin architecture with Python and Java alpha parsers.
 - Richer PR review annotations beyond survivor workflow annotations.
 - More test-runner recipes beyond the current framework recipe set.
 

@@ -4,6 +4,8 @@
 
 Tautest v1 is built around StrykerJS for JavaScript and TypeScript. Future Python and Java support should not be bolted onto Stryker-specific internals. This document proposes a runner plugin architecture that keeps the product workflow consistent while allowing different mutation engines.
 
+Phase 9 adds the first internal version of this architecture in `@tautest/core`: runner types, a registry, normalized report helpers, a StrykerJS adapter, and parser-only alpha helpers for mutmut and PIT. Python and Java are not wired into `tautest run` yet; see [MULTI_LANGUAGE_ALPHA.md](MULTI_LANGUAGE_ALPHA.md).
+
 ## Design Goals
 
 - Keep `@tautest/core` engine-neutral at the report and prompt layer.
