@@ -2,7 +2,16 @@ import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { buildWorkspacePlan, detectWorkspace, findOwningPackage, parsePackageSelectors, selectAffectedWorkspacePackages, type ChangedFile } from '../src';
+import {
+  buildWorkspaceMarkdownReport,
+  buildWorkspacePlan,
+  buildWorkspaceRunReport,
+  detectWorkspace,
+  findOwningPackage,
+  parsePackageSelectors,
+  selectAffectedWorkspacePackages,
+  type ChangedFile
+} from '../src';
 
 describe('workspace detection', () => {
   it('detects pnpm workspace packages from yaml patterns', () => {
@@ -75,6 +84,53 @@ describe('workspace planning', () => {
 
     expect(plan.selectedPackages.map((selection) => selection.path)).toEqual(['packages/api', 'packages/web']);
     expect(parsePackageSelectors('@fixture/api, packages/web')).toEqual(['@fixture/api', 'packages/web']);
+  });
+});
+
+describe('workspace run reports', () => {
+  it('summarizes package run outcomes and renders markdown', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'pnpm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      createdAt: new Date('2026-05-25T00:00:00.000Z'),
+      packages: [
+        {
+          name: '@fixture/api',
+          path: 'packages/api',
+          status: 'passed',
+          exitCode: 0,
+          reasons: ['changed packages/api/src/index.ts'],
+          summary: {
+            verdict: 'STRONG',
+            mutationScore: 100,
+            killed: 2,
+            survived: 0,
+            noCoverage: 0
+          },
+          paths: {
+            report: '/repo/.tautest/packages/fixture-api/report.md'
+          }
+        },
+        {
+          name: '@fixture/web',
+          path: 'packages/web',
+          status: 'no-op',
+          exitCode: 2,
+          reasons: ['selected by --all']
+        }
+      ],
+      warnings: ['root config selected all packages']
+    });
+
+    expect(report.status).toBe('workspace-passed');
+    expect(report.summary).toMatchObject({
+      selected: 2,
+      passed: 1,
+      noOp: 1
+    });
+    expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/api | `packages/api` | passed | 100.00 | 2 | 0 | 0 |');
   });
 });
 

@@ -109,6 +109,51 @@ export interface WorkspacePlan {
   warnings: string[];
 }
 
+export type WorkspacePackageRunStatus = 'passed' | 'threshold-failed' | 'no-op' | 'error';
+
+export interface WorkspacePackageRunResult {
+  name: string | null;
+  path: string;
+  status: WorkspacePackageRunStatus;
+  exitCode: number;
+  reasons: string[];
+  message?: string;
+  summary?: {
+    verdict?: MutationVerdict;
+    mutationScore?: number | null;
+    threshold?: number;
+    killed?: number;
+    survived?: number;
+    noCoverage?: number;
+  };
+  paths?: {
+    report?: string;
+    json?: string;
+    prompt?: string;
+    mutationJson?: string;
+  };
+}
+
+export interface WorkspaceRunReport {
+  version: '1';
+  schemaVersion: '1';
+  createdAt: string;
+  status: 'workspace-passed' | 'workspace-threshold-failed' | 'workspace-no-op' | 'workspace-error';
+  baseRef: string;
+  packageManager: PackageManager | null;
+  workspaceRoot: string;
+  reportDir: string;
+  summary: {
+    selected: number;
+    passed: number;
+    thresholdFailed: number;
+    noOp: number;
+    errors: number;
+  };
+  packages: WorkspacePackageRunResult[];
+  warnings: string[];
+}
+
 export interface PackageManagerDetection {
   packageManager: PackageManager;
   reason: string;

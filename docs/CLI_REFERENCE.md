@@ -67,7 +67,7 @@ Flags:
 - `--dry-run`
 - `--prompt-style agent|human|claude-code|cursor|codex|opencode`
 
-### Workspace planner beta
+### Workspace execution beta
 
 Use `--workspace --dry-run --json` from a repository root to inspect the monorepo package plan without running Stryker:
 
@@ -75,7 +75,7 @@ Use `--workspace --dry-run --json` from a repository root to inspect the monorep
 tautest run --workspace --dry-run --json --base origin/main
 ```
 
-The planner currently supports `pnpm-workspace.yaml` and root `package.json` workspaces. It prints selected packages, why each package was selected, unselected packages, changed files, workspace confidence, and warnings for conservative selections.
+The workspace mode currently supports `pnpm-workspace.yaml` and root `package.json` workspaces. Dry-run prints selected packages, why each package was selected, unselected packages, changed files, workspace confidence, and warnings for conservative selections.
 
 Selection flags:
 
@@ -84,7 +84,15 @@ Selection flags:
 - `--workspace --all --dry-run`: select every detected workspace package.
 - `--workspace --affected --dry-run`: explicit spelling for the default affected package plan.
 
-Workspace mutation execution is intentionally not enabled in this beta. That is the next phase; this command is for reviewable planning and CI matrix generation.
+Without `--dry-run`, workspace mode runs selected packages sequentially and writes aggregate reports:
+
+- `.tautest/workspace-report.md`
+- `.tautest/workspace-report.json`
+- `.tautest/packages/<package>/report.md`
+- `.tautest/packages/<package>/report.json`
+- `.tautest/packages/<package>/fix-prompt.md`
+
+Sequential execution is intentional in this beta so package output remains deterministic. Concurrency and dependency-graph expansion are later workspace hardening steps.
 
 ### Workspace path compatibility
 

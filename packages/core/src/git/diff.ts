@@ -3,6 +3,7 @@ import type { ChangedFile, ChangedFileStatus, DiffParseOptions, GitDiffOptions }
 
 const DEFAULT_SOURCE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mts', '.cts', '.mjs', '.cjs'];
 const DEFAULT_TEST_PATTERN = /(^|[/\\])(__tests__|test|tests)([/\\]|$)|\.(test|spec)\.[cm]?[tj]sx?$/;
+const GIT_DIFF_MAX_BUFFER = 50 * 1024 * 1024;
 
 interface MutableChangedFile extends ChangedFile {
   lineSet: Set<number>;
@@ -22,6 +23,7 @@ export function readGitDiff(options: GitDiffOptions): string {
   return execFileSync('git', args, {
     cwd: options.cwd,
     encoding: 'utf8',
+    maxBuffer: GIT_DIFF_MAX_BUFFER,
     stdio: ['ignore', 'pipe', 'pipe']
   });
 }

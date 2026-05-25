@@ -107,12 +107,12 @@ Selection modes:
 - `explicit`: run packages selected by name or path.
 - `all`: run every compatible package.
 
-Implemented planner beta:
+Implemented workspace beta:
 
 - Local CLI: `tautest run --workspace --dry-run --json`.
 - Package sources: `pnpm-workspace.yaml` and root `package.json` workspaces.
 - Selection: affected packages by path, explicit package selectors, or all packages.
-- Execution: intentionally deferred to the workspace runner phase.
+- Execution: selected packages run sequentially and produce aggregate workspace reports.
 
 CLI flags:
 
@@ -144,7 +144,7 @@ Algorithm:
 5. Select package if it owns changed production source.
 6. If changed file is package config, select that package with reason `config-change`.
 7. If changed file is root config that may affect all packages, expand or warn.
-8. If `--affected` is enabled, add reverse dependents from the workspace graph. The planner beta currently does path ownership first; dependency expansion is reserved for the execution beta.
+8. If `--affected` is enabled, add reverse dependents from the workspace graph. The current beta does path ownership first; dependency expansion is reserved for workspace hardening.
 
 Ambiguity handling:
 

@@ -140,7 +140,8 @@ Common options:
 - `--threshold <number>`: minimum mutation score.
 - `--report-dir <dir>`: output directory, default `.tautest`.
 - `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
-- `--workspace <path>`: run from a workspace/package directory inside the current repository.
+- `--workspace`: plan or run selected workspace packages in a monorepo.
+- `--workspace-path <path>`: run from a workspace/package directory inside the current repository.
 - `--max-changed-lines <number>`: fail before StrykerJS runs if the changed production line count exceeds the budget.
 - `--dry-run`: preview included/excluded changed files and mutate scope without running StrykerJS.
 - `--json`: print machine-readable run output.
@@ -278,7 +279,7 @@ These files are generated artifacts and normally should not be committed.
 
 - Tautest uses StrykerJS; it is not a mutation engine.
 - Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms may still need explicit Stryker/Jest config.
-- Monorepo support is detect-and-warn in v1.
+- Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
 - Runtime depends on project size and test speed.
 - CLI support is validated on Node 20 and 24. GitHub Action currently uses the Node 20 action runtime.
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
@@ -294,7 +295,7 @@ Tautest is local-first, does not call LLM APIs, and writes generated artifacts u
 
 - Node 24 action runtime migration.
 - Better cache observability.
-- Workspace planner beta.
+- Workspace execution beta.
 - Standalone GitHub Action repository, maybe.
 - Richer PR review annotations beyond survivor workflow annotations.
 - More Jest fixtures.

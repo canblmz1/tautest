@@ -6,12 +6,15 @@ import {
   buildMarkdownReport,
   buildTerminalSummary,
   buildWorkspacePlan,
+  buildWorkspaceMarkdownReport,
+  buildWorkspaceRunReport,
   changedFilesToStrykerMutate,
   detectAiAuthor,
   detectPackageManager,
   detectProject,
   detectWorkspace,
   detectTestRunner,
+  findTautestConfig,
   generateStrykerConfig,
   getStrykerConfigDiagnostics,
   getActionableMutants,
@@ -28,12 +31,13 @@ import {
   type PromptStyle,
   type TestRunner,
   type TautestJsonReport,
+  type WorkspacePackageRunResult,
   type WorkspacePlan
 } from '@tautest/core';
 import { loadCliConfig } from '../lib/config';
-import { CliError } from '../lib/errors';
+import { CliError, mapUnknownError } from '../lib/errors';
 import { EXIT_CODES } from '../lib/exit-codes';
-import { ensureDir, writeJsonFile, writeTextFile } from '../lib/fs';
+import { ensureDir, readJsonFile, writeJsonFile, writeTextFile } from '../lib/fs';
 import { buildPromptCommands } from '../lib/prompt-commands';
 
 export interface RunOptions {
@@ -66,10 +70,14 @@ export interface RunResult {
 }
 
 export async function runMutationCommand(cwd: string, options: RunOptions): Promise<RunResult> {
-  if (isWorkspacePlanMode(options)) {
-    return runWorkspacePlanCommand(cwd, options);
+  if (isWorkspaceMode(options)) {
+    return runWorkspaceCommand(cwd, options);
   }
 
+  return runSingleProjectMutationCommand(cwd, options);
+}
+
+async function runSingleProjectMutationCommand(cwd: string, options: RunOptions): Promise<RunResult> {
   const project = detectProject(resolveWorkspaceCwd(cwd, resolveWorkspacePathOption(options)));
 
   if (!project.packageJsonPath || !project.packageJson) {
@@ -281,15 +289,7 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
   };
 }
 
-async function runWorkspacePlanCommand(cwd: string, options: RunOptions): Promise<RunResult> {
-  if (!options.dryRun) {
-    throw new CliError(
-      'Workspace execution is not available in this beta phase.',
-      EXIT_CODES.configError,
-      'Use `tautest run --workspace --dry-run --json` to inspect the package plan before Phase 5 workspace execution.'
-    );
-  }
-
+async function runWorkspaceCommand(cwd: string, options: RunOptions): Promise<RunResult> {
   const workspace = detectWorkspace(cwd);
 
   if (!workspace.detected) {
@@ -318,16 +318,97 @@ async function runWorkspacePlanCommand(cwd: string, options: RunOptions): Promis
     packages: packageSelectors
   });
 
+  if (options.dryRun) {
+    return {
+      exitCode: EXIT_CODES.ok,
+      output: buildWorkspacePlanOutput({
+        plan,
+        baseRef,
+        reportDir,
+        json: Boolean(options.json)
+      }),
+      reportDir
+    };
+  }
+
+  const workspaceReport = await runWorkspacePackages({
+    plan,
+    options,
+    baseRef,
+    reportDir
+  });
+  const reportPath = path.join(reportDir, 'workspace-report.md');
+  const jsonReportPath = path.join(reportDir, 'workspace-report.json');
+
+  writeJsonFile(jsonReportPath, workspaceReport);
+  writeTextFile(reportPath, buildWorkspaceMarkdownReport(workspaceReport));
+
   return {
-    exitCode: EXIT_CODES.ok,
-    output: buildWorkspacePlanOutput({
-      plan,
-      baseRef,
-      reportDir,
+    exitCode: workspaceExitCode(workspaceReport.status),
+    output: buildWorkspaceRunOutput({
+      report: workspaceReport,
+      reportPath,
+      jsonReportPath,
       json: Boolean(options.json)
     }),
-    reportDir
+    reportDir,
+    reportPath,
+    jsonReportPath
   };
+}
+
+async function runWorkspacePackages(input: { plan: WorkspacePlan; options: RunOptions; baseRef: string; reportDir: string }) {
+  const packageResults: WorkspacePackageRunResult[] = [];
+
+  ensureDir(input.reportDir);
+
+  for (const workspacePackage of input.plan.selectedPackages) {
+    const packageReportDir = path.join(input.reportDir, 'packages', packageReportSlug(workspacePackage));
+
+    try {
+      const result = await runSingleProjectMutationCommand(workspacePackage.absolutePath, {
+        ...input.options,
+        base: input.baseRef,
+        reportDir: packageReportDir,
+        config: resolveWorkspacePackageConfig(input.plan.workspace.rootDir, workspacePackage.absolutePath, input.options.config),
+        json: true,
+        dryRun: false,
+        workspace: undefined,
+        workspacePath: undefined,
+        packages: undefined,
+        affected: undefined,
+        all: undefined
+      });
+
+      packageResults.push(packageRunResult(workspacePackage, result));
+    } catch (error) {
+      const cliError = mapUnknownError(error);
+
+      packageResults.push({
+        name: workspacePackage.name,
+        path: workspacePackage.path,
+        status: 'error',
+        exitCode: cliError.exitCode,
+        reasons: workspacePackage.reasons,
+        message: cliError.suggestion ? `${cliError.message} ${cliError.suggestion}` : cliError.message
+      });
+    }
+  }
+
+  const warnings = [...input.plan.warnings];
+
+  if (input.plan.selectedPackages.length === 0) {
+    warnings.push('Workspace plan selected no packages; no mutation runs were started.');
+  }
+
+  return buildWorkspaceRunReport({
+    baseRef: input.baseRef,
+    packageManager: input.plan.workspace.packageManager,
+    workspaceRoot: input.plan.workspace.rootDir,
+    reportDir: input.reportDir,
+    packages: packageResults,
+    warnings
+  });
 }
 
 export function resolveWorkspaceCwd(cwd: string, workspace?: string): string {
@@ -358,7 +439,7 @@ function resolveWorkspacePathOption(options: RunOptions): string | undefined {
   return typeof options.workspace === 'string' ? options.workspace : options.workspacePath;
 }
 
-function isWorkspacePlanMode(options: RunOptions): boolean {
+function isWorkspaceMode(options: RunOptions): boolean {
   return options.workspace === true || Boolean(options.packages) || Boolean(options.affected) || Boolean(options.all);
 }
 
@@ -581,6 +662,39 @@ export function buildWorkspacePlanOutput(input: { plan: WorkspacePlan; baseRef: 
   ].join('\n');
 }
 
+export function buildWorkspaceRunOutput(input: { report: ReturnType<typeof buildWorkspaceRunReport>; reportPath: string; jsonReportPath: string; json: boolean }): string {
+  if (input.json) {
+    return `${JSON.stringify(
+      {
+        status: input.report.status,
+        report: input.report,
+        paths: {
+          report: input.reportPath,
+          json: input.jsonReportPath
+        }
+      },
+      null,
+      2
+    )}\n`;
+  }
+
+  return [
+    `Tautest workspace: ${input.report.status}`,
+    '',
+    `Selected packages: ${input.report.summary.selected}`,
+    `Passed: ${input.report.summary.passed}`,
+    `Threshold failed: ${input.report.summary.thresholdFailed}`,
+    `No-op: ${input.report.summary.noOp}`,
+    `Errors: ${input.report.summary.errors}`,
+    '',
+    'Packages:',
+    ...input.report.packages.map((item) => `- ${formatWorkspacePackage(item)}: ${item.status}${item.summary?.mutationScore === undefined ? '' : ` (${item.summary.mutationScore ?? 'unknown'}%)`}`),
+    '',
+    `Report: ${input.reportPath}`,
+    `JSON: ${input.jsonReportPath}`
+  ].join('\n');
+}
+
 export function countChangedSourceLines(files: ChangedFile[]): number {
   return files.reduce((sum, file) => {
     return sum + file.ranges.reduce((fileSum, range) => fileSum + range.end - range.start + 1, 0);
@@ -673,6 +787,86 @@ function estimateMutationScope(totalLines: number, fileCount: number): 'none' | 
 
 function formatWorkspacePackage(workspacePackage: { name: string | null; path: string }): string {
   return workspacePackage.name ? `${workspacePackage.name} (${workspacePackage.path})` : workspacePackage.path;
+}
+
+function packageRunResult(
+  workspacePackage: { name: string | null; path: string; reasons: string[] },
+  result: RunResult
+): WorkspacePackageRunResult {
+  const report = result.jsonReportPath && existsSync(result.jsonReportPath) ? readJsonFile<TautestJsonReport>(result.jsonReportPath) : undefined;
+
+  return {
+    name: workspacePackage.name,
+    path: workspacePackage.path,
+    status: packageStatus(result.exitCode),
+    exitCode: result.exitCode,
+    reasons: workspacePackage.reasons,
+    message: result.exitCode === EXIT_CODES.noOp ? 'No changed production source files found.' : undefined,
+    summary: report
+      ? {
+          verdict: report.summary.verdict,
+          mutationScore: report.summary.mutationScore,
+          threshold: report.summary.threshold,
+          killed: report.summary.killed,
+          survived: report.summary.survived,
+          noCoverage: report.summary.noCoverage
+        }
+      : undefined,
+    paths: {
+      report: result.reportPath,
+      json: result.jsonReportPath,
+      prompt: result.promptPath,
+      mutationJson: result.mutationJsonPath
+    }
+  };
+}
+
+function packageStatus(exitCode: number): WorkspacePackageRunResult['status'] {
+  if (exitCode === EXIT_CODES.ok) {
+    return 'passed';
+  }
+
+  if (exitCode === EXIT_CODES.thresholdFailed) {
+    return 'threshold-failed';
+  }
+
+  if (exitCode === EXIT_CODES.noOp) {
+    return 'no-op';
+  }
+
+  return 'error';
+}
+
+function workspaceExitCode(status: ReturnType<typeof buildWorkspaceRunReport>['status']): number {
+  if (status === 'workspace-passed') {
+    return EXIT_CODES.ok;
+  }
+
+  if (status === 'workspace-threshold-failed') {
+    return EXIT_CODES.thresholdFailed;
+  }
+
+  if (status === 'workspace-no-op') {
+    return EXIT_CODES.noOp;
+  }
+
+  return EXIT_CODES.detectionError;
+}
+
+function packageReportSlug(workspacePackage: { name: string | null; path: string }): string {
+  return (workspacePackage.name ?? workspacePackage.path).replace(/^@/, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
+}
+
+function resolveWorkspacePackageConfig(workspaceRoot: string, packageRoot: string, explicitConfig?: string): string | undefined {
+  if (explicitConfig) {
+    return path.resolve(workspaceRoot, explicitConfig);
+  }
+
+  if (findTautestConfig(packageRoot)) {
+    return undefined;
+  }
+
+  return findTautestConfig(workspaceRoot) ?? undefined;
 }
 
 function packageManagerForStryker(packageManager: PackageManager): Exclude<PackageManager, 'bun'> | undefined {

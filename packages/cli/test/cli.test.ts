@@ -10,7 +10,15 @@ import { runInit } from '../src/commands/init';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
-import { assertChangedSourceLineBudget, buildDryRunOutput, buildNoOpOutput, buildWorkspacePlanOutput, countChangedSourceLines, resolveWorkspaceCwd } from '../src/commands/run';
+import {
+  assertChangedSourceLineBudget,
+  buildDryRunOutput,
+  buildNoOpOutput,
+  buildWorkspacePlanOutput,
+  buildWorkspaceRunOutput,
+  countChangedSourceLines,
+  resolveWorkspaceCwd
+} from '../src/commands/run';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -435,6 +443,49 @@ describe('workspace plan output', () => {
         reasons: ['changed packages/api/src/index.ts']
       }
     ]);
+  });
+
+  it('prints machine-readable aggregate workspace run output', () => {
+    const output = JSON.parse(
+      buildWorkspaceRunOutput({
+        json: true,
+        reportPath: '/repo/.tautest/workspace-report.md',
+        jsonReportPath: '/repo/.tautest/workspace-report.json',
+        report: {
+          version: '1',
+          schemaVersion: '1',
+          createdAt: '2026-05-25T00:00:00.000Z',
+          status: 'workspace-threshold-failed',
+          baseRef: 'origin/main',
+          packageManager: 'pnpm',
+          workspaceRoot: '/repo',
+          reportDir: '/repo/.tautest',
+          summary: {
+            selected: 1,
+            passed: 0,
+            thresholdFailed: 1,
+            noOp: 0,
+            errors: 0
+          },
+          packages: [
+            {
+              name: '@fixture/api',
+              path: 'packages/api',
+              status: 'threshold-failed',
+              exitCode: 1,
+              reasons: ['changed packages/api/src/index.ts']
+            }
+          ],
+          warnings: []
+        }
+      })
+    ) as {
+      status: string;
+      paths: { report: string; json: string };
+    };
+
+    expect(output.status).toBe('workspace-threshold-failed');
+    expect(output.paths.json).toBe('/repo/.tautest/workspace-report.json');
   });
 });
 

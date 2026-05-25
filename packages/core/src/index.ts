@@ -20,3 +20,4 @@ export * from './config/load';
 export * from './workspace/detect';
 export * from './workspace/affected';
 export * from './workspace/plan';
+export * from './workspace/report';

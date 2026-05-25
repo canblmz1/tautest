@@ -102,6 +102,22 @@ with:
 
 When a budget is exceeded, Tautest stops before StrykerJS starts and the action fails with CLI diagnostics. Developers can run `tautest run --dry-run` locally to inspect the changed mutation scope.
 
+## Workspace Projects
+
+For pnpm or `package.json` workspaces, start with the CLI planner in a separate job:
+
+```yaml
+- run: pnpm exec tautest run --workspace --dry-run --json --base ${{ github.event.pull_request.base.sha }} > workspace-plan.json
+```
+
+Small workspaces can run the internal sequential beta directly:
+
+```yaml
+- run: pnpm exec tautest run --workspace --json --base ${{ github.event.pull_request.base.sha }}
+```
+
+Large workspaces should use the dry-run JSON to build a matrix and then invoke this action with `working-directory: ${{ matrix.packagePath }}`. Sequential workspace execution is deterministic but can be slower when many packages are selected.
+
 ## PR Comments
 
 The action writes a sticky PR comment with this marker:
