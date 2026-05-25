@@ -182,6 +182,29 @@ tautest prompt --style opencode
 tautest prompt --from path/to/report.json
 ```
 
+Optional provider suggestion mode is disabled by default and never edits files. It sends the generated prompt to an explicitly configured external command on stdin and writes the provider output to `.tautest/llm-suggestion.md`:
+
+```bash
+tautest prompt --from .tautest/report.json \
+  --style codex \
+  --suggest \
+  --provider-command node \
+  --provider-arg scripts/tautest-llm-provider.mjs \
+  --model internal-wrapper
+```
+
+Prompt flags:
+
+- `--config <path>`: path to `tautest.config.*`.
+- `--suggest`: enable the opt-in external-command suggestion flow.
+- `--provider-command <command>`: executable that reads the prompt from stdin and writes Markdown to stdout.
+- `--provider-arg <arg>`: argument passed to the provider command; repeat for multiple args.
+- `--model <name>`: model or wrapper name recorded in suggestion provenance.
+- `--suggestion-out <path>`: custom suggestion artifact path.
+- `--no-redact`: disable built-in secret redaction for the provider handoff.
+
+See [LLM suggestions](LLM_SUGGESTIONS.md) and [trust and safety](TRUST_AND_SAFETY.md) before enabling this in a repository.
+
 ## `tautest report`
 
 Prints markdown report content.

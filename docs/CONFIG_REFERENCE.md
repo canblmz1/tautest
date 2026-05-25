@@ -34,6 +34,12 @@ export default defineConfig({
   prompt: {
     maxMutants: 10,
     style: 'agent'
+  },
+  llm: {
+    enabled: false,
+    provider: 'external-command',
+    commandArgs: [],
+    redact: true
   }
 });
 ```
@@ -58,6 +64,12 @@ export default defineConfig({
 - `stryker.userConfig`: safely merged Stryker options.
 - `prompt.maxMutants`: max mutants in prompt.
 - `prompt.style`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
+- `llm.enabled`: opt into `tautest prompt --suggest` provider execution from config.
+- `llm.provider`: currently `external-command`.
+- `llm.command`: executable that reads the prompt from stdin and writes Markdown to stdout.
+- `llm.commandArgs`: arguments passed to `llm.command`.
+- `llm.model`: optional model or wrapper name recorded in suggestion provenance.
+- `llm.redact`: enable built-in secret redaction before provider handoff.
 
 Protected Stryker fields such as `mutate`, `reporters`, `jsonReporter`, and `testRunner` are owned by Tautest for the run.
 

@@ -21,3 +21,6 @@ export * from './workspace/detect';
 export * from './workspace/affected';
 export * from './workspace/plan';
 export * from './workspace/report';
+export * from './llm/redact';
+export * from './llm/provenance';
+export * from './llm/artifact';

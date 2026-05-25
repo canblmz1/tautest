@@ -18,13 +18,41 @@ These files may contain source snippets, mutant replacements, test names, and fi
 
 ## What Tautest Does Not Do
 
-- Tautest does not call LLM APIs.
-- Tautest does not send source code to hosted AI services.
+- Tautest does not call LLM APIs by default.
+- Tautest does not send source code to hosted AI services by default.
 - Tautest does not upload reports outside GitHub Actions artifacts.
 - Tautest does not mutate production files on disk.
 - Tautest does not automatically apply agent-written fixes.
 
 The fix prompt is deterministic Markdown. Developers choose whether to paste it into Claude Code, Cursor, Codex, OpenCode, or use it manually.
+
+## Optional LLM Suggestion Boundary
+
+`tautest prompt --suggest` is an explicit opt-in path for teams that want Tautest to hand the generated prompt to their own provider wrapper.
+
+The provider contract is intentionally narrow:
+
+- The default config has `llm.enabled: false`.
+- The only provider type is `external-command`.
+- The command receives the prompt on stdin and writes a Markdown suggestion to stdout.
+- Tautest writes the result to `.tautest/llm-suggestion.md` by default.
+- Tautest records provider name, optional model, prompt SHA-256, prompt byte count, redaction status, and creation time in the artifact.
+- Tautest does not apply the suggestion to the working tree.
+
+Built-in redaction is enabled by default for suggestion mode. It masks common secret shapes such as provider tokens, bearer tokens, private keys, and environment-style secret assignments before the prompt is sent to the configured command. Treat this as a safety net, not as a substitute for reviewing what your wrapper sends.
+
+Example one-off run:
+
+```bash
+tautest prompt --from .tautest/report.json \
+  --style codex \
+  --suggest \
+  --provider-command node \
+  --provider-arg scripts/tautest-llm-provider.mjs \
+  --model internal-wrapper
+```
+
+Only configure a provider command in repositories where sending report content to that command is acceptable.
 
 ## GitHub Actions Boundary
 

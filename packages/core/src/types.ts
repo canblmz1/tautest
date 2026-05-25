@@ -10,6 +10,32 @@ export type MutationVerdict = 'STRONG' | 'MIXED' | 'WEAK' | 'UNKNOWN';
 
 export type PromptStyle = 'agent' | 'human' | 'claude-code' | 'cursor' | 'codex' | 'opencode';
 
+export type LlmProvider = 'external-command';
+
+export interface LlmConfig {
+  enabled: boolean;
+  provider: LlmProvider;
+  model?: string;
+  command?: string;
+  commandArgs: string[];
+  redact: boolean;
+}
+
+export interface LlmRedactionSummary {
+  enabled: boolean;
+  count: number;
+  labels: string[];
+}
+
+export interface LlmProvenance {
+  provider: LlmProvider;
+  model?: string;
+  promptSha256: string;
+  promptBytes: number;
+  redaction: LlmRedactionSummary;
+  createdAt: string;
+}
+
 export interface ChangedRange {
   start: number;
   end: number;
@@ -336,6 +362,7 @@ export interface TautestConfig {
     maxMutants: number;
     style: PromptStyle;
   };
+  llm: LlmConfig;
 }
 
 export type UserTautestConfig = Partial<{
@@ -347,6 +374,7 @@ export type UserTautestConfig = Partial<{
   score: Partial<ScoreThresholds & { topMutants: number }>;
   stryker: Partial<TautestConfig['stryker']>;
   prompt: Partial<TautestConfig['prompt']>;
+  llm: Partial<TautestConfig['llm']>;
 }>;
 
 export interface TautestJsonReport {

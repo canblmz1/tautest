@@ -155,7 +155,7 @@ describe('init command', () => {
 });
 
 describe('prompt and report commands', () => {
-  it('prints prompt and markdown report from generated files', () => {
+  it('prints prompt and markdown report from generated files', async () => {
     const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-output-'));
     const outputDir = path.join(root, '.tautest');
     mkdirSync(outputDir);
@@ -189,11 +189,73 @@ describe('prompt and report commands', () => {
     );
     writeFileSync(path.join(outputDir, 'report.md'), '# Report\n');
 
-    expect(runPromptCommand(root, {})).toContain('Do not change production code.');
-    expect(runPromptCommand(root, {})).toContain('You are Codex working in the current workspace.');
-    expect(runPromptCommand(root, { style: 'human' })).toContain('Use this as a human test-writing checklist.');
-    expect(runPromptCommand(root, { style: 'opencode' })).toContain('You are OpenCode working in an existing repository.');
+    await expect(runPromptCommand(root, {})).resolves.toContain('Do not change production code.');
+    await expect(runPromptCommand(root, {})).resolves.toContain('You are Codex working in the current workspace.');
+    await expect(runPromptCommand(root, { style: 'human' })).resolves.toContain('Use this as a human test-writing checklist.');
+    await expect(runPromptCommand(root, { style: 'opencode' })).resolves.toContain('You are OpenCode working in an existing repository.');
     expect(runReportCommand(root, {})).toBe('# Report\n');
+  });
+
+  it('writes an opt-in LLM suggestion artifact through an external command', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-llm-'));
+    const outputDir = path.join(root, '.tautest');
+    const providerPath = path.join(root, 'provider.cjs');
+    mkdirSync(outputDir);
+    writeFileSync(
+      path.join(outputDir, 'report.json'),
+      JSON.stringify({
+        version: '1',
+        scope: {
+          baseRef: 'HEAD',
+          runner: 'vitest'
+        },
+        surviving: [
+          {
+            filePath: 'src/secrets.ts',
+            line: 3,
+            mutatorName: 'StringLiteral',
+            original: 'OPENAI_API_KEY=sk-proj_12345678901234567890',
+            replacement: 'OPENAI_API_KEY=',
+            status: 'Survived',
+            location: {
+              start: { line: 3, column: 1 },
+              end: { line: 3, column: 48 }
+            }
+          }
+        ]
+      })
+    );
+    writeFileSync(
+      providerPath,
+      `let input = '';
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', (chunk) => { input += chunk; });
+process.stdin.on('end', () => {
+  if (!input.includes('[REDACTED:OPENAI_API_KEY]')) {
+    process.stderr.write('prompt was not redacted');
+    process.exit(2);
+  }
+  process.stdout.write('Add a focused test-only boundary assertion.');
+});
+`
+    );
+
+    const output = await runPromptCommand(root, {
+      suggest: true,
+      providerCommand: process.execPath,
+      providerArg: [providerPath],
+      model: 'mock-model',
+      suggestionOut: '.tautest/llm-suggestion.md'
+    });
+    const artifact = readFileSync(path.join(outputDir, 'llm-suggestion.md'), 'utf8');
+
+    expect(output).toContain('LLM suggestion written');
+    expect(output).toContain('Redaction: enabled (2 replacements)');
+    expect(artifact).toContain('Model: mock-model');
+    expect(artifact).toContain('Prompt SHA-256:');
+    expect(artifact).toContain('Add a focused test-only boundary assertion.');
+    expect(artifact).toContain('[REDACTED:OPENAI_API_KEY]');
+    expect(artifact).not.toContain('sk-proj_12345678901234567890');
   });
 });
 

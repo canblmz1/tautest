@@ -54,13 +54,13 @@ See [Why Tautest?](docs/WHY_TAUTEST.md) for the longer positioning and compariso
 ## What Tautest does not do
 
 - Does not implement its own mutation engine.
-- Does not call LLM APIs.
+- Does not call LLM APIs by default.
 - Does not detect which lines were written by AI.
 - Does not replace StrykerJS, coverage tools, or normal test suites.
 - Does not prove tests are perfect.
 - Does not fully support monorepos in v1.
 
-Fix prompts are generated Markdown files. They are grounded in the actual surviving mutants and can be pasted into any coding agent or used manually. No LLM is called at generation time.
+Fix prompts are generated Markdown files. They are grounded in the actual surviving mutants and can be pasted into any coding agent or used manually. No LLM is called at generation time unless you explicitly opt into the external-command suggestion flow.
 
 ## Relationship to StrykerJS
 
@@ -238,6 +238,7 @@ Killed: 4 | Survived: 0
 Agent workflow docs:
 
 - [Agent workflow packs](docs/AGENT_WORKFLOWS.md)
+- [Optional LLM suggestions](docs/LLM_SUGGESTIONS.md)
 - [Claude Code workflow](docs/CLAUDE_CODE_WORKFLOW.md)
 - [Cursor workflow](docs/CURSOR_WORKFLOW.md)
 - [Codex workflow](docs/CODEX_WORKFLOW.md)
@@ -257,6 +258,7 @@ Tautest writes run outputs to `.tautest/` by default:
 - `.tautest/report.md`
 - `.tautest/report.json`
 - `.tautest/fix-prompt.md`
+- `.tautest/llm-suggestion.md` when `tautest prompt --suggest` is explicitly enabled
 - `.tautest/stryker-incremental.json`
 
 The machine-readable `.tautest/report.json` file uses schema version `1`. See [docs/report.schema.json](docs/report.schema.json) for the JSON Schema contract.
@@ -290,7 +292,7 @@ See [limitations](docs/LIMITATIONS.md).
 
 ## Trust and safety
 
-Tautest is local-first, does not call LLM APIs, and writes generated artifacts under `.tautest/`. See [trust and safety](docs/TRUST_AND_SAFETY.md) for CI permissions, token handling, generated file boundaries, and safe agent-use rules.
+Tautest is local-first, does not call LLM APIs by default, and writes generated artifacts under `.tautest/`. See [trust and safety](docs/TRUST_AND_SAFETY.md) for CI permissions, token handling, generated file boundaries, optional provider suggestions, and safe agent-use rules.
 
 ## Roadmap
 

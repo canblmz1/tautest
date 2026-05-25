@@ -1,6 +1,6 @@
 # Agent Workflow Packs
 
-Tautest generates deterministic Markdown prompts for agents and humans. It does not call Claude, Cursor, Codex, OpenCode, or any LLM API.
+Tautest generates deterministic Markdown prompts for agents and humans. It does not call Claude, Cursor, Codex, OpenCode, or any LLM API by default.
 
 Use these workflow packs when a PR has passing normal tests but Tautest reports surviving mutants on changed production lines.
 
@@ -35,6 +35,14 @@ You can also regenerate a prompt from an existing report:
 ```bash
 tautest prompt --from .tautest/report.json --style codex
 ```
+
+If your team has an approved provider wrapper, you can explicitly request a suggestion artifact:
+
+```bash
+tautest prompt --from .tautest/report.json --style codex --suggest --provider-command node --provider-arg scripts/tautest-llm-provider.mjs
+```
+
+This writes `.tautest/llm-suggestion.md` with prompt provenance and redaction metadata. It does not apply the suggestion.
 
 ## Acceptance Rules
 

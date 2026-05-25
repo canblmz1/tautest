@@ -31,6 +31,16 @@ export const tautestConfigSchema = z
         maxMutants: z.number().int().min(1).optional(),
         style: z.enum(['agent', 'human', 'claude-code', 'cursor', 'codex', 'opencode']).optional()
       })
+      .optional(),
+    llm: z
+      .object({
+        enabled: z.boolean().optional(),
+        provider: z.enum(['external-command']).optional(),
+        model: z.string().min(1).optional(),
+        command: z.string().min(1).optional(),
+        commandArgs: z.array(z.string()).optional(),
+        redact: z.boolean().optional()
+      })
       .optional()
   })
   .strict();

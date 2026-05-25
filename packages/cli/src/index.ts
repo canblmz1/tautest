@@ -92,9 +92,20 @@ export function buildProgram(): Command {
     .description('print an AI fix prompt from a Tautest report JSON')
     .option('--from <path>', 'path to report.json')
     .option('--style <style>', 'prompt style: agent, human, claude-code, cursor, codex, or opencode', parsePromptStyle)
-    .action(async (options) => {
+    .option('--config <path>', 'path to tautest config')
+    .option('--suggest', 'ask an explicitly configured external command for a test-only patch suggestion')
+    .option('--provider-command <command>', 'external provider command; receives the prompt on stdin and writes Markdown to stdout')
+    .option('--provider-arg <arg>', 'argument passed to the external provider command; repeat for multiple args', collectValues, [])
+    .option('--model <name>', 'provider model name recorded in the suggestion provenance')
+    .option('--suggestion-out <path>', 'path to write the LLM suggestion artifact')
+    .option('--no-redact', 'send the prompt to the provider command without built-in secret redaction')
+    .action(async (options, command: Command) => {
       await runAction(program, async () => {
-        writeStdout(runPromptCommand(process.cwd(), options));
+        const promptOptions = {
+          ...options,
+          redact: command.getOptionValueSource('redact') === 'default' ? undefined : options.redact
+        };
+        writeStdout(await runPromptCommand(process.cwd(), promptOptions));
         return EXIT_CODES.ok;
       });
     });
@@ -145,6 +156,10 @@ function parsePromptStyle(value: string): PromptStyle {
   }
 
   throw new Error('--prompt-style/--style must be "agent", "human", "claude-code", "cursor", "codex", or "opencode".');
+}
+
+function collectValues(value: string, previous: string[]): string[] {
+  return [...previous, value];
 }
 
 function writeStdout(value: string): void {

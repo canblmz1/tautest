@@ -19,5 +19,11 @@ export const DEFAULT_TAUTEST_CONFIG: TautestConfig = {
   prompt: {
     maxMutants: 10,
     style: 'agent'
+  },
+  llm: {
+    enabled: false,
+    provider: 'external-command',
+    commandArgs: [],
+    redact: true
   }
 };

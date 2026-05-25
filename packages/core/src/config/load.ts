@@ -69,6 +69,10 @@ export function resolveTautestConfig(input: unknown): TautestConfig {
     prompt: {
       ...DEFAULT_TAUTEST_CONFIG.prompt,
       ...parsed.prompt
+    },
+    llm: {
+      ...DEFAULT_TAUTEST_CONFIG.llm,
+      ...parsed.llm
     }
   };
 }
