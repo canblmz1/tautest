@@ -3,7 +3,7 @@ import path from 'node:path';
 import { globSync } from 'tinyglobby';
 import { parse as parseYaml } from 'yaml';
 import { detectPackageManager } from '../detect/package-manager';
-import type { PackageJson, WorkspaceDetection, WorkspacePackage, WorkspaceSource } from '../types';
+import type { PackageJson, WorkspaceDetection, WorkspacePackage, WorkspaceSource, WorkspaceToolSignal } from '../types';
 
 export function findWorkspaceRoot(startDir: string): string | null {
   let current = path.resolve(startDir);
@@ -32,6 +32,7 @@ export function detectWorkspace(startDir: string): WorkspaceDetection {
   const packageJson = existsSync(packageJsonPath) ? readJsonFile<PackageJson>(packageJsonPath) : null;
   const { source, patterns, warnings } = readWorkspacePatterns(rootDir, packageJson);
   const packages = patterns.length > 0 ? readWorkspacePackages(rootDir, patterns, warnings) : [];
+  const tools = detectWorkspaceTools(rootDir);
   const packageManager = source === 'none' ? null : detectPackageManager(rootDir, packageJson).packageManager;
   const detected = source !== 'none';
 
@@ -46,9 +47,34 @@ export function detectWorkspace(startDir: string): WorkspaceDetection {
     packageManager,
     patterns,
     packages,
+    tools,
     confidence: !detected ? 'low' : packages.length > 0 ? 'high' : 'medium',
     warnings
   };
+}
+
+export function detectWorkspaceTools(rootDir: string): WorkspaceToolSignal[] {
+  const tools: WorkspaceToolSignal[] = [];
+  const turboConfigPath = path.join(rootDir, 'turbo.json');
+  const nxConfigPath = path.join(rootDir, 'nx.json');
+
+  if (existsSync(turboConfigPath)) {
+    tools.push({
+      tool: 'turbo',
+      configPath: turboConfigPath,
+      message: 'Turborepo detected. The workspace beta uses package path ownership; Turbo task graph expansion is not required.'
+    });
+  }
+
+  if (existsSync(nxConfigPath)) {
+    tools.push({
+      tool: 'nx',
+      configPath: nxConfigPath,
+      message: 'Nx detected. The workspace beta uses package path ownership; Nx project graph expansion is not required.'
+    });
+  }
+
+  return tools;
 }
 
 export function readWorkspacePackages(rootDir: string, patterns: string[], warnings: string[] = []): WorkspacePackage[] {

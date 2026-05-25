@@ -278,6 +278,12 @@ Turborepo support should read capability signals:
 - package manager workspace config
 - package scripts for `test`
 
+Current beta:
+
+- detect `turbo.json`
+- surface a capability warning in workspace plans
+- continue using package path ownership until graph expansion is proven
+
 Optional integration:
 
 - use `turbo` dry-run output when available
@@ -293,6 +299,12 @@ Launch shape:
 ## Nx Adapter
 
 Nx support should be separate from basic workspace detection.
+
+Current beta:
+
+- detect `nx.json`
+- surface a capability warning in workspace plans
+- continue using package path ownership until graph expansion is proven
 
 Possible approach:
 

@@ -24,7 +24,7 @@
 - Report format plugins.
 - IDE integrations.
 - Richer PR review annotations beyond survivor workflow annotations.
-- More test-runner recipes.
+- More test-runner recipes beyond the current framework recipe set.
 
 ## Explicitly Out Of Scope For V1
 

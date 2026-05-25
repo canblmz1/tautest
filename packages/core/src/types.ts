@@ -82,6 +82,14 @@ export interface WorkspacePackage {
   packageJson: PackageJson;
 }
 
+export type WorkspaceTool = 'turbo' | 'nx';
+
+export interface WorkspaceToolSignal {
+  tool: WorkspaceTool;
+  configPath: string;
+  message: string;
+}
+
 export interface WorkspaceDetection {
   detected: boolean;
   rootDir: string;
@@ -89,6 +97,7 @@ export interface WorkspaceDetection {
   packageManager: PackageManager | null;
   patterns: string[];
   packages: WorkspacePackage[];
+  tools: WorkspaceToolSignal[];
   confidence: WorkspaceConfidence;
   warnings: string[];
 }

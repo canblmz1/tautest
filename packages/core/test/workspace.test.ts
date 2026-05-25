@@ -41,6 +41,22 @@ describe('workspace detection', () => {
     expect(workspace.source).toBe('package.json workspaces');
     expect(workspace.packages.map((workspacePackage) => workspacePackage.path)).toEqual(['apps/web']);
   });
+
+  it('surfaces Turborepo and Nx workspace capability signals', () => {
+    const root = createWorkspaceFixture();
+    writeFileSync(path.join(root, 'turbo.json'), JSON.stringify({ tasks: {} }));
+    writeFileSync(path.join(root, 'nx.json'), JSON.stringify({ namedInputs: {} }));
+
+    const plan = buildWorkspacePlan({
+      cwd: root,
+      mode: 'affected',
+      changedFiles: []
+    });
+
+    expect(plan.workspace.tools.map((tool) => tool.tool)).toEqual(['turbo', 'nx']);
+    expect(plan.warnings.join('\n')).toContain('turbo detected');
+    expect(plan.warnings.join('\n')).toContain('nx detected');
+  });
 });
 
 describe('workspace planning', () => {

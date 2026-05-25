@@ -19,6 +19,10 @@ export function buildWorkspacePlan(options: BuildWorkspacePlanOptions): Workspac
     warnings.push('No workspace root was detected from pnpm-workspace.yaml or package.json workspaces.');
   }
 
+  for (const tool of workspace.tools) {
+    warnings.push(`${tool.tool} detected at ${tool.configPath}. ${tool.message}`);
+  }
+
   if (mode === 'all') {
     selections = workspace.packages.map((workspacePackage) => ({
       ...workspacePackage,

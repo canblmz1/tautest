@@ -610,6 +610,11 @@ export function buildWorkspacePlanOutput(input: { plan: WorkspacePlan; baseRef: 
     packageManager: input.plan.workspace.packageManager,
     patterns: input.plan.workspace.patterns,
     packageCount: input.plan.workspace.packages.length,
+    tools: input.plan.workspace.tools.map((tool) => ({
+      tool: tool.tool,
+      configPath: tool.configPath,
+      message: tool.message
+    })),
     confidence: input.plan.workspace.confidence
   };
 

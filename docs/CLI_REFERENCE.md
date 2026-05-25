@@ -77,6 +77,8 @@ tautest run --workspace --dry-run --json --base origin/main
 
 The workspace mode currently supports `pnpm-workspace.yaml` and root `package.json` workspaces. Dry-run prints selected packages, why each package was selected, unselected packages, changed files, workspace confidence, and warnings for conservative selections.
 
+When `turbo.json` or `nx.json` is present, the plan includes a capability warning. The current beta still uses package path ownership; Turbo and Nx project graph expansion are future hardening work.
+
 Selection flags:
 
 - `--workspace --dry-run`: select packages affected by changed files.

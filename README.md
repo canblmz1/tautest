@@ -248,6 +248,7 @@ Agent workflow docs:
 - [examples/vitest-basic](examples/vitest-basic)
 - [examples/vitest-react](examples/vitest-react)
 - [examples/jest-basic](examples/jest-basic)
+- [Framework recipes for Next.js, Vue, Turborepo, and Nx](docs/FRAMEWORK_RECIPES.md)
 
 ## Generated files
 

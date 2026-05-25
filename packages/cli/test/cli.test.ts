@@ -399,6 +399,7 @@ describe('workspace plan output', () => {
             packageManager: 'pnpm',
             patterns: ['packages/*'],
             packages: [],
+            tools: [],
             confidence: 'high',
             warnings: []
           },
