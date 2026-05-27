@@ -49,8 +49,8 @@ export function buildWorkspaceMarkdownReport(report: WorkspaceRunReport): string
     '',
     '## Packages',
     '',
-    '| Package | Path | Status | Score | Killed | Survived | No coverage | Report |',
-    '| --- | --- | --- | ---: | ---: | ---: | ---: | --- |',
+    '| Package | Path | Status | Score | Killed | Survived | No coverage | Reasons | Message | Report |',
+    '| --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- |',
     ...report.packages.map(packageRow),
     '',
     '## Warnings',
@@ -79,6 +79,8 @@ function workspaceStatus(summary: WorkspaceRunReport['summary']): WorkspaceRunRe
 function packageRow(result: WorkspacePackageRunResult): string {
   const score = result.summary?.mutationScore;
   const reportPath = result.paths?.report ? `\`${escapeMarkdown(result.paths.report)}\`` : '';
+  const reasons = result.reasons.length > 0 ? result.reasons.map(escapeMarkdown).join('<br>') : '';
+  const message = result.message ? escapeMarkdown(result.message) : '';
 
   return [
     escapeMarkdown(result.name ?? result.path),
@@ -88,6 +90,8 @@ function packageRow(result: WorkspacePackageRunResult): string {
     String(result.summary?.killed ?? ''),
     String(result.summary?.survived ?? ''),
     String(result.summary?.noCoverage ?? ''),
+    reasons,
+    message,
     reportPath
   ].join(' | ').replace(/^/, '| ').replace(/$/, ' |');
 }

@@ -7,7 +7,7 @@ These limitations are intentional product boundaries for the current release lin
 - Runtime depends on project size and test speed.
 - AI-author detection is best effort and can be wrong.
 - The fix prompt is deterministic text. Tautest does not call an LLM unless `tautest prompt --suggest` is explicitly configured.
-- Monorepo support includes a workspace beta for pnpm and package.json workspaces. It can plan and sequentially run selected packages, but dependency-graph expansion and concurrent execution are still future work.
+- Monorepo support includes a workspace beta for pnpm and package.json workspaces. It can plan and sequentially run selected packages, expand direct workspace package dependents, and select all packages for root config changes, but transitive graph scheduling and concurrent execution are still future work.
 - Python and Java runner work is alpha parser groundwork only. `tautest run` still supports JavaScript and TypeScript through StrykerJS.
 - Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms, custom environments, ts-jest, and complex ESM/CJS mixes may still need explicit Jest/Stryker configuration.
 - Vitest browser mode may need manual configuration or may not work in v1.

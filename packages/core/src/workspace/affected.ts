@@ -18,14 +18,14 @@ export function selectAffectedWorkspacePackages(packages: WorkspacePackage[], ch
     const owner = findOwningPackage(packages, file.path);
 
     if (owner) {
-      addReason(reasonsByPackage, owner.path, changedFileReason(file));
+      addPackageAndDependents(reasonsByPackage, packages, owner, changedFileReason(file));
     }
 
     if (file.oldPath && file.oldPath !== file.path) {
       const oldOwner = findOwningPackage(packages, file.oldPath);
 
       if (oldOwner) {
-        addReason(reasonsByPackage, oldOwner.path, `previous path ${file.oldPath}`);
+        addPackageAndDependents(reasonsByPackage, packages, oldOwner, `previous path ${file.oldPath}`);
       }
     }
 
@@ -105,6 +105,28 @@ function addReason(reasonsByPackage: Map<string, string[]>, packagePath: string,
   }
 
   reasonsByPackage.set(packagePath, reasons);
+}
+
+function addPackageAndDependents(reasonsByPackage: Map<string, string[]>, packages: WorkspacePackage[], owner: WorkspacePackage, reason: string): void {
+  addReason(reasonsByPackage, owner.path, reason);
+
+  if (!owner.name) {
+    return;
+  }
+
+  for (const workspacePackage of packages) {
+    if (workspacePackage.path !== owner.path && packageDependsOn(workspacePackage, owner.name)) {
+      addReason(reasonsByPackage, workspacePackage.path, `depends on changed package ${owner.name}`);
+    }
+  }
+}
+
+function packageDependsOn(workspacePackage: WorkspacePackage, dependencyName: string): boolean {
+  return Boolean(
+    workspacePackage.packageJson.dependencies?.[dependencyName] ||
+      workspacePackage.packageJson.devDependencies?.[dependencyName] ||
+      workspacePackage.packageJson.peerDependencies?.[dependencyName]
+  );
 }
 
 function toPosix(value: string): string {

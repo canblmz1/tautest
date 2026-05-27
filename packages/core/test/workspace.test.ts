@@ -89,6 +89,37 @@ describe('workspace planning', () => {
     expect(plan.warnings[0]).toContain('all packages were selected conservatively');
   });
 
+  it('selects workspace consumers when a shared package changes', () => {
+    const root = createWorkspaceFixture();
+    const workspace = detectWorkspace(root);
+
+    const affected = selectAffectedWorkspacePackages(workspace.packages, [changedFile('packages/shared/src/index.ts')]);
+
+    expect(affected.selections.filter((selection) => selection.selected).map((selection) => selection.path)).toEqual(['packages/api', 'packages/shared', 'packages/web']);
+    expect(affected.selections.find((selection) => selection.path === 'packages/api')?.reasons).toContain('depends on changed package @fixture/shared');
+    expect(affected.selections.find((selection) => selection.path === 'packages/web')?.reasons).toContain('depends on changed package @fixture/shared');
+  });
+
+  it('selects peer dependency consumers when a workspace package changes', () => {
+    const root = createWorkspaceFixture();
+    const widgetDir = path.join(root, 'packages', 'widget');
+    mkdirSync(path.join(widgetDir, 'src'), { recursive: true });
+    writeFileSync(
+      path.join(widgetDir, 'package.json'),
+      JSON.stringify({
+        name: '@fixture/widget',
+        peerDependencies: {
+          '@fixture/shared': 'workspace:*'
+        }
+      })
+    );
+    const workspace = detectWorkspace(root);
+
+    const affected = selectAffectedWorkspacePackages(workspace.packages, [changedFile('packages/shared/src/index.ts')]);
+
+    expect(affected.selections.find((selection) => selection.path === 'packages/widget')?.reasons).toContain('depends on changed package @fixture/shared');
+  });
+
   it('supports explicit package selectors by name or path', () => {
     const root = createWorkspaceFixture();
     const plan = buildWorkspacePlan({
@@ -134,7 +165,8 @@ describe('workspace run reports', () => {
           path: 'packages/web',
           status: 'no-op',
           exitCode: 2,
-          reasons: ['selected by --all']
+          reasons: ['selected by --all'],
+          message: 'No changed production source files found.'
         }
       ],
       warnings: ['root config selected all packages']
@@ -146,7 +178,8 @@ describe('workspace run reports', () => {
       passed: 1,
       noOp: 1
     });
-    expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/api | `packages/api` | passed | 100.00 | 2 | 0 | 0 |');
+    expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/api | `packages/api` | passed | 100.00 | 2 | 0 | 0 | changed packages/api/src/index.ts |');
+    expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/web | `packages/web` | no-op |  |  |  |  | selected by --all | No changed production source files found. |');
   });
 });
 
@@ -159,7 +192,13 @@ function createWorkspaceFixture(): string {
   for (const name of ['api', 'shared', 'web']) {
     const packageDir = path.join(root, 'packages', name);
     mkdirSync(path.join(packageDir, 'src'), { recursive: true });
-    writeFileSync(path.join(packageDir, 'package.json'), JSON.stringify({ name: `@fixture/${name}` }));
+    writeFileSync(
+      path.join(packageDir, 'package.json'),
+      JSON.stringify({
+        name: `@fixture/${name}`,
+        dependencies: name === 'api' || name === 'web' ? { '@fixture/shared': 'workspace:*' } : undefined
+      })
+    );
   }
 
   return root;

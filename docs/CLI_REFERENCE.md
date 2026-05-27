@@ -77,6 +77,8 @@ tautest run --workspace --dry-run --json --base origin/main
 
 The workspace mode currently supports `pnpm-workspace.yaml` and root `package.json` workspaces. Dry-run prints selected packages, why each package was selected, unselected packages, changed files, workspace confidence, and warnings for conservative selections.
 
+Affected mode is conservative. A root config or lockfile change selects all packages. A source change inside a workspace package selects that package and any direct workspace packages that depend on it through `dependencies`, `devDependencies`, or `peerDependencies`. Aggregate workspace reports include package selection reasons and package-level messages so skipped or failed packages remain visible.
+
 When `turbo.json` or `nx.json` is present, the plan includes a capability warning. The current beta still uses package path ownership; Turbo and Nx project graph expansion are future hardening work.
 
 Selection flags:
@@ -94,7 +96,7 @@ Without `--dry-run`, workspace mode runs selected packages sequentially and writ
 - `.tautest/packages/<package>/report.json`
 - `.tautest/packages/<package>/fix-prompt.md`
 
-Sequential execution is intentional in this beta so package output remains deterministic. Concurrency and dependency-graph expansion are later workspace hardening steps.
+Sequential execution is intentional in this beta so package output remains deterministic. Concurrency and transitive dependency-graph scheduling are later workspace hardening steps.
 
 ### Workspace path compatibility
 
