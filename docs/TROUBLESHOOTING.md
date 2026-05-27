@@ -64,6 +64,13 @@ export default defineConfig({
 
 For TypeScript transforms, start from `examples/jest-typescript`. `ts-jest`, custom Babel stacks, custom environments, and path aliases can still require explicit Stryker/Jest configuration.
 
+`tautest doctor` now calls out the common risky Jest paths separately:
+
+- `ts-jest` is detected as beta and not fixture-backed yet.
+- `babel-jest` is checked for a matching installed dependency.
+- `testEnvironment: "jsdom"` is checked for `jest-environment-jsdom`.
+- custom `testEnvironment` values are reported as project-specific wiring risks.
+
 ## Permission Denied GitHub Comment
 
 Fork PRs may not have `pull-requests: write`. The action warns and continues. Artifacts are still uploaded.

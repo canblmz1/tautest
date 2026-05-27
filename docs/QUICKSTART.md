@@ -45,6 +45,8 @@ export default defineConfig({
 });
 ```
 
+For Jest projects, run `pnpm exec tautest doctor` before the first mutation run. Doctor warns about `ts-jest`, missing `babel-jest`, missing `jest-environment-jsdom`, custom environments, and non-root config paths so the setup problem is visible before StrykerJS starts.
+
 ## 3. Check Setup
 
 ```bash

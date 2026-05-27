@@ -634,4 +634,47 @@ describe('doctor command', () => {
 
     expect(result.output).toContain('WARN Jest compatibility: Jest was detected with a TypeScript Jest config file.');
   });
+
+  it('warns about ts-jest because it is not fixture-backed yet', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-jest-ts-jest-'));
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({
+        name: 'jest-ts-jest-fixture',
+        devDependencies: {
+          jest: '^30.0.0',
+          'ts-jest': '^29.0.0',
+          '@stryker-mutator/core': '^9.6.1',
+          '@stryker-mutator/jest-runner': '^9.6.1'
+        }
+      })
+    );
+    writeFileSync(path.join(root, 'jest.config.cjs'), "module.exports = { preset: 'ts-jest' };\n");
+    writeFileSync(path.join(root, '.gitignore'), '.tautest/\n');
+
+    const result = await runDoctorCommand(root, { json: false });
+
+    expect(result.output).toContain('WARN Jest transform stack: ts-jest detected.');
+  });
+
+  it('warns about jsdom without an explicit environment dependency', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-jest-jsdom-'));
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({
+        name: 'jest-jsdom-fixture',
+        devDependencies: {
+          jest: '^30.0.0',
+          '@stryker-mutator/core': '^9.6.1',
+          '@stryker-mutator/jest-runner': '^9.6.1'
+        }
+      })
+    );
+    writeFileSync(path.join(root, 'jest.config.cjs'), "module.exports = { testEnvironment: 'jsdom' };\n");
+    writeFileSync(path.join(root, '.gitignore'), '.tautest/\n');
+
+    const result = await runDoctorCommand(root, { json: false });
+
+    expect(result.output).toContain('WARN Jest environment: Jest jsdom environment detected without jest-environment-jsdom dependency.');
+  });
 });

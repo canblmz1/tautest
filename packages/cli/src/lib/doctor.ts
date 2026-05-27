@@ -42,7 +42,9 @@ export async function runDoctor(cwd: string): Promise<DoctorReport> {
     checkTestRunner(testRunner),
     checkStrykerDependencies(project),
     checkRunnerConfig(project, testRunner, config),
-    checkJestCompatibility(project, testRunner),
+    checkJestCompatibility(project, testRunner, config),
+    checkJestTransformStack(project, testRunner, config),
+    checkJestEnvironment(project, testRunner, config),
     checkMonorepo(project),
     checkExistingStrykerConfig(project),
     checkTautestGitignored(project),
@@ -254,12 +256,12 @@ function checkConfiguredRunnerConfig(project: ProjectInfo, configuredPath: strin
   };
 }
 
-function checkJestCompatibility(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
+function checkJestCompatibility(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): DoctorCheck {
   if (testRunner?.runner !== 'jest') {
     return { name: 'Jest compatibility', status: 'ok', message: 'Not using Jest.' };
   }
 
-  const configFile = testRunner.configFile ?? project.jestConfigFiles[0];
+  const configFile = resolveJestConfigFile(project, testRunner, config);
 
   if (configFile?.endsWith('.ts')) {
     return {
@@ -278,6 +280,118 @@ function checkJestCompatibility(project: ProjectInfo, testRunner: TestRunnerDete
   };
 }
 
+function checkJestTransformStack(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): DoctorCheck {
+  if (testRunner?.runner !== 'jest') {
+    return { name: 'Jest transform stack', status: 'ok', message: 'Not using Jest.' };
+  }
+
+  const deps = allDependencies(project);
+  const configText = readOptional(resolveJestConfigFile(project, testRunner, config));
+  const mentionsTsJest = deps.has('ts-jest') || /['"]ts-jest['"]|preset\s*:\s*['"]ts-jest['"]/.test(configText);
+
+  if (mentionsTsJest) {
+    return {
+      name: 'Jest transform stack',
+      status: 'warning',
+      message: 'ts-jest detected. This path is not fixture-backed yet.',
+      suggestion: 'Prefer the Babel TypeScript path in examples/jest-typescript, or keep explicit Stryker/Jest config and expect beta-level behavior.'
+    };
+  }
+
+  if (/['"]babel-jest['"]/.test(configText)) {
+    if (deps.has('babel-jest')) {
+      return {
+        name: 'Jest transform stack',
+        status: 'ok',
+        message: 'babel-jest transform detected; this is covered by the TypeScript Jest fixture.'
+      };
+    }
+
+    return {
+      name: 'Jest transform stack',
+      status: 'warning',
+      message: 'Jest config references babel-jest, but babel-jest is not installed.',
+      suggestion: 'Install babel-jest and the matching Babel presets, or remove the transform.'
+    };
+  }
+
+  if (/\btransform\s*:/.test(configText)) {
+    return {
+      name: 'Jest transform stack',
+      status: 'warning',
+      message: 'Custom Jest transforms detected.',
+      suggestion: 'Run `tautest doctor` after adding explicit stryker.jestConfigFile and compare against examples/jest-typescript.'
+    };
+  }
+
+  return {
+    name: 'Jest transform stack',
+    status: 'ok',
+    message: 'No custom Jest transform stack detected.'
+  };
+}
+
+function checkJestEnvironment(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): DoctorCheck {
+  if (testRunner?.runner !== 'jest') {
+    return { name: 'Jest environment', status: 'ok', message: 'Not using Jest.' };
+  }
+
+  const configText = readOptional(resolveJestConfigFile(project, testRunner, config));
+  const environmentMatch = configText.match(/\btestEnvironment\s*:\s*['"]([^'"]+)['"]/);
+
+  if (!environmentMatch) {
+    return {
+      name: 'Jest environment',
+      status: 'ok',
+      message: 'No custom Jest testEnvironment detected.'
+    };
+  }
+
+  const environment = environmentMatch[1];
+
+  if (environment === 'node') {
+    return {
+      name: 'Jest environment',
+      status: 'ok',
+      message: 'Jest node environment detected.'
+    };
+  }
+
+  if (environment === 'jsdom') {
+    const deps = allDependencies(project);
+
+    if (deps.has('jest-environment-jsdom')) {
+      return {
+        name: 'Jest environment',
+        status: 'ok',
+        message: 'Jest jsdom environment dependency found.'
+      };
+    }
+
+    return {
+      name: 'Jest environment',
+      status: 'warning',
+      message: 'Jest jsdom environment detected without jest-environment-jsdom dependency.',
+      suggestion: 'Install jest-environment-jsdom or use testEnvironment: "node" for non-DOM tests.'
+    };
+  }
+
+  return {
+    name: 'Jest environment',
+    status: 'warning',
+    message: `Custom Jest testEnvironment detected: ${environment}.`,
+    suggestion: 'Custom environments can require extra Stryker/Jest wiring; validate with a small changed-line smoke PR.'
+  };
+}
+
+function resolveJestConfigFile(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): string | undefined {
+  if (config?.stryker.jestConfigFile) {
+    return path.resolve(project.rootDir, config.stryker.jestConfigFile);
+  }
+
+  return testRunner?.configFile ?? project.jestConfigFiles[0];
+}
+
 function checkMonorepo(project: ProjectInfo): DoctorCheck {
   if (project.monorepo.detected) {
     return {
@@ -289,6 +403,22 @@ function checkMonorepo(project: ProjectInfo): DoctorCheck {
   }
 
   return { name: 'Monorepo signals', status: 'ok', message: 'No monorepo signal detected.' };
+}
+
+function allDependencies(project: ProjectInfo): Set<string> {
+  return new Set([
+    ...Object.keys(project.packageJson?.dependencies ?? {}),
+    ...Object.keys(project.packageJson?.devDependencies ?? {}),
+    ...Object.keys(project.packageJson?.peerDependencies ?? {})
+  ]);
+}
+
+function readOptional(filePath: string | undefined): string {
+  if (!filePath || !existsSync(filePath)) {
+    return '';
+  }
+
+  return readFileSync(filePath, 'utf8');
 }
 
 function checkExistingStrykerConfig(project: ProjectInfo): DoctorCheck {
