@@ -1,0 +1,9 @@
+{
+  "name": "tautest-example-ide-report-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node index.mjs sample-report.json --json"
+  }
+}

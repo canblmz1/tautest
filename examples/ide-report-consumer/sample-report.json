@@ -1,0 +1,59 @@
+{
+  "version": "1",
+  "schemaVersion": "1",
+  "createdAt": "2026-05-10T00:00:00.000Z",
+  "summary": {
+    "verdict": "WEAK",
+    "mutationScore": 50,
+    "threshold": 60,
+    "total": 1,
+    "killed": 0,
+    "survived": 1,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "scope": {
+    "baseRef": "origin/main",
+    "runner": "vitest",
+    "mutatePatterns": ["src/discount.ts:2-2"],
+    "mutatedFiles": ["src/discount.ts"]
+  },
+  "metrics": {
+    "runtimeMs": 1250,
+    "changedSourceLineCount": 1
+  },
+  "diagnostics": {
+    "strykerConfig": []
+  },
+  "aiSignals": {
+    "promptStyle": "codex",
+    "hardRules": ["Do not change production code."],
+    "validationLoop": ["Run Tautest again."],
+    "commands": ["pnpm test"]
+  },
+  "surviving": [
+    {
+      "filePath": "src/discount.ts",
+      "line": 2,
+      "mutatorName": "EqualityOperator",
+      "original": "age >= 65",
+      "replacement": "age > 65",
+      "status": "Survived",
+      "location": {
+        "start": { "line": 2, "column": 7 },
+        "end": { "line": 2, "column": 16 }
+      },
+      "coveringTests": [],
+      "insight": {
+        "category": "boundary",
+        "missingBehavior": "The exact boundary value 65 is not protected.",
+        "whyThisMatters": "Boundary regressions can change discounts.",
+        "suggestedTestIdea": "Add a test for age 65."
+      }
+    }
+  ],
+  "stryker": null
+}

@@ -17,6 +17,16 @@ Tautest IDE integrations should consume `.tautest/report.json` first. The static
 5. Offer commands to open `.tautest/report.html` and `.tautest/fix-prompt.md`.
 6. Never edit production files automatically.
 
+## Minimal Consumer Example
+
+See [`examples/ide-report-consumer`](../examples/ide-report-consumer) for a dependency-free script that reads `report.json`, validates the schema version, and maps survivors to editor-style diagnostics:
+
+```bash
+node examples/ide-report-consumer/index.mjs .tautest/report.json --json
+```
+
+The example intentionally uses only the public report contract. Treat that shape as the starting point for a VS Code diagnostic collection, JetBrains external annotator, or review-bot adapter.
+
 ## Diagnostic Mapping
 
 Each surviving mutant has the fields an IDE needs:

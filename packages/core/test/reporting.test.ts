@@ -1,5 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import Ajv2020 from 'ajv/dist/2020';
+import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
 import { buildFixPrompt } from '../src/prompt/builder';
 import { buildHtmlReport } from '../src/report/html';
@@ -12,6 +14,7 @@ import { extractOriginal, parseStrykerMutationReport } from '../src/stryker/repo
 import type { MutationLocation } from '../src/types';
 
 const fixturePath = path.join(import.meta.dirname, 'fixtures', 'stryker-mutation-report.json');
+const schemaPath = path.resolve(import.meta.dirname, '..', '..', '..', 'docs', 'report.schema.json');
 
 describe('Stryker report parser', () => {
   it('parses summary counts and surviving mutants from Stryker JSON', () => {
@@ -153,6 +156,7 @@ describe('report builders', () => {
       category: 'boundary',
       missingBehavior: expect.stringContaining('exact boundary value 65')
     });
+    expect(validateReportSchema(jsonReport)).toEqual([]);
     const html = buildHtmlReport(jsonReport);
     expect(html).toContain('<!doctype html>');
     expect(html).toContain('data-tautest-schema-version="1"');
@@ -206,6 +210,40 @@ describe('report builders', () => {
       missingBehavior: expect.stringContaining('exact boundary value 65'),
       suggestedTestIdea: expect.stringContaining('exact value 65')
     });
+  });
+
+  it('keeps generated report.json compatible with docs/report.schema.json', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+    const jsonReport = buildJsonReport({
+      summary,
+      score: getMutationVerdict(summary),
+      topMutants: getActionableMutants(summary),
+      createdAt: new Date('2026-05-10T00:00:00Z'),
+      threshold: 60,
+      scope: {
+        baseRef: 'origin/main',
+        runner: 'vitest',
+        mutatePatterns: ['src/discount.ts:2-2']
+      },
+      metrics: {
+        runtimeMs: 1250,
+        changedFileCount: 2,
+        changedSourceFileCount: 1,
+        changedSourceLineCount: 1,
+        mutatedFileCount: 1,
+        mutatePatternCount: 1,
+        partial: false
+      },
+      diagnostics: {
+        strykerConfig: []
+      },
+      aiSignals: {
+        promptStyle: 'codex',
+        commands: ['pnpm test', 'pnpm exec tautest run --base origin/main']
+      }
+    });
+
+    expect(validateReportSchema(jsonReport)).toEqual([]);
   });
 });
 
@@ -278,3 +316,17 @@ describe('prompt builder', () => {
     expect(prompts.find((item) => item.fileName === 'no-coverage.json')?.prompt).toContain('not executed by the current test suite');
   });
 });
+
+function validateReportSchema(report: unknown): string[] {
+  const ajv = new Ajv2020({ allErrors: true, strict: false });
+  addFormats(ajv);
+  const schema = JSON.parse(readFileSync(schemaPath, 'utf8')) as object;
+  const validate = ajv.compile(schema);
+  const jsonLikeReport = JSON.parse(JSON.stringify(report)) as unknown;
+
+  if (validate(jsonLikeReport)) {
+    return [];
+  }
+
+  return (validate.errors ?? []).map((error) => `${error.instancePath} ${error.message}`);
+}
