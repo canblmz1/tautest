@@ -12,6 +12,17 @@ Coverage shows that changed code ran. Tautest checks whether tests fail when cha
 
 Tautest is a PR mutation quality gate for JavaScript and TypeScript projects. It uses StrykerJS as the mutation engine, scopes mutation testing to changed source lines from `git diff`, and turns surviving mutants into review-ready reports, GitHub feedback, and deterministic test-fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans.
 
+## Current support tiers
+
+| Area | Tier | Notes |
+| --- | --- | --- |
+| Vitest JS/TS projects | Supported | Primary workflow for `tautest run`, reports, prompts, and GitHub feedback. |
+| Jest JS/TS projects | Beta | CommonJS, native ESM, and Babel TypeScript fixtures are covered; heavily customized transforms can need explicit Stryker/Jest configuration. |
+| pnpm and `package.json` workspaces | Beta | Workspace mode plans and sequentially runs selected packages; full dependency-graph scheduling is future work. |
+| Python and Java parser work | Alpha groundwork | Parser and runner-adapter experiments only; `tautest run` execution remains JS/TS through StrykerJS. |
+| LLM provider calls | Opt-in only | Fix prompts are deterministic local artifacts unless `tautest prompt --suggest` is explicitly configured. |
+| Hosted dashboard | Out of scope | Tautest is local-first CLI and CI tooling. |
+
 ## Demo
 
 Regular tests pass, but Tautest finds a surviving mutant that the tests missed. After adding the missing boundary test, the mutation score improves to 100%.
@@ -303,6 +314,7 @@ Tautest is local-first, does not call LLM APIs by default, and writes generated 
 
 ## Roadmap
 
+- [Hardening and adoption plan](docs/tautest-hardening-adoption-plan.md)
 - Node 24 action runtime migration.
 - Better cache observability.
 - Workspace execution beta.

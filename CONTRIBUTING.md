@@ -4,6 +4,14 @@ Thanks for helping make Tautest better.
 
 Tautest is intentionally narrow: changed source lines, StrykerJS mutation testing, readable reports, and deterministic test-fix prompts. Please keep changes inside that product boundary.
 
+Before large changes, read the current roadmap and decision records:
+
+- [Hardening and adoption plan](docs/tautest-hardening-adoption-plan.md)
+- [ADR 0001: Continue the existing architecture](docs/adr/0001-continue-not-rewrite.md)
+- [ADR 0002: Use StrykerJS as the JS/TS mutation engine](docs/adr/0002-strykerjs-as-mutation-engine.md)
+- [ADR 0003: Keep Tautest local-first by default](docs/adr/0003-local-first-default.md)
+- [ADR 0004: Treat report.json as the integration contract](docs/adr/0004-report-json-contract.md)
+
 ## Local Setup
 
 ```bash
@@ -26,6 +34,7 @@ pnpm --filter @tautest/github-action build
 ## Pull Request Guidelines
 
 - Keep changes focused and testable.
+- Classify new work as supported, beta, alpha groundwork, or explicitly out of scope.
 - Do not replace StrykerJS or add a separate mutation engine.
 - Do not add LLM API calls to the deterministic core workflow.
 - Preserve existing CLI behavior unless the PR explicitly documents the change.
