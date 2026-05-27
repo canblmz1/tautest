@@ -101105,6 +101105,57 @@ function blankToUndefined(value) {
   return trimmed ? trimmed : void 0;
 }
 
+// src/output.ts
+function buildCacheSummary(cacheState) {
+  if (!cacheState) {
+    return {
+      enabled: true,
+      saveStatus: "not-restored",
+      saveMessage: "Cache restore was unavailable."
+    };
+  }
+  return {
+    enabled: true,
+    cacheKey: cacheState.cacheKey,
+    cachePath: cacheState.cachePath,
+    matchedKey: cacheState.matchedKey
+  };
+}
+function setActionOutputs(output) {
+  const summary2 = output.report?.summary;
+  const score = summary2?.mutationScore;
+  const verdict = summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "");
+  const surviving = summary2?.survived ?? output.report?.surviving?.length ?? 0;
+  const killed = summary2?.killed ?? 0;
+  const noCoverage = summary2?.noCoverage ?? 0;
+  setOutput("score", score === null || score === void 0 ? "" : String(score));
+  setOutput("verdict", verdict);
+  setOutput("threshold", output.threshold === void 0 ? "" : String(output.threshold));
+  setOutput("killed", String(killed));
+  setOutput("surviving", String(surviving));
+  setOutput("no-coverage", String(noCoverage));
+  setOutput("report-path", output.paths?.report || "");
+  setOutput("json-path", output.paths?.json || "");
+  setOutput("prompt-path", output.paths?.prompt || "");
+  setOutput("mutation-json-path", output.paths?.mutationJson || "");
+  setOutput("runtime-ms", output.metrics?.runtimeMs === void 0 ? "" : String(output.metrics.runtimeMs));
+  setOutput("changed-source-lines", output.metrics?.changedSourceLineCount === void 0 ? "" : String(output.metrics.changedSourceLineCount));
+}
+function buildCommentReport(output) {
+  const summary2 = output.report?.summary;
+  return {
+    score: summary2?.mutationScore ?? null,
+    threshold: output.threshold,
+    verdict: summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "UNKNOWN"),
+    killed: summary2?.killed ?? 0,
+    survived: summary2?.survived ?? 0,
+    noCoverage: summary2?.noCoverage ?? 0,
+    reportPath: output.paths?.report,
+    fixPromptPath: output.paths?.prompt,
+    topMutants: output.report?.surviving ?? []
+  };
+}
+
 // src/pr-comment.ts
 var import_node_fs3 = require("node:fs");
 var COMMENT_MARKER = "<!-- tautest:report v=1 -->";
@@ -101515,21 +101566,6 @@ function maybeAnnotate(inputs, output) {
   const count = emitSurvivorAnnotations(output.report?.surviving ?? []);
   info(`Tautest annotations emitted: ${count}.`);
 }
-function buildCacheSummary(cacheState) {
-  if (!cacheState) {
-    return {
-      enabled: true,
-      saveStatus: "not-restored",
-      saveMessage: "Cache restore was unavailable."
-    };
-  }
-  return {
-    enabled: true,
-    cacheKey: cacheState.cacheKey,
-    cachePath: cacheState.cachePath,
-    matchedKey: cacheState.matchedKey
-  };
-}
 async function runPreflight(inputs) {
   const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
   const workspaceRoot = import_node_path3.default.resolve(workspace);
@@ -101671,40 +101707,6 @@ async function uploadTautestArtifact(workingDirectory) {
   await client2.uploadArtifact("tautest-report", files, workingDirectory, {
     retentionDays: 14
   });
-}
-function setActionOutputs(output) {
-  const summary2 = output.report?.summary;
-  const score = summary2?.mutationScore;
-  const verdict = summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "");
-  const surviving = summary2?.survived ?? output.report?.surviving?.length ?? 0;
-  const killed = summary2?.killed ?? 0;
-  const noCoverage = summary2?.noCoverage ?? 0;
-  setOutput("score", score === null || score === void 0 ? "" : String(score));
-  setOutput("verdict", verdict);
-  setOutput("threshold", output.threshold === void 0 ? "" : String(output.threshold));
-  setOutput("killed", String(killed));
-  setOutput("surviving", String(surviving));
-  setOutput("no-coverage", String(noCoverage));
-  setOutput("report-path", output.paths?.report || "");
-  setOutput("json-path", output.paths?.json || "");
-  setOutput("prompt-path", output.paths?.prompt || "");
-  setOutput("mutation-json-path", output.paths?.mutationJson || "");
-  setOutput("runtime-ms", output.metrics?.runtimeMs === void 0 ? "" : String(output.metrics.runtimeMs));
-  setOutput("changed-source-lines", output.metrics?.changedSourceLineCount === void 0 ? "" : String(output.metrics.changedSourceLineCount));
-}
-function buildCommentReport(output) {
-  const summary2 = output.report?.summary;
-  return {
-    score: summary2?.mutationScore ?? null,
-    threshold: output.threshold,
-    verdict: summary2?.verdict || (output.status === "no-op" ? "NO_CHANGES" : "UNKNOWN"),
-    killed: summary2?.killed ?? 0,
-    survived: summary2?.survived ?? 0,
-    noCoverage: summary2?.noCoverage ?? 0,
-    reportPath: output.paths?.report,
-    fixPromptPath: output.paths?.prompt,
-    topMutants: output.report?.surviving ?? []
-  };
 }
 function detectPackageManager(cwd) {
   const packageJsonPath = findUp(cwd, "package.json");

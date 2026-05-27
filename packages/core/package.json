@@ -45,6 +45,7 @@
     "build": "tsup src/index.ts --format esm --dts --clean",
     "lint": "tsc --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

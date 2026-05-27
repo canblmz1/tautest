@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { buildSurvivorAnnotations } from '../src/annotations';
 import { buildCacheKey } from '../src/cache';
 import { parseInputs } from '../src/inputs';
+import { buildCacheSummary, buildCommentReport } from '../src/output';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
 import { buildStepSummary } from '../src/summary';
 import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
@@ -101,6 +102,25 @@ describe('cache key', () => {
     });
 
     expect(key).toMatch(/^tautest-Linux-pnpm-refs-heads-main-feature-report-[a-f0-9]{12}$/);
+  });
+
+  it('summarizes restore misses and matched cache keys for the job summary', () => {
+    expect(buildCacheSummary(null)).toEqual({
+      enabled: true,
+      saveStatus: 'not-restored',
+      saveMessage: 'Cache restore was unavailable.'
+    });
+
+    expect(
+      buildCacheSummary({
+        cacheKey: 'tautest-Linux-pnpm-main-feature-123456789abc',
+        cachePath: '.tautest/stryker-incremental.json',
+        matchedKey: 'tautest-Linux-pnpm-main-feature-123456789abc'
+      })
+    ).toMatchObject({
+      enabled: true,
+      matchedKey: 'tautest-Linux-pnpm-main-feature-123456789abc'
+    });
   });
 });
 
@@ -269,6 +289,26 @@ describe('Tautest CLI invocation', () => {
 });
 
 describe('PR comment', () => {
+  it('builds comment reports from action JSON output', () => {
+    expect(
+      buildCommentReport({
+        status: 'no-op',
+        threshold: 80,
+        paths: {
+          report: '.tautest/report.md',
+          prompt: '.tautest/fix-prompt.md'
+        }
+      })
+    ).toMatchObject({
+      score: null,
+      threshold: 80,
+      verdict: 'NO_CHANGES',
+      reportPath: '.tautest/report.md',
+      fixPromptPath: '.tautest/fix-prompt.md',
+      topMutants: []
+    });
+  });
+
   it('builds a sticky sanitized markdown report', () => {
     const body = buildPrComment({
       score: 75,

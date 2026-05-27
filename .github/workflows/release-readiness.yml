@@ -63,6 +63,17 @@ jobs:
       - name: Test
         run: pnpm test
 
+      - name: Coverage report
+        run: pnpm coverage
+
+      - name: Upload coverage summaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-summaries-node-${{ matrix.node-version }}
+          path: |
+            packages/*/coverage/coverage-summary.json
+          if-no-files-found: warn
+
       - name: Build
         run: pnpm build
 
