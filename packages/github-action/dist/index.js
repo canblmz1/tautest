@@ -101299,6 +101299,20 @@ function buildMetricsSection(metrics) {
     "| Runtime | Changed files | Production files | Production lines | Mutated files | Mutate patterns | Partial |",
     "| ---: | ---: | ---: | ---: | ---: | ---: | --- |",
     `| ${cell(formatDuration(metrics.runtimeMs))} | ${metrics.changedFileCount ?? 0} | ${metrics.changedSourceFileCount ?? 0} | ${metrics.changedSourceLineCount ?? 0} | ${metrics.mutatedFileCount ?? 0} | ${metrics.mutatePatternCount ?? 0} | ${metrics.partial ? cell(metrics.partialReason || "yes") : "no"} |`,
+    "",
+    ...buildStageTimingSection(metrics.stageMs)
+  ];
+}
+function buildStageTimingSection(stageMs) {
+  if (!stageMs) {
+    return [];
+  }
+  return [
+    "### Stage Timings",
+    "",
+    "| Scope | Config | Mutation | Parse | Report |",
+    "| ---: | ---: | ---: | ---: | ---: |",
+    `| ${formatDuration(stageMs.scopeMs)} | ${formatDuration(stageMs.configMs)} | ${formatDuration(stageMs.mutationMs)} | ${formatDuration(stageMs.parseMs)} | ${formatDuration(stageMs.reportMs)} |`,
     ""
   ];
 }

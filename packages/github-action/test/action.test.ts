@@ -360,7 +360,14 @@ describe('step summary', () => {
         changedSourceLineCount: 1,
         mutatedFileCount: 1,
         mutatePatternCount: 1,
-        partial: false
+        partial: false,
+        stageMs: {
+          scopeMs: 10,
+          configMs: 20,
+          mutationMs: 1250,
+          parseMs: 30,
+          reportMs: 40
+        }
       },
       diagnostics: {
         strykerConfig: [
@@ -409,6 +416,8 @@ describe('step summary', () => {
     expect(summary).toContain('| MIXED | 75.00% | 3 | 1 | 0 |');
     expect(summary).toContain('## Runtime and Scope');
     expect(summary).toContain('| 1.3s | 2 | 1 | 1 | 1 | 1 | no |');
+    expect(summary).toContain('### Stage Timings');
+    expect(summary).toContain('| 10ms | 20ms | 1.3s | 30ms | 40ms |');
     expect(summary).toContain('## Stryker Config Diagnostics');
     expect(summary).toContain('`timeoutMS`');
     expect(summary).toContain('## Cache');

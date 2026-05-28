@@ -115,6 +115,32 @@
           "type": "integer",
           "minimum": 0
         },
+        "stageMs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scopeMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "configMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mutationMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "parseMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reportMs": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
         "changedFileCount": {
           "type": "integer",
           "minimum": 0

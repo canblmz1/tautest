@@ -93,7 +93,14 @@ describe('report builders', () => {
         changedSourceLineCount: 1,
         mutatedFileCount: 1,
         mutatePatternCount: 1,
-        partial: false
+        partial: false,
+        stageMs: {
+          scopeMs: 10,
+          configMs: 20,
+          mutationMs: 1250,
+          parseMs: 30,
+          reportMs: 40
+        }
       },
       strykerConfigDiagnostics: [
         {
@@ -107,6 +114,7 @@ describe('report builders', () => {
 
     expect(markdown).toContain('| `src/discount.ts` | 2 | EqualityOperator | age >= 65 | age > 65 |');
     expect(markdown).toContain('Changed production lines: **1**');
+    expect(markdown).toContain('Mutation stage: **1.3s**');
     expect(markdown).toContain('## Stryker Config Diagnostics');
     expect(markdown).toContain('## Mutant Details');
     expect(markdown).toContain('Likely missing behavior');
@@ -119,7 +127,14 @@ describe('report builders', () => {
       createdAt: new Date('2026-05-10T00:00:00Z'),
       threshold: 60,
       metrics: {
-        changedSourceLineCount: 1
+        changedSourceLineCount: 1,
+        stageMs: {
+          scopeMs: 10,
+          configMs: 20,
+          mutationMs: 1250,
+          parseMs: 30,
+          reportMs: 40
+        }
       },
       diagnostics: {
         strykerConfig: [
@@ -141,7 +156,10 @@ describe('report builders', () => {
         threshold: 60
       },
       metrics: {
-        changedSourceLineCount: 1
+        changedSourceLineCount: 1,
+        stageMs: {
+          mutationMs: 1250
+        }
       },
       diagnostics: {
         strykerConfig: [
@@ -171,7 +189,14 @@ describe('report builders', () => {
       fixPromptPath: '.tautest/fix-prompt.md',
       metrics: {
         changedSourceLineCount: 1,
-        mutatePatternCount: 1
+        mutatePatternCount: 1,
+        stageMs: {
+          scopeMs: 10,
+          configMs: 20,
+          mutationMs: 1250,
+          parseMs: 30,
+          reportMs: 40
+        }
       },
       strykerConfigDiagnostics: [
         {
@@ -185,6 +210,7 @@ describe('report builders', () => {
     });
     expect(terminal).toContain('Tautest: WEAK');
     expect(terminal).toContain('Changed lines: 1');
+    expect(terminal).toContain('Stages: scope 10ms | config 20ms | mutation 1.3s | parse 30ms | report 40ms');
     expect(terminal).toContain('Stryker config diagnostics:');
     expect(terminal).toContain('exact boundary value 65');
     expect(terminal).toContain('Fix prompt: .tautest/fix-prompt.md');
@@ -232,7 +258,14 @@ describe('report builders', () => {
         changedSourceLineCount: 1,
         mutatedFileCount: 1,
         mutatePatternCount: 1,
-        partial: false
+        partial: false,
+        stageMs: {
+          scopeMs: 10,
+          configMs: 20,
+          mutationMs: 1250,
+          parseMs: 30,
+          reportMs: 40
+        }
       },
       diagnostics: {
         strykerConfig: []

@@ -9,6 +9,13 @@ export interface TautestActionOutput {
   message?: string;
   metrics?: {
     runtimeMs?: number;
+    stageMs?: {
+      scopeMs?: number;
+      configMs?: number;
+      mutationMs?: number;
+      parseMs?: number;
+      reportMs?: number;
+    };
     changedFileCount?: number;
     changedSourceFileCount?: number;
     changedSourceLineCount?: number;

@@ -233,6 +233,13 @@ export interface StrykerConfigDiagnostic {
 
 export interface RunMetrics {
   runtimeMs?: number;
+  stageMs?: {
+    scopeMs?: number;
+    configMs?: number;
+    mutationMs?: number;
+    parseMs?: number;
+    reportMs?: number;
+  };
   changedFileCount?: number;
   changedSourceFileCount?: number;
   changedSourceLineCount?: number;

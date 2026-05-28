@@ -6,6 +6,7 @@ export interface StepSummaryOutput {
   cache?: StepSummaryCache;
   metrics?: {
     runtimeMs?: number;
+    stageMs?: StageTimings;
     changedFileCount?: number;
     changedSourceFileCount?: number;
     changedSourceLineCount?: number;
@@ -43,6 +44,14 @@ export interface StepSummaryOutput {
     json?: string;
     prompt?: string;
   };
+}
+
+interface StageTimings {
+  scopeMs?: number;
+  configMs?: number;
+  mutationMs?: number;
+  parseMs?: number;
+  reportMs?: number;
 }
 
 export interface StepSummaryCache {
@@ -108,6 +117,22 @@ function buildMetricsSection(metrics: StepSummaryOutput['metrics']): string[] {
     '| Runtime | Changed files | Production files | Production lines | Mutated files | Mutate patterns | Partial |',
     '| ---: | ---: | ---: | ---: | ---: | ---: | --- |',
     `| ${cell(formatDuration(metrics.runtimeMs))} | ${metrics.changedFileCount ?? 0} | ${metrics.changedSourceFileCount ?? 0} | ${metrics.changedSourceLineCount ?? 0} | ${metrics.mutatedFileCount ?? 0} | ${metrics.mutatePatternCount ?? 0} | ${metrics.partial ? cell(metrics.partialReason || 'yes') : 'no'} |`,
+    '',
+    ...buildStageTimingSection(metrics.stageMs)
+  ];
+}
+
+function buildStageTimingSection(stageMs: StageTimings | undefined): string[] {
+  if (!stageMs) {
+    return [];
+  }
+
+  return [
+    '### Stage Timings',
+    '',
+    '| Scope | Config | Mutation | Parse | Report |',
+    '| ---: | ---: | ---: | ---: | ---: |',
+    `| ${formatDuration(stageMs.scopeMs)} | ${formatDuration(stageMs.configMs)} | ${formatDuration(stageMs.mutationMs)} | ${formatDuration(stageMs.parseMs)} | ${formatDuration(stageMs.reportMs)} |`,
     ''
   ];
 }

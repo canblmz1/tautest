@@ -29,6 +29,7 @@ import {
   type GenerateStrykerConfigOptions,
   type PackageManager,
   type PromptStyle,
+  type RunMetrics,
   type TestRunner,
   type TautestJsonReport,
   type WorkspacePackageRunResult,
@@ -78,6 +79,7 @@ export async function runMutationCommand(cwd: string, options: RunOptions): Prom
 }
 
 async function runSingleProjectMutationCommand(cwd: string, options: RunOptions): Promise<RunResult> {
+  const scopeStartedAt = Date.now();
   const project = detectProject(resolveWorkspaceCwd(cwd, resolveWorkspacePathOption(options)));
 
   if (!project.packageJsonPath || !project.packageJson) {
@@ -130,13 +132,16 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
   assertChangedSourceLineBudget(sourceFiles, maxChangedLines);
 
   const mutatePatterns = changedFilesToStrykerMutate(sourceFiles, config.rangeCoalesceGap);
-  const runMetrics = {
+  const runMetrics: RunMetrics = {
     changedFileCount: changedFiles.length,
     changedSourceFileCount: sourceFiles.length,
     changedSourceLineCount: countChangedSourceLines(sourceFiles),
     mutatedFileCount: new Set(sourceFiles.map((file) => file.path)).size,
     mutatePatternCount: mutatePatterns.length,
-    partial: false
+    partial: false,
+    stageMs: {
+      scopeMs: Date.now() - scopeStartedAt
+    }
   };
 
   if (options.dryRun) {
@@ -158,6 +163,7 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
 
   ensureDir(reportDir);
 
+  const configStartedAt = Date.now();
   const strykerConfigOptions: GenerateStrykerConfigOptions = {
     mutate: mutatePatterns,
     jsonReportPath: relative(project.rootDir, mutationJsonPath),
@@ -175,6 +181,7 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
   };
   const strykerConfig = generateStrykerConfig(strykerConfigOptions);
   const strykerConfigDiagnostics = getStrykerConfigDiagnostics(strykerConfigOptions);
+  const configMs = Date.now() - configStartedAt;
 
   const runResult = await runStryker({
     cwd: project.rootDir,
@@ -182,20 +189,29 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
     jsonReportPath: mutationJsonPath
   });
 
+  const parseStartedAt = Date.now();
   const summary = readStrykerJsonReport(mutationJsonPath);
   const score = getMutationVerdict(summary, config.score);
   const topMutants = selectTopMutants(getActionableMutants(summary), config.score.topMutants);
   const threshold = parseThreshold(options.threshold, config.score.mixed);
   const runtimeMs = runResult.endedAt.getTime() - runResult.startedAt.getTime();
-  const metrics = {
+  const parseMs = Date.now() - parseStartedAt;
+  let metrics: RunMetrics = {
     ...runMetrics,
-    runtimeMs
+    runtimeMs,
+    stageMs: {
+      ...runMetrics.stageMs,
+      configMs,
+      mutationMs: runtimeMs,
+      parseMs
+    }
   };
   const promptStyle = options.promptStyle ?? config.prompt.style;
   const promptCommands = buildPromptCommands(baseRef, runner);
   const mutatedFiles = [...new Set(sourceFiles.map((file) => file.path))].sort();
   const aiAuthor = detectAiAuthor(process.env);
-  const jsonReport: TautestJsonReport = buildJsonReport({
+  const reportStartedAt = Date.now();
+  let jsonReport: TautestJsonReport = buildJsonReport({
     summary,
     score,
     topMutants,
@@ -217,7 +233,7 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
     },
     stryker: summary.stryker
   });
-  const markdownReport = buildMarkdownReport({
+  let markdownReport = buildMarkdownReport({
     summary,
     score,
     topMutants,
@@ -235,6 +251,47 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
     commands: promptCommands,
     maxMutants: config.prompt.maxMutants,
     style: promptStyle
+  });
+  metrics = {
+    ...metrics,
+    stageMs: {
+      ...metrics.stageMs,
+      reportMs: Date.now() - reportStartedAt
+    }
+  };
+  jsonReport = buildJsonReport({
+    summary,
+    score,
+    topMutants,
+    threshold,
+    scope: {
+      baseRef,
+      runner,
+      mutatePatterns,
+      mutatedFiles
+    },
+    metrics,
+    diagnostics: {
+      strykerConfig: strykerConfigDiagnostics
+    },
+    aiSignals: {
+      promptStyle,
+      author: aiAuthor,
+      commands: promptCommands
+    },
+    stryker: summary.stryker
+  });
+  markdownReport = buildMarkdownReport({
+    summary,
+    score,
+    topMutants,
+    threshold,
+    runner,
+    runtimeMs,
+    metrics,
+    strykerConfigDiagnostics,
+    mutatePatterns,
+    mutatedFiles
   });
 
   writeTextFile(reportPath, markdownReport);

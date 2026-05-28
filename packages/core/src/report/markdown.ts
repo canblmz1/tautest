@@ -38,6 +38,7 @@ export function buildMarkdownReport(input: {
     ...(metrics?.changedSourceFileCount === undefined ? [] : [`- Changed production files: **${metrics.changedSourceFileCount}**`]),
     ...(metrics?.changedSourceLineCount === undefined ? [] : [`- Changed production lines: **${metrics.changedSourceLineCount}**`]),
     ...(metrics?.mutatePatternCount === undefined ? [] : [`- Stryker mutate patterns: **${metrics.mutatePatternCount}**`]),
+    ...formatStageMetricBullets(metrics),
     `- Timeout: **${input.summary.timeout}**`,
     `- Runtime error: **${input.summary.runtimeError}**`,
     `- Compile error: **${input.summary.compileError}**`,
@@ -65,6 +66,22 @@ export function buildMarkdownReport(input: {
 
 function formatScore(score: number | null): string {
   return score === null ? 'unknown' : `${score.toFixed(2)}%`;
+}
+
+function formatStageMetricBullets(metrics: RunMetrics | undefined): string[] {
+  const stageMs = metrics?.stageMs;
+
+  if (!stageMs) {
+    return [];
+  }
+
+  return [
+    ...(stageMs.scopeMs === undefined ? [] : [`- Scope stage: **${formatDuration(stageMs.scopeMs)}**`]),
+    ...(stageMs.configMs === undefined ? [] : [`- Config stage: **${formatDuration(stageMs.configMs)}**`]),
+    ...(stageMs.mutationMs === undefined ? [] : [`- Mutation stage: **${formatDuration(stageMs.mutationMs)}**`]),
+    ...(stageMs.parseMs === undefined ? [] : [`- Parse stage: **${formatDuration(stageMs.parseMs)}**`]),
+    ...(stageMs.reportMs === undefined ? [] : [`- Report stage: **${formatDuration(stageMs.reportMs)}**`])
+  ];
 }
 
 function cell(value: string): string {
