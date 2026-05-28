@@ -118,7 +118,11 @@ npx tautest@latest --help
 
 ## Quickstart
 
+First 15 minutes:
+
 ```bash
+pnpm add -D tautest @stryker-mutator/core @stryker-mutator/vitest-runner
+pnpm exec tautest init --yes --runner vitest --no-install
 pnpm exec tautest doctor
 pnpm exec tautest run --base origin/main
 pnpm exec tautest prompt --style codex
@@ -133,6 +137,7 @@ The normal loop is:
 5. Re-run the test suite and Tautest.
 
 See [Quickstart](docs/QUICKSTART.md).
+See [Package manager support](docs/PACKAGE_MANAGERS.md).
 
 ## CLI usage
 

@@ -5,10 +5,13 @@ on:
   pull_request:
     paths:
       - ".changeset/**"
+      - ".devcontainer/**"
+      - ".dockerignore"
       - ".github/ISSUE_TEMPLATE/**"
       - ".github/pull_request_template.md"
       - ".github/workflows/**"
       - "docs/**"
+      - "Dockerfile"
       - "examples/**"
       - "packages/**"
       - "package.json"

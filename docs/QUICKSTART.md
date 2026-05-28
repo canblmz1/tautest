@@ -4,6 +4,26 @@ This guide assumes a TypeScript or JavaScript project that already uses Vitest o
 
 If you want to see the value before wiring Tautest into your own project, run the [copy-paste demo](DEMO.md) first.
 
+## First 15 Minutes
+
+```bash
+pnpm add -D tautest @stryker-mutator/core @stryker-mutator/vitest-runner
+pnpm exec tautest init --yes --runner vitest --no-install
+pnpm exec tautest doctor
+pnpm exec tautest run --dry-run --base origin/main
+pnpm exec tautest run --base origin/main
+pnpm exec tautest prompt --style codex
+```
+
+Expected artifacts:
+
+- `.tautest/report.md`
+- `.tautest/report.json`
+- `.tautest/fix-prompt.md`
+- `.tautest/mutation.json`
+
+Use the equivalent command from [package manager support](PACKAGE_MANAGERS.md) when the target project is not pnpm.
+
 ## 1. Install
 
 Vitest:

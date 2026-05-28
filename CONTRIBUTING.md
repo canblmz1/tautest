@@ -22,6 +22,17 @@ pnpm test
 pnpm build
 ```
 
+## Container Setup
+
+Use the devcontainer or Dockerfile when you want a pinned Node 24 + pnpm environment:
+
+```bash
+docker build -t tautest-dev .
+docker run --rm -it -v "%cd%":/workspace tautest-dev
+```
+
+Inside the container, run the same local setup commands. The container is for development reproducibility; package support status is tracked in [Package manager support](docs/PACKAGE_MANAGERS.md).
+
 ## Useful Package Commands
 
 ```bash
