@@ -1,5 +1,17 @@
 # @tautest/core
 
+## 1.5.1
+
+### Patch Changes
+
+- 3863a87: Add release-readiness coverage artifacts and split GitHub Action output helpers for easier maintenance.
+- 4dab235: Add Docker/devcontainer setup and package-manager adoption documentation.
+- 73cb688: Document hardening-phase product boundaries and architecture decisions.
+- 8947740: Improve Jest doctor diagnostics for transform stacks and test environments.
+- 21d8ef2: Add stage-level performance metrics to reports and GitHub Action summaries.
+- 70df5b2: Add report schema compatibility tests and a minimal IDE report consumer example.
+- 5ea40c9: Expand workspace affected selection to direct workspace dependents and include package reasons in aggregate reports.
+
 ## 1.5.0
 
 ### Minor Changes
