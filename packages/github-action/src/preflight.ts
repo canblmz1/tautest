@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, realpathSync } from 'node:fs';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import type { ActionInputs, PackageManagerInput } from './inputs';
@@ -30,6 +30,16 @@ export async function runPreflight(inputs: ActionInputs): Promise<PreflightResul
 
   if (!existsSync(workingDirectory)) {
     throw new Error(`Working directory does not exist: ${workingDirectory}`);
+  }
+
+  // Resolve symlinks to prevent traversal via symlink indirection
+  const realWorkingDir = safeRealpath(workingDirectory);
+  const realWorkspaceRoot = safeRealpath(workspaceRoot);
+
+  if (!isPathInside(realWorkingDir, realWorkspaceRoot)) {
+    throw new Error(
+      `Working directory resolved outside GITHUB_WORKSPACE (symlink traversal prevented). Received: ${inputs.workingDirectory}`
+    );
   }
 
   if (!base) {
@@ -69,5 +79,13 @@ async function warnIfShallowClone(cwd: string): Promise<void> {
 
   if (result.stdout.trim() === 'true') {
     core.warning('Repository is a shallow clone. Use actions/checkout with fetch-depth: 0 so Tautest can diff against the PR base.');
+  }
+}
+
+function safeRealpath(p: string): string {
+  try {
+    return realpathSync(p);
+  } catch {
+    return p;
   }
 }

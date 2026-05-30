@@ -120,7 +120,9 @@ function formatMutantRow(mutant: CommentReport['topMutants'][number]): string {
 }
 
 function codeCell(value: string): string {
-  return sanitize(value).replace(/\s+/g, ' ').replace(/\|/g, '\\|');
+  const clean = sanitize(value).replace(/\s+/g, ' ').replace(/\|/g, '\\|');
+  // Use double-backtick delimiter when value contains a backtick to prevent escaping
+  return clean.includes('`') ? `\`\` ${clean} \`\`` : `\`${clean}\``;
 }
 
 function safeReadFile(filePath: string): string {
@@ -136,5 +138,11 @@ function formatThreshold(threshold: number | undefined): string {
 }
 
 export function sanitize(value: string): string {
-  return value.replace(/<!--/g, '&lt;!--').replace(/-->/g, '--&gt;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return value
+    .replace(/<!--/g, '&lt;!--')
+    .replace(/-->/g, '--&gt;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\[/g, '\\[')
+    .replace(/\r?\n/g, ' ');
 }

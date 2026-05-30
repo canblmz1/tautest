@@ -10,7 +10,14 @@ export interface LlmRedactionResult {
 
 type Replacement = string | ((match: string, ...captures: string[]) => string);
 
+const MAX_REDACT_INPUT_BYTES = 10 * 1024 * 1024; // 10 MB
+
 export function redactPromptForLlm(prompt: string): LlmRedactionResult {
+  if (Buffer.byteLength(prompt, 'utf8') > MAX_REDACT_INPUT_BYTES) {
+    throw new Error(
+      `redactPromptForLlm: input exceeds the ${MAX_REDACT_INPUT_BYTES / (1024 * 1024)}MB limit. Truncate the prompt before calling redact.`
+    );
+  }
   let text = prompt;
   const counts = new Map<string, number>();
 

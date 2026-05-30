@@ -20,12 +20,25 @@ export function readGitDiff(options: GitDiffOptions): string {
     args.push('--', ...options.paths);
   }
 
-  return execFileSync('git', args, {
-    cwd: options.cwd,
-    encoding: 'utf8',
-    maxBuffer: GIT_DIFF_MAX_BUFFER,
-    stdio: ['ignore', 'pipe', 'pipe']
-  });
+  try {
+    return execFileSync('git', args, {
+      cwd: options.cwd,
+      encoding: 'utf8',
+      maxBuffer: GIT_DIFF_MAX_BUFFER,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (/ENOENT/.test(message)) {
+      throw new Error('git executable not found. Ensure git is installed and available in PATH.');
+    }
+    if (/maxBuffer/i.test(message)) {
+      throw new Error(
+        `git diff output exceeded the ${GIT_DIFF_MAX_BUFFER / (1024 * 1024)}MB buffer limit. Use --paths to narrow the diff scope.`
+      );
+    }
+    throw new Error(`git diff failed: ${message}`);
+  }
 }
 
 export function getChangedFiles(options: GitDiffOptions): ChangedFile[] {

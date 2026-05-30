@@ -13,6 +13,15 @@ export const tautestConfigSchema = z
         mixed: z.number().min(0).max(100).optional(),
         topMutants: z.number().int().min(1).optional()
       })
+      .refine(
+        (data) => {
+          if (data.strong !== undefined && data.mixed !== undefined) {
+            return data.strong >= data.mixed;
+          }
+          return true;
+        },
+        { message: 'score.strong must be greater than or equal to score.mixed' }
+      )
       .optional(),
     stryker: z
       .object({

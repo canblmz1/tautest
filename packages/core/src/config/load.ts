@@ -40,7 +40,21 @@ export function findTautestConfig(rootDir: string): string | null {
 
 export async function loadConfigFile(configPath: string, options: { alias?: Record<string, string> } = {}): Promise<unknown> {
   if (configPath.endsWith('.json')) {
-    return JSON.parse(readFileSync(configPath, 'utf8'));
+    let text: string;
+    try {
+      text = readFileSync(configPath, 'utf8');
+    } catch (error) {
+      throw new Error(
+        `Failed to read config file ${configPath}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+    try {
+      return JSON.parse(text) as unknown;
+    } catch (error) {
+      throw new Error(
+        `Failed to parse JSON config file ${configPath}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
   }
 
   const jiti = createJiti(configPath, {

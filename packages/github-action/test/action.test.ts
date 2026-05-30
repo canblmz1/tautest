@@ -337,11 +337,19 @@ describe('PR comment', () => {
     expect(body).toContain(COMMENT_MARKER);
     expect(body).toContain('## Tautest Patch Mutation Gate: MIXED');
     expect(body).toContain('| MIXED | 75.00% | 80.00% | 3 | 1 | 0 |');
-    expect(body).toContain('| `src/discount.ts` | 2 | EqualityOperator | age &gt;= 65 | age &gt; 65 | The exact boundary value 65 is not protected. |');
+    expect(body).toContain('| `src/discount.ts` | 2 | EqualityOperator | `age &gt;= 65` | `age &gt; 65` | `The exact boundary value 65 is not protected.` |');
   });
 
   it('escapes html comments and tags from dynamic markdown', () => {
     expect(sanitize('<!-- marker --><script>x</script>')).toBe('&lt;!-- marker --&gt;&lt;script&gt;x&lt;/script&gt;');
+  });
+
+  it('escapes markdown link brackets in sanitized content', () => {
+    expect(sanitize('[link text](http://evil.example)')).toBe('\\[link text](http://evil.example)');
+  });
+
+  it('collapses newlines to spaces in sanitized content', () => {
+    expect(sanitize('line1\nline2')).toBe('line1 line2');
   });
 
   it('finds the existing sticky comment by marker', () => {
