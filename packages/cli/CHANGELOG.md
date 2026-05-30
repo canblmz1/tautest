@@ -1,5 +1,16 @@
 # tautest
 
+## 1.8.0
+
+### Minor Changes
+
+- Fix escapeMarkdown square bracket injection, stable sort tiebreaker in findOwningPackage, sameValue circular reference guard, extractJson JSON validation before return, cache.ts null guard for missing workingDirectory. Expand test coverage with 16 new tests.
+
+### Patch Changes
+
+- Updated dependencies
+  - @tautest/core@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes
