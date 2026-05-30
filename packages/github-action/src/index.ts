@@ -1,32 +1,18 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { DefaultArtifactClient } from '@actions/artifact';
 import * as core from '@actions/core';
-import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 import { emitSurvivorAnnotations } from './annotations';
 import { restoreTautestCache, saveTautestCache, type TautestCache } from './cache';
+import { execCommand, type ExecResult } from './exec';
+import { ensurePackageManagerAvailable, installDependencies } from './install';
 import { readInputs, type ActionInputs, type PackageManagerInput } from './inputs';
 import { buildCacheSummary, buildCommentReport, setActionOutputs, type TautestActionOutput } from './output';
+import { runPreflight, type PreflightResult } from './preflight';
 import { buildPrComment, upsertStickyComment } from './pr-comment';
 import { writeStepSummary, type StepSummaryCache } from './summary';
 import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand, type TautestCommand } from './tautest-cli';
-
-interface PreflightResult {
-  workspaceRoot: string;
-  workingDirectory: string;
-  base: string;
-  isPullRequest: boolean;
-  pullRequestNumber?: number;
-  packageManager: Exclude<PackageManagerInput, 'auto'>;
-  headRef: string;
-}
-
-interface ExecResult {
-  exitCode: number;
-  stdout: string;
-  stderr: string;
-}
 
 interface TautestRunResult extends ExecResult {
   attemptedCommand: TautestCommand;
@@ -118,92 +104,6 @@ function maybeAnnotate(inputs: ActionInputs, output: TautestActionOutput): void 
 
   const count = emitSurvivorAnnotations(output.report?.surviving ?? []);
   core.info(`Tautest annotations emitted: ${count}.`);
-}
-
-async function runPreflight(inputs: ActionInputs): Promise<PreflightResult> {
-  const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
-  const workspaceRoot = path.resolve(workspace);
-  const workingDirectory = path.resolve(workspaceRoot, inputs.workingDirectory);
-  const pullRequest = github.context.payload.pull_request;
-  const isPullRequest = Boolean(pullRequest);
-  const base = inputs.base || pullRequest?.base?.sha;
-
-  if (!isPathInside(workingDirectory, workspaceRoot)) {
-    throw new Error(`Working directory must stay inside GITHUB_WORKSPACE. Received: ${inputs.workingDirectory}`);
-  }
-
-  if (!existsSync(workingDirectory)) {
-    throw new Error(`Working directory does not exist: ${workingDirectory}`);
-  }
-
-  if (!base) {
-    throw new Error('No base ref was provided and this workflow is not running in a pull request context.');
-  }
-
-  await assertGitRepository(workingDirectory);
-  await warnIfShallowClone(workingDirectory);
-
-  if (!isPullRequest) {
-    core.warning('This workflow is not running in a pull request context. Tautest can run, but PR comments will be skipped.');
-  }
-
-  const packageManager = inputs.packageManager === 'auto' ? detectPackageManager(workingDirectory) : inputs.packageManager;
-
-  return {
-    workspaceRoot,
-    workingDirectory,
-    base,
-    isPullRequest,
-    pullRequestNumber: pullRequest?.number,
-    packageManager,
-    headRef: pullRequest?.head?.ref || process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME || 'detached'
-  };
-}
-
-async function assertGitRepository(cwd: string): Promise<void> {
-  const result = await execCommand('git', ['rev-parse', '--show-toplevel'], cwd);
-
-  if (result.exitCode !== 0) {
-    throw new Error('Working directory is not inside a Git repository.');
-  }
-}
-
-async function warnIfShallowClone(cwd: string): Promise<void> {
-  const result = await execCommand('git', ['rev-parse', '--is-shallow-repository'], cwd);
-
-  if (result.stdout.trim() === 'true') {
-    core.warning('Repository is a shallow clone. Use actions/checkout with fetch-depth: 0 so Tautest can diff against the PR base.');
-  }
-}
-
-async function installDependencies(cwd: string, packageManager: Exclude<PackageManagerInput, 'auto'>): Promise<void> {
-  const command = installCommand(packageManager);
-  core.info(`Installing dependencies with ${packageManager}.`);
-  const result = await execCommand(command.command, command.args, cwd, false);
-
-  if (result.exitCode !== 0) {
-    throw new Error(`Dependency install failed with ${packageManager}.`);
-  }
-}
-
-async function ensurePackageManagerAvailable(packageManager: Exclude<PackageManagerInput, 'auto'>, cwd: string): Promise<void> {
-  const version = await execCommand(packageManager, ['--version'], cwd);
-
-  if (version.exitCode === 0) {
-    return;
-  }
-
-  if (packageManager === 'pnpm' || packageManager === 'yarn') {
-    core.info(`${packageManager} was not found on PATH. Trying corepack enable.`);
-    await execCommand('corepack', ['enable'], cwd, false);
-    const afterCorepack = await execCommand(packageManager, ['--version'], cwd);
-
-    if (afterCorepack.exitCode === 0) {
-      return;
-    }
-  }
-
-  throw new Error(`Package manager ${packageManager} is not available on PATH. Install it before this action or use a setup action.`);
 }
 
 async function runTautest(
@@ -304,106 +204,6 @@ async function uploadTautestArtifact(workingDirectory: string): Promise<void> {
   await client.uploadArtifact('tautest-report', files, workingDirectory, {
     retentionDays: 14
   });
-}
-
-function detectPackageManager(cwd: string): Exclude<PackageManagerInput, 'auto'> {
-  const packageJsonPath = findUp(cwd, 'package.json');
-
-  if (packageJsonPath) {
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { packageManager?: string };
-    const declared = parsePackageManagerField(packageJson.packageManager);
-
-    if (declared) {
-      core.info(`Detected package manager from package.json: ${declared}.`);
-      return declared;
-    }
-  }
-
-  for (const [fileName, packageManager] of [
-    ['pnpm-lock.yaml', 'pnpm'],
-    ['yarn.lock', 'yarn'],
-    ['bun.lock', 'bun'],
-    ['bun.lockb', 'bun'],
-    ['package-lock.json', 'npm']
-  ] as const) {
-    if (findUp(cwd, fileName)) {
-      core.info(`Detected package manager from ${fileName}: ${packageManager}.`);
-      return packageManager;
-    }
-  }
-
-  core.warning('Could not detect package manager from packageManager field or lockfile. Falling back to npm.');
-  return 'npm';
-}
-
-function parsePackageManagerField(value: unknown): Exclude<PackageManagerInput, 'auto'> | null {
-  if (typeof value !== 'string') {
-    return null;
-  }
-
-  const name = value.split('@')[0];
-  return name === 'npm' || name === 'pnpm' || name === 'yarn' || name === 'bun' ? name : null;
-}
-
-function installCommand(packageManager: Exclude<PackageManagerInput, 'auto'>): { command: string; args: string[] } {
-  if (packageManager === 'pnpm') {
-    return { command: 'pnpm', args: ['install', '--frozen-lockfile'] };
-  }
-
-  if (packageManager === 'yarn') {
-    return { command: 'yarn', args: ['install', '--frozen-lockfile'] };
-  }
-
-  if (packageManager === 'bun') {
-    return { command: 'bun', args: ['install', '--frozen-lockfile'] };
-  }
-
-  return { command: 'npm', args: ['ci'] };
-}
-
-function findUp(startDir: string, relativePath: string): string | null {
-  let current = path.resolve(startDir);
-
-  while (true) {
-    const candidate = path.join(current, relativePath);
-
-    if (existsSync(candidate)) {
-      return candidate;
-    }
-
-    const parent = path.dirname(current);
-
-    if (parent === current) {
-      return null;
-    }
-
-    current = parent;
-  }
-}
-
-function isPathInside(candidate: string, root: string): boolean {
-  const relative = path.relative(root, candidate);
-  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
-}
-
-async function execCommand(command: string, args: string[], cwd: string, silent = true): Promise<ExecResult> {
-  let stdout = '';
-  let stderr = '';
-  const exitCode = await exec.exec(command, args, {
-    cwd,
-    silent,
-    ignoreReturnCode: true,
-    listeners: {
-      stdout: (data) => {
-        stdout += data.toString();
-      },
-      stderr: (data) => {
-        stderr += data.toString();
-      }
-    }
-  });
-
-  return { exitCode, stdout, stderr };
 }
 
 run().catch((error: unknown) => {

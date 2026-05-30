@@ -2,15 +2,21 @@
   "name": "Tautest",
   "build": {
     "context": "..",
-    "dockerfile": "../Dockerfile"
+    "dockerfile": "../Dockerfile",
+    "target": "base"
   },
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "pnpm install --frozen-lockfile",
+  "postCreateCommand": "pnpm install --frozen-lockfile && pnpm build",
   "customizations": {
     "vscode": {
       "extensions": [
-        "github.vscode-github-actions"
-      ]
+        "github.vscode-github-actions",
+        "dbaeumer.vscode-eslint",
+        "vitest.explorer"
+      ],
+      "settings": {
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
     }
   }
 }

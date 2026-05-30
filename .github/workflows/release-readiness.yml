@@ -135,3 +135,61 @@ jobs:
           package-manager: pnpm
           install: false
           cache: false
+
+  package-manager-smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package-manager:
+          - npm
+          - yarn
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm (for workspace build)
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Pack CLI
+        run: |
+          mkdir -p .tautest/release-packs
+          pnpm --filter @tautest/core pack --pack-destination .tautest/release-packs
+          pnpm --filter tautest pack --pack-destination .tautest/release-packs
+
+      - name: Smoke install via ${{ matrix.package-manager }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$(mktemp -d)"
+          pack_dir="$(pwd)/.tautest/release-packs"
+          core_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-core-*.tgz' -print -quit)"
+          cli_tgz="$(find "$pack_dir" -maxdepth 1 -name 'tautest-[0-9]*.tgz' -print -quit)"
+          test -n "$core_tgz"
+          test -n "$cli_tgz"
+          cd "$smoke_dir"
+          if [ "${{ matrix.package-manager }}" = "npm" ]; then
+            npm init -y
+            npm install --save "$core_tgz" "$cli_tgz"
+            npx tautest --version
+          elif [ "${{ matrix.package-manager }}" = "yarn" ]; then
+            yarn init -y
+            yarn add "file:$core_tgz" "file:$cli_tgz"
+            yarn tautest --version
+          fi
+

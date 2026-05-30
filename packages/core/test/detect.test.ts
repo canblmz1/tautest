@@ -131,3 +131,76 @@ describe('AI author detector', () => {
     expect(detectAiAuthor({}).author).toBe('unknown');
   });
 });
+
+describe('Jest test runner detection', () => {
+  it('detects Jest CJS from jest.config.cjs and jest dependency', () => {
+    expect(
+      detectTestRunnerFromSignals({
+        packageJson: {
+          devDependencies: {
+            jest: '^30.0.0'
+          }
+        },
+        jestConfigFiles: ['jest.config.cjs'],
+        vitestConfigFiles: []
+      })
+    ).toMatchObject({
+      runner: 'jest',
+      configFile: 'jest.config.cjs'
+    });
+  });
+
+  it('detects Jest ESM from jest.config.mjs', () => {
+    expect(
+      detectTestRunnerFromSignals({
+        packageJson: {
+          devDependencies: {
+            jest: '^30.0.0'
+          }
+        },
+        jestConfigFiles: ['jest.config.mjs'],
+        vitestConfigFiles: []
+      })
+    ).toMatchObject({
+      runner: 'jest',
+      configFile: 'jest.config.mjs'
+    });
+  });
+
+  it('detects Jest TypeScript from jest.config.ts', () => {
+    expect(
+      detectTestRunnerFromSignals({
+        packageJson: {
+          devDependencies: {
+            jest: '^30.0.0',
+            'ts-jest': '^30.0.0'
+          }
+        },
+        jestConfigFiles: ['jest.config.ts'],
+        vitestConfigFiles: []
+      })
+    ).toMatchObject({
+      runner: 'jest',
+      configFile: 'jest.config.ts',
+      candidates: ['jest']
+    });
+  });
+
+  it('prefers Vitest over Jest when both config files are present', () => {
+    expect(
+      detectTestRunnerFromSignals({
+        packageJson: {
+          devDependencies: {
+            vitest: '^3.0.0',
+            jest: '^30.0.0'
+          }
+        },
+        jestConfigFiles: ['jest.config.js'],
+        vitestConfigFiles: ['vitest.config.ts']
+      })
+    ).toMatchObject({
+      runner: 'vitest',
+      candidates: ['vitest', 'jest']
+    });
+  });
+});

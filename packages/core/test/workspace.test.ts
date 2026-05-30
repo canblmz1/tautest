@@ -181,6 +181,151 @@ describe('workspace run reports', () => {
     expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/api | `packages/api` | passed | 100.00 | 2 | 0 | 0 | changed packages/api/src/index.ts |');
     expect(buildWorkspaceMarkdownReport(report)).toContain('| @fixture/web | `packages/web` | no-op |  |  |  |  | selected by --all | No changed production source files found. |');
   });
+
+  it('reports workspace-error status when any package errors', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'npm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      createdAt: new Date('2026-05-25T00:00:00.000Z'),
+      packages: [
+        {
+          name: '@fixture/api',
+          path: 'packages/api',
+          status: 'error',
+          exitCode: 3,
+          reasons: ['changed packages/api/src/index.ts'],
+          message: 'Stryker failed to start: No tests found.'
+        }
+      ],
+      warnings: []
+    });
+
+    expect(report.status).toBe('workspace-error');
+    expect(report.summary).toMatchObject({
+      selected: 1,
+      errors: 1,
+      passed: 0
+    });
+  });
+
+  it('reports workspace-threshold-failed when threshold missed in any package', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'pnpm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      createdAt: new Date('2026-05-25T00:00:00.000Z'),
+      packages: [
+        {
+          name: '@fixture/api',
+          path: 'packages/api',
+          status: 'passed',
+          exitCode: 0,
+          reasons: ['changed'],
+          summary: { verdict: 'STRONG', mutationScore: 100, killed: 2, survived: 0, noCoverage: 0 }
+        },
+        {
+          name: '@fixture/web',
+          path: 'packages/web',
+          status: 'threshold-failed',
+          exitCode: 1,
+          reasons: ['changed'],
+          summary: { verdict: 'WEAK', mutationScore: 40, killed: 2, survived: 3, noCoverage: 0 }
+        }
+      ],
+      warnings: []
+    });
+
+    expect(report.status).toBe('workspace-threshold-failed');
+    expect(report.summary).toMatchObject({
+      selected: 2,
+      passed: 1,
+      thresholdFailed: 1
+    });
+  });
+
+  it('returns workspace-no-op when all packages are no-op', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'pnpm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      createdAt: new Date('2026-05-25T00:00:00.000Z'),
+      packages: [
+        {
+          name: '@fixture/api',
+          path: 'packages/api',
+          status: 'no-op',
+          exitCode: 2,
+          reasons: ['no changed source files'],
+          message: 'No changed production source files found.'
+        }
+      ],
+      warnings: []
+    });
+
+    expect(report.status).toBe('workspace-no-op');
+    expect(report.summary.noOp).toBe(1);
+  });
+});
+
+describe('workspace plan dry-run selection accuracy', () => {
+  it('returns empty selected and populated unselected for no changed files (no-op plan)', () => {
+    const root = createWorkspaceFixture();
+    const plan = buildWorkspacePlan({
+      cwd: root,
+      mode: 'affected',
+      changedFiles: []
+    });
+
+    expect(plan.selectedPackages).toHaveLength(0);
+    expect(plan.unselectedPackages).toHaveLength(3);
+    // In affected mode with no changes, unselected packages have no reasons (no change reason)
+    expect(plan.unselectedPackages.every((pkg) => !pkg.selected)).toBe(true);
+  });
+
+  it('selects all packages in --all mode regardless of changed files', () => {
+    const root = createWorkspaceFixture();
+    const plan = buildWorkspacePlan({
+      cwd: root,
+      mode: 'all',
+      changedFiles: []
+    });
+
+    expect(plan.selectedPackages).toHaveLength(3);
+    expect(plan.unselectedPackages).toHaveLength(0);
+    expect(plan.selectedPackages.every((pkg) => pkg.selected)).toBe(true);
+    expect(plan.selectedPackages.every((pkg) => pkg.reasons.includes('selected by --all'))).toBe(true);
+  });
+
+  it('selected packages have descriptive reasons explaining why they were chosen', () => {
+    const root = createWorkspaceFixture();
+    const plan = buildWorkspacePlan({
+      cwd: root,
+      mode: 'affected',
+      changedFiles: [changedFile('packages/api/src/index.ts')]
+    });
+
+    const selected = plan.selectedPackages;
+    expect(selected.length).toBeGreaterThan(0);
+    expect(selected.every((pkg) => pkg.reasons.length > 0)).toBe(true);
+    expect(selected.find((pkg) => pkg.path === 'packages/api')?.reasons.join('\n')).toContain('changed packages/api/src/index.ts');
+  });
+
+  it('packages mode emits warning for unmatched selectors', () => {
+    const root = createWorkspaceFixture();
+    const plan = buildWorkspacePlan({
+      cwd: root,
+      mode: 'packages',
+      packages: ['@fixture/api', '@fixture/nonexistent'],
+      changedFiles: []
+    });
+
+    expect(plan.selectedPackages.map((pkg) => pkg.path)).toEqual(['packages/api']);
+    expect(plan.warnings.some((w) => w.includes('nonexistent'))).toBe(true);
+  });
 });
 
 function createWorkspaceFixture(): string {

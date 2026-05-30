@@ -4,8 +4,10 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildSurvivorAnnotations } from '../src/annotations';
 import { buildCacheKey } from '../src/cache';
+import { findUp, isPathInside } from '../src/exec';
 import { parseInputs } from '../src/inputs';
 import { buildCacheSummary, buildCommentReport } from '../src/output';
+import { detectPackageManager, installCommand, parsePackageManagerField } from '../src/package-manager';
 import { buildPrComment, COMMENT_MARKER, findStickyComment, sanitize } from '../src/pr-comment';
 import { buildStepSummary } from '../src/summary';
 import { buildTautestRunArgs, extractJson, formatTautestCliDiagnostics, resolveTautestCommand } from '../src/tautest-cli';
@@ -447,5 +449,80 @@ describe('step summary', () => {
     expect(summary).toContain('| NO_CHANGES | unknown | 0 | 0 | 0 |');
     expect(summary).toContain('No surviving mutants found.');
     expect(summary).toContain('No changed production source files found.');
+  });
+});
+
+describe('package-manager helpers', () => {
+  it('parses valid packageManager fields', () => {
+    expect(parsePackageManagerField('pnpm@10.0.0')).toBe('pnpm');
+    expect(parsePackageManagerField('yarn@4.0.0')).toBe('yarn');
+    expect(parsePackageManagerField('npm@10.0.0')).toBe('npm');
+    expect(parsePackageManagerField('bun@1.0.0')).toBe('bun');
+    expect(parsePackageManagerField('unknown@1.0.0')).toBeNull();
+    expect(parsePackageManagerField(42)).toBeNull();
+    expect(parsePackageManagerField(undefined)).toBeNull();
+  });
+
+  it('returns the correct install command per package manager', () => {
+    expect(installCommand('pnpm')).toEqual({ command: 'pnpm', args: ['install', '--frozen-lockfile'] });
+    expect(installCommand('yarn')).toEqual({ command: 'yarn', args: ['install', '--frozen-lockfile'] });
+    expect(installCommand('bun')).toEqual({ command: 'bun', args: ['install', '--frozen-lockfile'] });
+    expect(installCommand('npm')).toEqual({ command: 'npm', args: ['ci'] });
+  });
+
+  it('detects package manager from lockfile', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'tautest-pm-'));
+
+    try {
+      writeFileSync(path.join(dir, 'pnpm-lock.yaml'), '');
+      expect(detectPackageManager(dir)).toBe('pnpm');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('falls back to npm when no lockfile or packageManager field', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'tautest-pm-'));
+
+    try {
+      expect(detectPackageManager(dir)).toBe('npm');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('detects package manager from package.json packageManager field', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'tautest-pm-'));
+
+    try {
+      writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ packageManager: 'yarn@4.0.0' }));
+      expect(detectPackageManager(dir)).toBe('yarn');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('exec helpers', () => {
+  it('identifies a child path as inside root', () => {
+    expect(isPathInside('/workspace/app', '/workspace')).toBe(true);
+    expect(isPathInside('/workspace', '/workspace')).toBe(true);
+    expect(isPathInside('/other/dir', '/workspace')).toBe(false);
+    expect(isPathInside('/workspace/../etc', '/workspace')).toBe(false);
+  });
+
+  it('finds a file by walking up the directory tree', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'tautest-findup-'));
+    const subDir = path.join(dir, 'a', 'b', 'c');
+
+    try {
+      mkdirSync(subDir, { recursive: true });
+      writeFileSync(path.join(dir, 'marker.txt'), 'found');
+
+      expect(findUp(subDir, 'marker.txt')).toBe(path.join(dir, 'marker.txt'));
+      expect(findUp(subDir, 'nonexistent.txt')).toBeNull();
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

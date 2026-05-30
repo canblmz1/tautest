@@ -53,6 +53,62 @@ describe('Stryker config generator', () => {
     });
   });
 
+  it('generates Jest ESM Stryker config with mjs config file', () => {
+    expect(
+      generateStrykerConfig({
+        mutate: ['src/shipping.js:2-8'],
+        jsonReportPath: '.tautest/mutation.json',
+        testRunner: 'jest',
+        packageManager: 'npm',
+        jestConfigFile: 'jest.config.mjs'
+      })
+    ).toMatchObject({
+      mutate: ['src/shipping.js:2-8'],
+      reporters: ['json'],
+      testRunner: 'jest',
+      plugins: ['@stryker-mutator/jest-runner'],
+      jest: {
+        configFile: 'jest.config.mjs'
+      }
+    });
+  });
+
+  it('generates Jest TypeScript Stryker config with tsconfig path', () => {
+    const config = generateStrykerConfig({
+      mutate: ['src/shipping.ts:1-10'],
+      jsonReportPath: '.tautest/mutation.json',
+      testRunner: 'jest',
+      packageManager: 'pnpm',
+      jestConfigFile: 'jest.config.ts',
+      tsconfigFile: 'tsconfig.json'
+    });
+
+    expect(config).toMatchObject({
+      mutate: ['src/shipping.ts:1-10'],
+      testRunner: 'jest',
+      plugins: ['@stryker-mutator/jest-runner'],
+      tsconfigFile: 'tsconfig.json',
+      jest: {
+        configFile: 'jest.config.ts'
+      }
+    });
+  });
+
+  it('generates Jest Stryker config without a config file (auto-discovery)', () => {
+    const config = generateStrykerConfig({
+      mutate: ['src/index.js:1-5'],
+      jsonReportPath: '.tautest/mutation.json',
+      testRunner: 'jest',
+      packageManager: 'npm'
+    });
+
+    expect(config).toMatchObject({
+      testRunner: 'jest',
+      plugins: ['@stryker-mutator/jest-runner']
+    });
+    expect((config as Record<string, unknown>).jest).toBeUndefined();
+  });
+
   it('safe-merges user config without allowing core scope overrides', () => {
     expect(
       mergeStrykerConfig(

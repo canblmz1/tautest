@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim
+FROM node:24-bookworm-slim AS base
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends bash ca-certificates git openssh-client \
@@ -16,5 +16,8 @@ COPY docs ./docs
 COPY tsconfig.json ./
 
 RUN pnpm install --frozen-lockfile
+
+# Verify the workspace builds and tests pass at image build time
+RUN pnpm typecheck && pnpm test && pnpm build
 
 CMD ["bash"]

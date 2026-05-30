@@ -363,3 +363,63 @@ function validateReportSchema(report: unknown): string[] {
 
   return (validate.errors ?? []).map((error) => `${error.instancePath} ${error.message}`);
 }
+
+describe('report.json schema contract', () => {
+  it('rejects a report with a missing schemaVersion', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+    const report = buildJsonReport({
+      summary,
+      score: getMutationVerdict(summary),
+      topMutants: [],
+      createdAt: new Date('2026-05-10T00:00:00Z'),
+      threshold: 60
+    });
+
+    const mutated = { ...report, schemaVersion: undefined } as Record<string, unknown>;
+    delete mutated['schemaVersion'];
+    const errors = validateReportSchema(mutated);
+
+    expect(errors.some((error) => error.includes('schemaVersion'))).toBe(true);
+  });
+
+  it('rejects a report with an unexpected schemaVersion value', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+    const report = buildJsonReport({
+      summary,
+      score: getMutationVerdict(summary),
+      topMutants: [],
+      createdAt: new Date('2026-05-10T00:00:00Z'),
+      threshold: 60
+    });
+
+    const mutated = { ...report, schemaVersion: '999' } as Record<string, unknown>;
+    const errors = validateReportSchema(mutated);
+
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('rejects a report with an invalid mutationScore range', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+    const report = buildJsonReport({
+      summary,
+      score: getMutationVerdict(summary),
+      topMutants: [],
+      createdAt: new Date('2026-05-10T00:00:00Z'),
+      threshold: 60
+    });
+
+    const mutated = JSON.parse(JSON.stringify(report)) as Record<string, unknown>;
+    (mutated['summary'] as Record<string, unknown>)['mutationScore'] = 150;
+    const errors = validateReportSchema(mutated);
+
+    expect(errors.some((error) => error.includes('mutationScore'))).toBe(true);
+  });
+
+  it('ide-report-consumer sample-report.json passes schema validation', () => {
+    const samplePath = path.resolve(import.meta.dirname, '..', '..', '..', 'examples', 'ide-report-consumer', 'sample-report.json');
+    const sampleReport = JSON.parse(readFileSync(samplePath, 'utf8')) as unknown;
+    const errors = validateReportSchema(sampleReport);
+
+    expect(errors).toEqual([]);
+  });
+});
