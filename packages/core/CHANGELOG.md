@@ -1,5 +1,12 @@
 # @tautest/core
 
+## 1.9.0
+
+### Minor Changes
+
+- Add readJsonFile file-path error context, readCliVersion try/catch, STRYKER_OUT_OF_MEMORY error code for heap/ENOMEM failures. Add 35 new tests covering mapEngineStatus, normalize round-trip, stryker error mapping, doctor JSON output, and cli readJsonFile error paths.
+- 4aeb623: Fix escapeMarkdown square bracket injection, stable sort tiebreaker in findOwningPackage, sameValue circular reference guard, extractJson JSON validation before return, cache.ts null guard for missing workingDirectory. Expand test coverage with 16 new tests.
+
 ## 1.8.0
 
 ### Minor Changes
