@@ -60,7 +60,7 @@ export function findOwningPackage(packages: WorkspacePackage[], filePath: string
     return normalized === workspacePackage.path || normalized.startsWith(`${workspacePackage.path}/`);
   });
 
-  return owners.sort((left, right) => right.path.length - left.path.length)[0] ?? null;
+  return owners.sort((left, right) => right.path.length - left.path.length || left.path.localeCompare(right.path))[0] ?? null;
 }
 
 function changedFileReason(file: ChangedFile): string {

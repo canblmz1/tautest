@@ -156,7 +156,11 @@ function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 function sameValue(left: unknown, right: unknown): boolean {
-  return JSON.stringify(left) === JSON.stringify(right);
+  try {
+    return JSON.stringify(left) === JSON.stringify(right);
+  } catch {
+    return left === right;
+  }
 }
 
 function toPosix(value: string): string {

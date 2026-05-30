@@ -68,3 +68,54 @@ secret
     expect(markdown).toContain('Prompt body');
   });
 });
+
+describe('buildLlmSuggestionMarkdown fence selection', () => {
+  it('uses 4 backticks when prompt contains a triple-backtick code block', () => {
+    const provenance = buildLlmProvenance({
+      provider: 'external-command',
+      prompt: 'p',
+      redaction: { enabled: false, count: 0, labels: [] },
+      createdAt: '2026-01-01T00:00:00.000Z'
+    });
+    const markdown = buildLlmSuggestionMarkdown({
+      provenance,
+      suggestion: 'Here is a fix.',
+      promptPreview: 'Code:\n```\nconsole.log("hi")\n```'
+    });
+
+    expect(markdown).toContain('````markdown');
+    expect(markdown).toMatch(/^````markdown$/m);
+  });
+
+  it('uses 5 backticks when prompt contains a 4-backtick fence', () => {
+    const provenance = buildLlmProvenance({
+      provider: 'external-command',
+      prompt: 'p',
+      redaction: { enabled: false, count: 0, labels: [] },
+      createdAt: '2026-01-01T00:00:00.000Z'
+    });
+    const markdown = buildLlmSuggestionMarkdown({
+      provenance,
+      suggestion: 'Fix.',
+      promptPreview: 'Block:\n````\ncontent\n````'
+    });
+
+    expect(markdown).toContain('`````markdown');
+  });
+
+  it('returns _No suggestion returned._ when suggestion is empty', () => {
+    const provenance = buildLlmProvenance({
+      provider: 'external-command',
+      prompt: 'p',
+      redaction: { enabled: false, count: 0, labels: [] },
+      createdAt: '2026-01-01T00:00:00.000Z'
+    });
+    const markdown = buildLlmSuggestionMarkdown({
+      provenance,
+      suggestion: '   ',
+      promptPreview: 'prompt'
+    });
+
+    expect(markdown).toContain('_No suggestion returned._');
+  });
+});

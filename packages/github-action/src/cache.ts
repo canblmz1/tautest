@@ -27,7 +27,8 @@ export function buildCacheKey(context: CacheContext): string {
   const runnerOs = sanitize(context.runnerOs || process.env.RUNNER_OS || process.platform);
   const base = sanitize(context.base);
   const head = sanitize(context.headRef || 'detached');
-  const workingDirectoryHash = crypto.createHash('sha256').update(path.resolve(context.workingDirectory)).digest('hex').slice(0, 12);
+  const resolvedDir = context.workingDirectory ? path.resolve(context.workingDirectory) : process.cwd();
+  const workingDirectoryHash = crypto.createHash('sha256').update(resolvedDir).digest('hex').slice(0, 12);
 
   return `tautest-${runnerOs}-${context.packageManager}-${base}-${head}-${workingDirectoryHash}`;
 }

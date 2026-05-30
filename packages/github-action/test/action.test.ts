@@ -534,3 +534,44 @@ describe('exec helpers', () => {
     }
   });
 });
+
+describe('extractJson', () => {
+  it('returns trimmed JSON when stdout is exactly a JSON object', () => {
+    expect(extractJson('{"status":"passed"}')).toBe('{"status":"passed"}');
+  });
+
+  it('extracts JSON embedded in surrounding log lines', () => {
+    expect(extractJson('Starting run\n{"status":"passed"}\nDone.')).toBe('{"status":"passed"}');
+  });
+
+  it('returns null for stdout with no JSON-like content', () => {
+    expect(extractJson('No JSON here at all')).toBeNull();
+  });
+
+  it('returns null when extracted substring is not valid JSON', () => {
+    expect(extractJson('some text { not valid json } more text')).toBeNull();
+  });
+
+  it('returns null for empty string', () => {
+    expect(extractJson('')).toBeNull();
+  });
+
+  it('handles nested objects correctly', () => {
+    const json = '{"a":{"b":1}}';
+    expect(extractJson(`log\n${json}\nend`)).toBe(json);
+  });
+});
+
+describe('cache key null guard', () => {
+  it('uses cwd when workingDirectory is undefined', () => {
+    const key = buildCacheKey({
+      workingDirectory: undefined as unknown as string,
+      base: 'refs/heads/main',
+      headRef: 'feature/test',
+      packageManager: 'pnpm',
+      runnerOs: 'Linux'
+    });
+
+    expect(key).toMatch(/^tautest-Linux-pnpm-refs-heads-main-feature-test-[a-f0-9]{12}$/);
+  });
+});

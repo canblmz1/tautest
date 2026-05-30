@@ -349,6 +349,84 @@ function createWorkspaceFixture(): string {
   return root;
 }
 
+describe('findOwningPackage', () => {
+  const packages = [
+    { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' },
+    { path: 'packages/shared', name: '@fixture/shared', rootDir: '/repo/packages/shared' },
+    { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web' }
+  ];
+
+  it('finds the owning package for a nested file path', () => {
+    const owner = findOwningPackage(packages, 'packages/api/src/index.ts');
+    expect(owner?.path).toBe('packages/api');
+  });
+
+  it('returns null when file is not under any known package', () => {
+    const owner = findOwningPackage(packages, 'scripts/build.ts');
+    expect(owner).toBeNull();
+  });
+
+  it('prefers deeper path when two packages could own the same file', () => {
+    const nested = [
+      { path: 'packages', name: 'root', rootDir: '/repo/packages' },
+      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' }
+    ];
+    const owner = findOwningPackage(nested, 'packages/api/src/index.ts');
+    expect(owner?.path).toBe('packages/api');
+  });
+
+  it('uses localeCompare as stable tiebreaker for equal-length paths', () => {
+    const tied = [
+      { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web' },
+      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' }
+    ];
+    const owner = findOwningPackage(tied, 'packages/api/src/index.ts');
+    expect(owner?.path).toBe('packages/api');
+  });
+});
+
+describe('buildWorkspaceMarkdownReport escaping', () => {
+  it('escapes square brackets in package names to prevent markdown link injection', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'pnpm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      packages: [
+        {
+          name: '[test-package]',
+          path: 'packages/[test]',
+          status: 'passed',
+          exitCode: 0,
+          reasons: ['changed'],
+          summary: { verdict: 'STRONG', mutationScore: 100, killed: 1, survived: 0, noCoverage: 0 }
+        }
+      ],
+      warnings: []
+    });
+
+    const markdown = buildWorkspaceMarkdownReport(report);
+
+    expect(markdown).toContain('\\[test-package\\]');
+    expect(markdown).not.toMatch(/\[test-package\]\(/);
+  });
+
+  it('escapes pipe characters in warning messages', () => {
+    const report = buildWorkspaceRunReport({
+      baseRef: 'origin/main',
+      packageManager: 'pnpm',
+      workspaceRoot: '/repo',
+      reportDir: '/repo/.tautest',
+      packages: [],
+      warnings: ['pkg|name affects all packages']
+    });
+
+    const markdown = buildWorkspaceMarkdownReport(report);
+
+    expect(markdown).toContain('pkg\\|name');
+  });
+});
+
 function changedFile(filePath: string, overrides: Partial<ChangedFile> = {}): ChangedFile {
   return {
     path: filePath,

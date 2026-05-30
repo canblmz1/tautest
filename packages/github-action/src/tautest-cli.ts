@@ -108,13 +108,28 @@ export function extractJson(stdout: string): string | null {
   const trimmed = stdout.trim();
 
   if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-    return trimmed;
+    try {
+      JSON.parse(trimmed);
+      return trimmed;
+    } catch {
+      // fall through to search
+    }
   }
 
   const start = trimmed.indexOf('{');
   const end = trimmed.lastIndexOf('}');
 
-  return start >= 0 && end > start ? trimmed.slice(start, end + 1) : null;
+  if (start >= 0 && end > start) {
+    const candidate = trimmed.slice(start, end + 1);
+    try {
+      JSON.parse(candidate);
+      return candidate;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
 }
 
 export function formatTautestCliDiagnostics(input: TautestDiagnosticInput): string {

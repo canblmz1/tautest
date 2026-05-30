@@ -97,5 +97,5 @@ function packageRow(result: WorkspacePackageRunResult): string {
 }
 
 function escapeMarkdown(value: string): string {
-  return value.replace(/\|/g, '\\|').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return value.replace(/\|/g, '\\|').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\[/g, '\\[').replace(/]/g, '\\]');
 }

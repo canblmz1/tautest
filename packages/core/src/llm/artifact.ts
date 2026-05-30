@@ -34,6 +34,7 @@ function formatRedaction(redaction: LlmProvenance['redaction']): string {
 }
 
 function chooseFence(value: string): string {
+  // Match 3+ consecutive backticks (not separated by spaces)
   const matches = value.match(/`{3,}/g) ?? [];
   const longest = matches.reduce((max, match) => Math.max(max, match.length), 2);
   return '`'.repeat(longest + 1);
