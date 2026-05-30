@@ -170,7 +170,13 @@ function writeStdout(value: string): void {
 
 function readCliVersion(): string {
   const packageJsonPath = fileURLToPath(new URL('../package.json', import.meta.url));
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { version?: unknown };
+  let packageJson: { version?: unknown };
+
+  try {
+    packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { version?: unknown };
+  } catch (error) {
+    throw new Error(`Failed to read CLI package.json at ${packageJsonPath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
 
   if (typeof packageJson.version !== 'string' || packageJson.version.length === 0) {
     throw new Error('tautest package.json must include a version string.');

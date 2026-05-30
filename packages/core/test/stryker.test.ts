@@ -187,4 +187,39 @@ describe('Stryker error mapping', () => {
       code: 'STRYKER_MODULE_NOT_FOUND'
     });
   });
+
+  it('maps timeout errors', () => {
+    expect(mapStrykerError(new Error('Test runner timed out'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });
+    expect(mapStrykerError(new Error('dry run timeout exceeded'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });
+  });
+
+  it('maps out-of-memory errors to STRYKER_OUT_OF_MEMORY', () => {
+    expect(mapStrykerError(new Error('ENOMEM: not enough memory'))).toMatchObject({ code: 'STRYKER_OUT_OF_MEMORY' });
+    expect(mapStrykerError(new Error('JavaScript heap out of memory'))).toMatchObject({ code: 'STRYKER_OUT_OF_MEMORY' });
+    expect(mapStrykerError(new Error('Allocation failed - JavaScript heap out of memory'))).toMatchObject({ code: 'STRYKER_OUT_OF_MEMORY' });
+    expect(mapStrykerError(new Error('out of memory'))).toMatchObject({ code: 'STRYKER_OUT_OF_MEMORY' });
+  });
+
+  it('wraps unknown errors as STRYKER_RUN_FAILED', () => {
+    expect(mapStrykerError(new Error('Something unexpected happened'))).toMatchObject({ code: 'STRYKER_RUN_FAILED' });
+    expect(mapStrykerError('plain string error')).toMatchObject({ code: 'STRYKER_RUN_FAILED', message: expect.stringContaining('plain string error') });
+  });
+
+  it('preserves the original cause', () => {
+    const original = new Error('root cause');
+    const mapped = mapStrykerError(original);
+    expect(mapped.cause).toBe(original);
+  });
+
+  it('handles circular-reference values in diagnoseStrykerConfig without throwing', () => {
+    const circular: Record<string, unknown> = {};
+    circular.self = circular;
+
+    expect(() =>
+      diagnoseStrykerConfig(
+        { mutate: ['src/a.ts:1-1'], reporters: ['json'], timeoutMS: 1000 },
+        { timeoutMS: circular as unknown as number }
+      )
+    ).not.toThrow();
+  });
 });

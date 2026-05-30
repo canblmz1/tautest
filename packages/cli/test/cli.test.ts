@@ -19,6 +19,7 @@ import {
   countChangedSourceLines,
   resolveWorkspaceCwd
 } from '../src/commands/run';
+import { readJsonFile } from '../src/lib/fs';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -676,5 +677,34 @@ describe('doctor command', () => {
     const result = await runDoctorCommand(root, { json: false });
 
     expect(result.output).toContain('WARN Jest environment: Jest jsdom environment detected without jest-environment-jsdom dependency.');
+  });
+
+  it('outputs structured JSON report', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-doctor-json-'));
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({ name: 'json-fixture', devDependencies: { vitest: '^2.0.0', '@stryker-mutator/core': '^9.6.1', '@stryker-mutator/vitest-runner': '^9.6.1' } })
+    );
+
+    const result = await runDoctorCommand(root, { json: true });
+    const parsed = JSON.parse(result.output) as { cwd: string; checks: unknown[]; errors: unknown[]; warnings: unknown[] };
+
+    expect(parsed.cwd).toBe(root);
+    expect(Array.isArray(parsed.checks)).toBe(true);
+    expect(Array.isArray(parsed.errors)).toBe(true);
+  });
+});
+
+describe('readJsonFile', () => {
+  it('throws with file path when file does not exist', () => {
+    const missingPath = path.join(tmpdir(), 'does-not-exist-tautest.json');
+    expect(() => readJsonFile(missingPath)).toThrow(missingPath);
+  });
+
+  it('throws with file path and parse error when file contains invalid JSON', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'tautest-fs-'));
+    const filePath = path.join(dir, 'bad.json');
+    writeFileSync(filePath, '{ invalid json }');
+    expect(() => readJsonFile(filePath)).toThrow(filePath);
   });
 });

@@ -38,6 +38,14 @@ export function mapStrykerError(error: unknown): TautestError {
     return new TautestError('Stryker timed out while running mutation tests.', 'STRYKER_TIMEOUT', error);
   }
 
+  if (/ENOMEM|out of memory|heap out of memory|JavaScript heap/i.test(message)) {
+    return new TautestError(
+      'Stryker ran out of memory. Reduce concurrency or increase the Node.js heap size with --max-old-space-size.',
+      'STRYKER_OUT_OF_MEMORY',
+      error
+    );
+  }
+
   return new TautestError(`Stryker mutation run failed: ${message}`, 'STRYKER_RUN_FAILED', error);
 }
 

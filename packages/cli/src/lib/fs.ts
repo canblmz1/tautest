@@ -6,7 +6,19 @@ export function ensureDir(dirPath: string): void {
 }
 
 export function readJsonFile<T>(filePath: string): T {
-  return JSON.parse(readFileSync(filePath, 'utf8')) as T;
+  let text: string;
+
+  try {
+    text = readFileSync(filePath, 'utf8');
+  } catch (error) {
+    throw new Error(`Could not read file ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }
 
 export function writeJsonFile(filePath: string, value: unknown): void {
