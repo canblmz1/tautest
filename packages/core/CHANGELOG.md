@@ -1,5 +1,11 @@
 # @tautest/core
 
+## 1.6.0
+
+### Minor Changes
+
+- 21355e6: Expand test coverage with Jest fixture variants, workspace reliability suites, report.json schema contract tests; add coverage config to all vitest configs; strengthen Docker build with typecheck+test+build validation; add package-manager smoke matrix (npm, yarn) to release-readiness CI.
+
 ## 1.5.1
 
 ### Patch Changes
