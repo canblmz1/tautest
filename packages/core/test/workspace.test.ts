@@ -351,9 +351,9 @@ function createWorkspaceFixture(): string {
 
 describe('findOwningPackage', () => {
   const packages = [
-    { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' },
-    { path: 'packages/shared', name: '@fixture/shared', rootDir: '/repo/packages/shared' },
-    { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web' }
+    { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api', absolutePath: '/repo/packages/api', packageJsonPath: '/repo/packages/api/package.json', packageJson: {} },
+    { path: 'packages/shared', name: '@fixture/shared', rootDir: '/repo/packages/shared', absolutePath: '/repo/packages/shared', packageJsonPath: '/repo/packages/shared/package.json', packageJson: {} },
+    { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web', absolutePath: '/repo/packages/web', packageJsonPath: '/repo/packages/web/package.json', packageJson: {} }
   ];
 
   it('finds the owning package for a nested file path', () => {
@@ -368,8 +368,8 @@ describe('findOwningPackage', () => {
 
   it('prefers deeper path when two packages could own the same file', () => {
     const nested = [
-      { path: 'packages', name: 'root', rootDir: '/repo/packages' },
-      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' }
+      { path: 'packages', name: 'root', rootDir: '/repo/packages', absolutePath: '/repo/packages', packageJsonPath: '/repo/packages/package.json', packageJson: {} },
+      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api', absolutePath: '/repo/packages/api', packageJsonPath: '/repo/packages/api/package.json', packageJson: {} }
     ];
     const owner = findOwningPackage(nested, 'packages/api/src/index.ts');
     expect(owner?.path).toBe('packages/api');
@@ -377,8 +377,8 @@ describe('findOwningPackage', () => {
 
   it('uses localeCompare as stable tiebreaker for equal-length paths', () => {
     const tied = [
-      { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web' },
-      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api' }
+      { path: 'packages/web', name: '@fixture/web', rootDir: '/repo/packages/web', absolutePath: '/repo/packages/web', packageJsonPath: '/repo/packages/web/package.json', packageJson: {} },
+      { path: 'packages/api', name: '@fixture/api', rootDir: '/repo/packages/api', absolutePath: '/repo/packages/api', packageJsonPath: '/repo/packages/api/package.json', packageJson: {} }
     ];
     const owner = findOwningPackage(tied, 'packages/api/src/index.ts');
     expect(owner?.path).toBe('packages/api');

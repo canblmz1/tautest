@@ -51,7 +51,7 @@ describe('normalizeMutationSummary round-trip', () => {
 
   it('survives a normalize → denormalize round-trip', () => {
     const normalized = normalizeMutationSummary({
-      runner: { id: 'stryker-js', name: 'Stryker.js', engineVersion: '9.0.0' },
+      runner: { id: 'stryker-js', name: 'Stryker.js', engineVersion: '9.0.0', language: 'typescript' },
       summary: {
         score: 50,
         total: 2,
@@ -78,7 +78,7 @@ describe('normalizeMutationSummary round-trip', () => {
 
   it('handles missing optional fields with safe defaults', () => {
     const normalized = normalizeMutationSummary({
-      runner: { id: 'stryker-js', name: 'Stryker.js', engineVersion: '9.0.0' },
+      runner: { id: 'stryker-js', name: 'Stryker.js', engineVersion: '9.0.0', language: 'typescript' },
       summary: {
         score: 100,
         total: 1,
