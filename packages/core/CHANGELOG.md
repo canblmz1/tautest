@@ -1,5 +1,11 @@
 # @tautest/core
 
+## 1.10.1
+
+### Patch Changes
+
+- Update Vitest development dependencies to the patched 4.1.x line so release audit passes.
+
 ## 1.10.0
 
 ### Minor Changes
