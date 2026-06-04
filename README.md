@@ -20,6 +20,7 @@ Tautest is a PR mutation quality gate for JavaScript and TypeScript projects. It
 | Jest JS/TS projects | Beta | CommonJS, native ESM, and Babel TypeScript fixtures are covered; heavily customized transforms can need explicit Stryker/Jest configuration. |
 | pnpm and `package.json` workspaces | Beta | Workspace mode plans and sequentially runs selected packages; full dependency-graph scheduling is future work. |
 | Python and Java parser work | Alpha groundwork | Parser and runner-adapter experiments only; `tautest run` execution remains JS/TS through StrykerJS. |
+| Reliability helpers | MVP | `predict-flaky`, `watch`, `scaffold`, `time-travel init`, and `chaos` are local-first advisory tools. |
 | LLM provider calls | Opt-in only | Fix prompts are deterministic local artifacts unless `tautest prompt --suggest` is explicitly configured. |
 | Hosted dashboard | Out of scope | Tautest is local-first CLI and CI tooling. |
 
@@ -147,6 +148,11 @@ tautest demo --run
 tautest init --yes --runner vitest --no-install
 tautest doctor
 tautest run --base origin/main --threshold 60
+tautest predict-flaky --threshold 80
+tautest watch --base origin/main
+tautest scaffold src/service.ts
+tautest time-travel init --runner vitest
+tautest chaos --command "pnpm test" --profile latency-basic --seed 123
 tautest prompt --style codex
 tautest report
 tautest report --html
@@ -279,6 +285,9 @@ Tautest writes run outputs to `.tautest/` by default:
 - `.tautest/fix-prompt.md`
 - `.tautest/llm-suggestion.md` when `tautest prompt --suggest` is explicitly enabled
 - `.tautest/stryker-incremental.json`
+- `.tautest/flaky-report.json` and `.tautest/flaky-report.md` from `tautest predict-flaky`
+- `.tautest/watch-report.json` and `.tautest/watch-report.md` from `tautest watch`
+- `.tautest/chaos-report.json` and `.tautest/chaos-report.md` from `tautest chaos`
 
 The machine-readable `.tautest/report.json` file uses schema version `1`. See [docs/report.schema.json](docs/report.schema.json) for the JSON Schema contract.
 

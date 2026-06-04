@@ -2,13 +2,18 @@
 import { Command } from 'commander';
 import { readFileSync, realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { PackageManager, PromptStyle, TestRunner } from '@tautest/core';
+import type { PackageManager, PromptStyle, ScaffoldFramework, ScaffoldLanguage, TestRunner } from '@tautest/core';
+import { runChaosCommand } from './commands/chaos';
 import { runDemoCommand } from './commands/demo';
 import { runDoctorCommand } from './commands/doctor';
 import { formatInitResult, runInit } from './commands/init';
+import { runPredictFlakyCommand } from './commands/predict-flaky';
 import { runPromptCommand } from './commands/prompt';
 import { runReportCommand } from './commands/report';
 import { runMutationCommand } from './commands/run';
+import { runScaffoldCommand } from './commands/scaffold';
+import { runTimeTravelCommand } from './commands/time-travel';
+import { runWatchCommand } from './commands/watch';
 import { mapUnknownError, printCliError } from './lib/errors';
 import { EXIT_CODES } from './lib/exit-codes';
 
@@ -88,6 +93,87 @@ export function buildProgram(): Command {
     });
 
   program
+    .command('predict-flaky')
+    .description('score test files for deterministic flakiness risk signals')
+    .argument('[paths...]', 'test files or directories to analyze')
+    .option('--runner <runner>', 'test runner: vitest or jest', parseRunner)
+    .option('--threshold <number>', 'maximum allowed risk score before exiting 1')
+    .option('--report-dir <dir>', 'directory for reliability report outputs')
+    .option('--json', 'print machine-readable JSON summary')
+    .action(async (paths: string[], options) => {
+      await runAction(program, async () => {
+        const result = runPredictFlakyCommand(process.cwd(), paths, options);
+        writeStdout(result.output);
+        return result.exitCode;
+      });
+    });
+
+  program
+    .command('watch')
+    .description('plan affected test files from changed source files')
+    .argument('[paths...]', 'changed files; defaults to git diff against --base')
+    .option('--base <ref>', 'base ref for git diff when paths are not provided')
+    .option('--report-dir <dir>', 'directory for reliability report outputs')
+    .option('--json', 'print machine-readable JSON summary')
+    .action(async (paths: string[], options) => {
+      await runAction(program, async () => {
+        const result = runWatchCommand(process.cwd(), paths, options);
+        writeStdout(result.output);
+        return result.exitCode;
+      });
+    });
+
+  program
+    .command('scaffold')
+    .description('generate a focused test scaffold for a source file')
+    .argument('<file>', 'source file to inspect')
+    .option('--language <language>', 'language: javascript, typescript, or python', parseScaffoldLanguage)
+    .option('--framework <framework>', 'test framework: vitest, jest, or pytest', parseScaffoldFramework)
+    .option('--out <path>', 'output test file path')
+    .option('--write', 'write the scaffold instead of printing it')
+    .option('--force', 'overwrite an existing output file when used with --write')
+    .option('--json', 'print machine-readable JSON summary')
+    .action(async (file: string, options) => {
+      await runAction(program, async () => {
+        writeStdout(runScaffoldCommand(process.cwd(), file, options));
+        return EXIT_CODES.ok;
+      });
+    });
+
+  const timeTravel = program.command('time-travel').description('create deterministic fake-timer helpers for async tests');
+
+  timeTravel
+    .command('init')
+    .description('write or print a deterministic time helper setup file')
+    .option('--runner <runner>', 'test runner: vitest or jest', parseRunner)
+    .option('--setup-file <path>', 'setup helper output path')
+    .option('--print', 'print helper code instead of writing a file')
+    .option('--force', 'overwrite an existing setup file')
+    .option('--json', 'print machine-readable JSON summary')
+    .action(async (options) => {
+      await runAction(program, async () => {
+        writeStdout(runTimeTravelCommand(process.cwd(), options));
+        return EXIT_CODES.ok;
+      });
+    });
+
+  program
+    .command('chaos')
+    .description('run a command with deterministic app-level fault injection')
+    .option('--command <command>', 'test command to run under chaos')
+    .option('--profile <profile>', 'chaos profile: latency-basic, connection-errors, or stress')
+    .option('--seed <number>', 'deterministic chaos seed')
+    .option('--report-dir <dir>', 'directory for reliability report outputs')
+    .option('--json', 'print machine-readable JSON summary')
+    .action(async (options) => {
+      await runAction(program, async () => {
+        const result = await runChaosCommand(process.cwd(), options);
+        writeStdout(result.output);
+        return result.exitCode;
+      });
+    });
+
+  program
     .command('prompt')
     .description('print an AI fix prompt from a Tautest report JSON')
     .option('--from <path>', 'path to report.json')
@@ -158,6 +244,22 @@ function parsePromptStyle(value: string): PromptStyle {
   }
 
   throw new Error('--prompt-style/--style must be "agent", "human", "claude-code", "cursor", "codex", or "opencode".');
+}
+
+function parseScaffoldLanguage(value: string): ScaffoldLanguage {
+  if (value === 'javascript' || value === 'typescript' || value === 'python') {
+    return value;
+  }
+
+  throw new Error('--language must be "javascript", "typescript", or "python".');
+}
+
+function parseScaffoldFramework(value: string): ScaffoldFramework {
+  if (value === 'vitest' || value === 'jest' || value === 'pytest') {
+    return value;
+  }
+
+  throw new Error('--framework must be "vitest", "jest", or "pytest".');
 }
 
 function collectValues(value: string, previous: string[]): string[] {

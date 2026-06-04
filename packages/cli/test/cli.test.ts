@@ -7,9 +7,13 @@ import { describe, expect, it } from 'vitest';
 import { buildProgram } from '../src/index';
 import { runDemoCommand } from '../src/commands/demo';
 import { runInit } from '../src/commands/init';
+import { runPredictFlakyCommand } from '../src/commands/predict-flaky';
 import { runPromptCommand } from '../src/commands/prompt';
 import { runReportCommand } from '../src/commands/report';
 import { runDoctorCommand } from '../src/commands/doctor';
+import { runScaffoldCommand } from '../src/commands/scaffold';
+import { runTimeTravelCommand } from '../src/commands/time-travel';
+import { runWatchCommand } from '../src/commands/watch';
 import {
   assertChangedSourceLineBudget,
   buildDryRunOutput,
@@ -23,7 +27,19 @@ import { readJsonFile } from '../src/lib/fs';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
-    expect(buildProgram().commands.map((command) => command.name())).toEqual(['demo', 'init', 'doctor', 'run', 'prompt', 'report']);
+    expect(buildProgram().commands.map((command) => command.name())).toEqual([
+      'demo',
+      'init',
+      'doctor',
+      'run',
+      'predict-flaky',
+      'watch',
+      'scaffold',
+      'time-travel',
+      'chaos',
+      'prompt',
+      'report'
+    ]);
   });
 
   it('registers workspace planning flags on run', () => {
@@ -38,6 +54,61 @@ describe('CLI program', () => {
     const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')) as { version: string };
 
     expect(buildProgram().version()).toBe(packageJson.version);
+  });
+});
+
+describe('reliability commands', () => {
+  it('writes flakiness reports and exits by risk threshold', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-flaky-'));
+    const testPath = path.join(root, 'src', 'service.test.ts');
+    mkdirSync(path.dirname(testPath), { recursive: true });
+    writeFileSync(
+      testPath,
+      `it('floats a network call', () => {
+  fetch('/api');
+});
+`
+    );
+
+    const result = runPredictFlakyCommand(root, [], { threshold: '50' });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.output).toContain('Tautest flakiness');
+    expect(readFileSync(path.join(root, '.tautest', 'flaky-report.json'), 'utf8')).toContain('async-floating-operation');
+    expect(readFileSync(path.join(root, '.tautest', 'flaky-report.md'), 'utf8')).toContain('Possible floating async operation');
+  });
+
+  it('prints affected-test plans for changed files', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-watch-'));
+    mkdirSync(path.join(root, 'src'), { recursive: true });
+    writeFileSync(path.join(root, 'src', 'math.ts'), 'export const value = 1;\n');
+    writeFileSync(path.join(root, 'src', 'math.test.ts'), "import { value } from './math';\n");
+
+    const result = runWatchCommand(root, ['src/math.ts'], {});
+
+    expect(result.exitCode).toBe(0);
+    expect(result.output).toContain('src/math.test.ts');
+    expect(readFileSync(path.join(root, '.tautest', 'watch-report.json'), 'utf8')).toContain('affectedTests');
+  });
+
+  it('prints and writes scaffolds without overwriting by default', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-scaffold-'));
+    const sourcePath = path.join(root, 'src', 'service.ts');
+    mkdirSync(path.dirname(sourcePath), { recursive: true });
+    writeFileSync(sourcePath, 'export async function loadUser() { return 1; }\n');
+
+    expect(runScaffoldCommand(root, 'src/service.ts', {})).toContain("from './service'");
+    expect(runScaffoldCommand(root, 'src/service.ts', { write: true })).toContain('Scaffold written');
+    expect(() => runScaffoldCommand(root, 'src/service.ts', { write: true })).toThrow('already exists');
+  });
+
+  it('writes time-travel helpers safely', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-time-travel-'));
+
+    expect(runTimeTravelCommand(root, { runner: 'vitest', setupFile: 'test/time.ts' })).toContain('Time-travel helper written');
+    expect(readFileSync(path.join(root, 'test', 'time.ts'), 'utf8')).toContain('vi.setSystemTime');
+    expect(() => runTimeTravelCommand(root, { runner: 'vitest', setupFile: 'test/time.ts' })).toThrow('already exists');
+    expect(runTimeTravelCommand(root, { runner: 'jest', print: true })).toContain('jest.setSystemTime');
   });
 });
 

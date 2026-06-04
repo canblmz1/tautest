@@ -174,6 +174,94 @@ This is expected for docs-only, config-only, deleted-only, binary-only, or test-
 
 The JSON Schema lives at [`docs/report.schema.json`](report.schema.json). Use it when another tool, CI step, or agent workflow consumes Tautest output directly.
 
+## Reliability commands
+
+These commands are local-first reliability helpers. They do not call an LLM by default and they write separate reliability artifacts so the mutation `report.json` contract stays stable.
+
+### `tautest predict-flaky`
+
+Scores test files for deterministic flakiness signals such as floating async work, real-time sleeps, nondeterministic clocks/randomness, shared state, and ambient IO.
+
+```bash
+tautest predict-flaky
+tautest predict-flaky src/service.test.ts --threshold 75
+tautest predict-flaky tests --runner vitest --json
+```
+
+Outputs:
+
+- `.tautest/flaky-report.json`
+- `.tautest/flaky-report.md`
+
+`--threshold <number>` is a maximum allowed risk score. If the report score is greater than or equal to the threshold, the command exits `1`.
+
+### `tautest watch`
+
+Builds a static JS/TS import graph and plans affected test files from changed source files.
+
+```bash
+tautest watch --base origin/main
+tautest watch src/math.ts --json
+```
+
+Outputs:
+
+- `.tautest/watch-report.json`
+- `.tautest/watch-report.md`
+
+The MVP prints affected tests and runner command hints. If no tests are selected, run the normal suite because dynamic imports, path aliases, generated code, or custom resolvers may need a fuller graph.
+
+### `tautest scaffold`
+
+Generates a test scaffold for a source file. It prints to stdout by default and only writes files with `--write`.
+
+```bash
+tautest scaffold src/service.ts
+tautest scaffold src/service.ts --framework jest --write
+tautest scaffold app/service.py --language python --framework pytest --write
+```
+
+Python scaffold is experimental and does not imply full Python mutation support.
+
+### `tautest time-travel init`
+
+Writes or prints deterministic fake-timer helpers for async tests.
+
+```bash
+tautest time-travel init --runner vitest --setup-file test/time.ts
+tautest time-travel init --runner jest --print
+```
+
+The generated helper wraps the runner fake timer APIs and restores real timers after each test.
+
+### `tautest chaos`
+
+Runs a command with deterministic app-level chaos injection. The MVP patches Node `fetch` in the test process through `NODE_OPTIONS=--import`; it does not perform OS-level packet loss.
+
+```bash
+tautest chaos --command "pnpm test" --profile latency-basic --seed 123
+tautest chaos --command "pnpm test" --profile connection-errors --json
+```
+
+Profiles:
+
+- `latency-basic`
+- `connection-errors`
+- `stress`
+
+Outputs:
+
+- `.tautest/chaos-report.json`
+- `.tautest/chaos-report.md`
+
+### Reliability HTML reports
+
+`tautest report --html` can render either mutation `report.json` or reliability JSON files:
+
+```bash
+tautest report --html --from .tautest/flaky-report.json --out .tautest/flaky-report.html
+```
+
 ## `tautest prompt`
 
 Prints a fix prompt from `.tautest/report.json`.

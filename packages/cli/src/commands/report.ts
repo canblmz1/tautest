@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { buildHtmlReport, type TautestJsonReport } from '@tautest/core';
+import { buildHtmlReport, buildReliabilityHtmlReport, isReliabilityReport, type TautestJsonReport } from '@tautest/core';
 import { CliError } from '../lib/errors';
 import { EXIT_CODES } from '../lib/exit-codes';
 import { fileExists, readJsonFile, writeTextFile } from '../lib/fs';
@@ -32,9 +32,9 @@ function runHtmlReportCommand(cwd: string, options: ReportOptions): string {
     throw new CliError(`Report JSON not found: ${from}`, EXIT_CODES.configError, 'Run `tautest run` first or pass `--from <report.json>`.');
   }
 
-  const report = readJsonFile<TautestJsonReport>(from);
+  const report = readJsonFile<TautestJsonReport | unknown>(from);
   const out = path.resolve(cwd, options.out ?? path.join(path.dirname(from), 'report.html'));
-  writeTextFile(out, buildHtmlReport(report));
+  writeTextFile(out, isReliabilityReport(report) ? buildReliabilityHtmlReport(report) : buildHtmlReport(report as TautestJsonReport));
 
   return `HTML report written: ${path.relative(cwd, out) || out}\n`;
 }

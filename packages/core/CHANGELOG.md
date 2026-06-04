@@ -1,5 +1,13 @@
 # @tautest/core
 
+## 1.10.0
+
+### Minor Changes
+
+- Add local-first reliability MVP commands and report helpers.
+
+  New CLI surfaces include `predict-flaky`, `watch`, `scaffold`, `time-travel init`, and `chaos`. Core now exposes deterministic reliability report contracts, flakiness analysis, affected-test planning, scaffold generation, time-travel helper generation, and reliability HTML/Markdown rendering.
+
 ## 1.9.0
 
 ### Minor Changes
