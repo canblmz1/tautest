@@ -50,6 +50,7 @@ export interface ChangedFile {
   isTest: boolean;
   isBinary: boolean;
   warnings: string[];
+  outsideMutateScope?: boolean;
 }
 
 export interface GitDiffOptions {

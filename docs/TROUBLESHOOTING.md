@@ -23,6 +23,18 @@ tautest init
 pnpm install
 ```
 
+## Surviving Mutants Executed Zero Tests
+
+Symptom: exit code `12` with `STRYKER_ZERO_TESTS_EXECUTED` and a message like `11 of 11 surviving mutants executed 0 tests`.
+
+Stryker reported mutants as Survived although the test runner ran no tests against them, so any score would be meaningless and Tautest refuses to report one. A known cause is Vitest 5 with `@stryker-mutator/vitest-runner` 9.x or 10.0.0 ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)).
+
+Fix until the runner supports Vitest 5:
+
+```bash
+pnpm add -D vitest@^4
+```
+
 ## Slow Test Suite
 
 Mutation testing runs tests many times. If it is slow:
@@ -37,7 +49,7 @@ Mutation testing runs tests many times. If it is slow:
 
 Symptom: exit code `2`.
 
-Tautest found no changed production source files in the selected diff. This is expected for docs-only or test-only changes.
+Tautest found no changed production source files in the selected diff, or Stryker generated no mutants for the changed lines. This is expected for docs-only or test-only changes, for changes limited to comments, imports, or declarations, and for files outside the `mutate` list of your Stryker config.
 
 ## Monorepo
 

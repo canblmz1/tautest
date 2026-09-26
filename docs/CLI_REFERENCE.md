@@ -38,7 +38,7 @@ tautest doctor
 tautest doctor --json
 ```
 
-Checks include Node, Git, shallow clone status, package.json, runner detection, Stryker dependencies, runner config, monorepo signals, existing Stryker config, `.tautest/` gitignore, and package manager.
+Checks include Node (22 or newer), Git, shallow clone status, package.json, runner detection, Stryker dependencies, whether the installed Vitest and Stryker Vitest runner can run tests together, runner config, monorepo signals, existing Stryker config, `.tautest/` gitignore, and package manager.
 
 ## `tautest run`
 
@@ -167,6 +167,10 @@ Excluded changed files:
 ```
 
 This is expected for docs-only, config-only, deleted-only, binary-only, or test-only changes. Use `--json` for machine-readable `changedFiles` and `guidance` fields.
+
+When the project has a Stryker config with a `mutate` list, changed files outside it are skipped with the reason `outside Stryker mutate scope`, even if their extension is a source extension.
+
+A run whose changed lines contain no mutable code (for example only comments, imports, or declarations) also exits with code `2` and status `no-op` instead of failing the threshold.
 
 ### Machine-readable report
 
@@ -315,8 +319,8 @@ HTML report flags:
 
 - `0`: success and threshold passed.
 - `1`: mutation run completed but threshold failed.
-- `2`: no changed production source files.
+- `2`: nothing to mutation-test: no changed production source files, or Stryker generated no mutants for the changed lines.
 - `10`: config error.
 - `11`: detection error.
-- `12`: Stryker error.
+- `12`: Stryker error, including a run whose surviving mutants executed zero tests (see [Troubleshooting](TROUBLESHOOTING.md#surviving-mutants-executed-zero-tests)).
 - `20`: Git error.

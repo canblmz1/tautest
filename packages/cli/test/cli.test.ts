@@ -21,9 +21,11 @@ import {
   buildWorkspacePlanOutput,
   buildWorkspaceRunOutput,
   countChangedSourceLines,
-  resolveWorkspaceCwd
+  resolveWorkspaceCwd,
+  runMutationCommand
 } from '../src/commands/run';
 import { readJsonFile } from '../src/lib/fs';
+import { gitProject } from './git-project';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -223,6 +225,20 @@ describe('init command', () => {
     await expect(readFile(path.join(root, 'tautest.config.ts'), 'utf8')).resolves.toContain("testRunner: 'vitest'");
     await expect(readFile(path.join(root, '.gitignore'), 'utf8')).resolves.toContain('.tautest/');
     await expect(readFile(packageJsonPath, 'utf8')).resolves.toContain('@stryker-mutator/vitest-runner');
+  });
+
+  it.each([
+    ['vitest', { vitest: '^4.0.0' }, 'vitest.config.ts', '@stryker-mutator/vitest-runner'],
+    ['jest', { jest: '^30.0.0' }, 'jest.config.js', '@stryker-mutator/jest-runner']
+  ] as const)('adds Stryker 10 to a new %s project', async (runner, devDependencies, runnerConfigFile, runnerPlugin) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-init-stryker-'));
+    writeFileSync(path.join(root, 'package.json'), JSON.stringify({ name: 'fixture', type: 'module', devDependencies }));
+    writeFileSync(path.join(root, runnerConfigFile), '');
+
+    await runInit(root, { noInstall: true, runner, pm: 'pnpm', yes: true });
+
+    const written = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
+    expect(written.devDependencies).toMatchObject({ '@stryker-mutator/core': '^10.0.0', [runnerPlugin]: '^10.0.0' });
   });
 });
 
@@ -777,5 +793,37 @@ describe('readJsonFile', () => {
     const filePath = path.join(dir, 'bad.json');
     writeFileSync(filePath, '{ invalid json }');
     expect(() => readJsonFile(filePath)).toThrow(filePath);
+  });
+});
+
+describe('run scope and the project Stryker mutate config', () => {
+
+  const baseFiles = {
+    'package.json': JSON.stringify({ name: 'scope-fixture', devDependencies: { vitest: '^4.0.0' } }),
+    'stryker.config.json': JSON.stringify({ mutate: ['src/**/*.js'] }),
+    'src/price.js': 'export const price = (amount) => amount;\n',
+    'scripts/build.mjs': 'console.log("build");\n'
+  };
+
+  it('leaves changed files outside the mutate config out of the mutation run', async () => {
+    const root = gitProject(baseFiles);
+    writeFileSync(path.join(root, 'src/price.js'), 'export const price = (amount) => (amount > 0 ? amount : 0);\n');
+    writeFileSync(path.join(root, 'scripts/build.mjs'), 'console.log("build", process.argv.length > 2);\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+    const output = JSON.parse(result.output);
+
+    expect(output.mutatePatterns).toEqual(['src/price.js:1-1']);
+    expect(output.excluded).toContainEqual({ path: 'scripts/build.mjs', reason: 'outside Stryker mutate scope' });
+  });
+
+  it('is a no-op when every changed source file is outside the mutate config', async () => {
+    const root = gitProject(baseFiles);
+    writeFileSync(path.join(root, 'scripts/build.mjs'), 'console.log("build", process.argv.length > 2);\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+
+    expect(result.exitCode).toBe(2);
+    expect(JSON.parse(result.output).changedFiles).toContainEqual(expect.objectContaining({ path: 'scripts/build.mjs', reason: 'outside Stryker mutate scope' }));
   });
 });

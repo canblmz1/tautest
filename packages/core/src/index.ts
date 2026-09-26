@@ -8,6 +8,7 @@ export * from './detect/ai-author';
 export * from './stryker/config-generator';
 export * from './stryker/runner';
 export * from './stryker/report-parser';
+export * from './stryker/mutate-scope';
 export * from './score/score';
 export * from './report/markdown';
 export * from './report/html';
