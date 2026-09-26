@@ -14,8 +14,10 @@ These limitations are intentional product boundaries for the current release lin
 - Complex path aliases, custom loaders, Babel transforms, ts-jest, and ESM/CJS mixed projects may need explicit Stryker config.
 - GitHub Action PR comments depend on repository permissions.
 - `pull_request_target` can be dangerous for untrusted code and is not the default recommendation.
-- The CLI requires Node 20 or newer and release readiness runs on Node 20 and Node 24.
-- GitHub Action currently uses the Node 20 action runtime; Node 24 action runtime migration is tracked separately.
+- The CLI requires Node 22 or newer and release readiness runs on Node 22 and Node 24.
+- The GitHub Action runs on the Node 24 action runtime.
+- Tautest uses the Stryker installed in the project and supports `@stryker-mutator/core` 9.6.1 and 10.x.
+- Vitest 5 cannot be used yet: `@stryker-mutator/vitest-runner` 10.0.0 and older run no tests for mutants on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). `tautest doctor` flags that combination and `tautest run` refuses to score it; keep `vitest` on `^4` until the runner supports Vitest 5.
 - Cache hit was not proven in the v1 smoke, but graceful cache handling was validated.
 
 ## Support tier summary

@@ -190,6 +190,12 @@ describe('Stryker error mapping', () => {
     });
   });
 
+  it('maps a missing ESM package, such as an uninstalled Stryker core, to STRYKER_MODULE_NOT_FOUND', () => {
+    expect(mapStrykerError(new Error("Cannot find package '@stryker-mutator/core' imported from /project/node_modules/@tautest/core/dist/index.js"))).toMatchObject({
+      code: 'STRYKER_MODULE_NOT_FOUND'
+    });
+  });
+
   it('maps timeout errors', () => {
     expect(mapStrykerError(new Error('Test runner timed out'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });
     expect(mapStrykerError(new Error('dry run timeout exceeded'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });

@@ -38,7 +38,7 @@ tautest doctor
 tautest doctor --json
 ```
 
-Checks include Node, Git, shallow clone status, package.json, runner detection, Stryker dependencies, runner config, monorepo signals, existing Stryker config, `.tautest/` gitignore, and package manager.
+Checks include Node (22 or newer), Git, shallow clone status, package.json, runner detection, Stryker dependencies, whether the installed Vitest and Stryker Vitest runner can run tests together, runner config, monorepo signals, existing Stryker config, `.tautest/` gitignore, and package manager.
 
 ## `tautest run`
 

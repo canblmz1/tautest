@@ -4,7 +4,7 @@
 [![npm: @tautest/core](https://img.shields.io/npm/v/%40tautest%2Fcore?label=%40tautest%2Fcore)](https://www.npmjs.com/package/@tautest/core)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Release Readiness](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml/badge.svg)](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml)
-[![Node >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
+[![Node >=22](https://img.shields.io/badge/node-%3E%3D22-339933.svg)](package.json)
 
 Mutation testing for changed code in pull requests, powered by StrykerJS.
 
@@ -92,6 +92,8 @@ Tautest is not different because it invents new mutation testing. It is differen
 Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md) and the [Positioning FAQ](docs/POSITIONING_FAQ.md).
 
 ## Install
+
+Tautest runs the Stryker installed in your project (`@stryker-mutator/core` 9.6.1 or 10.x) and needs Node 22 or newer. Vitest 5 cannot be used yet: `@stryker-mutator/vitest-runner` 10.0.0 and older run no tests for mutants on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). `tautest doctor` flags that combination and `tautest run` refuses to score it; keep `vitest` on `^4` until the runner supports Vitest 5.
 
 ### Vitest
 
@@ -204,7 +206,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - uses: pnpm/action-setup@v4
         with:
@@ -229,7 +231,6 @@ Notes:
 - `pull-requests: write` is required for sticky comments.
 - `annotations: survivors` adds capped line annotations in the Checks UI.
 - `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
-- The Node 20 action runtime warning is a post-v1 roadmap item.
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md).
 
@@ -297,6 +298,20 @@ GitHub Actions also writes a job summary with the mutation score and top survivi
 
 These files are generated artifacts and normally should not be committed.
 
+## Validated on real pull requests
+
+Tautest 2.0 was run on merged pull requests of three open source libraries, next to a full-file Stryker run on the same files (Stryker 10, each project's own Vitest):
+
+| Pull request | Changed-line mutants | Tautest | Time (Tautest / full file) |
+| --- | --- | --- | --- |
+| [unjs/ufo#313](https://github.com/unjs/ufo/pull/313): `withBase`/`withoutBase` prefix fix | 25 | STRONG 92%, 2 survivors | 63s / 196s |
+| [unjs/defu#156](https://github.com/unjs/defu/pull/156): `__proto__` pollution fix | 1 | STRONG 100% | 13s / 28s |
+| [unjs/destr#136](https://github.com/unjs/destr/pull/136): faster string checks | 39 | MIXED 77%, 9 survivors | 27s / 38s |
+
+- Every mutant Tautest tested got the same status as in the full-file run. It covered 65 of the 71 mutants that touch the changed lines; the 6 it left out also span unchanged lines, and all 6 were killed.
+- The two ufo survivors are a real gap: no test called `withBase` with a query string right after the base, so dropping the new `nextChar === "?"` check, which turns `withBase("/api?x=1", "/api")` into `/api/api?x=1`, went unnoticed.
+- Six of the nine destr survivors only switch off the new fast path, which then falls back to the general path with the same result: mutation testing cannot tell a performance-only branch from a missing test. The other three change results for inputs the tests did not cover, such as `'abc"'`.
+
 ## Validated before v1
 
 - `tautest@1.0.0` published.
@@ -315,7 +330,8 @@ These files are generated artifacts and normally should not be committed.
 - Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
 - Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
 - Runtime depends on project size and test speed.
-- CLI support is validated on Node 20 and 24. GitHub Action currently uses the Node 20 action runtime.
+- CLI support is validated on Node 22 and 24. The GitHub Action runs on the Node 24 action runtime.
+- Vitest 5 is not usable with `@stryker-mutator/vitest-runner` 10.0.0 or older (stryker-mutator/stryker-js#6210); see [Install](#install).
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 
@@ -329,7 +345,6 @@ Tautest is local-first, does not call LLM APIs by default, and writes generated 
 ## Roadmap
 
 - [Hardening and adoption plan](docs/tautest-hardening-adoption-plan.md)
-- Node 24 action runtime migration.
 - Better cache observability.
 - Workspace execution beta.
 - Standalone GitHub Action repository, maybe.

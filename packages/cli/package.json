@@ -6,7 +6,7 @@
   "author": "Tautest contributors",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "keywords": [
     "mutation-testing",
