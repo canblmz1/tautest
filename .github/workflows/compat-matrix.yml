@@ -1,0 +1,55 @@
+name: Compatibility Matrix
+
+on:
+  pull_request:
+    paths:
+      - "packages/core/**"
+      - "packages/cli/**"
+      - "pnpm-lock.yaml"
+      - "scripts/compat-matrix.mjs"
+      - ".github/workflows/compat-matrix.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compat:
+    name: Stryker ${{ matrix.stryker }} + Vitest ${{ matrix.vitest }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stryker:
+          - "9.6.1"
+          - "10.0.0"
+        vitest:
+          - "4.1.11"
+          - "5.0.1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and pack
+        run: |
+          pnpm --filter @tautest/core --filter tautest build
+          mkdir -p "$RUNNER_TEMP/packs"
+          pnpm --filter @tautest/core pack --pack-destination "$RUNNER_TEMP/packs"
+          pnpm --filter tautest pack --pack-destination "$RUNNER_TEMP/packs"
+
+      - name: Run the packed build against Stryker ${{ matrix.stryker }} and Vitest ${{ matrix.vitest }}
+        run: node scripts/compat-matrix.mjs --stryker=${{ matrix.stryker }} --vitest=${{ matrix.vitest }} --packs="$RUNNER_TEMP/packs"
