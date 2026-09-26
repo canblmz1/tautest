@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { diagnoseStrykerConfig, generateStrykerConfig, getStrykerConfigDiagnostics, mergeStrykerConfig } from '../src/stryker/config-generator';
+import { parseStrykerMutationReport } from '../src/stryker/report-parser';
 import { mapStrykerError } from '../src/stryker/runner';
+import { TautestError } from '../src/types';
 
 describe('Stryker config generator', () => {
   it('generates Vitest Stryker config from mutate strings', () => {
@@ -221,5 +223,71 @@ describe('Stryker error mapping', () => {
         { timeoutMS: circular as unknown as number }
       )
     ).not.toThrow();
+  });
+});
+
+describe('Stryker report parsing', () => {
+  const source = 'export function finalPrice(amount) {\n  if (amount <= 0) return 0;\n  return amount;\n}\n';
+  const location = { start: { line: 2, column: 7 }, end: { line: 2, column: 18 } };
+
+  function reportWith(mutants: Array<{ status: string; testsCompleted?: number }>) {
+    return {
+      files: {
+        'src/price.js': {
+          source,
+          mutants: mutants.map((mutant, index) => ({
+            id: String(index + 1),
+            mutatorName: 'ConditionalExpression',
+            replacement: 'true',
+            location,
+            coveredBy: ['test-1'],
+            ...mutant
+          }))
+        }
+      }
+    };
+  }
+
+  function parseError(report: ReturnType<typeof reportWith>): unknown {
+    try {
+      parseStrykerMutationReport(report);
+    } catch (error) {
+      return error;
+    }
+    return undefined;
+  }
+
+  it('refuses to score a run whose surviving mutants executed zero tests', () => {
+    const error = parseError(reportWith([{ status: 'Survived', testsCompleted: 0 }, { status: 'Survived', testsCompleted: 0 }]));
+
+    expect(error).toBeInstanceOf(TautestError);
+    expect((error as TautestError).code).toBe('STRYKER_ZERO_TESTS_EXECUTED');
+    expect((error as TautestError).message).toContain('2 of 2 surviving mutants');
+  });
+
+  it('refuses a run where only some surviving mutants executed zero tests', () => {
+    const error = parseError(reportWith([{ status: 'Survived', testsCompleted: 3 }, { status: 'Survived', testsCompleted: 0 }]));
+
+    expect((error as TautestError | undefined)?.code).toBe('STRYKER_ZERO_TESTS_EXECUTED');
+    expect((error as TautestError).message).toContain('1 of 2 surviving mutants');
+  });
+
+  it('scores surviving mutants that actually executed tests', () => {
+    const summary = parseStrykerMutationReport(reportWith([{ status: 'Killed', testsCompleted: 1 }, { status: 'Survived', testsCompleted: 3 }]));
+
+    expect(summary.survived).toBe(1);
+    expect(summary.score).toBe(50);
+  });
+
+  it('does not judge reports that predate testsCompleted', () => {
+    const summary = parseStrykerMutationReport(reportWith([{ status: 'Survived' }]));
+
+    expect(summary.survived).toBe(1);
+  });
+
+  it('treats uncovered mutants with zero executed tests as normal', () => {
+    const summary = parseStrykerMutationReport(reportWith([{ status: 'NoCoverage', testsCompleted: 0 }]));
+
+    expect(summary.noCoverage).toBe(1);
   });
 });

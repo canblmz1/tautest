@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import type { CoveringTest, MutationLocation, MutationSummary, StrykerReportMetadata, SurvivingMutant } from '../types';
+import { TautestError } from '../types';
 
 interface StrykerMutationReport {
   schemaVersion?: string;
@@ -43,6 +44,7 @@ interface StrykerMutant {
   location: MutationLocation;
   coveredBy?: string[];
   killedBy?: string[];
+  testsCompleted?: number;
 }
 
 export function readStrykerJsonReport(filePath: string): MutationSummary {
@@ -50,6 +52,7 @@ export function readStrykerJsonReport(filePath: string): MutationSummary {
 }
 
 export function parseStrykerMutationReport(report: StrykerMutationReport): MutationSummary {
+  assertSurvivorsExecutedTests(report);
   const allMutants = flattenMutants(report);
   const killed = countStatus(allMutants, 'Killed');
   const survived = countStatus(allMutants, 'Survived');
@@ -94,6 +97,21 @@ export function extractOriginal(source: string, location: MutationLocation): str
   selected[0] = selected[0]?.slice(startColumn) ?? '';
   selected[selected.length - 1] = selected.at(-1)?.slice(0, endColumn) ?? '';
   return selected.join('\n').trim();
+}
+
+// A mutant only survives if tests ran against it and none failed. A runner that
+// executed zero tests (e.g. vitest-runner 9.x/10.0.0 on Vitest 5) still reports Survived.
+function assertSurvivorsExecutedTests(report: StrykerMutationReport): void {
+  const survivors = Object.values(report.files).flatMap((file) => file.mutants.filter((mutant) => mutant.status === 'Survived'));
+  const withoutTests = survivors.filter((mutant) => mutant.testsCompleted === 0).length;
+
+  if (withoutTests > 0) {
+    throw new TautestError(
+      `${withoutTests} of ${survivors.length} surviving mutants executed 0 tests, so their Survived status is meaningless and no mutation score was produced. ` +
+        'A known cause is Vitest 5 with @stryker-mutator/vitest-runner 9.x or 10.0.0 (https://github.com/stryker-mutator/stryker-js/issues/6210); pin vitest to ^4 until the runner supports Vitest 5.',
+      'STRYKER_ZERO_TESTS_EXECUTED'
+    );
+  }
 }
 
 function flattenMutants(report: StrykerMutationReport): SurvivingMutant[] {
