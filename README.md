@@ -4,7 +4,7 @@
 [![npm: @tautest/core](https://img.shields.io/npm/v/%40tautest%2Fcore?label=%40tautest%2Fcore)](https://www.npmjs.com/package/@tautest/core)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Release Readiness](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml/badge.svg)](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml)
-[![Node >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
+[![Node >=22](https://img.shields.io/badge/node-%3E%3D22-339933.svg)](package.json)
 
 Mutation testing for changed code in pull requests, powered by StrykerJS.
 
@@ -204,7 +204,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - uses: pnpm/action-setup@v4
         with:
@@ -315,7 +315,7 @@ These files are generated artifacts and normally should not be committed.
 - Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
 - Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
 - Runtime depends on project size and test speed.
-- CLI support is validated on Node 20 and 24. GitHub Action currently uses the Node 20 action runtime.
+- CLI support is validated on Node 22 and 24. GitHub Action currently uses the Node 20 action runtime.
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 

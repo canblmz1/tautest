@@ -91,18 +91,18 @@ async function safeLoadTautestConfig(project: ProjectInfo): Promise<TautestConfi
   }
 }
 
-function checkNodeVersion(): DoctorCheck {
-  const major = Number(process.versions.node.split('.')[0]);
+export function checkNodeVersion(version = process.versions.node): DoctorCheck {
+  const major = Number(version.split('.')[0]);
 
-  if (major >= 20) {
-    return { name: 'Node.js', status: 'ok', message: `Node ${process.versions.node}` };
+  if (major >= 22) {
+    return { name: 'Node.js', status: 'ok', message: `Node ${version}` };
   }
 
   return {
     name: 'Node.js',
     status: 'error',
-    message: `Node ${process.versions.node} is below the supported minimum.`,
-    suggestion: 'Use Node.js 20 or newer.'
+    message: `Node ${version} is below the supported minimum.`,
+    suggestion: 'Use Node.js 22 or newer.'
   };
 }
 
