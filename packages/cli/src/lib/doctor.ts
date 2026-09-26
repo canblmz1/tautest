@@ -41,6 +41,7 @@ export async function runDoctor(cwd: string): Promise<DoctorReport> {
     checkPackageJson(project),
     checkTestRunner(testRunner),
     checkStrykerDependencies(project),
+    checkVitestStrykerRunner(project, testRunner),
     checkRunnerConfig(project, testRunner, config),
     checkJestCompatibility(project, testRunner, config),
     checkJestTransformStack(project, testRunner, config),
@@ -210,6 +211,61 @@ function checkStrykerDependencies(project: ProjectInfo): DoctorCheck {
     message: 'Missing Stryker core or runner dependency.',
     suggestion: 'Run `tautest init` to add the required devDependencies.'
   };
+}
+
+// @stryker-mutator/vitest-runner 9.x and 10.0.0 run no tests for mutants on Vitest 5, so every
+// mutant comes back Survived (stryker-mutator/stryker-js#6210).
+function checkVitestStrykerRunner(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
+  const name = 'Vitest and Stryker runner';
+
+  if (testRunner?.runner !== 'vitest') {
+    return { name, status: 'ok', message: 'Not using Vitest.' };
+  }
+
+  const vitest = installedVersion(project.rootDir, 'vitest');
+  const runner = installedVersion(project.rootDir, '@stryker-mutator/vitest-runner');
+
+  if (!vitest || !runner) {
+    return { name, status: 'ok', message: 'Vitest or the Stryker Vitest runner is not installed yet.' };
+  }
+
+  if (compareVersions(vitest, '5.0.0') >= 0 && compareVersions(runner, '10.0.0') <= 0) {
+    return {
+      name,
+      status: 'error',
+      message: `Vitest ${vitest} with @stryker-mutator/vitest-runner ${runner} runs no tests for mutants, so every mutant is reported as Survived (stryker-mutator/stryker-js#6210).`,
+      suggestion: 'Pin vitest to ^4 until the Stryker Vitest runner supports Vitest 5.'
+    };
+  }
+
+  return { name, status: 'ok', message: `Vitest ${vitest} with @stryker-mutator/vitest-runner ${runner}.` };
+}
+
+// Walks node_modules upwards like Node's resolution, without depending on a package's exports map.
+function installedVersion(rootDir: string, packageName: string): string | undefined {
+  for (let dir = rootDir; ; dir = path.dirname(dir)) {
+    const manifest = path.join(dir, 'node_modules', packageName, 'package.json');
+
+    if (existsSync(manifest)) {
+      return (JSON.parse(readFileSync(manifest, 'utf8')) as { version?: string }).version;
+    }
+
+    if (path.dirname(dir) === dir) {
+      return undefined;
+    }
+  }
+}
+
+function compareVersions(left: string, right: string): number {
+  const [a, b] = [left, right].map((version) => version.split(/[.-]/).slice(0, 3).map(Number));
+
+  for (let index = 0; index < 3; index += 1) {
+    if (a[index] !== b[index]) {
+      return a[index] - b[index];
+    }
+  }
+
+  return 0;
 }
 
 function checkRunnerConfig(project: ProjectInfo, testRunner: TestRunnerDetection | null, config: TautestConfig | null): DoctorCheck {
