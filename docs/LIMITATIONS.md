@@ -15,7 +15,7 @@ These limitations are intentional product boundaries for the current release lin
 - GitHub Action PR comments depend on repository permissions.
 - `pull_request_target` can be dangerous for untrusted code and is not the default recommendation.
 - The CLI requires Node 22 or newer and release readiness runs on Node 22 and Node 24.
-- GitHub Action currently uses the Node 20 action runtime; Node 24 action runtime migration is tracked separately.
+- The GitHub Action runs on the Node 24 action runtime.
 - Cache hit was not proven in the v1 smoke, but graceful cache handling was validated.
 
 ## Support tier summary

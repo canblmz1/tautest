@@ -229,7 +229,6 @@ Notes:
 - `pull-requests: write` is required for sticky comments.
 - `annotations: survivors` adds capped line annotations in the Checks UI.
 - `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
-- The Node 20 action runtime warning is a post-v1 roadmap item.
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md).
 
@@ -315,7 +314,7 @@ These files are generated artifacts and normally should not be committed.
 - Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
 - Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
 - Runtime depends on project size and test speed.
-- CLI support is validated on Node 22 and 24. GitHub Action currently uses the Node 20 action runtime.
+- CLI support is validated on Node 22 and 24. The GitHub Action runs on the Node 24 action runtime.
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 
@@ -329,7 +328,6 @@ Tautest is local-first, does not call LLM APIs by default, and writes generated 
 ## Roadmap
 
 - [Hardening and adoption plan](docs/tautest-hardening-adoption-plan.md)
-- Node 24 action runtime migration.
 - Better cache observability.
 - Workspace execution beta.
 - Standalone GitHub Action repository, maybe.
