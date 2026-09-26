@@ -226,6 +226,20 @@ describe('init command', () => {
     await expect(readFile(path.join(root, '.gitignore'), 'utf8')).resolves.toContain('.tautest/');
     await expect(readFile(packageJsonPath, 'utf8')).resolves.toContain('@stryker-mutator/vitest-runner');
   });
+
+  it.each([
+    ['vitest', { vitest: '^4.0.0' }, 'vitest.config.ts', '@stryker-mutator/vitest-runner'],
+    ['jest', { jest: '^30.0.0' }, 'jest.config.js', '@stryker-mutator/jest-runner']
+  ] as const)('adds Stryker 10 to a new %s project', async (runner, devDependencies, runnerConfigFile, runnerPlugin) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-init-stryker-'));
+    writeFileSync(path.join(root, 'package.json'), JSON.stringify({ name: 'fixture', type: 'module', devDependencies }));
+    writeFileSync(path.join(root, runnerConfigFile), '');
+
+    await runInit(root, { noInstall: true, runner, pm: 'pnpm', yes: true });
+
+    const written = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
+    expect(written.devDependencies).toMatchObject({ '@stryker-mutator/core': '^10.0.0', [runnerPlugin]: '^10.0.0' });
+  });
 });
 
 describe('prompt and report commands', () => {

@@ -45,14 +45,14 @@ export function installCommandForPackageManager(packageManager: PackageManager):
 function strykerDependenciesForRunner(runner: TestRunner): Record<string, string> {
   if (runner === 'jest') {
     return {
-      '@stryker-mutator/core': '^9.6.1',
-      '@stryker-mutator/jest-runner': '^9.6.1'
+      '@stryker-mutator/core': '^10.0.0',
+      '@stryker-mutator/jest-runner': '^10.0.0'
     };
   }
 
   return {
-    '@stryker-mutator/core': '^9.6.1',
-    '@stryker-mutator/vitest-runner': '^9.6.1'
+    '@stryker-mutator/core': '^10.0.0',
+    '@stryker-mutator/vitest-runner': '^10.0.0'
   };
 }
 
