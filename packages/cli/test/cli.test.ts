@@ -1,4 +1,3 @@
-import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -26,6 +25,7 @@ import {
   runMutationCommand
 } from '../src/commands/run';
 import { readJsonFile } from '../src/lib/fs';
+import { gitProject } from './git-project';
 
 describe('CLI program', () => {
   it('registers expected commands', () => {
@@ -783,20 +783,6 @@ describe('readJsonFile', () => {
 });
 
 describe('run scope and the project Stryker mutate config', () => {
-  function gitProject(files: Record<string, string>): string {
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-scope-'));
-
-    for (const [relativePath, content] of Object.entries(files)) {
-      mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
-      writeFileSync(path.join(root, relativePath), content);
-    }
-
-    for (const args of [['init', '-q'], ['config', 'user.email', 'fixture@example.invalid'], ['config', 'user.name', 'fixture'], ['add', '-A'], ['commit', '-qm', 'base']]) {
-      execFileSync('git', args, { cwd: root });
-    }
-
-    return root;
-  }
 
   const baseFiles = {
     'package.json': JSON.stringify({ name: 'scope-fixture', devDependencies: { vitest: '^4.0.0' } }),

@@ -197,6 +197,15 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
 
   const parseStartedAt = Date.now();
   const summary = readStrykerJsonReport(mutationJsonPath);
+
+  if (summary.total === 0) {
+    return {
+      exitCode: EXIT_CODES.noOp,
+      output: buildNoMutantsOutput({ baseRef, runner, reportDir, mutatePatterns, json: Boolean(options.json) }),
+      reportDir
+    };
+  }
+
   const score = getMutationVerdict(summary, config.score);
   const topMutants = selectTopMutants(getActionableMutants(summary), config.score.topMutants);
   const threshold = parseThreshold(options.threshold, config.score.mixed);
@@ -600,6 +609,37 @@ export function buildDryRunOutput(input: {
     '',
     'Excluded changed files:',
     ...(excluded.length > 0 ? excluded.map((file) => `- ${file.path}: ${file.reason}`) : ['- None']),
+    '',
+    'Stryker mutate scope:',
+    ...input.mutatePatterns.map((pattern) => `- ${pattern}`)
+  ].join('\n');
+}
+
+function buildNoMutantsOutput(input: { baseRef: string; runner: TestRunner; reportDir: string; mutatePatterns: string[]; json: boolean }): string {
+  const message = 'Stryker generated no mutants for the changed lines (for example only comments, imports or declarations changed). Nothing to mutation-test.';
+
+  if (input.json) {
+    return `${JSON.stringify(
+      {
+        status: 'no-op',
+        message,
+        baseRef: input.baseRef,
+        runner: input.runner,
+        reportDir: input.reportDir,
+        mutatePatterns: input.mutatePatterns
+      },
+      null,
+      2
+    )}\n`;
+  }
+
+  return [
+    'Tautest no-op',
+    '',
+    message,
+    '',
+    `Base ref: ${input.baseRef}`,
+    `Runner: ${input.runner}`,
     '',
     'Stryker mutate scope:',
     ...input.mutatePatterns.map((pattern) => `- ${pattern}`)
