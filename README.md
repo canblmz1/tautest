@@ -298,6 +298,20 @@ GitHub Actions also writes a job summary with the mutation score and top survivi
 
 These files are generated artifacts and normally should not be committed.
 
+## Validated on real pull requests
+
+Tautest 2.0 was run on merged pull requests of three open source libraries, next to a full-file Stryker run on the same files (Stryker 10, each project's own Vitest):
+
+| Pull request | Changed-line mutants | Tautest | Time (Tautest / full file) |
+| --- | --- | --- | --- |
+| [unjs/ufo#313](https://github.com/unjs/ufo/pull/313): `withBase`/`withoutBase` prefix fix | 25 | STRONG 92%, 2 survivors | 63s / 196s |
+| [unjs/defu#156](https://github.com/unjs/defu/pull/156): `__proto__` pollution fix | 1 | STRONG 100% | 13s / 28s |
+| [unjs/destr#136](https://github.com/unjs/destr/pull/136): faster string checks | 39 | MIXED 77%, 9 survivors | 27s / 38s |
+
+- Every mutant Tautest tested got the same status as in the full-file run. It covered 65 of the 71 mutants that touch the changed lines; the 6 it left out also span unchanged lines, and all 6 were killed.
+- The two ufo survivors are a real gap: no test called `withBase` with a query string right after the base, so dropping the new `nextChar === "?"` check, which turns `withBase("/api?x=1", "/api")` into `/api/api?x=1`, went unnoticed.
+- Six of the nine destr survivors only switch off the new fast path, which then falls back to the general path with the same result: mutation testing cannot tell a performance-only branch from a missing test. The other three change results for inputs the tests did not cover, such as `'abc"'`.
+
 ## Validated before v1
 
 - `tautest@1.0.0` published.
