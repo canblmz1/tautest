@@ -174,10 +174,10 @@ Exit codes:
 
 - `0`: success and threshold passed.
 - `1`: ran successfully but score was below threshold.
-- `2`: no changed production source files.
+- `2`: nothing to mutation-test: no changed production source files, or Stryker generated no mutants for the changed lines.
 - `10`: config error.
 - `11`: detection error.
-- `12`: Stryker error.
+- `12`: Stryker error, including a run whose surviving mutants executed zero tests (see [Troubleshooting](docs/TROUBLESHOOTING.md#surviving-mutants-executed-zero-tests)).
 - `20`: git error.
 
 See [CLI reference](docs/CLI_REFERENCE.md).
