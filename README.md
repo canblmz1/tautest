@@ -93,6 +93,8 @@ Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md) and the [Po
 
 ## Install
 
+Tautest runs the Stryker installed in your project (`@stryker-mutator/core` 9.6.1 or 10.x) and needs Node 22 or newer. Vitest 5 cannot be used yet: `@stryker-mutator/vitest-runner` 10.0.0 and older run no tests for mutants on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). `tautest doctor` flags that combination and `tautest run` refuses to score it; keep `vitest` on `^4` until the runner supports Vitest 5.
+
 ### Vitest
 
 ```bash
@@ -315,6 +317,7 @@ These files are generated artifacts and normally should not be committed.
 - Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
 - Runtime depends on project size and test speed.
 - CLI support is validated on Node 22 and 24. The GitHub Action runs on the Node 24 action runtime.
+- Vitest 5 is not usable with `@stryker-mutator/vitest-runner` 10.0.0 or older (stryker-mutator/stryker-js#6210); see [Install](#install).
 - Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
 - Tautest does not classify AI-written tests with certainty.
 
