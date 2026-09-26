@@ -150,15 +150,12 @@ tautest demo --run
 tautest init --yes --runner vitest --no-install
 tautest doctor
 tautest run --base origin/main --threshold 60
-tautest predict-flaky --threshold 80
-tautest watch --base origin/main
-tautest scaffold src/service.ts
-tautest time-travel init --runner vitest
-tautest chaos --command "pnpm test" --profile latency-basic --seed 123
 tautest prompt --style codex
 tautest report
 tautest report --html
 ```
+
+Experimental commands outside the pull request workflow: `tautest watch`, `tautest predict-flaky`, `tautest scaffold`, `tautest time-travel` and `tautest chaos`. They are not part of the compatibility matrix; see the [CLI reference](docs/CLI_REFERENCE.md).
 
 Common options:
 
@@ -344,12 +341,11 @@ Tautest is local-first, does not call LLM APIs by default, and writes generated 
 
 ## Roadmap
 
-- [Hardening and adoption plan](docs/tautest-hardening-adoption-plan.md)
+- Vitest 5, as soon as `@stryker-mutator/vitest-runner` runs tests on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). The compatibility matrix will show when it does.
+- Workspace mode: read each package's Stryker `mutate` list, as single-package runs already do.
+- Jest in the compatibility matrix, and more Jest fixtures.
 - Better cache observability.
-- Workspace execution beta.
-- Standalone GitHub Action repository, maybe.
 - Richer PR review annotations beyond survivor workflow annotations.
-- More Jest fixtures.
 
 See [roadmap](docs/ROADMAP.md).
 
