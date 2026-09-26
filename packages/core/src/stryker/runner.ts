@@ -1,4 +1,3 @@
-import { Stryker } from '@stryker-mutator/core';
 import type { RunStrykerOptions, StrykerRunResult } from '../types';
 import { TautestError } from '../types';
 
@@ -8,6 +7,8 @@ export async function runStryker(options: RunStrykerOptions): Promise<StrykerRun
 
   try {
     process.chdir(options.cwd);
+    // Loaded on use, so init, doctor and --version still work before the project installs Stryker.
+    const { Stryker } = await import('@stryker-mutator/core');
     const stryker = new Stryker(options.config);
     await stryker.runMutationTest();
 
@@ -30,7 +31,7 @@ export function mapStrykerError(error: unknown): TautestError {
     return new TautestError('Stryker could not find tests for the selected mutation scope.', 'STRYKER_NO_TESTS', error);
   }
 
-  if (/Cannot find module|ERR_MODULE_NOT_FOUND/i.test(message)) {
+  if (/Cannot find module|Cannot find package|ERR_MODULE_NOT_FOUND/i.test(message)) {
     return new TautestError('Stryker failed because a required module or runner dependency was not found.', 'STRYKER_MODULE_NOT_FOUND', error);
   }
 
