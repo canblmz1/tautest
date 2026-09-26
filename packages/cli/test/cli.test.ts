@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -21,7 +22,8 @@ import {
   buildWorkspacePlanOutput,
   buildWorkspaceRunOutput,
   countChangedSourceLines,
-  resolveWorkspaceCwd
+  resolveWorkspaceCwd,
+  runMutationCommand
 } from '../src/commands/run';
 import { readJsonFile } from '../src/lib/fs';
 
@@ -777,5 +779,51 @@ describe('readJsonFile', () => {
     const filePath = path.join(dir, 'bad.json');
     writeFileSync(filePath, '{ invalid json }');
     expect(() => readJsonFile(filePath)).toThrow(filePath);
+  });
+});
+
+describe('run scope and the project Stryker mutate config', () => {
+  function gitProject(files: Record<string, string>): string {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-scope-'));
+
+    for (const [relativePath, content] of Object.entries(files)) {
+      mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+      writeFileSync(path.join(root, relativePath), content);
+    }
+
+    for (const args of [['init', '-q'], ['config', 'user.email', 'fixture@example.invalid'], ['config', 'user.name', 'fixture'], ['add', '-A'], ['commit', '-qm', 'base']]) {
+      execFileSync('git', args, { cwd: root });
+    }
+
+    return root;
+  }
+
+  const baseFiles = {
+    'package.json': JSON.stringify({ name: 'scope-fixture', devDependencies: { vitest: '^4.0.0' } }),
+    'stryker.config.json': JSON.stringify({ mutate: ['src/**/*.js'] }),
+    'src/price.js': 'export const price = (amount) => amount;\n',
+    'scripts/build.mjs': 'console.log("build");\n'
+  };
+
+  it('leaves changed files outside the mutate config out of the mutation run', async () => {
+    const root = gitProject(baseFiles);
+    writeFileSync(path.join(root, 'src/price.js'), 'export const price = (amount) => (amount > 0 ? amount : 0);\n');
+    writeFileSync(path.join(root, 'scripts/build.mjs'), 'console.log("build", process.argv.length > 2);\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+    const output = JSON.parse(result.output);
+
+    expect(output.mutatePatterns).toEqual(['src/price.js:1-1']);
+    expect(output.excluded).toContainEqual({ path: 'scripts/build.mjs', reason: 'outside Stryker mutate scope' });
+  });
+
+  it('is a no-op when every changed source file is outside the mutate config', async () => {
+    const root = gitProject(baseFiles);
+    writeFileSync(path.join(root, 'scripts/build.mjs'), 'console.log("build", process.argv.length > 2);\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+
+    expect(result.exitCode).toBe(2);
+    expect(JSON.parse(result.output).changedFiles).toContainEqual(expect.objectContaining({ path: 'scripts/build.mjs', reason: 'outside Stryker mutate scope' }));
   });
 });

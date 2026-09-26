@@ -21,7 +21,9 @@ import {
   getChangedFiles,
   getChangedSourceFiles,
   getMutationVerdict,
+  markOutsideMutateScope,
   readStrykerJsonReport,
+  readStrykerMutateScope,
   runStryker,
   selectTopMutants,
   parsePackageSelectors,
@@ -95,12 +97,16 @@ async function runSingleProjectMutationCommand(cwd: string, options: RunOptions)
   const promptPath = path.join(reportDir, 'fix-prompt.md');
   const runner = resolveRunner(options, config.testRunner, project);
   const packageManager = detectPackageManager(project.rootDir, project.packageJson).packageManager;
-  const changedFiles = getChangedFiles({
-    cwd: project.rootDir,
-    baseRef,
-    relative: true,
-    sourceFileExtensions: config.sourceFileExtensions
-  });
+  const changedFiles = markOutsideMutateScope(
+    getChangedFiles({
+      cwd: project.rootDir,
+      baseRef,
+      relative: true,
+      sourceFileExtensions: config.sourceFileExtensions
+    }),
+    await readStrykerMutateScope(project.rootDir),
+    project.rootDir
+  );
   const sourceFiles = getChangedSourceFiles(changedFiles);
 
   if (sourceFiles.length === 0) {
@@ -818,6 +824,10 @@ function exclusionReason(file: ChangedFile): string {
 
   if (file.isTest) {
     return 'test file';
+  }
+
+  if (file.outsideMutateScope) {
+    return 'outside Stryker mutate scope';
   }
 
   if (!file.isSource) {
