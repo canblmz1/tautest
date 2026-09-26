@@ -1,5 +1,21 @@
 # @tautest/core
 
+## 2.0.0
+
+### Major Changes
+
+- 09d2665: Require Node.js 22 or newer. Node 20 reached end-of-life in April 2026 and Stryker 10 no longer supports it; `tautest doctor` now reports Node 20 as an error.
+- f983c5c: Run the project's own Stryker instead of a bundled one. `@stryker-mutator/core` and `@stryker-mutator/api` are now peer dependencies accepting 9.6.1 or 10.x (like the runners already were), so a project on Stryker 10 no longer runs a nested Stryker 9.6.1 next to its 10.0.0 runner. `tautest init` adds Stryker 10 to new projects. Projects must install `@stryker-mutator/core` themselves; the quickstart and `tautest init` already do.
+
+### Minor Changes
+
+- ada69ad: Respect the project's Stryker `mutate` config when scoping a run. Tautest treated every changed file with a source extension as production code, so build scripts touched by a pull request were mutated, came back NoCoverage, and dragged the score down. When the project has a Stryker config with a `mutate` list, changed files outside it are now excluded and reported as "outside Stryker mutate scope" in dry-run and no-op output. Projects without a `mutate` list keep the previous behavior.
+
+### Patch Changes
+
+- 3f1c79d: Load Stryker only when a mutation run starts. With Stryker as a peer dependency, package managers that do not install peers (yarn 1, npm with `--legacy-peer-deps`) left it missing and the CLI crashed at startup, even for `tautest --version` and `tautest init`. Those commands and `tautest doctor` now work without Stryker installed, and `tautest run` stops with `STRYKER_MODULE_NOT_FOUND` (exit code 12) instead.
+- 7086df3: Refuse to score a Stryker run in which surviving mutants executed zero tests. `@stryker-mutator/vitest-runner` 9.x and 10.0.0 report every mutant as Survived on Vitest 5 without running a single test (stryker-mutator/stryker-js#6210). Tautest scored that as WEAK 0% and failed the pull request; it now stops with `STRYKER_ZERO_TESTS_EXECUTED` (exit code 12) and names the known cause.
+
 ## 1.10.1
 
 ### Patch Changes
