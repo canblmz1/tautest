@@ -25,7 +25,7 @@ export function mapUnknownError(error: unknown): CliError {
 
   if (error instanceof TautestError) {
     if (error.code.startsWith('STRYKER_')) {
-      return new CliError(error.message, EXIT_CODES.strykerError, 'Run `tautest doctor` and verify Stryker/Vitest dependencies are installed.', error);
+      return new CliError(error.message, EXIT_CODES.strykerError, suggestionForStrykerError(error.code), error);
     }
 
     return new CliError(error.message, EXIT_CODES.detectionError, undefined, error);
@@ -37,6 +37,21 @@ export function mapUnknownError(error: unknown): CliError {
 
   const message = error instanceof Error ? error.message : String(error);
   return new CliError(message, EXIT_CODES.detectionError);
+}
+
+function suggestionForStrykerError(code: string): string | undefined {
+  switch (code) {
+    case 'STRYKER_MODULE_NOT_FOUND':
+      return 'Inspect Stryker’s missing-module line: build generated project imports or install the named dependency. Run `tautest doctor` to check runner setup.';
+    case 'STRYKER_ZERO_TESTS_EXECUTED':
+      return 'Run `tautest doctor` to check the Vitest/Stryker runner combination; do not trust a score from zero executed tests.';
+    case 'STRYKER_TIMEOUT':
+      return 'Check which step timed out, then tune `stryker.dryRunTimeoutMinutes` (initial run) or `stryker.timeoutMS` (mutant tests).';
+    default:
+      // Dry-run and out-of-memory errors already contain targeted guidance; a generic dependency
+      // hint would mislead users whose dependencies are working correctly.
+      return undefined;
+  }
 }
 
 export function printCliError(error: CliError, debug = false): void {
