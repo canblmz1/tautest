@@ -1,7 +1,20 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildStepSummary } from '../src/summary';
 import { buildPrComment } from '../src/pr-comment';
 import { describeGateAdvisory } from '../src/gate-advisory';
+
+// The same table checks @tautest/core's original, so this hand-mirrored copy cannot drift silently.
+const parityVectors = JSON.parse(
+  readFileSync(path.join(__dirname, '..', '..', 'core', 'test', 'fixtures', 'gate-advisory-vectors.json'), 'utf8')
+) as Array<{ input: Parameters<typeof describeGateAdvisory>[0]; expected: string | null }>;
+
+describe('describeGateAdvisory parity table (github-action)', () => {
+  it.each(parityVectors)('matches the shared expectation for %j', ({ input, expected }) => {
+    expect(describeGateAdvisory(input)).toBe(expected);
+  });
+});
 
 // Mirrors the real-world unjs/ohash#196 finding: 1 real survivor among 8 mutants (87.5%)
 // still passed the default 60% threshold without saying a survivor remained.
