@@ -1,7 +1,9 @@
 import * as core from '@actions/core';
+import { describeGateAdvisory } from './gate-advisory';
 
 export interface StepSummaryOutput {
   status: string;
+  threshold?: number;
   message?: string;
   cache?: StepSummaryCache;
   metrics?: {
@@ -71,6 +73,7 @@ export function buildStepSummary(output: StepSummaryOutput): string {
   const survived = summary?.survived ?? 0;
   const noCoverage = summary?.noCoverage ?? 0;
   const topMutants = output.report?.surviving?.slice(0, 10) ?? [];
+  const gateAdvisory = describeGateAdvisory({ score: summary?.mutationScore, threshold: output.threshold, survived, noCoverage });
 
   return [
     '# Tautest',
@@ -79,6 +82,7 @@ export function buildStepSummary(output: StepSummaryOutput): string {
     '| --- | ---: | ---: | ---: | ---: |',
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     '',
+    ...(gateAdvisory ? [sanitize(gateAdvisory), ''] : []),
     ...(output.message ? ['## Message', '', sanitize(output.message), ''] : []),
     ...buildMetricsSection(output.metrics),
     ...buildDiagnosticsSection(output.diagnostics),

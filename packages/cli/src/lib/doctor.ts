@@ -214,7 +214,8 @@ function checkStrykerDependencies(project: ProjectInfo): DoctorCheck {
 }
 
 // @stryker-mutator/vitest-runner 9.x and 10.0.0 run no tests for mutants on Vitest 5, so every
-// mutant comes back Survived (stryker-mutator/stryker-js#6210).
+// mutant comes back Survived (stryker-mutator/stryker-js#6210). Root cause and a proposed fix:
+// stryker-js#6214 (open, unreviewed). Lift this check once a released runner version fixes it.
 function checkVitestStrykerRunner(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
   const name = 'Vitest and Stryker runner';
 

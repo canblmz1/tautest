@@ -228,6 +228,7 @@ Notes:
 - `pull-requests: write` is required for sticky comments.
 - `annotations: survivors` adds capped line annotations in the Checks UI.
 - `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
+- New to Tautest? Set `fail-on-threshold: false` for about a week so the team can review real-versus-equivalent survivors before it blocks merges. See [Advisory First Week](docs/GITHUB_ACTION.md#advisory-first-week).
 
 See [GitHub Action docs](docs/GITHUB_ACTION.md).
 
@@ -341,7 +342,7 @@ Tautest is local-first, does not call LLM APIs by default, and writes generated 
 
 ## Roadmap
 
-- Vitest 5, as soon as `@stryker-mutator/vitest-runner` runs tests on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). The compatibility matrix will show when it does.
+- Vitest 5, as soon as `@stryker-mutator/vitest-runner` runs tests on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). The root cause is a Vitest 5 test-name-separator change the runner does not yet account for; a fix is proposed but unreleased in [stryker-js#6214](https://github.com/stryker-mutator/stryker-js/pull/6214), with a complementary "never report a zero-test run as survived" fix in [stryker-js#6146](https://github.com/stryker-mutator/stryker-js/pull/6146). Re-test once both land in a release; the compatibility matrix will show when it's safe to lift this guard.
 - Workspace mode: read each package's Stryker `mutate` list, as single-package runs already do.
 - Jest in the compatibility matrix, and more Jest fixtures.
 - Better cache observability.

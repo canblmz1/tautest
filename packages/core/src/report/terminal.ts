@@ -1,5 +1,5 @@
 import type { MutationSummary, RunMetrics, ScoreResult, StrykerConfigDiagnostic, SurvivingMutant, TestRunner } from '../types';
-import { enrichMutant } from './insights';
+import { describeGateAdvisory, enrichMutant } from './insights';
 
 export function buildTerminalSummary(
   summary: MutationSummary,
@@ -32,6 +32,11 @@ export function buildTerminalSummary(
       .join(' | '),
     `Killed: ${summary.killed} | Survived: ${summary.survived} | No coverage: ${summary.noCoverage} | Timeout: ${summary.timeout}`
   ].filter(Boolean);
+  const gateAdvisory = describeGateAdvisory({ score: summary.score, threshold: context.threshold, survived: summary.survived, noCoverage: summary.noCoverage });
+
+  if (gateAdvisory) {
+    lines.push(gateAdvisory);
+  }
 
   if (context.metrics?.stageMs) {
     lines.push(formatStageTimings(context.metrics.stageMs));

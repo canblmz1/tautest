@@ -118,7 +118,7 @@ describe('report builders', () => {
     expect(markdown).toContain('## Stryker Config Diagnostics');
     expect(markdown).toContain('## Mutant Details');
     expect(markdown).toContain('Likely missing behavior');
-    expect(markdown).toContain('The exact boundary value 65 is not protected');
+    expect(markdown).toContain('The exact boundary value 65 may not be protected');
     expect(markdown).toContain('Suggested test idea');
     const jsonReport = buildJsonReport({
       summary,
@@ -238,6 +238,50 @@ describe('report builders', () => {
     });
   });
 
+  it('classifies ConditionalExpression survivors as branch mutants even though their replacement is a boolean literal', () => {
+    const onComparison = buildMutationInsight({
+      filePath: 'src/discount.ts',
+      line: 2,
+      mutatorName: 'ConditionalExpression',
+      original: 'age >= 65',
+      replacement: 'true',
+      status: 'Survived',
+      location: { start: { line: 2, column: 7 }, end: { line: 2, column: 16 } }
+    });
+    const onNullCheck = buildMutationInsight({
+      filePath: 'src/utils/diff.ts',
+      line: 46,
+      mutatorName: 'ConditionalExpression',
+      original: 'obj === null',
+      replacement: 'false',
+      status: 'Survived',
+      location: { start: { line: 46, column: 7 }, end: { line: 46, column: 19 } }
+    });
+
+    expect(onComparison.category).toBe('branch');
+    expect(onNullCheck.category).toBe('branch');
+  });
+
+  it('does not claim a generic survivor definitely changed observable behavior, since it may be equivalent', () => {
+    const insight = buildMutationInsight({
+      filePath: 'src/hash.ts',
+      line: 10,
+      mutatorName: 'BlockStatement',
+      original: 'doFastPath()',
+      replacement: '',
+      status: 'Survived',
+      location: {
+        start: { line: 10, column: 1 },
+        end: { line: 10, column: 14 }
+      }
+    });
+
+    expect(insight.category).toBe('generic');
+    expect(insight.missingBehavior).not.toMatch(/behavior changed/i);
+    expect(insight.missingBehavior).toContain('may be an equivalent mutant');
+    expect(insight.suggestedTestIdea).toContain('documented Stryker ignore');
+  });
+
   it('keeps generated report.json compatible with docs/report.schema.json', () => {
     const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
     const jsonReport = buildJsonReport({
@@ -347,6 +391,9 @@ describe('prompt builder', () => {
     expect(prompts.find((item) => item.fileName === 'boolean-condition.json')?.prompt).toContain('truth-table');
     expect(prompts.find((item) => item.fileName === 'arithmetic-operator.json')?.prompt).toContain('exact expected numeric result');
     expect(prompts.find((item) => item.fileName === 'no-coverage.json')?.prompt).toContain('not executed by the current test suite');
+    // `subtotal >= 100` forced to `false` is a branch mutant, not a boundary shift.
+    expect(prompts.find((item) => item.fileName === 'conditional-expression.json')?.prompt).toContain('One branch direction may be forced');
+    expect(prompts.find((item) => item.fileName === 'conditional-expression.json')?.prompt).not.toContain('exact boundary value');
   });
 });
 
