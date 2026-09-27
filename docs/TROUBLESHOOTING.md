@@ -148,4 +148,4 @@ Increase `stryker.timeoutMS` or `stryker.dryRunTimeoutMinutes` in `tautest.confi
 
 ## Uninstall / Cleanup
 
-Tautest does not run destructive cleanup commands. To uninstall, remove the package dependencies, delete `tautest.config.ts` if you no longer need it, and remove `.tautest/` plus the `.tautest/` entry in `.gitignore` if desired.
+The only files Tautest deletes are its own: each run creates `.stryker-tmp/tautest/run-<pid>-<random>/` for Stryker's sandbox and removes it afterwards, along with run directories left by processes that are no longer alive and `.stryker-tmp/` itself if that leaves it empty. It never deletes anything else, including a run directory whose process may still be running. To uninstall, remove the package dependencies, delete `tautest.config.ts` if you no longer need it, and remove `.tautest/` plus the `.tautest/` entry in `.gitignore` if desired.
