@@ -1,7 +1,8 @@
-import { realpath, rm } from 'node:fs/promises';
+import { readdir, realpath, rm, rmdir } from 'node:fs/promises';
 import path from 'node:path';
 import type { RunStrykerOptions, StrykerRunResult } from '../types';
 import { TautestError } from '../types';
+import { TAUTEST_STRYKER_TEMP_DIR } from './config-generator';
 
 export async function runStryker(options: RunStrykerOptions): Promise<StrykerRunResult> {
   const startedAt = new Date();
@@ -30,43 +31,35 @@ export async function runStryker(options: RunStrykerOptions): Promise<StrykerRun
   }
 }
 
+// Removes only the sandboxes Stryker creates inside Tautest's own temp directory. runStryker is a
+// public API, so a caller-supplied tempDirName can name a real project folder, and an in-place
+// run's backup directory may hold the only copy of the original sources: both are left to Stryker.
 async function cleanupStrykerTempDir(options: RunStrykerOptions): Promise<void> {
-  const tempDirName = options.config.tempDirName;
-
-  if (typeof tempDirName !== 'string' || tempDirName.length === 0) {
+  if (options.config.tempDirName !== TAUTEST_STRYKER_TEMP_DIR || options.config.inPlace) {
     return;
   }
 
-  const cwd = path.resolve(options.cwd);
-  const resolved = path.resolve(cwd, tempDirName);
-  const relative = path.relative(cwd, resolved);
-
-  // runStryker is a public @tautest/core API, so config.tempDirName is not guaranteed to be the
-  // Tautest-generated `.stryker-tmp/tautest` value. Refuse to delete anything outside cwd rather
-  // than trust it blindly. This lexical check alone does not catch a symlink/junction segment
-  // (e.g. tempDirName: 'link/tautest' where cwd/link points elsewhere), so it is followed by a
-  // realpath-based check below.
-  if (relative === '' || relative.startsWith('..') || path.isAbsolute(relative)) {
-    return;
-  }
-
-  let realResolved: string;
+  let dir: string;
   let realCwd: string;
 
   try {
-    [realResolved, realCwd] = await Promise.all([realpath(resolved), realpath(cwd)]);
+    [dir, realCwd] = await Promise.all([realpath(path.join(options.cwd, TAUTEST_STRYKER_TEMP_DIR)), realpath(options.cwd)]);
   } catch {
-    // Target does not exist; nothing to delete.
     return;
   }
 
-  const realRelative = path.relative(realCwd, realResolved);
-
-  if (realRelative === '' || realRelative.startsWith('..') || path.isAbsolute(realRelative)) {
+  // A symlink or junction anywhere along `.stryker-tmp/tautest` makes realpath land elsewhere.
+  if (dir !== path.join(realCwd, TAUTEST_STRYKER_TEMP_DIR)) {
     return;
   }
 
-  await rm(realResolved, { recursive: true, force: true });
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.isDirectory() && entry.name.startsWith('sandbox-')) {
+      await rm(path.join(dir, entry.name), { recursive: true, force: true });
+    }
+  }
+
+  await rmdir(dir).catch(() => undefined);
 }
 
 export function mapStrykerError(error: unknown): TautestError {

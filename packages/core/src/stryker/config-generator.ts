@@ -3,6 +3,8 @@ import type { GenerateStrykerConfigOptions, StrykerConfigDiagnostic } from '../t
 
 const PROTECTED_KEYS = new Set(['mutate', 'reporters', 'jsonReporter', 'testRunner']);
 
+export const TAUTEST_STRYKER_TEMP_DIR = '.stryker-tmp/tautest';
+
 export function generateStrykerConfig(options: GenerateStrykerConfigOptions): PartialStrykerOptions {
   const base = buildBaseStrykerConfig(options);
   return mergeStrykerConfig(base, options.userConfig);
@@ -27,7 +29,7 @@ function buildBaseStrykerConfig(options: GenerateStrykerConfigOptions): PartialS
     logLevel: 'error' as PartialStrykerOptions['logLevel'],
     mutate: options.mutate,
     reporters: ['json'],
-    tempDirName: '.stryker-tmp/tautest',
+    tempDirName: TAUTEST_STRYKER_TEMP_DIR,
     testRunner: options.testRunner,
     thresholds: {
       break: 0,
