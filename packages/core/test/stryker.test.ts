@@ -1,8 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { existsSync, mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { describe, expect, it, vi } from 'vitest';
 import { diagnoseStrykerConfig, generateStrykerConfig, getStrykerConfigDiagnostics, mergeStrykerConfig } from '../src/stryker/config-generator';
 import { parseStrykerMutationReport } from '../src/stryker/report-parser';
-import { mapStrykerError } from '../src/stryker/runner';
+import { mapStrykerError, runStryker } from '../src/stryker/runner';
 import { TautestError } from '../src/types';
+
+const runMutationTest = vi.hoisted(() => vi.fn());
+
+vi.mock('@stryker-mutator/core', () => ({
+  Stryker: vi.fn().mockImplementation(function StrykerMock() {
+    return { runMutationTest };
+  })
+}));
 
 describe('Stryker config generator', () => {
   it('generates Vitest Stryker config from mutate strings', () => {
@@ -180,6 +191,111 @@ describe('Stryker config generator', () => {
   });
 });
 
+describe('runStryker sandbox cleanup', () => {
+  function tempProjectWithSandbox() {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-cleanup-'));
+    const sandboxDir = path.join(root, '.stryker-tmp', 'tautest');
+    mkdirSync(sandboxDir, { recursive: true });
+    writeFileSync(path.join(sandboxDir, 'leftover.txt'), 'leftover');
+    return { root, sandboxDir };
+  }
+
+  it('removes the Tautest-owned sandbox after a successful run', async () => {
+    runMutationTest.mockResolvedValueOnce(undefined);
+    const { root, sandboxDir } = tempProjectWithSandbox();
+
+    await runStryker({
+      cwd: root,
+      config: { tempDirName: '.stryker-tmp/tautest' },
+      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+    });
+
+    expect(existsSync(sandboxDir)).toBe(false);
+  });
+
+  it('removes the Tautest-owned sandbox even when the run throws, without hiding the original error', async () => {
+    runMutationTest.mockRejectedValueOnce(new Error('instrumentation broke a bundle-size test'));
+    const { root, sandboxDir } = tempProjectWithSandbox();
+
+    await expect(
+      runStryker({
+        cwd: root,
+        config: { tempDirName: '.stryker-tmp/tautest' },
+        jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+      })
+    ).rejects.toMatchObject({ code: 'STRYKER_RUN_FAILED' });
+
+    expect(existsSync(sandboxDir)).toBe(false);
+  });
+
+  it('does nothing when the config has no tempDirName', async () => {
+    runMutationTest.mockResolvedValueOnce(undefined);
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-no-tempdir-'));
+
+    await expect(
+      runStryker({
+        cwd: root,
+        config: {},
+        jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+      })
+    ).resolves.toMatchObject({ jsonReportPath: path.join(root, '.tautest', 'mutation.json') });
+  });
+
+  // runStryker is a public @tautest/core API: config is not guaranteed to come from
+  // config-generator.ts, so a caller-supplied tempDirName must never delete outside cwd.
+  it('refuses to delete a tempDirName that resolves outside cwd', async () => {
+    runMutationTest.mockResolvedValueOnce(undefined);
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-traversal-'));
+    const outside = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-outside-'));
+    const sentinel = path.join(outside, 'sentinel.txt');
+    writeFileSync(sentinel, 'do not delete me');
+    const relativeTraversal = path.relative(root, outside);
+
+    await runStryker({
+      cwd: root,
+      config: { tempDirName: relativeTraversal },
+      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+    });
+
+    expect(existsSync(sentinel)).toBe(true);
+  });
+
+  it('refuses to delete through a symlink/junction segment that escapes cwd', async () => {
+    runMutationTest.mockResolvedValueOnce(undefined);
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-link-root-'));
+    const outsideTarget = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-link-target-'));
+    const sentinel = path.join(outsideTarget, 'sentinel.txt');
+    writeFileSync(sentinel, 'do not delete me');
+    // tempDirName is lexically "under" root (path.relative passes), but root/link actually points
+    // outside root, so deleting root/link/tautest deletes outsideTarget/tautest instead.
+    symlinkSync(outsideTarget, path.join(root, 'link'), process.platform === 'win32' ? 'junction' : 'dir');
+    mkdirSync(path.join(outsideTarget, 'tautest'), { recursive: true });
+
+    await runStryker({
+      cwd: root,
+      config: { tempDirName: 'link/tautest' },
+      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+    });
+
+    expect(existsSync(sentinel)).toBe(true);
+    expect(existsSync(path.join(outsideTarget, 'tautest'))).toBe(true);
+  });
+
+  it('refuses to delete cwd itself when tempDirName resolves to it', async () => {
+    runMutationTest.mockResolvedValueOnce(undefined);
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-cwd-'));
+    writeFileSync(path.join(root, 'keep.txt'), 'keep me');
+
+    await runStryker({
+      cwd: root,
+      config: { tempDirName: '.' },
+      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
+    });
+
+    expect(existsSync(path.join(root, 'keep.txt'))).toBe(true);
+  });
+});
+
 describe('Stryker error mapping', () => {
   it('maps common Stryker failures to Tautest errors', () => {
     expect(mapStrykerError(new Error('No tests found'))).toMatchObject({
@@ -199,6 +315,20 @@ describe('Stryker error mapping', () => {
   it('maps timeout errors', () => {
     expect(mapStrykerError(new Error('Test runner timed out'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });
     expect(mapStrykerError(new Error('dry run timeout exceeded'))).toMatchObject({ code: 'STRYKER_TIMEOUT' });
+  });
+
+  it('maps a broken initial test run to STRYKER_DRY_RUN_FAILED without assuming instrumentation is at fault', () => {
+    const mapped = mapStrykerError(new Error('There were failed tests in the initial test run.'));
+
+    expect(mapped).toMatchObject({ code: 'STRYKER_DRY_RUN_FAILED' });
+    expect(mapped.message).toContain('confirm the test actually fails on the unmutated code too');
+    expect(mapped.message).toContain('docs/TROUBLESHOOTING.md#instrumentation-breaks-a-non-behavioral-test');
+    // A genuinely broken test in the PR triggers the identical Stryker message, so the copy must not
+    // present instrumentation as the default diagnosis.
+    expect(mapped.message).not.toMatch(/this usually means/i);
+    expect(mapStrykerError(new Error('Something went wrong in the initial test run'))).toMatchObject({
+      code: 'STRYKER_DRY_RUN_FAILED'
+    });
   });
 
   it('maps out-of-memory errors to STRYKER_OUT_OF_MEMORY', () => {
