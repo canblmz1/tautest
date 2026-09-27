@@ -14,9 +14,11 @@ node scripts/oss-adoption-corpus-run.mjs \
 
 `--build` runs `<package-manager> run build` — the target commit's own build script through its own locally installed toolchain. Do not hardcode a specific build tool: see the ohash#151 entry below for what went wrong when this script used to do that.
 
+Installing Stryker rewrites the project's `package.json` and lockfile. The harness now restores every tracked file the setup changed (recorded as `setupModifiedTrackedFiles`) and refuses to measure unless the tracked tree matches the PR head exactly, so Tautest's diff is the PR's own. The runs below were first recorded with an older harness that did not restore them: that inflated Tautest's changed-files count (4 instead of 2 on ohash#196, where `package.json` and `pnpm-lock.yaml` were the extra two) but not the mutate scope or any mutant result. Re-running ohash#196 with the fixed harness gave the same 5 killed and 3 timeout, with `prChangedFiles` and Tautest's changed-files count both at the PR's 2 files.
+
 ## Status
 
-**4 repositories attempted, 3 usable (ohash, defu, destr), 4 merged PRs, 5 recorded runs.** One attempted entry (ohash#195) failed before any measurement because GitHub no longer serves its recorded base commit — a real corpus-methodology finding, not a Tautest or Stryker issue; see below. The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. This file is not yet large enough to inform the day-90 decision on its own; still missing: a Jest repo, 2+ more Vitest repos, and same-repo history further back to stress older commits.
+**3 repositories (ohash, defu, destr), 5 PRs attempted, 4 measured, 5 recorded runs.** One attempted entry (ohash#195) failed before any measurement because GitHub no longer serves its recorded base commit — a real corpus-methodology finding, not a Tautest or Stryker issue; see below. The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. This file is not yet large enough to inform the day-90 decision on its own; still missing: a Jest repo, 2+ more Vitest repos, and same-repo history further back to stress older commits.
 
 ## unjs/ohash#196 — `fix(utils): diff falsy primitive values`
 

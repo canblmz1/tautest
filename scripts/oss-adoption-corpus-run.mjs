@@ -71,15 +71,28 @@ try {
     result.build = step('build', () => run(workDir, pm, ['run', 'build']));
   }
 
-  result.normalTests = step('normalTests', () => run(workDir, 'npx', [args.runner, 'run']));
-
   const stryker = pm === 'pnpm' ? ['add', '-D', '@stryker-mutator/core@10.0.0', runnerPlugin + '@10.0.0'] : ['install', '-D', '@stryker-mutator/core@10.0.0', runnerPlugin + '@10.0.0'];
   step('installStryker', () => run(workDir, pm, stryker));
+
+  // Installing Stryker (and sometimes the install or build step) rewrites tracked files such as
+  // package.json and the lockfile, which Tautest would then measure as part of the PR diff.
+  // Restore them so the tracked tree is exactly the PR head; node_modules keeps what was installed.
+  result.setupModifiedTrackedFiles = gitLines(workDir, ['diff', '--name-only']);
+  if (result.setupModifiedTrackedFiles.length > 0) {
+    git(workDir, ['checkout', '--', ...result.setupModifiedTrackedFiles]);
+  }
+  if (gitLines(workDir, ['status', '--porcelain', '--untracked-files=no']).length > 0) {
+    throw new Error('Tracked files still differ from the PR head after restoring setup changes; the measured diff would not be the PR diff.');
+  }
+  result.prChangedFiles = gitLines(workDir, ['diff', '--name-only', args.base, 'HEAD']);
+
+  result.normalTests = step('normalTests', () => run(workDir, 'npx', [args.runner, 'run']));
 
   result.tautest = step('tautest', () => run(workDir, 'node', [cliEntry, 'run', '--base', args.base, '--json']));
   const tautestReport = JSON.parse(extractJson(result.tautest.stdout));
   const mutatePatterns = tautestReport.report?.scope?.mutatePatterns ?? tautestReport.report?.stryker?.config?.mutate ?? [];
   result.tautestSummary = tautestReport.report?.summary;
+  result.tautestChangedFileCount = tautestReport.metrics?.changedFileCount;
   result.mutatePatterns = mutatePatterns;
 
   if (mutatePatterns.length > 0) {
@@ -135,6 +148,13 @@ function run(cwd, command, argv) {
 
 function git(cwd, argv) {
   return execFileSync('git', argv, { cwd, encoding: 'utf8' });
+}
+
+function gitLines(cwd, argv) {
+  return git(cwd, argv)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
 }
 
 function assertReachable(cwd, sha) {
