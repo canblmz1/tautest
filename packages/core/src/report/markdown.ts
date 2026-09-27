@@ -1,6 +1,6 @@
 import type { MutationSummary, RunMetrics, ScoreResult, StrykerConfigDiagnostic, SurvivingMutant, TestRunner } from '../types';
 import { selectTopMutants } from '../score/score';
-import { enrichMutants } from './insights';
+import { describeGateAdvisory, enrichMutants } from './insights';
 
 export function buildMarkdownReport(input: {
   summary: MutationSummary;
@@ -20,6 +20,12 @@ export function buildMarkdownReport(input: {
   const mutatedFiles = input.mutatedFiles ?? uniqueFilesFromPatterns(input.mutatePatterns ?? []);
   const metrics = input.metrics;
   const diagnostics = input.strykerConfigDiagnostics ?? [];
+  const gateAdvisory = describeGateAdvisory({
+    score: input.summary.score,
+    threshold: input.threshold,
+    survived: input.summary.survived,
+    noCoverage: input.summary.noCoverage
+  });
 
   return [
     `# ${input.title ?? 'Tautest Mutation Report'}`,
@@ -43,6 +49,7 @@ export function buildMarkdownReport(input: {
     `- Runtime error: **${input.summary.runtimeError}**`,
     `- Compile error: **${input.summary.compileError}**`,
     '',
+    ...(gateAdvisory ? [`> ${gateAdvisory}`, ''] : []),
     ...(diagnostics.length
       ? ['## Stryker Config Diagnostics', '', ...diagnostics.map((diagnostic) => `- **${diagnostic.key}**: ${diagnostic.message} ${diagnostic.suggestion}`), '']
       : []),

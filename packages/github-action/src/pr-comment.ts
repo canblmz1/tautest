@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { describeGateAdvisory } from './gate-advisory';
 
 export const COMMENT_MARKER = '<!-- tautest:report v=1 -->';
 
@@ -29,6 +30,7 @@ export function buildPrComment(report: CommentReport): string {
   const score = report.score === null ? 'unknown' : `${report.score.toFixed(2)}%`;
   const topMutants = report.topMutants.slice(0, 10);
   const fixPrompt = report.fixPromptPath ? safeReadFile(report.fixPromptPath) : '';
+  const gateAdvisory = describeGateAdvisory({ score: report.score, threshold: report.threshold, survived: report.survived, noCoverage: report.noCoverage });
 
   return [
     COMMENT_MARKER,
@@ -39,6 +41,7 @@ export function buildPrComment(report: CommentReport): string {
     '| --- | ---: | ---: | ---: | ---: | ---: |',
     `| ${sanitize(report.verdict)} | ${sanitize(score)} | ${sanitize(formatThreshold(report.threshold))} | ${report.killed} | ${report.survived} | ${report.noCoverage} |`,
     '',
+    ...(gateAdvisory ? [`> ${sanitize(gateAdvisory)}`, ''] : []),
     report.reportPath ? `Report: \`${sanitize(report.reportPath)}\`` : '',
     '',
     '### Top Surviving Mutants',

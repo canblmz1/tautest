@@ -102038,11 +102038,33 @@ function safeRealpath(p) {
 
 // src/pr-comment.ts
 var import_node_fs6 = require("node:fs");
+
+// src/gate-advisory.ts
+function describeGateAdvisory(input) {
+  const score = input.score ?? null;
+  const actionable = input.survived + input.noCoverage;
+  if (actionable === 0 || score === null) {
+    return null;
+  }
+  const thresholdPassed = input.threshold === void 0 || score >= input.threshold;
+  if (!thresholdPassed) {
+    return null;
+  }
+  const parts = [
+    input.survived > 0 ? `${input.survived} surviving mutant${input.survived === 1 ? "" : "s"}` : null,
+    input.noCoverage > 0 ? `${input.noCoverage} uncovered mutant${input.noCoverage === 1 ? "" : "s"}` : null
+  ].filter((part) => part !== null);
+  const verb = actionable === 1 ? "needs" : "need";
+  return `Threshold passed; ${parts.join(" and ")} still ${verb} review before treating this patch as fully covered. A survivor is not automatically a missing test \u2014 it can be an equivalent mutant with no observable behavior change.`;
+}
+
+// src/pr-comment.ts
 var COMMENT_MARKER = "<!-- tautest:report v=1 -->";
 function buildPrComment(report) {
   const score = report.score === null ? "unknown" : `${report.score.toFixed(2)}%`;
   const topMutants = report.topMutants.slice(0, 10);
   const fixPrompt = report.fixPromptPath ? safeReadFile(report.fixPromptPath) : "";
+  const gateAdvisory = describeGateAdvisory({ score: report.score, threshold: report.threshold, survived: report.survived, noCoverage: report.noCoverage });
   return [
     COMMENT_MARKER,
     "",
@@ -102052,6 +102074,7 @@ function buildPrComment(report) {
     "| --- | ---: | ---: | ---: | ---: | ---: |",
     `| ${sanitize2(report.verdict)} | ${sanitize2(score)} | ${sanitize2(formatThreshold(report.threshold))} | ${report.killed} | ${report.survived} | ${report.noCoverage} |`,
     "",
+    ...gateAdvisory ? [`> ${sanitize2(gateAdvisory)}`, ""] : [],
     report.reportPath ? `Report: \`${sanitize2(report.reportPath)}\`` : "",
     "",
     "### Top Surviving Mutants",
@@ -102141,6 +102164,7 @@ function buildStepSummary(output) {
   const survived = summary2?.survived ?? 0;
   const noCoverage = summary2?.noCoverage ?? 0;
   const topMutants = output.report?.surviving?.slice(0, 10) ?? [];
+  const gateAdvisory = describeGateAdvisory({ score: summary2?.mutationScore, threshold: output.threshold, survived, noCoverage });
   return [
     "# Tautest",
     "",
@@ -102148,6 +102172,7 @@ function buildStepSummary(output) {
     "| --- | ---: | ---: | ---: | ---: |",
     `| ${cell(verdict)} | ${cell(score)} | ${killed} | ${survived} | ${noCoverage} |`,
     "",
+    ...gateAdvisory ? [sanitize3(gateAdvisory), ""] : [],
     ...output.message ? ["## Message", "", sanitize3(output.message), ""] : [],
     ...buildMetricsSection(output.metrics),
     ...buildDiagnosticsSection(output.diagnostics),
