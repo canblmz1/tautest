@@ -89,6 +89,23 @@ jobs:
 | `runtime-ms` | Tautest runtime in milliseconds. |
 | `changed-source-lines` | Changed production source lines considered by Tautest. |
 
+## Advisory First Week
+
+A surviving mutant is not automatically a missing test; it can be an equivalent mutant that never changes observable behavior. Before a new team trusts Tautest as a hard merge gate, run it in advisory mode for about a week so reviewers can see what a normal ratio of real-versus-equivalent survivors looks like on their own codebase:
+
+```yaml
+- uses: canblmz1/tautest/packages/github-action@v1
+  with:
+    base: ${{ github.base_ref }}
+    threshold: 60
+    fail-on-threshold: false
+    comment: changes
+```
+
+`fail-on-threshold: false` still runs mutation testing, still posts the sticky comment and job summary, and still uploads reports; it only stops the action from failing the job on a low score. Once a team has reviewed a week's worth of comments and is comfortable with the survivor patterns Tautest surfaces on real PRs, switch back to the default `fail-on-threshold: true` (or drop the input) to enforce it.
+
+This does not change the threshold math or exit codes documented above. It only changes whether that exit code fails the job.
+
 ## CI Budgets
 
 Use `max-files` and `max-changed-lines` to keep CI predictable on large PRs:
@@ -133,6 +150,7 @@ The comment is formatted as a patch mutation quality gate. It shows:
 - `Tautest Patch Mutation Gate: <verdict>`
 - patch mutation score and threshold
 - killed, survived, and no-coverage counts
+- a one-line advisory when the threshold passed but survivors or no-coverage mutants still need review
 - top surviving mutants
 - likely missing behavior when the JSON report includes mutant insight data
 - a collapsible fix prompt
