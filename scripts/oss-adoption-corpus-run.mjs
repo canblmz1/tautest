@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Runs one frozen external-PR corpus entry: clones a real repo at an exact PR head SHA,
 // runs its normal test suite, runs the locally built Tautest CLI against the PR diff, then
-// runs a direct Stryker run scoped to the same mutate pattern Tautest computed, so the two
-// runtimes are comparable. Prints a JSON result row; never edits or pushes to the source repo.
+// runs a direct Stryker run scoped to the same mutate pattern Tautest computed. Compare mutant
+// outcomes here; runtimes are not like-for-like until runner resolution and options are aligned.
+// Prints a JSON result row; never edits or pushes to the source repo.
 //
 //   node scripts/oss-adoption-corpus-run.mjs --repo=https://github.com/unjs/ohash.git \
 //     --pr=196 --base=2c6e231ccfc229ab90a3e026635984f1ccd89b1d --head=a65d622c4c390061baf408b0ecdf4d5031753c69 \
