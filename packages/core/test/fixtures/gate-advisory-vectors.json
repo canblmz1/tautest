@@ -1,0 +1,29 @@
+[
+  {
+    "input": { "score": 87.5, "threshold": 60, "survived": 1, "noCoverage": 0 },
+    "expected": "Threshold passed; 1 surviving mutant still needs review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  {
+    "input": { "score": 90, "threshold": 60, "survived": 2, "noCoverage": 3 },
+    "expected": "Threshold passed; 2 surviving mutants and 3 uncovered mutants still need review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  {
+    "input": { "score": 70, "threshold": 60, "survived": 0, "noCoverage": 1 },
+    "expected": "Threshold passed; 1 uncovered mutant still needs review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  {
+    "input": { "score": 80, "threshold": 60, "survived": 1, "noCoverage": 1 },
+    "expected": "Threshold passed; 1 surviving mutant and 1 uncovered mutant still need review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  {
+    "input": { "score": 60, "threshold": 60, "survived": 1, "noCoverage": 0 },
+    "expected": "Threshold passed; 1 surviving mutant still needs review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  {
+    "input": { "score": 87.5, "survived": 1, "noCoverage": 0 },
+    "expected": "Threshold passed; 1 surviving mutant still needs review before treating this patch as fully covered. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+  },
+  { "input": { "score": 100, "threshold": 60, "survived": 0, "noCoverage": 0 }, "expected": null },
+  { "input": { "score": 40, "threshold": 60, "survived": 3, "noCoverage": 0 }, "expected": null },
+  { "input": { "score": null, "survived": 1, "noCoverage": 0 }, "expected": null }
+]

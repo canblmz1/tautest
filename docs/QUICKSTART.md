@@ -2,6 +2,8 @@
 
 This guide assumes a TypeScript or JavaScript project that already uses Vitest or Jest.
 
+Requirements: Node.js 22 or newer, and Vitest 4.x (not 5 yet: `@stryker-mutator/vitest-runner` 10.0.0 runs no tests for mutants on Vitest 5, and `tautest doctor` flags that combination; see [Install](../README.md#install)). Stryker is `@stryker-mutator/core` 9.6.1 or 10.x.
+
 If you want to see the value before wiring Tautest into your own project, run the [copy-paste demo](DEMO.md) first.
 
 ## First 15 Minutes

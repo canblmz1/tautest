@@ -1,9 +1,24 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { describeGateAdvisory } from '../src/report/insights';
 import { buildMarkdownReport } from '../src/report/markdown';
 import { buildTerminalSummary } from '../src/report/terminal';
 import { getMutationVerdict } from '../src/score/score';
 import type { MutationSummary } from '../src/types';
+
+// Shared with packages/github-action/test/gate-advisory.test.ts, which checks its hand-mirrored copy
+// against the same table, so the two implementations cannot drift apart silently.
+const parityVectors = JSON.parse(readFileSync(path.join(import.meta.dirname, 'fixtures', 'gate-advisory-vectors.json'), 'utf8')) as Array<{
+  input: Parameters<typeof describeGateAdvisory>[0];
+  expected: string | null;
+}>;
+
+describe('describeGateAdvisory parity table', () => {
+  it.each(parityVectors)('matches the shared expectation for %j', ({ input, expected }) => {
+    expect(describeGateAdvisory(input)).toBe(expected);
+  });
+});
 
 // Mirrors the real-world unjs/ohash#196 finding: 1 real survivor among 8 mutants (87.5%)
 // still passed the default 60% threshold, and the old copy did not say a survivor remained.
