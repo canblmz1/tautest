@@ -1,6 +1,6 @@
 {
   "name": "tautest",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "PR-focused mutation testing CLI powered by StrykerJS",
   "license": "MIT",
   "author": "Tautest contributors",
