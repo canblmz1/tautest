@@ -44,7 +44,9 @@ All runs used the same Vitest config Stryker uses.
 
 Per-run results for the head are in [runs/normal-suite-head.json](runs/normal-suite-head.json). The base runs were checked from console output only; their JSON was not kept.
 
-**Cause:** the failing tests assert on stderr or console contents right after `render()` resolves, without waiting for the child process to write (for example `tests/matchers.spec.ts:48-65`). That is a race in the project's tests.
+**Load dependence:** a further 10 unmutated runs at the head failed in 1 of 10 on a quiet container and in **9 of 10** with 8 CPU-bound processes alongside. These were counted from exit codes only.
+
+**Cause:** `render()` resolves on the child's first stdout/stderr chunk, or `renderAwaitTime` (default 100 ms) after spawn, whichever comes first (`src/pure.ts`). The failing tests then assert on stderr or console contents immediately (for example `tests/matchers.spec.ts:38-65`). When `node` takes longer than 100 ms to start and print, as it easily does under load, they see empty output. That is a race in the project's tests.
 
 ### Mutation runs
 
