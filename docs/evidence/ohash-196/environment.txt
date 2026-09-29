@@ -1,0 +1,3 @@
+os: Debian GNU/Linux 12 (bookworm) 6.6.87.2-microsoft-standard-WSL2 | node v22.23.3 | cpus 8
+harness exit: 0
+pnpm: 11.2.2

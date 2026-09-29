@@ -1,0 +1,157 @@
+{
+  "repo": "https://github.com/unjs/ohash.git",
+  "pr": "196",
+  "base": "2c6e231ccfc229ab90a3e026635984f1ccd89b1d",
+  "head": "a65d622c4c390061baf408b0ecdf4d5031753c69",
+  "runner": "vitest",
+  "tautestVersion": "2.0.3",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-t2O6Yq",
+  "install": {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "stdout": "? Verifying lockfile against supply-chain policies (375 entries)...\n✓ Lockfile passes supply-chain policies (375 entries in 16.5s)\nLockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +307\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 307, reused 0, downloaded 67, added 66\nProgress: resolved 307, reused 0, downloaded 157, added 151\nProgress: resolved 307, reused 0, downloaded 260, added 260\nProgress: resolved 307, reused 0, downloaded 300, added 300\nProgress: resolved 307, reused 0, downloaded 304, added 304\nProgress: resolved 307, reused 0, downloaded 306, added 306\nProgress: resolved 307, reused 0, downloaded 307, added 307, done\n\ndevDependencies:\n+ @types/node 25.9.1\n+ @vitest/coverage-v8 4.1.7\n+ automd 0.4.3\n+ changelogen 0.6.2\n+ esbuild 0.28.0\n+ eslint 10.4.0\n+ eslint-config-unjs 0.6.2\n+ mitata 1.0.34\n+ obuild 0.4.36\n+ prettier 3.8.3\n+ typescript 6.0.3\n+ vitest 4.1.7\n\nDone in 22.9s using pnpm v11.2.2\n",
+    "stderr": "",
+    "durationMs": 24556
+  },
+  "installMode": "frozen-lockfile",
+  "build": {
+    "command": "pnpm run build",
+    "exitCode": 0,
+    "stdout": "[log] 📦 Building `ohash` (`/tmp/tautest-corpus-t2O6Yq`)\n[log] 🧻 Cleaning up `./dist`\n[log] \n[bundle] ./dist/crypto/js/index.mjs\nSize: 5.33 kB, 3.19 kB minified, 1.7 kB min+gzipped (Side effects: 0 B)\nExports: digest\n\n[bundle] ./dist/crypto/node/index.mjs\nSize: 505 B, 290 B minified, 226 B min+gzipped (Side effects: 0 B)\nExports: digest\nDependencies: [Node.js]\n\n[bundle] ./dist/index.mjs\nSize: 4.69 kB, 2.87 kB minified, 1.17 kB min+gzipped (Side effects: 0 B)\nExports: digest, hash, isEqual, serialize\nDependencies: ohash/crypto\n\n[bundle] ./dist/utils/index.mjs\nSize: 6.59 kB, 4.02 kB minified, 1.59 kB min+gzipped (Side effects: 0 B)\nExports: diff, isEqual\n[log] \nΣ Total dist byte size: 15.3 kB (15 files)\n[log] \n✅ obuild finished in 1658ms\n",
+    "stderr": "$ obuild\n",
+    "durationMs": 2467
+  },
+  "installTestTools": {
+    "command": "pnpm add -D -w --ignore-scripts tautest@2.0.3 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0",
+    "exitCode": 0,
+    "stdout": "Progress: resolved 1, reused 0, downloaded 0, added 0\nProgress: resolved 14, reused 11, downloaded 0, added 0\nProgress: resolved 29, reused 14, downloaded 9, added 0\nProgress: resolved 145, reused 98, downloaded 27, added 0\nProgress: resolved 237, reused 140, downloaded 49, added 0\nProgress: resolved 316, reused 203, downloaded 66, added 0\nProgress: resolved 358, reused 215, downloaded 79, added 0\nProgress: resolved 405, reused 252, downloaded 91, added 0\nProgress: resolved 459, reused 283, downloaded 115, added 0\nProgress: resolved 487, reused 298, downloaded 130, added 0\nProgress: resolved 500, reused 299, downloaded 150, added 0\nProgress: resolved 502, reused 301, downloaded 150, added 0\nProgress: resolved 511, reused 306, downloaded 150, added 0\nPackages: +148 -3\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--\nProgress: resolved 519, reused 307, downloaded 150, added 148, done\n\ndevDependencies:\n+ @stryker-mutator/core 10.0.0\n+ @stryker-mutator/vitest-runner 10.0.0\n+ tautest 2.0.3\n\nAdded 2 entries to minimumReleaseAgeExclude in pnpm-workspace.yaml (loose mode allowed these immature versions):\n  @tautest/core@2.0.3\n  tautest@2.0.3\nDone in 14.5s using pnpm v11.2.2\n",
+    "stderr": "",
+    "durationMs": 14806
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.3",
+      "path": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/tautest@2.0.3_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.9_b3cfed1553c0f967ed45d0490479721a/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.3",
+      "path": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/@tautest+core@2.0.3_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+nod_98caae3b4abbf8dfedb20cf0f4203713/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@25.9.1/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.9.1__vitest@4.1.7/node_modules/@stryker-mutator/vitest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "4.1.7",
+      "path": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/vitest@4.1.7_@types+node@25.9.1_@vitest+coverage-v8@4.1.7_vite@8.0.14_@types+node@25.9._a149d9c3843bb5b050fb894091ad4e6e/node_modules/vitest/package.json",
+      "projectPath": "/tmp/tautest-corpus-t2O6Yq/node_modules/.pnpm/vitest@4.1.7_@types+node@25.9.1_@vitest+coverage-v8@4.1.7_vite@8.0.14_@types+node@25.9._a149d9c3843bb5b050fb894091ad4e6e/node_modules/vitest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "prChangedFiles": [
+    "src/utils/diff.ts",
+    "test/utils.test.ts"
+  ],
+  "normalTests": {
+    "command": "npx --no-install vitest run",
+    "exitCode": 0,
+    "stdout": "\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.7 \u001b[39m\u001b[90m/tmp/tautest-corpus-t2O6Yq\u001b[39m\n\n \u001b[32m✓\u001b[39m test/bundle.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 43\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/crypto.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 8\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/utils.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 39\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/hash.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 14\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/serialize.test.ts \u001b[2m(\u001b[22m\u001b[2m61 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 131\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m75 passed\u001b[39m\u001b[22m\u001b[90m (75)\u001b[39m\n\u001b[2m   Start at \u001b[22m 08:37:38\n\u001b[2m   Duration \u001b[22m 629ms\u001b[2m (transform 701ms, setup 0ms, import 1.02s, tests 236ms, environment 1ms)\u001b[22m\n\n",
+    "stderr": "",
+    "durationMs": 2093
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-t2O6Yq/node_modules/tautest/dist/index.js run --base 2c6e231ccfc229ab90a3e026635984f1ccd89b1d --json",
+    "exitCode": 0,
+    "stdout": "{\n  \"status\": \"passed\",\n  \"threshold\": 60,\n  \"report\": {\n    \"version\": \"1\",\n    \"schemaVersion\": \"1\",\n    \"createdAt\": \"2026-09-29T08:37:45.124Z\",\n    \"summary\": {\n      \"verdict\": \"STRONG\",\n      \"mutationScore\": 100,\n      \"threshold\": 60,\n      \"total\": 8,\n      \"killed\": 5,\n      \"survived\": 0,\n      \"noCoverage\": 0,\n      \"timeout\": 3,\n      \"runtimeError\": 0,\n      \"compileError\": 0,\n      \"ignored\": 0\n    },\n    \"scope\": {\n      \"baseRef\": \"2c6e231ccfc229ab90a3e026635984f1ccd89b1d\",\n      \"runner\": \"vitest\",\n      \"mutatePatterns\": [\n        \"src/utils/diff.ts:46-46\"\n      ],\n      \"mutatedFiles\": [\n        \"src/utils/diff.ts\"\n      ]\n    },\n    \"metrics\": {\n      \"changedFileCount\": 2,\n      \"changedSourceFileCount\": 1,\n      \"changedSourceLineCount\": 1,\n      \"mutatedFileCount\": 1,\n      \"mutatePatternCount\": 1,\n      \"partial\": false,\n      \"stageMs\": {\n        \"scopeMs\": 17,\n        \"configMs\": 1,\n        \"mutationMs\": 5628,\n        \"parseMs\": 1,\n        \"reportMs\": 1\n      },\n      \"runtimeMs\": 5628\n    },\n    \"diagnostics\": {\n      \"strykerConfig\": []\n    },\n    \"aiSignals\": {\n      \"promptStyle\": \"agent\",\n      \"author\": {\n        \"author\": \"unknown\",\n        \"confidence\": \"low\",\n        \"reason\": \"No known AI-author environment signal detected.\"\n      },\n      \"hardRules\": [\n        \"Do not change production code.\",\n        \"Only edit or add test files.\",\n        \"Every new test must pass against the original production code.\",\n        \"Every new test must fail against the listed mutant behavior.\",\n        \"Do not weaken existing assertions.\",\n        \"Do not delete, skip, or mark existing tests as todo.\",\n        \"Do not write filler tests such as expect(true).toBe(true).\",\n        \"Do not add new dependencies.\",\n        \"If you find a real production bug, stop and report it instead of silently rewriting implementation.\"\n      ],\n      \"validationLoop\": [\n        \"Run the normal test suite.\",\n        \"Run Tautest again.\",\n        \"Confirm the mutation score increased or stayed strong while the listed mutant was killed.\",\n        \"If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.\"\n      ],\n      \"commands\": [\n        \"tautest run --base 2c6e231ccfc229ab90a3e026635984f1ccd89b1d\",\n        \"vitest run\"\n      ]\n    },\n    \"surviving\": [],\n    \"stryker\": {\n      \"schemaVersion\": \"1.0\",\n      \"projectRoot\": \"/tmp/tautest-corpus-t2O6Yq\",\n      \"frameworkName\": \"StrykerJS\",\n      \"frameworkVersion\": \"10.0.0\",\n      \"thresholds\": {\n        \"break\": 0,\n        \"high\": 0,\n        \"low\": 0\n      },\n      \"config\": {\n        \"testRunner\": \"vitest\",\n        \"packageManager\": \"pnpm\",\n        \"coverageAnalysis\": \"perTest\",\n        \"mutate\": [\n          \"src/utils/diff.ts:46-46\"\n        ],\n        \"reporters\": [\n          \"json\"\n        ]\n      }\n    }\n  },\n  \"paths\": {\n    \"report\": \"/tmp/tautest-corpus-t2O6Yq/.tautest/report.md\",\n    \"json\": \"/tmp/tautest-corpus-t2O6Yq/.tautest/report.json\",\n    \"prompt\": \"/tmp/tautest-corpus-t2O6Yq/.tautest/fix-prompt.md\",\n    \"mutationJson\": \"/tmp/tautest-corpus-t2O6Yq/.tautest/mutation.json\"\n  },\n  \"metrics\": {\n    \"changedFileCount\": 2,\n    \"changedSourceFileCount\": 1,\n    \"changedSourceLineCount\": 1,\n    \"mutatedFileCount\": 1,\n    \"mutatePatternCount\": 1,\n    \"partial\": false,\n    \"stageMs\": {\n      \"scopeMs\": 17,\n      \"configMs\": 1,\n      \"mutationMs\": 5628,\n      \"parseMs\": 1,\n      \"reportMs\": 1\n    },\n    \"runtimeMs\": 5628\n  },\n  \"diagnostics\": {\n    \"strykerConfig\": []\n  }\n}\n",
+    "stderr": "",
+    "durationMs": 5901
+  },
+  "tautestSummary": {
+    "verdict": "STRONG",
+    "mutationScore": 100,
+    "threshold": 60,
+    "total": 8,
+    "killed": 5,
+    "survived": 0,
+    "noCoverage": 0,
+    "timeout": 3,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "tautestChangedFileCount": 2,
+  "mutatePatterns": [
+    "src/utils/diff.ts:46-46"
+  ],
+  "tautestMutationReportPath": "/tmp/tautest-corpus-t2O6Yq/.tautest/corpus-run-1.json",
+  "directStryker": {
+    "command": "npx --no-install stryker run stryker.config.json",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "",
+    "durationMs": 4218
+  },
+  "directStrykerReportPath": "/tmp/tautest-corpus-t2O6Yq/stryker-direct-report.json",
+  "directStrykerSummary": {
+    "total": 8,
+    "statuses": {
+      "Killed": 5,
+      "Timeout": 3
+    },
+    "framework": {
+      "name": "StrykerJS",
+      "version": "10.0.0"
+    }
+  },
+  "comparison": {
+    "leftCount": 8,
+    "rightCount": 8,
+    "missingFromLeft": [],
+    "missingFromRight": [],
+    "statusDifferences": [],
+    "identical": true
+  },
+  "repeatability": [
+    {
+      "runNumber": 2,
+      "mutationReportPath": "/tmp/tautest-corpus-t2O6Yq/.tautest/corpus-run-2.json",
+      "normalTestsDurationMs": 1249,
+      "tautestDurationMs": 5152,
+      "summary": {
+        "verdict": "STRONG",
+        "mutationScore": 100,
+        "threshold": 60,
+        "total": 8,
+        "killed": 5,
+        "survived": 0,
+        "noCoverage": 0,
+        "timeout": 3,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "sameMutatePatterns": true,
+      "comparison": {
+        "leftCount": 8,
+        "rightCount": 8,
+        "missingFromLeft": [],
+        "missingFromRight": [],
+        "statusDifferences": [],
+        "identical": true
+      }
+    }
+  ],
+  "stepFailures": [],
+  "status": "ok"
+}

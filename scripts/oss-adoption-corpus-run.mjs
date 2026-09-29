@@ -80,7 +80,16 @@ try {
   assertReachable(workDir, args.base);
 
   const pm = args['package-manager'];
-  result.install = step('install', () => run(workDir, pm, ['install', ...(pm === 'pnpm' ? ['--no-frozen-lockfile'] : [])]));
+  // Install exactly the PR's lockfile when it allows that, so a rerun resolves the same versions.
+  // Fall back to a regular install only if the frozen one fails, and record which one was used.
+  result.install = step('install', () => run(workDir, pm, frozenInstallArgs(pm)));
+  result.installMode = 'frozen-lockfile';
+  if (result.install.exitCode !== 0) {
+    result.frozenInstallFailure = { exitCode: result.install.exitCode, stderr: result.install.stderr?.slice(-2000) };
+    stepFailures.pop();
+    result.install = step('install', () => run(workDir, pm, pm === 'pnpm' ? ['install', '--no-frozen-lockfile'] : ['install']));
+    result.installMode = 'lockfile-not-frozen';
+  }
   requireExit(result.install, 'install');
 
   if ('build' in args) {
@@ -143,7 +152,10 @@ try {
       JSON.stringify({
         ...directConfig,
         mutate: mutatePatterns,
-        tempDirName: '.stryker-tmp/direct-corpus',
+        // One path segment: Stryker rewrites tsconfig paths that leave the project by prepending
+        // exactly "../../", which only fits a sandbox at <tempDirName>/sandbox-*. A nested temp dir
+        // breaks packages whose tsconfig extends a monorepo root config and would fake a difference.
+        tempDirName: '.stryker-tmp-direct',
         reporters: ['json'],
         jsonReporter: { fileName: 'stryker-direct-report.json' }
       }, null, 2)
@@ -220,6 +232,19 @@ function requireExit(outcome, name, acceptedExitCodes = [0]) {
   if (!acceptedExitCodes.includes(outcome.exitCode)) {
     throw new Error(`${name} failed with exit ${outcome.exitCode}; refusing to produce a mutation comparison.`);
   }
+}
+
+function frozenInstallArgs(pm) {
+  if (pm === 'pnpm') {
+    return ['install', '--frozen-lockfile'];
+  }
+  if (pm === 'npm') {
+    return ['ci'];
+  }
+  if (pm === 'yarn') {
+    return ['install', '--frozen-lockfile'];
+  }
+  return ['install', '--frozen-lockfile'];
 }
 
 function devInstallArgs(cwd, pm, specs) {
