@@ -11,21 +11,51 @@ node scripts/oss-adoption-corpus-run.mjs \
   --repo=https://github.com/unjs/ohash.git --pr=196 \
   --base=2c6e231ccfc229ab90a3e026635984f1ccd89b1d \
   --head=a65d622c4c390061baf408b0ecdf4d5031753c69 \
-  --runner=vitest --package-manager=pnpm --build
+  --runner=vitest --package-manager=pnpm --tautest-version=2.0.3 --build --repeat=2
 ```
 
 Use the full base/head SHAs recorded for each PR below. The harness leaves its clone for inspection and exits non-zero if a step fails. For ohash#151 and #195, the unconfigured Tautest run is expected to fail on a bundle-size assertion; their successful mutation rows require an opt-in test exclusion in that clone, as shown for #195 below. The harness alone does not produce those successful rows.
+The default normal-test command is the locally installed `vitest run` or `jest --runInBand` (no registry fallback); pass `--normal-test-script=<package.json-script>` when that commit needs its own test setup.
+Pass `--repeat=2` (up to 5) for a pilot-acceptance check: the harness reruns the normal suite and Tautest, compares each repeated raw mutant status with the first run, and returns `status: unstable` plus a non-zero exit if any mutant or mutate range changes. A single `status: ok` pair remains only a point measurement.
 The fenced commands use Bash `\` continuations; in PowerShell, put each command on one line.
 
 `--build` runs `<package-manager> run build` — the target commit's own build script through its own locally installed toolchain. Do not hardcode a specific build tool: see the ohash#151 entry below for what went wrong when this script used to do that.
 
 Installing Stryker rewrites the project's `package.json` and lockfile. The harness now restores every tracked file the setup changed (recorded as `setupModifiedTrackedFiles`) and refuses to measure unless the tracked tree matches the PR head exactly, so Tautest's diff is the PR's own. The runs below were first recorded with an older harness that did not restore them: that inflated Tautest's changed-files count (4 instead of 2 on ohash#196, where `package.json` and `pnpm-lock.yaml` were the extra two) but not the mutate scope or any mutant result. Re-running ohash#196 with the fixed harness gave the same 5 killed and 3 timeout, with `prChangedFiles` and Tautest's changed-files count both at the PR's 2 files.
 
-**Runtime comparisons are exploratory, not like-for-like benchmarks.** The harness runs Tautest from the local checkout (`packages/cli/dist/index.js`) rather than installing it in the target project. On ohash#195, a module-resolution probe found Vitest 4.1.8 loaded from the Tautest checkout in all nine observed Vitest-loading processes, while direct Stryker used the project's Vitest 4.1.10. The same setup may confound the other entries; their resolved module paths were not checked. `@tautest/core` declares Stryker and its runners as peer dependencies, but that declaration alone does not verify resolution in a packed install. Install the packed CLI in each fixture, check the loaded module paths, align Stryker options, and retain per-run timing data before claiming a product-level speed difference. The mutant outcomes below can still be compared directly where both JSON reports were checked.
+**Old runtime comparisons are exploratory, not like-for-like benchmarks.** Earlier versions of the harness ran Tautest from the local checkout (`packages/cli/dist/index.js`) rather than installing it in the target project. On ohash#195, a module-resolution probe found Vitest 4.1.8 loaded from the Tautest checkout in all nine observed Vitest-loading processes, while direct Stryker used the project's Vitest 4.1.10. The same setup may confound the other entries; their resolved module paths were not checked. Those historical timing numbers are not repaired retroactively.
+
+The current harness requires an exact `--tautest-version`, installs that **published version** inside the cloned project, and records the CLI, core, Stryker, runner and test-framework paths and versions. It refuses to compare mutants if the normal suite or a setup step fails. For direct Stryker it copies the *effective Stryker config recorded in Tautest's raw report*, retaining test-related options while changing the temporary directory and JSON output path, forcing the JSON-only reporter, and omitting dashboard credentials; it then compares every mutant by file, mutator, location, replacement and status. `status: ok` means one such pair agreed, **not** that scores or runtimes are repeatable across runs or that Tautest is faster. This harness does not measure unreleased local code; a separate packed-package smoke must verify CLI and core from the same candidate build.
+
+Two harness fixes from 2026-09-29 affect reproducibility:
+
+- **Frozen installs first.** The project install now tries `pnpm install --frozen-lockfile` (`npm ci` for npm) and falls back to a regular install only if that fails, recording `installMode` and the frozen failure. Before, it always ran `--no-frozen-lockfile`, so a rerun could resolve different versions.
+- **One-segment temp dir for direct Stryker.** The direct run's temp dir is `.stryker-tmp-direct` (was `.stryker-tmp/direct-corpus`). Stryker rewrites tsconfig paths that leave the project by prepending exactly `../../`, so a nested temp dir broke packages whose tsconfig extends a monorepo root config and could fake a Tautest/direct difference.
+
+Beware a same-version local tarball test under pnpm: installing a local `tautest` tarball and a local `@tautest/core` tarball at the workspace root did **not** make the CLI use the local core in our experiment. Its dependency still resolved the published `@tautest/core@2.0.2`; an explicit override and resolution-path check were needed. A tarball version number alone does not prove which code was tested.
+
+On 2026-09-28, the new harness reproduced ohash#196 with Tautest/core 2.0.2, Stryker/runner 10.0.0 and the cloned project's Vitest 4.1.7: normal tests passed, 2 PR files were counted, and all 8 mutant statuses matched direct Stryker (5 killed, 3 timeout). A second run on defu#156 used Vitest 4.1.2 and matched its one killed mutant. The one ordered pair on each PR took 72.9s/35.6s (ohash) and 49.3s/16.9s (defu), Tautest/direct respectively, on a Windows machine in use; these are **not** an overhead estimate. Repeat runs, order reversal and load control are still needed before making a speed claim.
+An additional `--repeat=2` run on defu#156 passed the normal suite twice and killed the same single mutant on both Tautest runs, with unchanged mutate scope. That checks this small fixture's repeatability, not the broader ecosystem; order reversal and load control are still needed before making a speed claim.
+The same `--repeat=2` check on ohash#196 passed both normal suites and reproduced all 8 mutant statuses in the first Tautest run, direct Stryker, and the second Tautest run (5 killed, 3 timeout; unchanged mutate scope). The ordered wall times were 67.5s, 19.8s, and 16.6s. The first-run cost changed dramatically within one clone, so neither the earlier pair nor this sequence isolates a Tautest-specific overhead.
 
 ## Status
 
-**3 repositories (ohash, defu, destr), 5 PRs attempted and measured, plus one induced-regression run.** ohash#195 was previously listed here as unmeasurable; it had been checked with a mistyped base SHA (see its entry). The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. This file is not yet large enough to inform the day-90 decision on its own. Still missing: a Jest repo, 2+ more Vitest repos, a PR that changes more than one production file, full-file direct Stryker for every entry except ohash#195 (plan task 5), Stryker incremental-mode comparisons and median/p90 runtimes across entries (plan task 6), a harness that installs Tautest into the project (see the confound above), and same-repo history further back to stress older commits.
+**4 repositories attempted; 3 measured (ohash, defu, destr), 5 PRs measured and one rejected candidate (cli-testing-library#50), plus one induced-regression run.** ohash#195 was previously listed here as unmeasurable; it had been checked with a mistyped base SHA (see its entry). The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. The candidate below does not count as a measured frozen-PR corpus entry. Still missing: a Jest repo, 2+ more valid non-unjs Vitest repos, a PR that changes more than one production file, full-file direct Stryker for every entry except ohash#195 (plan task 5), Stryker incremental-mode comparisons, median/p90 runtimes across entries (plan task 6), and same-repo history further back to stress older commits.
+
+## Failure ledger
+
+Every external attempt, accepted or not. Full base/head SHAs are in each entry below; all six were checked against `gh api repos/<repo>/pulls/<n>` on 2026-09-29. "Not retained" means the run predates retained raw reports, so it cannot be reproduced mutant-for-mutant from this repository; those rows need a rerun under the current harness before they count toward the plan's ten (plan v2, task 7).
+
+| Attempt | Status | Environment | Tautest / Stryker / test runner | Normal suite | Tautest vs direct Stryker | Raw reports | Deviations, reason |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| unjs/ohash#196 | accepted | Linux container (Debian 12), Node 22.23.3, pnpm 11.2.2, frozen lockfile | published 2.0.3 installed in the clone / 10.0.0 / project's Vitest 4.1.7 | 75 passed, twice | identical: 8 mutants (5 killed, 3 timeout), repeated run identical | [evidence/ohash-196](evidence/ohash-196/README.md) | none (`--build`) |
+| unjs/defu#156 | measured, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout); later published 2.0.2 with `--repeat=2`; project's Vitest 4.1.2 | passed | identical: 1 killed, repeated run identical | not retained | none |
+| unjs/destr#136 | measured, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout) | passed | identical: 39 mutants (30 killed, 9 survived) | not retained | none |
+| unjs/ohash#151 | measured with a deviation, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout) | passed | identical: 79 mutants | not retained | `test/bundle.test.ts` excluded from the mutation run only (bundle-size assertion) |
+| unjs/ohash#195 | measured with a deviation, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build; Tautest loaded Vitest 4.1.8 from the checkout, the project has 4.1.10 | 90 passed | identical: 92 mutants (77 killed, 12 survived, 3 no coverage) | not retained in the repository | `test/bundle.test.ts` excluded from the mutation run only |
+| crutchcorn/cli-testing-library#50 | **rejected** | Linux container (Debian 12), Node 22.23.3, pnpm 11.21.0, frozen lockfile | candidate builds of #16/#20, published 2.0.3 / 10.0.0 / project's Vitest 4.1.10 | **flaky**: 5 of 23 runs failed at the head, 4 of 20 at the base | workspace root: same 41 mutants, statuses drift in both tools (flaky tests, load) | [evidence/cli-testing-library-50](evidence/cli-testing-library-50/README.md) | workspace-root Vitest config, `website` ignore; rejected because the normal suite fails on its own |
+
+**Reproduce the accepted row** with the harness command at the top of this file (the evidence README lists the environment). **Reproduce the rejected row** with the scripts and steps in its evidence log.
 
 ## unjs/ohash#196 — `fix(utils): diff falsy primitive values`
 
@@ -203,3 +233,18 @@ The normal run passes this test; Stryker's instrumented copy of `src/utils/diff.
 - A Jest beta repo (none attempted yet).
 - 2+ more non-owned Vitest repos beyond the unjs org, for diversity beyond one maintainer's style/tooling.
 - A PR that changes more than one production file: every entry so far mutates a single source file (ohash#195's 156/-29 production lines are all in `src/utils/diff.ts`).
+
+## Rejected candidate: crutchcorn/cli-testing-library#50
+
+Base `1caf209a4e42da33201bc006880abe3133ba0d8a`, head `a2c37690602e1b427d8c586b004104e67b79f2a0`. **Do not count this as a clean corpus measurement or a CI pilot: its normal test suite fails on its own.** Unmutated runs failed 5 of 23 times at the head and 4 of 20 at the base; see the [evidence log](evidence/cli-testing-library-50/README.md).
+
+**Correction: package root.** An earlier version of this section said the package root could not be measured because its `tsconfig.json` extends `../../tsconfig.json`, "which is missing from a package-root Stryker sandbox". The actual cause was narrower, and it is now fixed. Stryker rewrites such paths by prepending exactly `../../`, which assumes a sandbox two directories deep. Tautest 2.0.0–2.0.3 used deeper temp directories, and so did this harness's direct-Stryker run (`.stryker-tmp/direct-corpus`, now `.stryker-tmp-direct`). A packed build of #20 ran the package root without `TSCONFIG_ERROR`: 41 mutants, normal suite 52/52 before and after.
+
+The workspace-root experiment used an untracked root Vitest config, an ignore pattern for the unrelated `website` symlink, and a temporary pilot test; it is not a turnkey run of the PR as submitted. On Windows, the unmutated root Vitest run failed 3 of 53 tests: two stack-trace path-separator assertions and a timing-sensitive CLI event test. An earlier version said the Linux normal suite "passed 53/53". That was a single run and does not show stability; repeated runs failed as above. Two Tautest 2.0.2 mutation runs had **the same 41 mutant identities and 17 different mutant statuses**:
+
+| Run | Killed | Survived | No coverage | Timeout | Score |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | 11 | 8 | 10 | 12 | 56.10% |
+| 2 | 15 | 16 | 10 | 0 | 36.59% |
+
+That pair's run order and machine state were not controlled. A later controlled rerun traced this kind of drift to the project's flaky tests and to machine load, with direct Stryker drifting the same way. That pair's 12 timeouts were not reproduced, because its pilot test and machine state were not kept. Either way, neither score can serve as a dependable blocking gate. A temporary test in the fixture killed a real survivor in `src/helpers.ts`, showing a possible test improvement, but that does not validate the aggregate score or constitute an upstream contribution. First stabilize the normal suite and repeat mutation outcomes, or choose a different external pilot.
