@@ -1,0 +1,52 @@
+{
+  "allowConsoleColors": false,
+  "cleanTempDir": true,
+  "coverageAnalysis": "perTest",
+  "disableTypeChecks": true,
+  "dryRunTimeoutMinutes": 2,
+  "incremental": false,
+  "fileLogLevel": "off",
+  "logLevel": "error",
+  "mutate": [
+    "packages/cli-testing-library/src/helpers.ts:1-1",
+    "packages/cli-testing-library/src/helpers.ts:7-8",
+    "packages/cli-testing-library/src/helpers.ts:28-29",
+    "packages/cli-testing-library/src/index.ts:2-2",
+    "packages/cli-testing-library/src/index.ts:15-16",
+    "packages/cli-testing-library/src/index.ts:19-19",
+    "packages/cli-testing-library/src/index.ts:23-23",
+    "packages/cli-testing-library/src/jest.ts:4-10",
+    "packages/cli-testing-library/src/test-runner-globals.ts:1-15",
+    "packages/cli-testing-library/src/wait-for.ts:6-6",
+    "packages/cli-testing-library/src/wait-for.ts:85-88",
+    "packages/cli-testing-library/src/wait-for.ts:106-110"
+  ],
+  "reporters": [
+    "json"
+  ],
+  "jsonReporter": {
+    "fileName": "runs/c7/D3.mutation.json"
+  },
+  "tempDirName": ".stryker-tmp-direct",
+  "ignorePatterns": [
+    "website",
+    ".stryker-tmp"
+  ],
+  "testRunner": "vitest",
+  "thresholds": {
+    "break": 0,
+    "high": 0,
+    "low": 0
+  },
+  "timeoutMS": 5000,
+  "tsconfigFile": "tsconfig.json",
+  "packageManager": "pnpm",
+  "plugins": [
+    "@stryker-mutator/vitest-runner"
+  ],
+  "vitest": {
+    "configFile": "vitest.stryker-root.config.ts",
+    "related": false
+  },
+  "concurrency": 7
+}

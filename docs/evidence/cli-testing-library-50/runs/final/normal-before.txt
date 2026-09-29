@@ -1,0 +1,32 @@
+
+ RUN  v4.1.10 /work/repo
+
+··························x·························
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/cli-testing-library/tests/matchers.spec.ts > not.toBeInTheConsole should fail something is console
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ packages/cli-testing-library/tests/matchers.spec.ts:44:73
+     42|   ]);
+     43|
+     44|   expect(() => expect(queryByText("--version")).not.toBeInTheConsole()…
+       |                                                                         ^
+     45|     /Expected not to find the instance in the console/,
+     46|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 51 passed (52)
+   Start at  07:02:42
+   Duration  3.94s (transform 3.61s, setup 1.70s, import 4.76s, tests 7.94s, environment 4ms)
+

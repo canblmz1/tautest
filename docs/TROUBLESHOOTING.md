@@ -90,6 +90,19 @@ export default defineConfig({
 
 `pnpm test` and CI still run the excluded test normally; only the Stryker mutation run skips it. The same pattern applies to Jest through `stryker.jestConfigFile`.
 
+## Mutant Statuses Change Between Runs
+
+Symptom: the same commit gives different killed/survived counts or a different score from one Tautest run to the next.
+
+Tautest scores whatever Stryker's test runs report. Direct Stryker with the same options changes the same way, so look at the test suite and the machine first:
+
+- **Flaky tests produce false kills.** A test that sometimes fails on unmodified code will sometimes "kill" a mutant, too. This hits hardest for mutants with no covering test (for example module-level code), because Stryker runs the whole suite against them. CPU load makes timing-sensitive tests fail more often, so a busier machine can raise the score.
+- **A mutant that makes code hang can be `Killed` or `Timeout`.** Either your test framework's own timeout or Stryker's mutant timeout fires first. Both count as detected, so the score does not change.
+
+To check, run your normal test command several times on the unmodified commit (for example ten `vitest run`s in a row). Then compare the raw `.tautest/mutation.json` of two Tautest runs mutant by mutant: the `killedBy` field names the test that killed each mutant. If a changing status traces to a test that also fails without mutation, fix or quarantine that test.
+
+Until the normal suite passes repeatedly and repeated Tautest runs on the same commit give the same statuses, keep Tautest advisory. In the GitHub Action, set `fail-on-threshold: false` ([Advisory First Week](GITHUB_ACTION.md#advisory-first-week)). If you run the CLI yourself, do not fail the job on exit code `1` (threshold not met). A single clean run, or two runs with the same score, is not enough. See the [cli-testing-library#50 experiment](evidence/cli-testing-library-50/README.md) for a worked example.
+
 ## Slow Test Suite
 
 Mutation testing runs tests many times. If it is slow:
