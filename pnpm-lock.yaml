@@ -171,6 +171,9 @@ importers:
       jiti:
         specifier: ^2.4.2
         version: 2.7.0
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
       tinyglobby:
         specifier: ^0.2.16
         version: 0.2.16

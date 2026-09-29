@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import JSON5 from 'json5';
 import type { PackageJson, ProjectInfo } from '../types';
 
 const VITEST_CONFIG_FILES = ['vitest.config.ts', 'vitest.config.js', 'vitest.config.mjs', 'vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
@@ -116,57 +117,14 @@ function readJsonFile<T>(filePath: string): T {
 }
 
 // tsconfig.json is JSON with comments and trailing commas (`tsc --init` writes comments), so plain
-// JSON.parse rejects many real ones. It is only read here for baseUrl/paths hints — Stryker and
-// TypeScript parse it themselves — so an unreadable tsconfig must not stop the run.
+// JSON.parse rejects many real ones; JSON5 accepts both. It is only read here for baseUrl/paths
+// hints — Stryker and TypeScript parse it themselves — so an unreadable tsconfig must not stop the run.
 function readTsConfig(filePath: string): TsConfig | null {
   try {
-    return JSON.parse(stripJsonComments(readFileSync(filePath, 'utf8'))) as TsConfig;
+    return JSON5.parse(readFileSync(filePath, 'utf8')) as TsConfig;
   } catch {
     return null;
   }
-}
-
-// Removes // and /* */ comments, then trailing commas, leaving string contents untouched.
-function stripJsonComments(text: string): string {
-  const withoutComments = mapOutsideStrings(text, (rest) => {
-    if (rest.startsWith('//')) {
-      const end = rest.indexOf('\n');
-      return { skip: end === -1 ? rest.length : end };
-    }
-    if (rest.startsWith('/*')) {
-      const end = rest.indexOf('*/', 2);
-      return { skip: end === -1 ? rest.length : end + 2 };
-    }
-    return undefined;
-  });
-
-  return mapOutsideStrings(withoutComments, (rest) => (/^,\s*[}\]]/.test(rest) ? { skip: 1 } : undefined));
-}
-
-// Copies text, letting `drop` skip characters that start outside a double-quoted JSON string.
-function mapOutsideStrings(text: string, drop: (rest: string) => { skip: number } | undefined): string {
-  let output = '';
-  let index = 0;
-
-  while (index < text.length) {
-    if (text[index] === '"') {
-      const start = index++;
-      while (index < text.length && text[index] !== '"') {
-        index += text[index] === '\\' ? 2 : 1;
-      }
-      output += text.slice(start, ++index);
-      continue;
-    }
-
-    const dropped = drop(text.slice(index));
-    if (dropped) {
-      index += dropped.skip;
-    } else {
-      output += text[index++];
-    }
-  }
-
-  return output;
 }
 
 function hasDependency(packageJson: PackageJson | null, name: string): boolean {
