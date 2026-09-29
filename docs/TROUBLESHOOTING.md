@@ -121,7 +121,11 @@ Tautest found no changed production source files in the selected diff, or Stryke
 
 ## Monorepo
 
-V1 detects monorepo signals and warns. Run Tautest from the package root and pass `working-directory` in GitHub Actions.
+Run Tautest from the package root and pass `working-directory` in GitHub Actions.
+
+A package whose `tsconfig.json` extends a file outside the package, such as `"extends": "../../tsconfig.base.json"`, works. Stryker copies the package to `.stryker-tmp/sandbox-*` and rewrites relative `extends`, `references`, `include`, `exclude` and `files` paths that leave the package, so they still reach the original files. Tautest 2.0.0 through 2.0.3 ran Stryker in a deeper temp directory, which sent those rewritten paths to the wrong place. Those versions fail on most such packages with `No tests were executed` or `TSCONFIG_ERROR`; upgrade.
+
+Stryker does not rewrite one layout: an `extends` **array** (`"extends": ["../../tsconfig.base.json"]`, TypeScript 5+) whose entries point outside the package. Stryker's initial run then finds no tests (`No tests were executed`), with or without Tautest. Use a single `extends` string instead, for example by moving the shared options into one base config. Alternatively, run from the workspace root with a Vitest config limited to the package.
 
 ## Path Aliases
 
@@ -161,4 +165,10 @@ Increase `stryker.timeoutMS` or `stryker.dryRunTimeoutMinutes` in `tautest.confi
 
 ## Uninstall / Cleanup
 
-The only files Tautest deletes are its own: each run creates `.stryker-tmp/tautest/run-<pid>-<random>/` for Stryker's sandbox and removes it afterwards, along with run directories left by processes that are no longer alive and `.stryker-tmp/` itself if that leaves it empty. It never deletes anything else, including a run directory whose process may still be running. To uninstall, remove the package dependencies, delete `tautest.config.ts` if you no longer need it, and remove `.tautest/` plus the `.tautest/` entry in `.gitignore` if desired.
+Tautest itself deletes no files. Stryker creates its sandbox in `.stryker-tmp/sandbox-*`. Tautest sets `cleanTempDir: "always"`, so Stryker removes that sandbox after every run, failed or not, and then removes `.stryker-tmp/` if it is empty. Concurrent runs each remove only their own sandbox.
+
+For an in-place run (`stryker.userConfig.inPlace`), Stryker's default applies instead: after a failed run it keeps the backup of your original files.
+
+A run that is killed outright (for example with `kill -9`) can leave `.stryker-tmp/` behind. Delete it, and consider adding `.stryker-tmp/` to `.gitignore`. Tautest 2.0.2 and 2.0.3 used `.stryker-tmp/tautest/run-*`; delete any such leftover directory after upgrading.
+
+To uninstall, remove the package dependencies, delete `tautest.config.ts` if you no longer need it, and remove `.tautest/` plus the `.tautest/` entry in `.gitignore` if desired.

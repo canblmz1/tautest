@@ -3,11 +3,27 @@ import type { GenerateStrykerConfigOptions, StrykerConfigDiagnostic } from '../t
 
 const PROTECTED_KEYS = new Set(['mutate', 'reporters', 'jsonReporter', 'testRunner']);
 
+/** @deprecated No longer used: Tautest now runs Stryker in its default `.stryker-tmp` temp dir. */
 export const TAUTEST_STRYKER_TEMP_DIR = '.stryker-tmp/tautest';
+
+// Stryker copies the project to `<tempDirName>/sandbox-*` and rewrites tsconfig `extends`,
+// `references`, `include`, `exclude` and `files` entries that point outside the project by
+// prepending exactly `../../`. That is only correct when the sandbox sits two directories below
+// the project, so the temp dir must stay one path segment deep. A deeper one sent a package's
+// `"extends": "../../tsconfig.base.json"` to a file that does not exist, and Vitest ran no tests.
+const STRYKER_TEMP_DIR = '.stryker-tmp';
 
 export function generateStrykerConfig(options: GenerateStrykerConfigOptions): PartialStrykerOptions {
   const base = buildBaseStrykerConfig(options);
-  return mergeStrykerConfig(base, options.userConfig);
+  const config = mergeStrykerConfig(base, options.userConfig);
+
+  // An in-place run's backup directory can hold the only copy of the original sources, so keep
+  // Stryker's default of leaving it behind when the run fails.
+  if (config.inPlace) {
+    config.cleanTempDir = true;
+  }
+
+  return config;
 }
 
 export function getStrykerConfigDiagnostics(options: GenerateStrykerConfigOptions): StrykerConfigDiagnostic[] {
@@ -17,7 +33,9 @@ export function getStrykerConfigDiagnostics(options: GenerateStrykerConfigOption
 function buildBaseStrykerConfig(options: GenerateStrykerConfigOptions): PartialStrykerOptions {
   const base: PartialStrykerOptions = {
     allowConsoleColors: false,
-    cleanTempDir: true,
+    // Stryker deletes only the sandbox this run created, after a failed run too, so Tautest itself
+    // never deletes files and concurrent runs never touch each other's sandboxes.
+    cleanTempDir: 'always',
     coverageAnalysis: 'perTest',
     disableTypeChecks: true,
     dryRunTimeoutMinutes: options.dryRunTimeoutMinutes ?? 2,
@@ -29,7 +47,7 @@ function buildBaseStrykerConfig(options: GenerateStrykerConfigOptions): PartialS
     logLevel: 'error' as PartialStrykerOptions['logLevel'],
     mutate: options.mutate,
     reporters: ['json'],
-    tempDirName: TAUTEST_STRYKER_TEMP_DIR,
+    tempDirName: STRYKER_TEMP_DIR,
     testRunner: options.testRunner,
     thresholds: {
       break: 0,

@@ -1,20 +1,18 @@
-import { mkdir, mkdtemp, readdir, realpath, rm, rmdir } from 'node:fs/promises';
-import path from 'node:path';
-import type { PartialStrykerOptions } from '@stryker-mutator/api/core';
 import type { RunStrykerOptions, StrykerRunResult } from '../types';
 import { TautestError } from '../types';
-import { TAUTEST_STRYKER_TEMP_DIR } from './config-generator';
 
+// Tautest deletes no files here. The generated config sets `cleanTempDir: 'always'`, so Stryker
+// removes the sandbox it created (a unique mkdtemp directory) after a failed run too, and never
+// another run's. runStryker is a public API: a caller's own config is passed through unchanged.
 export async function runStryker(options: RunStrykerOptions): Promise<StrykerRunResult> {
   const startedAt = new Date();
   const originalCwd = process.cwd();
-  const runDir = await createRunTempDir(options).catch(() => undefined);
 
   try {
     process.chdir(options.cwd);
     // Loaded on use, so init, doctor and --version still work before the project installs Stryker.
     const { Stryker } = await import('@stryker-mutator/core');
-    const stryker = new Stryker(runDir ? withRunTempDir(options.config, runDir) : options.config);
+    const stryker = new Stryker(options.config);
     await stryker.runMutationTest();
 
     return {
@@ -26,76 +24,7 @@ export async function runStryker(options: RunStrykerOptions): Promise<StrykerRun
     throw mapStrykerError(error);
   } finally {
     process.chdir(originalCwd);
-    // Stryker's own cleanTempDir does not run on every failure path (for example when
-    // instrumentation breaks a test before the run completes), so remove this run's directory
-    // ourselves. Never let a cleanup failure hide the run's own result.
-    if (runDir) {
-      await removeRunTempDir(runDir).catch(() => undefined);
-    }
   }
-}
-
-// Each run gets its own directory under Tautest's temp root, so cleanup only ever deletes what this
-// run created and never a concurrent run's sandbox. runStryker is a public API: a caller-supplied
-// tempDirName, an in-place run (whose backups may be the only copy of the sources), and a temp root
-// reached through a symlink or junction all keep Stryker's own behavior instead.
-async function createRunTempDir(options: RunStrykerOptions): Promise<string | undefined> {
-  if (options.config.tempDirName !== TAUTEST_STRYKER_TEMP_DIR || options.config.inPlace) {
-    return undefined;
-  }
-
-  const root = path.join(options.cwd, TAUTEST_STRYKER_TEMP_DIR);
-  await mkdir(root, { recursive: true });
-  const expectedRoot = path.join(await realpath(options.cwd), TAUTEST_STRYKER_TEMP_DIR);
-
-  if ((await realpath(root)) !== expectedRoot) {
-    return undefined;
-  }
-
-  await removeDeadRunDirs(expectedRoot);
-  return mkdtemp(path.join(expectedRoot, `run-${process.pid}-`));
-}
-
-function withRunTempDir(config: PartialStrykerOptions, runDir: string): PartialStrykerOptions {
-  return {
-    ...config,
-    tempDirName: `${TAUTEST_STRYKER_TEMP_DIR}/${path.basename(runDir)}`,
-    // Stryker leaves only its exact tempDirName out of the sandbox copy; keep every run directory
-    // under the root out of it too, or a concurrent run's sandbox would be copied into this one.
-    ignorePatterns: [...(config.ignorePatterns ?? []), TAUTEST_STRYKER_TEMP_DIR]
-  };
-}
-
-// A run killed before its own cleanup (for example with Ctrl+C) leaves its directory behind.
-// Remove those whose process is gone, never one that may still belong to a run in progress.
-async function removeDeadRunDirs(root: string): Promise<void> {
-  for (const entry of await readdir(root, { withFileTypes: true })) {
-    const pid = /^run-(\d+)-/.exec(entry.name)?.[1];
-
-    if (entry.isDirectory() && pid !== undefined && !isProcessAlive(Number(pid))) {
-      await rm(path.join(root, entry.name), { recursive: true, force: true });
-    }
-  }
-}
-
-function isProcessAlive(pid: number): boolean {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error) {
-    return (error as NodeJS.ErrnoException).code === 'EPERM';
-  }
-}
-
-async function removeRunTempDir(runDir: string): Promise<void> {
-  // Re-check just before deleting that the path still leads to this run's own directory.
-  if ((await realpath(runDir).catch(() => undefined)) === runDir) {
-    await rm(runDir, { recursive: true, force: true });
-  }
-
-  const root = path.dirname(runDir);
-  await rmdir(root).catch(() => undefined);
-  await rmdir(path.dirname(root)).catch(() => undefined);
 }
 
 export function mapStrykerError(error: unknown): TautestError {
