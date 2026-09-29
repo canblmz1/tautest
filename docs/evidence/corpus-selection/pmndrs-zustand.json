@@ -1,0 +1,155 @@
+{
+  "repo": "pmndrs/zustand",
+  "ranAt": "2026-09-29T10:52:26.208Z",
+  "rule": {
+    "take": 2,
+    "minProductionFiles": 1,
+    "scan": 100
+  },
+  "picked": [
+    {
+      "number": 3511,
+      "title": "fix(devtools): improve type inference for Devtools initializer",
+      "mergedAt": "2026-05-28T09:46:10Z",
+      "base": "8476d2ca288d787c1ffdd53615f44c85e98f87be",
+      "head": "488862fb016b94d2d537a5f4836a1ddf8952fda9",
+      "production": [
+        "src/middleware/devtools.ts"
+      ],
+      "tests": [
+        "tests/middlewareTypes.test.tsx"
+      ]
+    },
+    {
+      "number": 3469,
+      "title": "fix(devtools): support Firefox/Safari stack format in findCallerName",
+      "mergedAt": "2026-05-04T23:13:47Z",
+      "base": "4b96f4e3a53abdbb1419cacadddc9b1bd786dab3",
+      "head": "30ad99f59900a1ac9202ff566edb4062cd9a038c",
+      "production": [
+        "src/middleware/devtools.ts"
+      ],
+      "tests": [
+        "tests/devtools.test.tsx"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "number": 3587,
+      "reason": "bot"
+    },
+    {
+      "number": 3569,
+      "reason": "title"
+    },
+    {
+      "number": 3570,
+      "reason": "title"
+    },
+    {
+      "number": 3567,
+      "reason": "title"
+    },
+    {
+      "number": 3565,
+      "reason": "title"
+    },
+    {
+      "number": 3560,
+      "reason": "title"
+    },
+    {
+      "number": 3559,
+      "reason": "title"
+    },
+    {
+      "number": 3555,
+      "reason": "bot"
+    },
+    {
+      "number": 3531,
+      "reason": "bot"
+    },
+    {
+      "number": 3542,
+      "reason": "bot"
+    },
+    {
+      "number": 3541,
+      "reason": "bot"
+    },
+    {
+      "number": 3527,
+      "reason": "bot"
+    },
+    {
+      "number": 3524,
+      "reason": "bot"
+    },
+    {
+      "number": 3519,
+      "reason": "bot"
+    },
+    {
+      "number": 3507,
+      "reason": "title"
+    },
+    {
+      "number": 3514,
+      "reason": "title"
+    },
+    {
+      "number": 3513,
+      "reason": "title"
+    },
+    {
+      "number": 3512,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3506,
+      "reason": "title"
+    },
+    {
+      "number": 3492,
+      "reason": "title"
+    },
+    {
+      "number": 3502,
+      "reason": "title"
+    },
+    {
+      "number": 3503,
+      "reason": "title"
+    },
+    {
+      "number": 3501,
+      "reason": "title"
+    },
+    {
+      "number": 3496,
+      "reason": "title"
+    },
+    {
+      "number": 3493,
+      "reason": "title"
+    },
+    {
+      "number": 3491,
+      "reason": "title"
+    },
+    {
+      "number": 3489,
+      "reason": "title"
+    },
+    {
+      "number": 3487,
+      "reason": "title"
+    },
+    {
+      "number": 3486,
+      "reason": "title"
+    }
+  ]
+}

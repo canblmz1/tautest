@@ -42,6 +42,31 @@ The same `--repeat=2` check on ohash#196 passed both normal suites and reproduce
 
 **4 repositories attempted; 3 measured (ohash, defu, destr), 5 PRs measured and one rejected candidate (cli-testing-library#50), plus one induced-regression run.** ohash#195 was previously listed here as unmeasurable; it had been checked with a mistyped base SHA (see its entry). The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. The candidate below does not count as a measured frozen-PR corpus entry. Still missing: a Jest repo, 2+ more valid non-unjs Vitest repos, a PR that changes more than one production file, full-file direct Stryker for every entry except ohash#195 (plan task 5), Stryker incremental-mode comparisons, median/p90 runtimes across entries (plan task 6), and same-repo history further back to stress older commits.
 
+## Sprint 2 attempt list (fixed before any run, 2026-09-29)
+
+These are the plan v2 task 7 attempts, chosen by a rule before any result was seen. Every attempt is recorded below whatever its outcome; none is dropped after the fact.
+
+- **Repositories.** They must be single-package JS/TS repositories that install into `node_modules` (no Yarn PnP) and use a supported runner. Excluded on that basis: toss/es-toolkit (Yarn 4 PnP), date-fns/date-fns (Vitest 5, which no released Stryker runner supports yet), iamkun/dayjs (Jest 22), remeda/remeda (npm workspaces, not yet supported by the harness). Added: radashi-org/radashi (Vitest 2.1, pnpm), pmndrs/zustand (Vitest 4.1, pnpm) and moment/luxon (**Jest 29**, npm).
+- **PRs.** For each added repository, take the two most recently merged PRs that change at least one production file (under `src/`, not a test) and at least one test file, skipping bot, dependency, release and docs-only PRs. For the multi-production-file requirement, take the most recently merged PR across the three added repositories that changes at least two production files and a test file. The rule is implemented by [`scripts/oss-adoption-corpus-select.mjs`](../scripts/oss-adoption-corpus-select.mjs); its raw output is in [evidence/corpus-selection](evidence/corpus-selection).
+- **Protocol.** Every attempt runs through the harness with `--tautest-version=2.0.4 --repeat=2 --evidence-dir=docs/evidence/<repo>-<pr>`, in a disposable `node:22-bookworm` container. A row counts as measured only with harness status `ok`: normal suite passing twice, Tautest matching direct Stryker mutant for mutant, and the repeated Tautest run matching the first.
+
+| # | Attempt | Why selected | Harness options |
+| ---: | --- | --- | --- |
+| 1 | unjs/ohash#196 | existing row, revalidation | `--build` |
+| 2 | unjs/defu#156 | existing row, revalidation | |
+| 3 | unjs/destr#136 | existing row, revalidation | |
+| 4 | unjs/ohash#151 | existing row, revalidation | `--build --exclude-from-mutation=test/bundle.test.ts` (documented bundle-size deviation) |
+| 5 | unjs/ohash#195 | existing row, revalidation | `--build --exclude-from-mutation=test/bundle.test.ts` (documented bundle-size deviation) |
+| 6 | radashi-org/radashi#486 | newest qualifying PR | |
+| 7 | radashi-org/radashi#485 | second newest qualifying PR | |
+| 8 | pmndrs/zustand#3511 | newest qualifying PR | |
+| 9 | pmndrs/zustand#3469 | second newest qualifying PR | |
+| 10 | moment/luxon#1790 | newest qualifying PR (Jest) | `--runner=jest --package-manager=npm` |
+| 11 | moment/luxon#1787 | second newest qualifying PR (Jest) | `--runner=jest --package-manager=npm` |
+| 12 | radashi-org/radashi#481 | newest multi-production-file PR (`src/array/counting.ts`, `src/array/diff.ts`) | |
+
+If a repository's normal suite needs its own build or setup step, that step is added and recorded, and the attempt without it stays in the table.
+
 ## Failure ledger
 
 Every external attempt, accepted or not. Full base/head SHAs are in each entry below; all six were checked against `gh api repos/<repo>/pulls/<n>` on 2026-09-29. "Not retained" means the run predates retained raw reports, so it cannot be reproduced mutant-for-mutant from this repository; those rows need a rerun under the current harness before they count toward the plan's ten (plan v2, task 7).

@@ -1,0 +1,44 @@
+{
+  "repo": "radashi-org/radashi",
+  "ranAt": "2026-09-29T10:52:58.393Z",
+  "rule": {
+    "take": 1,
+    "minProductionFiles": 2,
+    "scan": 300
+  },
+  "picked": [
+    {
+      "number": 481,
+      "title": "fix(diff,counting): stop inherited Object.prototype keys from corrupting results",
+      "mergedAt": "2026-09-14T15:15:26Z",
+      "base": "db21269f1f7b96ec2b18b346bf436fead9f587a8",
+      "head": "93a7230d28851661ede66c3c170f074fbf1dbec8",
+      "production": [
+        "src/array/counting.ts",
+        "src/array/diff.ts"
+      ],
+      "tests": [
+        "tests/array/counting.test.ts",
+        "tests/array/diff.test.ts"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "number": 486,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 485,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 484,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 477,
+      "reason": "production files 1, test files 1"
+    }
+  ]
+}

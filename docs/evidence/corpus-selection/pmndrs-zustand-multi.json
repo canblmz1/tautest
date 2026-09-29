@@ -1,0 +1,1218 @@
+{
+  "repo": "pmndrs/zustand",
+  "ranAt": "2026-09-29T10:54:46.211Z",
+  "rule": {
+    "take": 1,
+    "minProductionFiles": 2,
+    "scan": 300
+  },
+  "picked": [
+    {
+      "number": 2138,
+      "title": "v5",
+      "mergedAt": "2024-08-16T00:41:00Z",
+      "base": "53e5a2a7f5f12b1abfd98a2cda66ea81ca031881",
+      "head": "d2f263f0217c2c88b17c6abcd4a3adfe6bc6ceb2",
+      "production": [
+        "src/context.ts",
+        "src/index.ts",
+        "src/middleware/devtools.ts",
+        "src/middleware/immer.ts",
+        "src/middleware/persist.ts",
+        "src/react.ts",
+        "src/react/shallow.ts",
+        "src/shallow.ts",
+        "src/traditional.ts",
+        "src/vanilla.ts",
+        "src/vanilla/shallow.ts"
+      ],
+      "tests": [
+        "tests/basic.test.tsx",
+        "tests/context.test.tsx",
+        "tests/devtools.test.tsx",
+        "tests/ssr.test.tsx",
+        "tests/types.test.tsx",
+        "tests/vanilla/basic.test.ts",
+        "tests/vanilla/shallow.test.tsx"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "number": 3587,
+      "reason": "bot"
+    },
+    {
+      "number": 3569,
+      "reason": "title"
+    },
+    {
+      "number": 3570,
+      "reason": "title"
+    },
+    {
+      "number": 3567,
+      "reason": "title"
+    },
+    {
+      "number": 3565,
+      "reason": "title"
+    },
+    {
+      "number": 3560,
+      "reason": "title"
+    },
+    {
+      "number": 3559,
+      "reason": "title"
+    },
+    {
+      "number": 3555,
+      "reason": "bot"
+    },
+    {
+      "number": 3531,
+      "reason": "bot"
+    },
+    {
+      "number": 3542,
+      "reason": "bot"
+    },
+    {
+      "number": 3541,
+      "reason": "bot"
+    },
+    {
+      "number": 3527,
+      "reason": "bot"
+    },
+    {
+      "number": 3524,
+      "reason": "bot"
+    },
+    {
+      "number": 3519,
+      "reason": "bot"
+    },
+    {
+      "number": 3507,
+      "reason": "title"
+    },
+    {
+      "number": 3514,
+      "reason": "title"
+    },
+    {
+      "number": 3513,
+      "reason": "title"
+    },
+    {
+      "number": 3511,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3512,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3506,
+      "reason": "title"
+    },
+    {
+      "number": 3492,
+      "reason": "title"
+    },
+    {
+      "number": 3502,
+      "reason": "title"
+    },
+    {
+      "number": 3503,
+      "reason": "title"
+    },
+    {
+      "number": 3501,
+      "reason": "title"
+    },
+    {
+      "number": 3496,
+      "reason": "title"
+    },
+    {
+      "number": 3493,
+      "reason": "title"
+    },
+    {
+      "number": 3491,
+      "reason": "title"
+    },
+    {
+      "number": 3489,
+      "reason": "title"
+    },
+    {
+      "number": 3487,
+      "reason": "title"
+    },
+    {
+      "number": 3486,
+      "reason": "title"
+    },
+    {
+      "number": 3469,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3474,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3483,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3477,
+      "reason": "title"
+    },
+    {
+      "number": 3471,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3466,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3447,
+      "reason": "bot"
+    },
+    {
+      "number": 3442,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3443,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3427,
+      "reason": "title"
+    },
+    {
+      "number": 3414,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3391,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3423,
+      "reason": "title"
+    },
+    {
+      "number": 3410,
+      "reason": "bot"
+    },
+    {
+      "number": 3406,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3405,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3403,
+      "reason": "bot"
+    },
+    {
+      "number": 3401,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3400,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3397,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3396,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3395,
+      "reason": "bot"
+    },
+    {
+      "number": 3394,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3393,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3392,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3390,
+      "reason": "title"
+    },
+    {
+      "number": 3389,
+      "reason": "title"
+    },
+    {
+      "number": 3388,
+      "reason": "title"
+    },
+    {
+      "number": 3385,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3381,
+      "reason": "title"
+    },
+    {
+      "number": 3378,
+      "reason": "title"
+    },
+    {
+      "number": 3375,
+      "reason": "title"
+    },
+    {
+      "number": 3371,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3367,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3373,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3369,
+      "reason": "title"
+    },
+    {
+      "number": 3368,
+      "reason": "title"
+    },
+    {
+      "number": 3362,
+      "reason": "title"
+    },
+    {
+      "number": 3366,
+      "reason": "title"
+    },
+    {
+      "number": 3364,
+      "reason": "bot"
+    },
+    {
+      "number": 3365,
+      "reason": "title"
+    },
+    {
+      "number": 3363,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3351,
+      "reason": "title"
+    },
+    {
+      "number": 3356,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3357,
+      "reason": "title"
+    },
+    {
+      "number": 3355,
+      "reason": "title"
+    },
+    {
+      "number": 3352,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3353,
+      "reason": "title"
+    },
+    {
+      "number": 3336,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3349,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3350,
+      "reason": "title"
+    },
+    {
+      "number": 3346,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3343,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3339,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3320,
+      "reason": "title"
+    },
+    {
+      "number": 3326,
+      "reason": "title"
+    },
+    {
+      "number": 3335,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3334,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3324,
+      "reason": "production files 0, test files 5"
+    },
+    {
+      "number": 3330,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3321,
+      "reason": "title"
+    },
+    {
+      "number": 3319,
+      "reason": "title"
+    },
+    {
+      "number": 3316,
+      "reason": "bot"
+    },
+    {
+      "number": 3310,
+      "reason": "title"
+    },
+    {
+      "number": 3309,
+      "reason": "title"
+    },
+    {
+      "number": 3307,
+      "reason": "title"
+    },
+    {
+      "number": 3209,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3308,
+      "reason": "production files 2, test files 0"
+    },
+    {
+      "number": 3306,
+      "reason": "bot"
+    },
+    {
+      "number": 3301,
+      "reason": "title"
+    },
+    {
+      "number": 3294,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3281,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3279,
+      "reason": "title"
+    },
+    {
+      "number": 3271,
+      "reason": "title"
+    },
+    {
+      "number": 3260,
+      "reason": "title"
+    },
+    {
+      "number": 3246,
+      "reason": "title"
+    },
+    {
+      "number": 3252,
+      "reason": "title"
+    },
+    {
+      "number": 3278,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3277,
+      "reason": "title"
+    },
+    {
+      "number": 3272,
+      "reason": "title"
+    },
+    {
+      "number": 3269,
+      "reason": "title"
+    },
+    {
+      "number": 3267,
+      "reason": "title"
+    },
+    {
+      "number": 3265,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3264,
+      "reason": "title"
+    },
+    {
+      "number": 3263,
+      "reason": "title"
+    },
+    {
+      "number": 3262,
+      "reason": "title"
+    },
+    {
+      "number": 3258,
+      "reason": "title"
+    },
+    {
+      "number": 3241,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3233,
+      "reason": "title"
+    },
+    {
+      "number": 3231,
+      "reason": "title"
+    },
+    {
+      "number": 3227,
+      "reason": "title"
+    },
+    {
+      "number": 3223,
+      "reason": "title"
+    },
+    {
+      "number": 3222,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3218,
+      "reason": "title"
+    },
+    {
+      "number": 3206,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3205,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3215,
+      "reason": "title"
+    },
+    {
+      "number": 3207,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3194,
+      "reason": "title"
+    },
+    {
+      "number": 3192,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3187,
+      "reason": "title"
+    },
+    {
+      "number": 3185,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3183,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3181,
+      "reason": "title"
+    },
+    {
+      "number": 3180,
+      "reason": "title"
+    },
+    {
+      "number": 3176,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3171,
+      "reason": "title"
+    },
+    {
+      "number": 3170,
+      "reason": "title"
+    },
+    {
+      "number": 3167,
+      "reason": "title"
+    },
+    {
+      "number": 3166,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3162,
+      "reason": "production files 0, test files 2"
+    },
+    {
+      "number": 3161,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3159,
+      "reason": "title"
+    },
+    {
+      "number": 3160,
+      "reason": "title"
+    },
+    {
+      "number": 3151,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3147,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3157,
+      "reason": "production files 0, test files 2"
+    },
+    {
+      "number": 3148,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3139,
+      "reason": "title"
+    },
+    {
+      "number": 3135,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3131,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3128,
+      "reason": "title"
+    },
+    {
+      "number": 3130,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 2987,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3129,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 3113,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3111,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3108,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 3126,
+      "reason": "title"
+    },
+    {
+      "number": 3122,
+      "reason": "title"
+    },
+    {
+      "number": 3119,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3115,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3116,
+      "reason": "title"
+    },
+    {
+      "number": 3110,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3106,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3104,
+      "reason": "title"
+    },
+    {
+      "number": 3087,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2982,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3102,
+      "reason": "title"
+    },
+    {
+      "number": 3100,
+      "reason": "title"
+    },
+    {
+      "number": 3094,
+      "reason": "title"
+    },
+    {
+      "number": 3082,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3084,
+      "reason": "title"
+    },
+    {
+      "number": 3069,
+      "reason": "title"
+    },
+    {
+      "number": 3080,
+      "reason": "title"
+    },
+    {
+      "number": 3070,
+      "reason": "title"
+    },
+    {
+      "number": 2995,
+      "reason": "title"
+    },
+    {
+      "number": 3062,
+      "reason": "title"
+    },
+    {
+      "number": 3059,
+      "reason": "title"
+    },
+    {
+      "number": 3053,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3047,
+      "reason": "title"
+    },
+    {
+      "number": 3045,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3043,
+      "reason": "title"
+    },
+    {
+      "number": 3042,
+      "reason": "title"
+    },
+    {
+      "number": 3037,
+      "reason": "title"
+    },
+    {
+      "number": 3032,
+      "reason": "production files 4, test files 0"
+    },
+    {
+      "number": 3030,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 3028,
+      "reason": "title"
+    },
+    {
+      "number": 3022,
+      "reason": "title"
+    },
+    {
+      "number": 3020,
+      "reason": "title"
+    },
+    {
+      "number": 3015,
+      "reason": "title"
+    },
+    {
+      "number": 3012,
+      "reason": "title"
+    },
+    {
+      "number": 3011,
+      "reason": "title"
+    },
+    {
+      "number": 3008,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3004,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2998,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 3002,
+      "reason": "title"
+    },
+    {
+      "number": 3001,
+      "reason": "title"
+    },
+    {
+      "number": 2997,
+      "reason": "title"
+    },
+    {
+      "number": 2996,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2991,
+      "reason": "title"
+    },
+    {
+      "number": 2994,
+      "reason": "title"
+    },
+    {
+      "number": 2986,
+      "reason": "title"
+    },
+    {
+      "number": 2978,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2980,
+      "reason": "title"
+    },
+    {
+      "number": 2969,
+      "reason": "title"
+    },
+    {
+      "number": 2963,
+      "reason": "title"
+    },
+    {
+      "number": 2958,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2956,
+      "reason": "title"
+    },
+    {
+      "number": 2954,
+      "reason": "title"
+    },
+    {
+      "number": 2952,
+      "reason": "title"
+    },
+    {
+      "number": 2951,
+      "reason": "title"
+    },
+    {
+      "number": 2947,
+      "reason": "title"
+    },
+    {
+      "number": 2946,
+      "reason": "title"
+    },
+    {
+      "number": 2944,
+      "reason": "title"
+    },
+    {
+      "number": 2942,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2935,
+      "reason": "production files 2, test files 0"
+    },
+    {
+      "number": 2940,
+      "reason": "title"
+    },
+    {
+      "number": 2938,
+      "reason": "title"
+    },
+    {
+      "number": 2936,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2933,
+      "reason": "title"
+    },
+    {
+      "number": 2924,
+      "reason": "title"
+    },
+    {
+      "number": 2912,
+      "reason": "title"
+    },
+    {
+      "number": 2913,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2920,
+      "reason": "title"
+    },
+    {
+      "number": 2918,
+      "reason": "title"
+    },
+    {
+      "number": 2905,
+      "reason": "title"
+    },
+    {
+      "number": 2904,
+      "reason": "title"
+    },
+    {
+      "number": 2902,
+      "reason": "title"
+    },
+    {
+      "number": 2899,
+      "reason": "title"
+    },
+    {
+      "number": 2898,
+      "reason": "title"
+    },
+    {
+      "number": 2894,
+      "reason": "title"
+    },
+    {
+      "number": 2893,
+      "reason": "title"
+    },
+    {
+      "number": 2891,
+      "reason": "title"
+    },
+    {
+      "number": 2890,
+      "reason": "title"
+    },
+    {
+      "number": 2883,
+      "reason": "title"
+    },
+    {
+      "number": 2881,
+      "reason": "title"
+    },
+    {
+      "number": 2880,
+      "reason": "title"
+    },
+    {
+      "number": 2877,
+      "reason": "production files 1, test files 2"
+    },
+    {
+      "number": 2875,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 2874,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2869,
+      "reason": "title"
+    },
+    {
+      "number": 2861,
+      "reason": "title"
+    },
+    {
+      "number": 2856,
+      "reason": "title"
+    },
+    {
+      "number": 2850,
+      "reason": "production files 0, test files 3"
+    },
+    {
+      "number": 2847,
+      "reason": "title"
+    },
+    {
+      "number": 2845,
+      "reason": "production files 0, test files 1"
+    },
+    {
+      "number": 2844,
+      "reason": "production files 0, test files 4"
+    },
+    {
+      "number": 2836,
+      "reason": "title"
+    },
+    {
+      "number": 2834,
+      "reason": "title"
+    },
+    {
+      "number": 2835,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2831,
+      "reason": "title"
+    },
+    {
+      "number": 2832,
+      "reason": "production files 0, test files 2"
+    },
+    {
+      "number": 2826,
+      "reason": "title"
+    },
+    {
+      "number": 2821,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 2824,
+      "reason": "title"
+    },
+    {
+      "number": 2822,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2795,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 2799,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2798,
+      "reason": "title"
+    },
+    {
+      "number": 2787,
+      "reason": "title"
+    },
+    {
+      "number": 2760,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2785,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2784,
+      "reason": "title"
+    },
+    {
+      "number": 2781,
+      "reason": "title"
+    },
+    {
+      "number": 2780,
+      "reason": "title"
+    },
+    {
+      "number": 2777,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2776,
+      "reason": "title"
+    },
+    {
+      "number": 2770,
+      "reason": "title"
+    },
+    {
+      "number": 2769,
+      "reason": "title"
+    },
+    {
+      "number": 2764,
+      "reason": "title"
+    },
+    {
+      "number": 2761,
+      "reason": "title"
+    },
+    {
+      "number": 2756,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2753,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2749,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2745,
+      "reason": "title"
+    },
+    {
+      "number": 2743,
+      "reason": "title"
+    },
+    {
+      "number": 2703,
+      "reason": "production files 3, test files 0"
+    },
+    {
+      "number": 2738,
+      "reason": "title"
+    },
+    {
+      "number": 2730,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2729,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2706,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2717,
+      "reason": "title"
+    },
+    {
+      "number": 2710,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2708,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2702,
+      "reason": "title"
+    },
+    {
+      "number": 2701,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 2696,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 2699,
+      "reason": "title"
+    },
+    {
+      "number": 2695,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2692,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2673,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2687,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 2684,
+      "reason": "title"
+    }
+  ]
+}

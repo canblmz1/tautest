@@ -1,0 +1,38 @@
+{
+  "repo": "moment/luxon",
+  "ranAt": "2026-09-29T10:52:31.805Z",
+  "rule": {
+    "take": 2,
+    "minProductionFiles": 1,
+    "scan": 100
+  },
+  "picked": [
+    {
+      "number": 1790,
+      "title": "fix(interval): respect endpoint zones in hasSame for empty intervals",
+      "mergedAt": "2026-08-05T21:13:04Z",
+      "base": "b6b9d03709085008287ed7f4ce5067f0f4be53f2",
+      "head": "35e83d6fabfcd02758a54e14f5afc34b5b1cf914",
+      "production": [
+        "src/interval.js"
+      ],
+      "tests": [
+        "test/interval/info.test.js"
+      ]
+    },
+    {
+      "number": 1787,
+      "title": "Reject out-of-range 12-hour values with a meridiem in fromFormat",
+      "mergedAt": "2026-08-05T21:02:54Z",
+      "base": "b6b9d03709085008287ed7f4ce5067f0f4be53f2",
+      "head": "a4d1616d6702624fd3cac6cf8cdafb41070e00ed",
+      "production": [
+        "src/impl/tokenParser.js"
+      ],
+      "tests": [
+        "test/datetime/tokenParse.test.js"
+      ]
+    }
+  ],
+  "skipped": []
+}

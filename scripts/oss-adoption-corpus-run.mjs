@@ -7,7 +7,14 @@
 //
 //   node scripts/oss-adoption-corpus-run.mjs --repo=https://github.com/unjs/ohash.git \
 //     --pr=196 --base=2c6e231ccfc229ab90a3e026635984f1ccd89b1d --head=a65d622c4c390061baf408b0ecdf4d5031753c69 \
-//     --runner=vitest --package-manager=pnpm --tautest-version=2.0.2 [--build] [--repeat=2]
+//     --runner=vitest --package-manager=pnpm --tautest-version=2.0.4 [--build] [--repeat=2] \
+//     [--exclude-from-mutation=test/bundle.test.ts] [--evidence-dir=docs/evidence/ohash-196]
+//
+// --exclude-from-mutation (Vitest only) applies the documented mutation-only test exclusion: it
+// writes an untracked Vitest config that excludes the given globs and points Tautest at it, and
+// records the deviation. The normal suite still runs in full.
+// --evidence-dir writes the result row, raw Stryker reports (per-file source text removed), the
+// direct Stryker config, any deviation files and the environment, even when the run fails.
 //
 // --build runs `<package-manager> run build` (the repo's own build script AT THAT COMMIT, via its
 // locally installed toolchain). Do not pass a specific build tool name: a repo's build tool can
@@ -19,8 +26,8 @@
 // This is a research/validation tool for docs/oss-adoption-corpus.md (90-day OSS adoption plan,
 // Sprint 2). It never cherry-picks: run it, then record whatever it reports, including failures.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { release, tmpdir } from 'node:os';
 import path from 'node:path';
 import { compareMutantReports } from './oss-adoption-corpus-compare.mjs';
 
@@ -115,6 +122,10 @@ try {
   }
   result.prChangedFiles = gitLines(workDir, ['diff', '--name-only', args.base, 'HEAD']);
 
+  if (args['exclude-from-mutation']) {
+    result.deviations = writeMutationOnlyVitestConfig(workDir, args['exclude-from-mutation'].split(',').filter(Boolean));
+  }
+
   const normalTestCommand = args['normal-test-script']
     ? [pm, ['run', args['normal-test-script']]]
     : ['npx', ['--no-install', args.runner, ...(args.runner === 'vitest' ? ['run'] : ['--runInBand'])]];
@@ -203,12 +214,85 @@ try {
   result.error = error instanceof Error ? error.message : String(error);
 } finally {
   log(`Left the clone at ${workDir} for inspection; delete it manually when done.`);
+  if (args['evidence-dir']) {
+    try {
+      writeEvidence(path.resolve(args['evidence-dir']));
+    } catch (error) {
+      result.evidenceError = error instanceof Error ? error.message : String(error);
+      result.status = 'error';
+    }
+  }
   console.log(JSON.stringify(result, null, 2));
 
   // Automation that only checks the exit code (not the JSON body) must not read this as success.
   if (result.status !== 'ok') {
     process.exitCode = 1;
   }
+}
+
+// The documented mutation-only exclusion (docs/TROUBLESHOOTING.md): an extra Vitest config that
+// extends the project's own config, if it has one, and excludes tests that assert on something
+// Stryker's instrumentation changes, such as bundle size. Hidden from git so it can never enter
+// the measured diff.
+function writeMutationOnlyVitestConfig(cwd, globs) {
+  if (args.runner !== 'vitest') {
+    throw new Error('--exclude-from-mutation supports only --runner=vitest.');
+  }
+  if (globs.length === 0) {
+    throw new Error('--exclude-from-mutation needs at least one test path or glob.');
+  }
+  const configFile = 'vitest.corpus-mutation.config.ts';
+  if (existsSync(path.join(cwd, configFile)) || ['tautest.config.ts', 'tautest.config.mjs', 'tautest.config.js', 'tautest.config.cjs', 'tautest.config.json'].some((file) => existsSync(path.join(cwd, file)))) {
+    throw new Error('The project already has a Tautest config or the corpus Vitest config; refusing to overwrite it.');
+  }
+
+  const baseConfig = ['vitest.config.ts', 'vitest.config.mts', 'vitest.config.js', 'vitest.config.mjs', 'vite.config.ts', 'vite.config.mts', 'vite.config.js', 'vite.config.mjs']
+    .find((file) => existsSync(path.join(cwd, file)));
+  const exclude = `[...configDefaults.exclude, ${globs.map((glob) => JSON.stringify(glob)).join(', ')}]`;
+  const content = baseConfig
+    ? [
+        "import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';",
+        `import base from './${baseConfig}';`,
+        '',
+        "const resolved = typeof base === 'function' ? await base({ command: 'serve', mode: 'test' }) : base;",
+        `export default mergeConfig(resolved, defineConfig({ test: { exclude: ${exclude} } }));`,
+        ''
+      ].join('\n')
+    : ["import { configDefaults, defineConfig } from 'vitest/config';", '', `export default defineConfig({ test: { exclude: ${exclude} } });`, ''].join('\n');
+
+  writeFileSync(path.join(cwd, configFile), content);
+  writeFileSync(path.join(cwd, 'tautest.config.json'), `${JSON.stringify({ stryker: { vitestConfigFile: configFile } }, null, 2)}\n`);
+  appendFileSync(path.join(cwd, '.git', 'info', 'exclude'), `\n${configFile}\ntautest.config.json\n`);
+
+  return { excludedFromMutation: globs, vitestConfigFile: configFile, extendsProjectConfig: baseConfig ?? null, files: [configFile, 'tautest.config.json'] };
+}
+
+function writeEvidence(dir) {
+  mkdirSync(dir, { recursive: true });
+  const stripSource = (report) => {
+    for (const file of Object.values(report?.files ?? {})) delete file.source;
+    for (const file of Object.values(report?.testFiles ?? {})) delete file.source;
+    return report;
+  };
+
+  const reports = [
+    ...(existsSync(path.join(workDir, '.tautest')) ? readdirSync(path.join(workDir, '.tautest')).filter((name) => /^corpus-run-\d+\.json$/.test(name)).map((name) => path.join(workDir, '.tautest', name)) : []),
+    path.join(workDir, 'stryker-direct-report.json')
+  ];
+  for (const report of reports.filter((file) => existsSync(file))) {
+    writeFileSync(path.join(dir, path.basename(report)), JSON.stringify(stripSource(JSON.parse(readFileSync(report, 'utf8')))));
+  }
+  for (const file of ['stryker.config.json', ...(result.deviations?.files ?? [])].filter((name) => existsSync(path.join(workDir, name)))) {
+    copyFileSync(path.join(workDir, file), path.join(dir, path.basename(file)));
+  }
+
+  const pmVersion = run(workDir, args['package-manager'], ['--version']).stdout?.trim();
+  writeFileSync(
+    path.join(dir, 'environment.txt'),
+    `platform: ${process.platform} ${release()}\nnode: ${process.version}\n${args['package-manager']}: ${pmVersion ?? 'unknown'}\n`
+  );
+  writeFileSync(path.join(dir, 'result.json'), `${JSON.stringify(result, null, 2)}\n`);
+  result.evidenceDir = dir;
 }
 
 function timed(fn) {
