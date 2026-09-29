@@ -40,7 +40,14 @@ The same `--repeat=2` check on ohash#196 passed both normal suites and reproduce
 
 ## Status
 
-**4 repositories attempted; 3 measured (ohash, defu, destr), 5 PRs measured and one rejected candidate (cli-testing-library#50), plus one induced-regression run.** ohash#195 was previously listed here as unmeasurable; it had been checked with a mistyped base SHA (see its entry). The 90-day plan's target is at least 10 PRs across at least 5 non-owned repositories, including a Jest beta path and a large diff. The candidate below does not count as a measured frozen-PR corpus entry. Still missing: a Jest repo, 2+ more valid non-unjs Vitest repos, a PR that changes more than one production file, full-file direct Stryker for every entry except ohash#195 (plan task 5), Stryker incremental-mode comparisons, median/p90 runtimes across entries (plan task 6), and same-repo history further back to stress older commits.
+**As of 2026-09-29: 9 PRs measured under the Sprint 2 protocol, from 5 repositories (unjs/ohash, unjs/defu, unjs/destr, radashi-org/radashi, pmndrs/zustand).** Every measured row has retained raw reports. Tautest matched direct Stryker mutant for mutant in all nine, and every repeated run matched the first. Of 13 attempted PRs:
+- **9 measured.**
+- **1 no-op:** a type-only change with no mutants.
+- **1 unstable:** luxon#1790.
+- **1 failed on a Tautest default, now fixed in #23:** luxon#1787.
+- **1 rejected:** cli-testing-library#50, whose normal suite is flaky.
+
+See the ledger below. The plan v2 target is at least 10 measured PRs across at least 5 non-owned repositories, at least two outside `unjs`, with a Jest path and a multi-production-file PR. Met: repositories, `unjs` diversity, the multi-file PR. **Still missing: a measured Jest row and the tenth PR.** Plan task 8 is still open too: full-file direct Stryker, Stryker incremental mode, and median/p90 runtimes on the valid corpus.
 
 ## Sprint 2 attempt list (fixed before any run, 2026-09-29)
 
@@ -69,18 +76,27 @@ If a repository's normal suite needs its own build or setup step, that step is a
 
 ## Failure ledger
 
-Every external attempt, accepted or not. Full base/head SHAs are in each entry below; all six were checked against `gh api repos/<repo>/pulls/<n>` on 2026-09-29. "Not retained" means the run predates retained raw reports, so it cannot be reproduced mutant-for-mutant from this repository; those rows need a rerun under the current harness before they count toward the plan's ten (plan v2, task 7).
+Every attempt under the Sprint 2 protocol, with every earlier attempt of the same PR kept alongside it. Unless a row says otherwise, each attempt used published Tautest 2.0.4 installed in the clone, Stryker 10.0.0, a frozen lockfile, `--repeat=2`, and a disposable `node:22-bookworm` container (Node 22.23.3). A row counts as **measured** only with harness status `ok`: normal suite passing twice, Tautest identical to direct Stryker mutant for mutant, and the repeated Tautest run identical to the first. Base and head SHAs were checked against the GitHub API.
 
-| Attempt | Status | Environment | Tautest / Stryker / test runner | Normal suite | Tautest vs direct Stryker | Raw reports | Deviations, reason |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| unjs/ohash#196 | accepted | Linux container (Debian 12), Node 22.23.3, pnpm 11.2.2, frozen lockfile | published 2.0.3 installed in the clone / 10.0.0 / project's Vitest 4.1.7 | 75 passed, twice | identical: 8 mutants (5 killed, 3 timeout), repeated run identical | [evidence/ohash-196](evidence/ohash-196/README.md) | none (`--build`) |
-| unjs/defu#156 | measured, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout); later published 2.0.2 with `--repeat=2`; project's Vitest 4.1.2 | passed | identical: 1 killed, repeated run identical | not retained | none |
-| unjs/destr#136 | measured, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout) | passed | identical: 39 mutants (30 killed, 9 survived) | not retained | none |
-| unjs/ohash#151 | measured with a deviation, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build (runner stack from the checkout) | passed | identical: 79 mutants | not retained | `test/bundle.test.ts` excluded from the mutation run only (bundle-size assertion) |
-| unjs/ohash#195 | measured with a deviation, not retained | Windows desktop, Node not recorded | local CLI 2.0.1 build; Tautest loaded Vitest 4.1.8 from the checkout, the project has 4.1.10 | 90 passed | identical: 92 mutants (77 killed, 12 survived, 3 no coverage) | not retained in the repository | `test/bundle.test.ts` excluded from the mutation run only |
-| crutchcorn/cli-testing-library#50 | **rejected** | Linux container (Debian 12), Node 22.23.3, pnpm 11.21.0, frozen lockfile | candidate builds of #16/#20, published 2.0.3 / 10.0.0 / project's Vitest 4.1.10 | **flaky**: 5 of 23 runs failed at the head, 4 of 20 at the base | workspace root: same 41 mutants, statuses drift in both tools (flaky tests, load) | [evidence/cli-testing-library-50](evidence/cli-testing-library-50/README.md) | workspace-root Vitest config, `website` ignore; rejected because the normal suite fails on its own |
+| # | Attempt | Result | Runner, package manager | Mutants (Tautest; direct Stryker and repeat identical unless noted) | Setup, deviations, earlier attempts | Evidence |
+| ---: | --- | --- | --- | --- | --- | --- |
+| 1 | unjs/ohash#196 | **measured** | Vitest 4.1.7, pnpm 11.2.2 | 8: 5 killed, 3 timeout | `--build` | [sprint2/unjs-ohash-196](evidence/sprint2/unjs-ohash-196) |
+| 2 | unjs/defu#156 | **measured** | Vitest 4.1.2, pnpm 10.33.0 | 1: 1 killed | | [sprint2/unjs-defu-156](evidence/sprint2/unjs-defu-156) |
+| 3 | unjs/destr#136 | **measured** | Vitest 3.1.1, pnpm 10.7.0 | 39: 30 killed, 9 survived | | [sprint2/unjs-destr-136](evidence/sprint2/unjs-destr-136) |
+| 4 | unjs/ohash#151 | **measured, deviation** | Vitest 3.0.7, pnpm 10.5.2 | 79: 47 killed, 6 timeout, 26 survived | `--build`; `test/bundle.test.ts` excluded from the mutation run only (bundle-size assertion) | [sprint2/unjs-ohash-151](evidence/sprint2/unjs-ohash-151) |
+| 5 | unjs/ohash#195 | **measured, deviation** | Vitest 4.1.10, pnpm 11.2.2 | 92: 77 killed, 12 survived, 3 no coverage | same as #151 | [sprint2/unjs-ohash-195](evidence/sprint2/unjs-ohash-195) |
+| 6 | radashi-org/radashi#486 | **measured** | Vitest 2.1.9, pnpm 10.29.3 | 2: 1 killed, 1 survived | | [sprint2/radashi-org-radashi-486](evidence/sprint2/radashi-org-radashi-486) |
+| 7 | radashi-org/radashi#485 | **measured** | Vitest 2.1.9, pnpm 10.29.3 | 4: 4 killed | | [sprint2/radashi-org-radashi-485](evidence/sprint2/radashi-org-radashi-485) |
+| 8 | radashi-org/radashi#481 | **measured**, two production files | Vitest 2.1.9, pnpm 10.29.3 | 8: 8 killed | | [sprint2/radashi-org-radashi-481](evidence/sprint2/radashi-org-radashi-481) |
+| 9 | pmndrs/zustand#3469 | **measured**, install deviation | Vitest 4.1.0, pnpm 10.18.3 | 11: 7 killed, 4 timeout | Attempt 1: the project's pnpm `minimumReleaseAge: 1440` refused the same-day 2.0.4 release. Attempt 2: `--allow-fresh-tautest` (age waived for tautest and @tautest/core only) | [sprint2/pmndrs-zustand-3469](evidence/sprint2/pmndrs-zustand-3469) |
+| 10 | pmndrs/zustand#3511 | **no-op** | Vitest 4.1.5, pnpm 11.3.0 | none: Stryker generates no mutants for the type-only change at `src/middleware/devtools.ts:99` | Attempt 1 recorded the no-op as an error; the harness now reports it as `no-op` | [sprint2/pmndrs-zustand-3511](evidence/sprint2/pmndrs-zustand-3511) |
+| 11 | moment/luxon#1790 | **unstable** | Jest 29.4.3, npm 10.9.9 | Stryker 9.6.1: first run 4 killed, identical to direct; repeated run: all 4 **Timeout** | Attempt 1: the normal suite needs luxon's CI environment (`TZ=America/New_York`). Attempt 2: Stryker 10 parses with Babel 8, which refuses luxon's Babel 7 config. Attempt 3: `--build --env=TZ=America/New_York,LIMIT_JEST=yes --stryker-version=9.6.1` | [sprint2/moment-luxon-1790](evidence/sprint2/moment-luxon-1790) |
+| 12 | moment/luxon#1787 | **failed**, Tautest-owned, fix in #23 | Jest 29.4.3, npm 10.9.9 | Stryker 9.6.1: `No tests were executed`; Jest's related-test lookup found no test for the changed file. Direct Stryker with its defaults fails the same way and works with `enableFindRelatedTests: false`; a #23 build ran the PR twice with identical results (24 mutants) | Attempts 1 and 2 as for #1790; attempt 3 as for #1790. Rerun under the protocol after #23 is released | [sprint2/moment-luxon-1787](evidence/sprint2/moment-luxon-1787) |
+| 13 | crutchcorn/cli-testing-library#50 | **rejected** | Vitest 4.1.10, pnpm 11.21.0 | workspace root: same 41 mutants, statuses drift in both tools | the normal suite fails on its own (5 of 23 runs at the head); workspace-root Vitest config, `website` ignore | [cli-testing-library-50](evidence/cli-testing-library-50/README.md) |
 
-**Reproduce the accepted row** with the harness command at the top of this file (the evidence README lists the environment). **Reproduce the rejected row** with the scripts and steps in its evidence log.
+**Measured: 9 PRs from 5 repositories**, 2 of them outside `unjs` (radashi, zustand), including a multi-production-file PR (radashi#481). Six rows need no deviation, one needed an install-only waiver, and two use the documented bundle-size exclusion. Not measured yet: a Jest row, and the plan's tenth PR. The rows before this protocol (Windows desktop, local CLI build, raw reports not retained) are superseded by rows 1–5; their history stays in each entry below.
+
+**Reproduce a row** with the harness command at the top of this file plus the options in its row; each evidence directory holds the result row with every recorded setting, the raw Stryker reports, the direct Stryker config and the environment. **Reproduce the rejected row** with the scripts and steps in its evidence log.
 
 ## unjs/ohash#196 — `fix(utils): diff falsy primitive values`
 

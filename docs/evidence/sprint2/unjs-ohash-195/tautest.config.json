@@ -1,0 +1,5 @@
+{
+  "stryker": {
+    "vitestConfigFile": "vitest.corpus-mutation.config.ts"
+  }
+}
