@@ -46,6 +46,14 @@ describe('Stryker CLI error suggestions', () => {
     }
   });
 
+  it('sends a run whose initial test run found no tests to doctor, which checks the tsconfig layout', () => {
+    const mapped = mapUnknownError(mapStrykerError(new Error('No tests were executed. Stryker will exit prematurely. Please check your configuration.')));
+
+    expect(mapped.exitCode).toBe(EXIT_CODES.strykerError);
+    expect(mapped.suggestion).toContain('tautest doctor');
+    expect(mapped.suggestion).toContain('tsconfig');
+  });
+
   it('keeps a doctor hint for a zero-tests-executed safety stop', () => {
     const mapped = mapUnknownError(new TautestError('A mutant executed 0 tests.', 'STRYKER_ZERO_TESTS_EXECUTED'));
 

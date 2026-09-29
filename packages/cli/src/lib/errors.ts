@@ -45,6 +45,8 @@ function suggestionForStrykerError(code: string): string | undefined {
       return 'Inspect Stryker’s missing-module line: build generated project imports or install the named dependency. Run `tautest doctor` to check runner setup.';
     case 'STRYKER_ZERO_TESTS_EXECUTED':
       return 'Run `tautest doctor` to check the Vitest/Stryker runner combination; do not trust a score from zero executed tests.';
+    case 'STRYKER_NO_TESTS':
+      return 'Run `tautest doctor`: it checks the test-runner config and tsconfig paths that Stryker cannot rewrite for its sandbox copy.';
     case 'STRYKER_TIMEOUT':
       return 'Check which step timed out, then tune `stryker.dryRunTimeoutMinutes` (initial run) or `stryker.timeoutMS` (mutant tests).';
     default:
