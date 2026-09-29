@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import JSON5 from 'json5';
 import type { PackageJson, ProjectInfo } from '../types';
@@ -28,7 +28,8 @@ export function detectProject(startDir: string): ProjectInfo {
     tsconfig: {
       path: tsconfigPath,
       baseUrl: stringOrUndefined(tsconfig?.compilerOptions?.baseUrl),
-      paths: pathsOrUndefined(tsconfig?.compilerOptions?.paths)
+      paths: pathsOrUndefined(tsconfig?.compilerOptions?.paths),
+      unrewrittenExtends: unrewrittenTsconfigExtends(rootDir, tsconfigPath, tsconfig)
     }
   };
 }
@@ -127,6 +128,63 @@ function readTsConfig(filePath: string): TsConfig | null {
   }
 }
 
+// Mirrors Stryker's sandbox tsconfig rewrite: starting at tsconfig.json, a string `extends` that
+// leaves the project is rewritten, and one that stays inside is followed when it names an existing
+// file. `extends` arrays, and files reached only by appending `.json`, are left untouched, so any
+// outside path reached through them points nowhere in the sandbox and Vitest finds no tests.
+function unrewrittenTsconfigExtends(rootDir: string, tsconfigPath: string | null, tsconfig: TsConfig | null): string[] {
+  const unrewritten = new Set<string>();
+  const visited = new Set<string>();
+
+  function scan(configPath: string, config: TsConfig, followedByStryker: boolean): void {
+    if (visited.has(configPath)) {
+      return;
+    }
+    visited.add(configPath);
+
+    const isArray = Array.isArray(config.extends);
+    const rewritten = followedByStryker && !isArray;
+
+    for (const entry of isArray ? (config.extends as unknown[]) : [config.extends]) {
+      // Package names resolve through node_modules, and absolute paths still work from the sandbox.
+      if (typeof entry !== 'string' || !entry.startsWith('.')) {
+        continue;
+      }
+
+      const resolved = path.resolve(path.dirname(configPath), entry);
+      const relative = path.relative(rootDir, resolved);
+
+      if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+        if (!rewritten) {
+          unrewritten.add(relative.split(path.sep).join('/'));
+        }
+        continue;
+      }
+
+      const next = isFile(resolved) ? resolved : isFile(`${resolved}.json`) ? `${resolved}.json` : undefined;
+      const nested = next ? readTsConfig(next) : null;
+
+      if (next && nested) {
+        scan(next, nested, rewritten && next === resolved);
+      }
+    }
+  }
+
+  if (tsconfigPath && tsconfig) {
+    scan(tsconfigPath, tsconfig, true);
+  }
+
+  return [...unrewritten];
+}
+
+function isFile(filePath: string): boolean {
+  try {
+    return statSync(filePath).isFile();
+  } catch {
+    return false;
+  }
+}
+
 function hasDependency(packageJson: PackageJson | null, name: string): boolean {
   return Boolean(packageJson?.dependencies?.[name] ?? packageJson?.devDependencies?.[name] ?? packageJson?.peerDependencies?.[name]);
 }
@@ -145,6 +203,7 @@ function pathsOrUndefined(value: unknown): Record<string, string[]> | undefined 
 }
 
 interface TsConfig {
+  extends?: unknown;
   compilerOptions?: {
     baseUrl?: unknown;
     paths?: unknown;

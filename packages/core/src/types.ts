@@ -82,6 +82,8 @@ export interface ProjectInfo {
     path: string | null;
     baseUrl?: string;
     paths?: Record<string, string[]>;
+    /** Paths outside the project that Stryker's sandbox tsconfig rewrite leaves pointing nowhere. */
+    unrewrittenExtends?: string[];
   };
 }
 

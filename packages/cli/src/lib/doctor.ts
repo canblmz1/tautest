@@ -47,6 +47,7 @@ export async function runDoctor(cwd: string): Promise<DoctorReport> {
     checkJestTransformStack(project, testRunner, config),
     checkJestEnvironment(project, testRunner, config),
     checkMonorepo(project),
+    checkSandboxTsconfig(project),
     checkExistingStrykerConfig(project),
     checkTautestGitignored(project),
     checkPackageManager(packageManager)
@@ -460,6 +461,23 @@ function checkMonorepo(project: ProjectInfo): DoctorCheck {
   }
 
   return { name: 'Monorepo signals', status: 'ok', message: 'No monorepo signal detected.' };
+}
+
+function checkSandboxTsconfig(project: ProjectInfo): DoctorCheck {
+  const unrewritten = project.tsconfig.unrewrittenExtends ?? [];
+
+  if (unrewritten.length > 0) {
+    return {
+      name: 'Stryker sandbox tsconfig',
+      status: 'warning',
+      message:
+        `tsconfig reaches ${unrewritten.map((entry) => `\`${entry}\``).join(', ')} through an \`extends\` array or a path without \`.json\`. ` +
+        "Stryker does not rewrite those in its sandbox copy, so Stryker's initial test run can find no tests.",
+      suggestion: 'Use a single "extends" string with the full file name, for example "../../tsconfig.base.json", or run Tautest from the workspace root. See docs/TROUBLESHOOTING.md#monorepo.'
+    };
+  }
+
+  return { name: 'Stryker sandbox tsconfig', status: 'ok', message: 'No tsconfig path that Stryker cannot rewrite for its sandbox.' };
 }
 
 function allDependencies(project: ProjectInfo): Set<string> {

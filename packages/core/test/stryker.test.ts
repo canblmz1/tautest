@@ -1,5 +1,4 @@
-import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
@@ -205,210 +204,86 @@ describe('Stryker config generator', () => {
       }).map((diagnostic) => diagnostic.key)
     ).toEqual(['reporters', 'timeoutMS']);
   });
+
+  // Stryker rewrites tsconfig paths that leave the project by prepending exactly "../../", which
+  // only fits a sandbox two levels down: <one-segment tempDirName>/sandbox-*.
+  it("keeps Stryker's one-segment temp dir so tsconfig extends outside the package still resolve", () => {
+    const config = generateStrykerConfig({ mutate: ['src/a.ts:1-1'], jsonReportPath: '.tautest/mutation.json', testRunner: 'vitest' });
+
+    expect(config.tempDirName).toBe('.stryker-tmp');
+    expect(String(config.tempDirName).split(/[\\/]/)).toHaveLength(1);
+  });
+
+  it('asks Stryker to remove its sandbox after failed runs too', () => {
+    expect(generateStrykerConfig({ mutate: ['src/a.ts:1-1'], jsonReportPath: '.tautest/mutation.json', testRunner: 'vitest' }).cleanTempDir).toBe('always');
+  });
+
+  it("keeps a failed in-place run's backup, which may be the only copy of the original sources", () => {
+    const config = generateStrykerConfig({ mutate: ['src/a.ts:1-1'], jsonReportPath: '.tautest/mutation.json', testRunner: 'vitest', userConfig: { inPlace: true } });
+
+    expect(config.cleanTempDir).toBe(true);
+  });
+
+  it('replaces a user tempDirName and says so', () => {
+    const options = { mutate: ['src/a.ts:1-1'], jsonReportPath: '.tautest/mutation.json', testRunner: 'vitest' as const, userConfig: { tempDirName: '.stryker-tmp/custom' } };
+
+    expect(generateStrykerConfig(options).tempDirName).toBe('.stryker-tmp');
+    expect(getStrykerConfigDiagnostics(options).map((diagnostic) => diagnostic.key)).toContain('tempDirName');
+  });
 });
 
-describe('runStryker sandbox cleanup', () => {
-  const tautestConfig = { tempDirName: '.stryker-tmp/tautest' };
-
+describe('runStryker leaves files to Stryker', () => {
   function tempProject(prefix: string): string {
     return mkdtempSync(path.join(tmpdir(), `tautest-stryker-${prefix}-`));
   }
 
-  it('removes the sandbox Stryker created during the run and leaves no .stryker-tmp behind', async () => {
-    createSandboxDuringRun('resolve');
-    const root = tempProject('cleanup');
-
-    await runStryker({ cwd: root, config: tautestConfig, jsonReportPath: path.join(root, 'm.json') });
-
-    expect(existsSync(path.join(root, '.stryker-tmp'))).toBe(false);
-  });
-
-  it('removes it even when the run throws, without hiding the original error', async () => {
-    createSandboxDuringRun('reject');
-    const root = tempProject('cleanup-throws');
-
-    await expect(runStryker({ cwd: root, config: tautestConfig, jsonReportPath: path.join(root, 'm.json') })).rejects.toMatchObject({
-      code: 'STRYKER_RUN_FAILED'
-    });
-
-    expect(existsSync(path.join(root, '.stryker-tmp'))).toBe(false);
-  });
-
-  it('gives Stryker a per-run temp directory and keeps the whole temp root out of the sandbox copy', async () => {
+  it('passes the config to Stryker unchanged', async () => {
     runMutationTest.mockResolvedValueOnce(undefined);
-    const root = tempProject('per-run');
+    const root = tempProject('passthrough');
+    const config = { tempDirName: '.stryker-tmp', cleanTempDir: 'always' as const, ignorePatterns: ['dist'] };
 
-    await runStryker({ cwd: root, config: { ...tautestConfig, ignorePatterns: ['dist'] }, jsonReportPath: path.join(root, 'm.json') });
+    await runStryker({ cwd: root, config, jsonReportPath: path.join(root, 'm.json') });
 
-    expect(strykerConfigs.at(-1)?.tempDirName).toMatch(new RegExp(`^\\.stryker-tmp/tautest/run-${process.pid}-`));
-    expect(strykerConfigs.at(-1)?.ignorePatterns).toEqual(['dist', '.stryker-tmp/tautest']);
+    expect(strykerConfigs.at(-1)).toEqual(config);
   });
 
-  it('removes run directories left by processes that are gone', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = tempProject('dead-run');
-    const deadPid = spawnSync(process.execPath, ['-e', '']).pid;
-    const deadRun = path.join(root, '.stryker-tmp', 'tautest', `run-${deadPid}-abc`, 'sandbox-xyz');
-    mkdirSync(deadRun, { recursive: true });
-    writeFileSync(path.join(deadRun, 'copied.ts'), 'stale');
+  // Stryker owns the sandbox and removes it (`cleanTempDir: 'always'`). When Tautest deleted temp
+  // files itself, it once removed a caller's `src` folder and later another run's sandbox.
+  it.each(['resolve', 'reject'] as const)('deletes nothing itself when Stryker runs %s', async (outcome) => {
+    createSandboxDuringRun(outcome);
+    const root = tempProject(`no-delete-${outcome}`);
+    const untouched = [
+      path.join(root, 'src', 'sentinel.ts'),
+      path.join(root, '.stryker-tmp', 'sandbox-other-run', 'copied.ts'),
+      path.join(root, '.stryker-tmp', 'tautest', 'run-1-left-by-2.0.2', 'sandbox-old', 'copied.ts')
+    ];
+    for (const file of untouched) {
+      mkdirSync(path.dirname(file), { recursive: true });
+      writeFileSync(file, "not Tautest's to delete");
+    }
 
-    await runStryker({ cwd: root, config: tautestConfig, jsonReportPath: path.join(root, 'm.json') });
+    const run = runStryker({ cwd: root, config: { tempDirName: '.stryker-tmp' }, jsonReportPath: path.join(root, 'm.json') });
+    if (outcome === 'reject') {
+      await expect(run).rejects.toMatchObject({ code: 'STRYKER_RUN_FAILED' });
+    } else {
+      await run;
+    }
 
-    expect(existsSync(path.join(root, '.stryker-tmp'))).toBe(false);
+    // Including the sandbox this run's (mocked) Stryker created: removing it is Stryker's job.
+    for (const file of [...untouched, path.join(root, '.stryker-tmp', 'sandbox-abc123', 'copied.ts')]) {
+      expect(existsSync(file)).toBe(true);
+    }
   });
 
-  it('keeps other content in the temp root and in .stryker-tmp', async () => {
-    createSandboxDuringRun('resolve');
-    const root = tempProject('other-content');
-    mkdirSync(path.join(root, '.stryker-tmp', 'tautest'), { recursive: true });
-    mkdirSync(path.join(root, '.stryker-tmp', 'other-tool'), { recursive: true });
-    writeFileSync(path.join(root, '.stryker-tmp', 'tautest', 'notes.txt'), 'not ours to delete');
-    writeFileSync(path.join(root, '.stryker-tmp', 'other-tool', 'keep.txt'), 'not ours to delete');
-
-    await runStryker({ cwd: root, config: tautestConfig, jsonReportPath: path.join(root, 'm.json') });
-
-    expect(existsSync(path.join(root, '.stryker-tmp', 'tautest', 'notes.txt'))).toBe(true);
-    expect(existsSync(path.join(root, '.stryker-tmp', 'other-tool', 'keep.txt'))).toBe(true);
-    expect(readdirSync(path.join(root, '.stryker-tmp', 'tautest'))).toEqual(['notes.txt']);
-  });
-
-  it("keeps an in-place run's backup, which may be the only copy of the original sources", async () => {
-    runMutationTest.mockRejectedValueOnce(new Error('stryker crashed before restoring'));
-    const root = tempProject('inplace');
-    const backup = path.join(root, '.stryker-tmp', 'tautest', 'backup-abc123', 'original.ts');
-    mkdirSync(path.dirname(backup), { recursive: true });
-    writeFileSync(backup, 'export const original = true;');
-
-    await expect(runStryker({ cwd: root, config: { ...tautestConfig, inPlace: true }, jsonReportPath: path.join(root, 'm.json') })).rejects.toThrow();
-
-    expect(existsSync(backup)).toBe(true);
-    expect(strykerConfigs.at(-1)?.tempDirName).toBe('.stryker-tmp/tautest');
-  });
-
-  it('does nothing when the config has no tempDirName', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-no-tempdir-'));
-
-    await expect(
-      runStryker({
-        cwd: root,
-        config: {},
-        jsonReportPath: path.join(root, '.tautest', 'mutation.json')
-      })
-    ).resolves.toMatchObject({ jsonReportPath: path.join(root, '.tautest', 'mutation.json') });
-  });
-
-  // runStryker is a public @tautest/core API: config is not guaranteed to come from
-  // config-generator.ts, so a caller-supplied tempDirName must never delete outside cwd.
-  it('refuses to delete a tempDirName that resolves outside cwd', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-traversal-'));
-    const outside = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-outside-'));
-    const sentinel = path.join(outside, 'sentinel.txt');
-    writeFileSync(sentinel, 'do not delete me');
-    const relativeTraversal = path.relative(root, outside);
-
-    await runStryker({
-      cwd: root,
-      config: { tempDirName: relativeTraversal },
-      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
-    });
-
-    expect(existsSync(sentinel)).toBe(true);
-  });
-
-  it('refuses to delete through a symlink/junction segment that escapes cwd', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-link-root-'));
-    const outsideTarget = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-link-target-'));
-    const sentinel = path.join(outsideTarget, 'sentinel.txt');
-    writeFileSync(sentinel, 'do not delete me');
-    // tempDirName is lexically "under" root (path.relative passes), but root/link actually points
-    // outside root, so deleting root/link/tautest deletes outsideTarget/tautest instead.
-    symlinkSync(outsideTarget, path.join(root, 'link'), process.platform === 'win32' ? 'junction' : 'dir');
-    mkdirSync(path.join(outsideTarget, 'tautest'), { recursive: true });
-
-    await runStryker({
-      cwd: root,
-      config: { tempDirName: 'link/tautest' },
-      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
-    });
-
-    expect(existsSync(sentinel)).toBe(true);
-    expect(existsSync(path.join(outsideTarget, 'tautest'))).toBe(true);
-  });
-
-  it('refuses to delete cwd itself when tempDirName resolves to it', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-cwd-'));
-    writeFileSync(path.join(root, 'keep.txt'), 'keep me');
-
-    await runStryker({
-      cwd: root,
-      config: { tempDirName: '.' },
-      jsonReportPath: path.join(root, '.tautest', 'mutation.json')
-    });
-
-    expect(existsSync(path.join(root, 'keep.txt'))).toBe(true);
-  });
-
-  it('never deletes a caller-supplied tempDirName that names a real folder inside cwd', async () => {
+  it('never deletes a caller-supplied tempDirName that names a real folder', async () => {
     runMutationTest.mockRejectedValueOnce(new Error('stryker failed'));
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-src-'));
+    const root = tempProject('src');
     mkdirSync(path.join(root, 'src'));
     writeFileSync(path.join(root, 'src', 'sentinel.txt'), 'do not delete me');
 
     await expect(runStryker({ cwd: root, config: { tempDirName: 'src' }, jsonReportPath: path.join(root, 'm.json') })).rejects.toThrow();
 
     expect(existsSync(path.join(root, 'src', 'sentinel.txt'))).toBe(true);
-  });
-
-  it('refuses when the Tautest sandbox directory is itself a link to another folder inside cwd', async () => {
-    runMutationTest.mockRejectedValueOnce(new Error('stryker failed'));
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-linked-sandbox-'));
-    mkdirSync(path.join(root, 'src', 'sandbox-looks-like-stryker'), { recursive: true });
-    writeFileSync(path.join(root, 'src', 'sentinel.txt'), 'do not delete me');
-    mkdirSync(path.join(root, '.stryker-tmp'));
-    symlinkSync(path.join(root, 'src'), path.join(root, '.stryker-tmp', 'tautest'), process.platform === 'win32' ? 'junction' : 'dir');
-
-    await expect(runStryker({ cwd: root, config: { tempDirName: '.stryker-tmp/tautest' }, jsonReportPath: path.join(root, 'm.json') })).rejects.toThrow();
-
-    expect(existsSync(path.join(root, 'src', 'sentinel.txt'))).toBe(true);
-    expect(existsSync(path.join(root, 'src', 'sandbox-looks-like-stryker'))).toBe(true);
-    // No per-run directory is created through the link, and Stryker gets the config unchanged.
-    expect(readdirSync(path.join(root, 'src')).some((name) => name.startsWith('run-'))).toBe(false);
-    expect(strykerConfigs.at(-1)?.tempDirName).toBe('.stryker-tmp/tautest');
-  });
-
-  it('refuses when .stryker-tmp itself links outside cwd', async () => {
-    runMutationTest.mockResolvedValueOnce(undefined);
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-linked-parent-'));
-    const outside = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-linked-parent-target-'));
-    const outsideSandbox = path.join(outside, 'tautest', 'sandbox-abc123');
-    mkdirSync(outsideSandbox, { recursive: true });
-    writeFileSync(path.join(outsideSandbox, 'sentinel.txt'), 'do not delete me');
-    symlinkSync(outside, path.join(root, '.stryker-tmp'), process.platform === 'win32' ? 'junction' : 'dir');
-
-    await runStryker({ cwd: root, config: { tempDirName: '.stryker-tmp/tautest' }, jsonReportPath: path.join(root, 'm.json') });
-
-    expect(existsSync(path.join(outsideSandbox, 'sentinel.txt'))).toBe(true);
-  });
-
-  it("never touches another run's temp directory or sandbox", async () => {
-    createSandboxDuringRun('resolve');
-    const root = mkdtempSync(path.join(tmpdir(), 'tautest-stryker-concurrent-'));
-    // This process is alive, so a run directory carrying its PID stands in for a run in progress.
-    const liveRun = path.join(root, '.stryker-tmp', 'tautest', `run-${process.pid}-other`, 'sandbox-live');
-    const otherSandbox = path.join(root, '.stryker-tmp', 'tautest', 'sandbox-other-run');
-    mkdirSync(liveRun, { recursive: true });
-    mkdirSync(otherSandbox, { recursive: true });
-    writeFileSync(path.join(liveRun, 'source.ts'), 'in use');
-    writeFileSync(path.join(otherSandbox, 'source.ts'), 'in use');
-
-    await runStryker({ cwd: root, config: { tempDirName: '.stryker-tmp/tautest' }, jsonReportPath: path.join(root, 'm.json') });
-
-    expect(existsSync(path.join(liveRun, 'source.ts'))).toBe(true);
-    expect(existsSync(path.join(otherSandbox, 'source.ts'))).toBe(true);
   });
 });
 
@@ -419,6 +294,14 @@ describe('Stryker error mapping', () => {
     });
     expect(mapStrykerError(new Error('Cannot find module vitest'))).toMatchObject({
       code: 'STRYKER_MODULE_NOT_FOUND'
+    });
+  });
+
+  // Stryker's wording when its initial run finds no tests at all, which a sandbox tsconfig that
+  // points outside the sandbox causes; the CLI then suggests `tautest doctor`, which explains it.
+  it('maps "No tests were executed" to STRYKER_NO_TESTS', () => {
+    expect(mapStrykerError(new Error('No tests were executed. Stryker will exit prematurely. Please check your configuration.'))).toMatchObject({
+      code: 'STRYKER_NO_TESTS'
     });
   });
 
