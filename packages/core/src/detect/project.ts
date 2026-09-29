@@ -10,7 +10,7 @@ export function detectProject(startDir: string): ProjectInfo {
   const rootDir = packageJsonPath ? path.dirname(packageJsonPath) : path.resolve(startDir);
   const packageJson = packageJsonPath ? readJsonFile<PackageJson>(packageJsonPath) : null;
   const tsconfigPath = findExisting(rootDir, ['tsconfig.json']);
-  const tsconfig = tsconfigPath ? readJsonFile<TsConfig>(tsconfigPath) : null;
+  const tsconfig = tsconfigPath ? readTsConfig(tsconfigPath) : null;
   const monorepoSignals = [...detectMonorepoSignals(rootDir, packageJson), ...detectAncestorMonorepoSignals(rootDir)];
 
   return {
@@ -113,6 +113,60 @@ function findExistingMany(rootDir: string, fileNames: string[]): string[] {
 
 function readJsonFile<T>(filePath: string): T {
   return JSON.parse(readFileSync(filePath, 'utf8')) as T;
+}
+
+// tsconfig.json is JSON with comments and trailing commas (`tsc --init` writes comments), so plain
+// JSON.parse rejects many real ones. It is only read here for baseUrl/paths hints — Stryker and
+// TypeScript parse it themselves — so an unreadable tsconfig must not stop the run.
+function readTsConfig(filePath: string): TsConfig | null {
+  try {
+    return JSON.parse(stripJsonComments(readFileSync(filePath, 'utf8'))) as TsConfig;
+  } catch {
+    return null;
+  }
+}
+
+// Removes // and /* */ comments, then trailing commas, leaving string contents untouched.
+function stripJsonComments(text: string): string {
+  const withoutComments = mapOutsideStrings(text, (rest) => {
+    if (rest.startsWith('//')) {
+      const end = rest.indexOf('\n');
+      return { skip: end === -1 ? rest.length : end };
+    }
+    if (rest.startsWith('/*')) {
+      const end = rest.indexOf('*/', 2);
+      return { skip: end === -1 ? rest.length : end + 2 };
+    }
+    return undefined;
+  });
+
+  return mapOutsideStrings(withoutComments, (rest) => (/^,\s*[}\]]/.test(rest) ? { skip: 1 } : undefined));
+}
+
+// Copies text, letting `drop` skip characters that start outside a double-quoted JSON string.
+function mapOutsideStrings(text: string, drop: (rest: string) => { skip: number } | undefined): string {
+  let output = '';
+  let index = 0;
+
+  while (index < text.length) {
+    if (text[index] === '"') {
+      const start = index++;
+      while (index < text.length && text[index] !== '"') {
+        index += text[index] === '\\' ? 2 : 1;
+      }
+      output += text.slice(start, ++index);
+      continue;
+    }
+
+    const dropped = drop(text.slice(index));
+    if (dropped) {
+      index += dropped.skip;
+    } else {
+      output += text[index++];
+    }
+  }
+
+  return output;
 }
 
 function hasDependency(packageJson: PackageJson | null, name: string): boolean {
