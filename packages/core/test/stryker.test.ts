@@ -76,7 +76,8 @@ describe('Stryker config generator', () => {
       packageManager: 'npm',
       plugins: ['@stryker-mutator/jest-runner'],
       jest: {
-        configFile: 'jest.config.cjs'
+        configFile: 'jest.config.cjs',
+        enableFindRelatedTests: false
       }
     });
   });
@@ -134,7 +135,22 @@ describe('Stryker config generator', () => {
       testRunner: 'jest',
       plugins: ['@stryker-mutator/jest-runner']
     });
-    expect((config as Record<string, unknown>).jest).toBeUndefined();
+    // No configFile keeps the Jest runner's own config discovery.
+    expect((config as Record<string, unknown>).jest).toEqual({ enableFindRelatedTests: false });
+  });
+
+  // findRelatedTests only runs tests Jest can trace to the mutated file; on moment/luxon it found
+  // none for a changed src/impl file and Stryker stopped with "No tests were executed".
+  it('turns off Jest related-test selection and says so when a user config turns it on', () => {
+    const options = {
+      mutate: ['src/index.js:1-5'],
+      jsonReportPath: '.tautest/mutation.json',
+      testRunner: 'jest' as const,
+      userConfig: { jest: { enableFindRelatedTests: true } }
+    };
+
+    expect((generateStrykerConfig(options) as Record<string, unknown>).jest).toEqual({ enableFindRelatedTests: false });
+    expect(getStrykerConfigDiagnostics(options).map((diagnostic) => diagnostic.key)).toContain('jest.enableFindRelatedTests');
   });
 
   it('safe-merges user config without allowing core scope overrides', () => {
