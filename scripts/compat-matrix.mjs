@@ -85,7 +85,10 @@ if (!coreDir.includes('file+')) {
 const result = spawnSync('pnpm', ['exec', 'tautest', 'run', '--base', base, '--json'], { cwd: root, encoding: 'utf8', shell });
 const label = `Stryker ${args.stryker} + Vitest ${args.vitest}`;
 
-if (Number(args.vitest.split('.')[0]) >= 5) {
+// Same rule as doctor's Vitest check: only runners up to 10.0.0 are known to run no tests on
+// Vitest 5. A later runner is expected to pass the killed-mutant canary below instead, so a fixed
+// release has to prove it executes tests before the guard is relaxed.
+if (Number(args.vitest.split('.')[0]) >= 5 && compareVersions(args.stryker, '10.0.0') <= 0) {
   if (result.status !== 12 || !result.stderr.includes('executed 0 tests')) {
     fail(`${label}: expected exit 12 with "executed 0 tests", got exit ${result.status}\n${result.stdout}\n${result.stderr}`);
   }
@@ -95,16 +98,34 @@ if (Number(args.vitest.split('.')[0]) >= 5) {
     fail(`${label}: expected exit 0, got ${result.status}\n${result.stdout}\n${result.stderr}`);
   }
   const summary = JSON.parse(result.stdout).report.summary;
-  const framework = JSON.parse(readFileSync(path.join(root, '.tautest', 'mutation.json'), 'utf8')).framework;
+  const raw = JSON.parse(readFileSync(path.join(root, '.tautest', 'mutation.json'), 'utf8'));
+  const framework = raw.framework;
   if (summary.killed !== 7 || summary.survived !== 4 || framework.version !== args.stryker) {
     fail(`${label}: expected 7 killed / 4 survived on Stryker ${args.stryker}, got ${summary.killed} / ${summary.survived} on ${framework.version}`);
   }
-  console.log(`ok  ${label}: 7 killed / 4 survived, run by StrykerJS ${framework.version}`);
+  // The canary: every killed mutant must have been killed by a test that actually ran.
+  const killed = Object.values(raw.files).flatMap((file) => file.mutants).filter((mutant) => mutant.status === 'Killed');
+  const notExecuted = killed.filter((mutant) => !(mutant.testsCompleted > 0) || !(mutant.killedBy?.length > 0));
+  if (notExecuted.length > 0) {
+    fail(`${label}: ${notExecuted.length} killed mutant(s) report no executed or killing test`);
+  }
+  console.log(`ok  ${label}: 7 killed / 4 survived, each kill by an executed test, run by StrykerJS ${framework.version}`);
 }
 
 function priceTest(cases) {
   const body = cases.map(([name, assertion]) => `  it("${name}", () => { ${assertion} });`).join('\n');
   return `import { describe, it, expect } from "vitest";\nimport { finalPrice } from "../src/price.js";\n\ndescribe("finalPrice", () => {\n${body}\n});\n`;
+}
+
+function compareVersions(left, right) {
+  const a = left.split('-')[0].split('.').map(Number);
+  const b = right.split('-')[0].split('.').map(Number);
+  for (let index = 0; index < 3; index++) {
+    if ((a[index] ?? 0) !== (b[index] ?? 0)) {
+      return (a[index] ?? 0) - (b[index] ?? 0);
+    }
+  }
+  return 0;
 }
 
 function findPack(pattern) {
