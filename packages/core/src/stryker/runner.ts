@@ -30,7 +30,9 @@ export async function runStryker(options: RunStrykerOptions): Promise<StrykerRun
 export function mapStrykerError(error: unknown): TautestError {
   const message = error instanceof Error ? error.message : String(error);
 
-  if (/No tests found/i.test(message)) {
+  // Stryker's "No tests were executed" means its initial run found no tests at all, for example when
+  // the sandbox copy's tsconfig points outside the sandbox and Vitest cannot load the test files.
+  if (/No tests found|No tests were executed/i.test(message)) {
     return new TautestError('Stryker could not find tests for the selected mutation scope.', 'STRYKER_NO_TESTS', error);
   }
 

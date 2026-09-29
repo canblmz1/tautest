@@ -125,7 +125,8 @@ describe('project detector', () => {
     expect(detectProject(root).tsconfig).toEqual({
       path: path.join(root, 'tsconfig.json'),
       baseUrl: './src/*/not-a-comment',
-      paths: { '@app/*': ['src/*'], '@odd/*': ['lib/,]"/*'] }
+      paths: { '@app/*': ['src/*'], '@odd/*': ['lib/,]"/*'] },
+      unrewrittenExtends: []
     });
   });
 
@@ -160,6 +161,62 @@ describe('project detector', () => {
       `ancestor package.json workspaces at ${root}`,
       `ancestor pnpm-workspace.yaml at ${root}`
     ]);
+  });
+});
+
+// Stryker's sandbox copy rewrites a string `extends` that leaves the package, but not an array
+// entry, nor a file it can only find by appending `.json`.
+describe('tsconfig paths Stryker cannot rewrite for its sandbox', () => {
+  function packageIn(files: Record<string, string>): string {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-tsconfig-rewrite-'));
+    const all = { 'tsconfig.base.json': '{}', 'packages/app/package.json': '{ "name": "app" }', ...files };
+    for (const [file, content] of Object.entries(all)) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), content);
+    }
+    return path.join(root, 'packages', 'app');
+  }
+
+  it('accepts a string extends outside the package, which Stryker rewrites', () => {
+    const app = packageIn({ 'packages/app/tsconfig.json': '{\n  // shared options\n  "extends": "../../tsconfig.base.json",\n}' });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual([]);
+  });
+
+  it('flags an extends array entry outside the package', () => {
+    const app = packageIn({
+      'packages/app/tsconfig.json': '{ "extends": ["../../tsconfig.base.json", "./local.json"] }',
+      'packages/app/local.json': '{}'
+    });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual(['../../tsconfig.base.json']);
+  });
+
+  it('follows an in-package string chain the way Stryker does', () => {
+    const app = packageIn({
+      'packages/app/tsconfig.json': '{ "extends": "./tsconfig.build.json" }',
+      'packages/app/tsconfig.build.json': '{ "extends": "../../tsconfig.base.json" }'
+    });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual([]);
+  });
+
+  it('flags an outside path behind an in-package file named without .json, which Stryker cannot find', () => {
+    const app = packageIn({
+      'packages/app/tsconfig.json': '{ "extends": "./tsconfig.build" }',
+      'packages/app/tsconfig.build.json': '{ "extends": "../../tsconfig.base.json" }'
+    });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual(['../../tsconfig.base.json']);
+  });
+
+  it('flags an outside path behind an in-package array entry', () => {
+    const app = packageIn({
+      'packages/app/tsconfig.json': '{ "extends": ["./tsconfig.build.json"] }',
+      'packages/app/tsconfig.build.json': '{ "extends": "../../tsconfig.base.json" }'
+    });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual(['../../tsconfig.base.json']);
+  });
+
+  it('ignores package-name and absolute entries, which resolve the same from the sandbox', () => {
+    const app = packageIn({ 'packages/app/tsconfig.json': JSON.stringify({ extends: ['@tsconfig/node22/tsconfig.json', path.resolve('/abs/tsconfig.json')] }) });
+    expect(detectProject(app).tsconfig.unrewrittenExtends).toEqual([]);
   });
 });
 

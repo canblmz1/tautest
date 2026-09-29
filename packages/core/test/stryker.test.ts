@@ -297,6 +297,14 @@ describe('Stryker error mapping', () => {
     });
   });
 
+  // Stryker's wording when its initial run finds no tests at all, which a sandbox tsconfig that
+  // points outside the sandbox causes; the CLI then suggests `tautest doctor`, which explains it.
+  it('maps "No tests were executed" to STRYKER_NO_TESTS', () => {
+    expect(mapStrykerError(new Error('No tests were executed. Stryker will exit prematurely. Please check your configuration.'))).toMatchObject({
+      code: 'STRYKER_NO_TESTS'
+    });
+  });
+
   it('maps a missing ESM package, such as an uninstalled Stryker core, to STRYKER_MODULE_NOT_FOUND', () => {
     expect(mapStrykerError(new Error("Cannot find package '@stryker-mutator/core' imported from /project/node_modules/@tautest/core/dist/index.js"))).toMatchObject({
       code: 'STRYKER_MODULE_NOT_FOUND'
