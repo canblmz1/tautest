@@ -101,7 +101,7 @@ Tautest scores whatever Stryker's test runs report. Direct Stryker with the same
 
 To check, run your normal test command several times on the unmodified commit (for example ten `vitest run`s in a row). Then compare the raw `.tautest/mutation.json` of two Tautest runs mutant by mutant: the `killedBy` field names the test that killed each mutant. If a changing status traces to a test that also fails without mutation, fix or quarantine that test.
 
-Until the normal suite passes repeatedly and repeated Tautest runs on the same commit give the same statuses, keep Tautest advisory. In the GitHub Action, set `fail-on-threshold: false` ([Advisory First Week](GITHUB_ACTION.md#advisory-first-week)). If you run the CLI yourself, do not fail the job on exit code `1` (threshold not met). A single clean run, or two runs with the same score, is not enough. See the [cli-testing-library#50 experiment](evidence/cli-testing-library-50/README.md) for a worked example.
+Until the normal suite passes repeatedly and repeated Tautest runs on the same commit give the same statuses, keep Tautest advisory. In the GitHub Action, set `fail-on-threshold: false` ([Advisory Workflow](GITHUB_ACTION.md#advisory-workflow)). If you run the CLI yourself, do not fail the job on exit code `1` (threshold not met). A single clean run, or two runs with the same score, is not enough. See the [cli-testing-library#50 experiment](evidence/cli-testing-library-50/README.md) for a worked example.
 
 ## Slow Test Suite
 

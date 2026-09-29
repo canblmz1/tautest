@@ -12,7 +12,7 @@ Generated files:
 - `.tautest/report.json`
 - `.tautest/fix-prompt.md`
 - `.tautest/mutation.json`
-- `.tautest/stryker-incremental.json` when cache is enabled
+- `.tautest/stryker-incremental.json` when Stryker's incremental mode is on and `stryker.incrementalFile` points there
 
 These files may contain source snippets, mutant replacements, test names, and file paths. Treat them as project data.
 

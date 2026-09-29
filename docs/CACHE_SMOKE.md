@@ -4,6 +4,8 @@
 
 The GitHub Action (`packages/github-action/src/cache.ts`) restores and saves the Stryker incremental cache file (`.tautest/stryker-incremental.json`) using `@actions/cache`. The cache key includes the base ref, head ref, and package manager.
 
+With the default config, nothing writes that file. Tautest runs Stryker with `incremental: false`, and Stryker's own default path is `reports/stryker-incremental.json`. The steps below can only show a cache hit with `stryker.incremental: true` and `stryker.incrementalFile: '.tautest/stryker-incremental.json'`; see [Cache](GITHUB_ACTION.md#cache).
+
 ## What was validated in v1
 
 - Cache restore and save code paths exist and are wired in the action (`src/cache.ts`, `src/index.ts`).

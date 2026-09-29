@@ -6,182 +6,63 @@
 [![Release Readiness](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml/badge.svg)](https://github.com/canblmz1/tautest/actions/workflows/release-readiness.yml)
 [![Node >=22](https://img.shields.io/badge/node-%3E%3D22-339933.svg)](package.json)
 
-Mutation testing for changed code in pull requests, powered by StrykerJS.
+Mutation testing for the lines a pull request changes, powered by StrykerJS.
 
-Coverage shows that changed code ran. Tautest checks whether tests fail when changed behavior is mutated.
-
-Tautest is a PR mutation quality gate for JavaScript and TypeScript projects. It uses StrykerJS as the mutation engine, scopes mutation testing to changed source lines from `git diff`, and turns surviving mutants into review-ready reports, GitHub feedback, and deterministic test-fix prompts for Claude Code, Cursor, Codex, OpenCode, or humans.
-
-## Current support tiers
-
-| Area | Tier | Notes |
-| --- | --- | --- |
-| Vitest JS/TS projects | Supported | Primary workflow for `tautest run`, reports, prompts, and GitHub feedback. |
-| Jest JS/TS projects | Beta | CommonJS, native ESM, and Babel TypeScript fixtures are covered; heavily customized transforms can need explicit Stryker/Jest configuration. |
-| pnpm and `package.json` workspaces | Beta | Workspace mode plans and sequentially runs selected packages; full dependency-graph scheduling is future work. |
-| Python and Java parser work | Alpha groundwork | Parser and runner-adapter experiments only; `tautest run` execution remains JS/TS through StrykerJS. |
-| Reliability helpers | MVP | `predict-flaky`, `watch`, `scaffold`, `time-travel init`, and `chaos` are local-first advisory tools. |
-| LLM provider calls | Opt-in only | Fix prompts are deterministic local artifacts unless `tautest prompt --suggest` is explicitly configured. |
-| Hosted dashboard | Out of scope | Tautest is local-first CLI and CI tooling. |
-
-## Demo
-
-Regular tests pass, but Tautest finds a surviving mutant that the tests missed. After adding the missing boundary test, the mutation score improves to 100%.
+Coverage shows that changed code ran. Tautest checks whether your tests fail when that changed behavior is mutated. It takes the changed lines from `git diff`, runs StrykerJS on those lines only, and reports the surviving mutants in a pull request comment, a job summary, and a test-fix prompt for a person or a coding agent.
 
 ![Tautest demo](assets/tautest-demo.gif)
 
-Want to try the same flow locally? See the [copy-paste demo](docs/DEMO.md).
+The demo is a test suite that passes while Tautest finds a surviving mutant; a boundary test then brings the score to 100%. To try it, see the [copy-paste demo](docs/DEMO.md) or run `tautest demo`.
 
-If you have the CLI installed, `tautest demo` prints the same short demo path. From a Tautest repository checkout, `tautest demo --run` runs the fixture and restores it afterward.
+## Supported setup
 
-```bash
-pnpm exec tautest demo
-pnpm exec tautest demo --run
-```
+One setup is supported. Anything else is listed under [Exceptions](#exceptions).
 
-## Why Tautest?
+| | Supported |
+| --- | --- |
+| Node.js | 22 or 24 |
+| Test runner | Vitest 2, 3 or 4 |
+| Mutation engine | `@stryker-mutator/core` and `@stryker-mutator/vitest-runner`, 10.0.0 or 9.6.1 |
+| Project | A single package with its own `package.json`, installed into `node_modules` with pnpm or npm |
+| Git | The base branch's history is available (`fetch-depth: 0` in GitHub Actions) |
+| Tests | The normal test suite passes on the unmodified code, every time |
 
-Passing tests can still miss changed behavior. Line coverage can tell you that a changed branch or function executed, but it cannot tell you whether the test suite would fail if that behavior were subtly wrong.
+## Try it on a branch
 
-Tautest focuses mutation testing on the code changed in a pull request. The result is a smaller, more relevant signal for code review:
-
-- Which changed lines still have surviving mutants?
-- What test behavior is probably missing?
-- Should this PR pass the mutation quality threshold?
-- What small test-only task should a human or coding agent do next?
-
-See [Why Tautest?](docs/WHY_TAUTEST.md) for the longer positioning and comparison with StrykerJS, coverage gates, and coding agents.
-
-## What Tautest does
-
-- Scopes mutation testing to changed source lines from `git diff`.
-- Runs StrykerJS as the mutation testing engine.
-- Parses surviving mutants into review-friendly findings.
-- Summarizes patch-scoped mutation quality for pull requests.
-- Writes Markdown, JSON, and terminal reports.
-- Can generate a local static HTML report viewer.
-- Generates AI-ready fix prompts.
-- Can post GitHub PR comments.
-- Writes a GitHub job summary when used in GitHub Actions.
-
-## What Tautest does not do
-
-- Does not implement its own mutation engine.
-- Does not call LLM APIs by default.
-- Does not detect which lines were written by AI.
-- Does not replace StrykerJS, coverage tools, or normal test suites.
-- Does not prove tests are perfect.
-- Does not fully support monorepos in v1.
-
-Fix prompts are generated Markdown files. They are grounded in the actual surviving mutants and can be pasted into any coding agent or used manually. No LLM is called at generation time unless you explicitly opt into the external-command suggestion flow.
-
-## Relationship to StrykerJS
-
-Tautest uses StrykerJS as the mutation testing engine. StrykerJS performs the mutation testing, provides the mutators, and integrates with test runners.
-
-Tautest is the workflow layer around PR scoping, reports, prompts, and GitHub feedback. If you already run StrykerJS directly on every pull request and your reviewers or agents reliably act on the raw reports, Tautest may not add much. It is mainly for teams that want mutation testing to behave like a changed-code PR quality gate.
-
-## How Tautest is different
-
-Tautest is not different because it invents new mutation testing. It is different because it packages StrykerJS results for the pull request loop:
-
-- Compared with running StrykerJS directly, Tautest starts from the Git diff and focuses on changed source lines.
-- Compared with coverage gates, Tautest checks whether changed behavior is defended by tests, not just whether changed lines executed.
-- Compared with handing raw reports to an AI agent, Tautest creates a smaller deterministic task packet: these changed lines survived mutation, strengthen tests only, do not change production code, then rerun validation.
-
-Read the detailed explanation in [Why Tautest?](docs/WHY_TAUTEST.md) and the [Positioning FAQ](docs/POSITIONING_FAQ.md).
-
-## Install
-
-Tautest runs the Stryker installed in your project (`@stryker-mutator/core` 9.6.1 or 10.x) and needs Node 22 or newer. Vitest 5 cannot be used yet: `@stryker-mutator/vitest-runner` 10.0.0 and older run no tests for mutants on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). `tautest doctor` flags that combination and `tautest run` refuses to score it; keep `vitest` on `^4` until the runner supports Vitest 5.
-
-### Vitest
+Run these from the project root, on a branch that changes source code:
 
 ```bash
+# 1. The normal suite must pass first. Tautest cannot score a suite that fails on its own.
+pnpm test
+
+# 2. Install Tautest and Stryker with its Vitest runner.
 pnpm add -D tautest @stryker-mutator/core @stryker-mutator/vitest-runner
 pnpm exec tautest init --yes --runner vitest --no-install
+
+# 3. Check the setup. Fix any error before going on.
 pnpm exec tautest doctor
+
+# 4. Mutation-test the lines changed since the base branch.
 pnpm exec tautest run --base origin/main
+
+# 5. The normal suite still passes: Stryker mutates a sandbox copy, never your files.
+pnpm test
 ```
 
-### Jest
+With npm, use `npm install -D` and `npx tautest`. `tautest init` writes `tautest.config.ts` and adds `.tautest/` to `.gitignore`.
 
-```bash
-pnpm add -D tautest @stryker-mutator/core @stryker-mutator/jest-runner
-pnpm exec tautest init --yes --runner jest --no-install
-```
+The report is in `.tautest/report.md`. `tautest run` exits with:
 
-Tested Jest fixture paths include CommonJS, native ESM, and Babel-powered TypeScript. For non-root Jest config files, set `stryker.jestConfigFile` in `tautest.config.*`.
+- `0` when the mutation score meets the threshold, 60 by default;
+- `1` when it does not;
+- `2` when there is nothing to mutation-test, for example a change without source lines;
+- `10`, `11`, `12` or `20` on a configuration, detection, Stryker or git error.
 
-### npx
+The [Quickstart](docs/QUICKSTART.md) shows what each step should print.
 
-```bash
-npx tautest@latest --help
-```
+## Add it to pull requests
 
-## Quickstart
-
-First 15 minutes:
-
-```bash
-pnpm add -D tautest @stryker-mutator/core @stryker-mutator/vitest-runner
-pnpm exec tautest init --yes --runner vitest --no-install
-pnpm exec tautest doctor
-pnpm exec tautest run --base origin/main
-pnpm exec tautest prompt --style codex
-```
-
-The normal loop is:
-
-1. Run your regular test suite.
-2. Run Tautest against the pull request base.
-3. Inspect `.tautest/report.md`.
-4. Use `.tautest/fix-prompt.md` to add or strengthen tests.
-5. Re-run the test suite and Tautest.
-
-See [Quickstart](docs/QUICKSTART.md).
-See [Package manager support](docs/PACKAGE_MANAGERS.md).
-
-## CLI usage
-
-```bash
-tautest demo
-tautest demo --run
-tautest init --yes --runner vitest --no-install
-tautest doctor
-tautest run --base origin/main --threshold 60
-tautest prompt --style codex
-tautest report
-tautest report --html
-```
-
-Experimental commands outside the pull request workflow: `tautest watch`, `tautest predict-flaky`, `tautest scaffold`, `tautest time-travel` and `tautest chaos`. They are not part of the compatibility matrix; see the [CLI reference](docs/CLI_REFERENCE.md).
-
-Common options:
-
-- `--base <ref>`: Git base ref used for changed-line detection.
-- `--threshold <number>`: minimum mutation score.
-- `--report-dir <dir>`: output directory, default `.tautest`.
-- `--prompt-style <style>`: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`.
-- `--workspace`: plan or run selected workspace packages in a monorepo.
-- `--workspace-path <path>`: run from a workspace/package directory inside the current repository.
-- `--max-changed-lines <number>`: fail before StrykerJS runs if the changed production line count exceeds the budget.
-- `--dry-run`: preview included/excluded changed files and mutate scope without running StrykerJS.
-- `--json`: print machine-readable run output.
-
-Exit codes:
-
-- `0`: success and threshold passed.
-- `1`: ran successfully but score was below threshold.
-- `2`: nothing to mutation-test: no changed production source files, or Stryker generated no mutants for the changed lines.
-- `10`: config error.
-- `11`: detection error.
-- `12`: Stryker error, including a run whose surviving mutants executed zero tests (see [Troubleshooting](docs/TROUBLESHOOTING.md#surviving-mutants-executed-zero-tests)).
-- `20`: git error.
-
-See [CLI reference](docs/CLI_REFERENCE.md).
-
-## GitHub Action usage
+Start in advisory mode, where a low score is reported but does not fail the job:
 
 ```yaml
 name: Tautest
@@ -205,150 +86,97 @@ jobs:
         with:
           node-version: 22
 
+      # Reads the pnpm version from "packageManager" in package.json; without that field, add `with: version`.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
 
-      - uses: canblmz1/tautest/packages/github-action@v1
+      # tautest@2.0.5. Pin the commit of the release you install; the old `v1` tag is the 1.x action.
+      - uses: canblmz1/tautest/packages/github-action@df9d2e1bf5c02970149d97ed11e6d6fa4b152208
         with:
-          base: ${{ github.base_ref }}
-          threshold: 60
-          comment: changes
-          annotations: survivors
-          cache: true
+          fail-on-threshold: false
 ```
 
-Notes:
+- **Advisory mode.** `fail-on-threshold: false` keeps a low score from failing the job. A configuration, Stryker or git error still fails it.
+- **Permissions.** The sticky comment needs `pull-requests: write`. A pull request from a fork gets a read-only token and no comment; its job summary and the `tautest-report` artifact carry the same report.
+- **Trigger.** Use `pull_request`, not `pull_request_target`: the job runs the pull request's code.
+- **Build step.** If your tests need one, run it before the Tautest step.
+- **Blocking gate.** Make the gate blocking only after the normal suite passes repeatedly and repeated Tautest runs on the same commit give the same mutant statuses. See [Mutant Statuses Change Between Runs](docs/TROUBLESHOOTING.md#mutant-statuses-change-between-runs).
 
-- The v1 action currently ships from this monorepo path.
-- `fetch-depth: 0` is required.
-- `pull-requests: write` is required for sticky comments.
-- `annotations: survivors` adds capped line annotations in the Checks UI.
-- `max-files` and `max-changed-lines` can cap expensive mutation runs in CI.
-- New to Tautest? Set `fail-on-threshold: false` for about a week so the team can review real-versus-equivalent survivors before it blocks merges. See [Advisory First Week](docs/GITHUB_ACTION.md#advisory-first-week).
+The inputs and outputs are in [GitHub Action](docs/GITHUB_ACTION.md).
 
-See [GitHub Action docs](docs/GITHUB_ACTION.md).
+## Exceptions
 
-## Example output
+| Your setup | What to do |
+| --- | --- |
+| Vitest 5 | Not supported yet. Stryker's Vitest runner 10.0.0 and older runs no tests for mutants on Vitest 5 ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)), so `tautest doctor` flags it and `tautest run` refuses to score it. Stay on Vitest 4. |
+| Jest | Beta. Install `@stryker-mutator/jest-runner` instead and run `tautest init --runner jest`. With a Babel 7 config (`.babelrc`, `babel.config.js`), use Stryker 9.6.1: Stryker 10 instruments with Babel 8, which refuses it. See [Jest](docs/TROUBLESHOOTING.md#jest-esmcjs). |
+| A package in a monorepo | Run from the package directory (`working-directory` in the Action). A tsconfig `extends` array pointing outside the package is not supported; `tautest doctor` warns about it. Workspace mode (`--workspace`) is beta. See [Monorepo](docs/TROUBLESHOOTING.md#monorepo). |
+| Yarn or Bun | Yarn with `node_modules` is beta, and Yarn Plug'n'Play is untested. Bun is experimental. See [package managers](docs/PACKAGE_MANAGERS.md). |
+| pnpm `minimumReleaseAge` | pnpm refuses a Tautest release younger than that window. Wait, or exempt only `tautest` and `@tautest/core` with `minimumReleaseAgeExclude`. |
+| Tests that check bundle size, generated output or timing | Stryker's instrumented copy can fail them before any mutant runs. Exclude them from the mutation run only; see [Instrumentation Breaks a Non-Behavioral Test](docs/TROUBLESHOOTING.md#instrumentation-breaks-a-non-behavioral-test). |
+| Tests that need CI environment variables | Set the same variables, such as `TZ`, for the Tautest step. |
+| A flaky normal suite | Mutant statuses will change between runs. Keep Tautest advisory until the suite passes repeatedly; see [Mutant Statuses Change Between Runs](docs/TROUBLESHOOTING.md#mutant-statuses-change-between-runs). |
 
-```text
-Tautest: MIXED (75.00%, threshold 60.00%)
-Killed: 3 | Survived: 1 | No coverage: 0
+## Evidence
 
-Top surviving mutants:
-- src/discount.ts:2 EqualityOperator - The exact boundary value 65 is not protected by a test that distinguishes the original expression from the mutant.
+Published Tautest was run on 10 merged pull requests from 6 open-source repositories, installed in each project like any user would: unjs/ohash, unjs/defu, unjs/destr, radashi-org/radashi, pmndrs/zustand and moment/luxon (Jest). In every one:
+
+- the normal suite passed twice;
+- Tautest's mutants matched a direct Stryker run with the same config, mutant for mutant;
+- a repeated Tautest run gave the same statuses.
+
+The failed and rejected attempts are recorded with their reasons in the [corpus](docs/oss-adoption-corpus.md). No speed claim is made: runtime comparisons with direct Stryker, full-file Stryker and Stryker's incremental mode are still being measured.
+
+## What Tautest does and does not do
+
+Tautest:
+
+- scopes mutation testing to the changed source lines from `git diff`;
+- runs StrykerJS as the mutation engine;
+- writes Markdown, JSON, HTML and terminal reports;
+- posts a sticky pull request comment and a job summary in GitHub Actions;
+- writes a deterministic test-fix prompt, `.tautest/fix-prompt.md`, that you can hand to Claude Code, Cursor, Codex, OpenCode or a person.
+
+Tautest does not:
+
+- implement its own mutation engine;
+- call an LLM API, unless you opt into `tautest prompt --suggest`;
+- tell AI-written code apart;
+- prove that tests are complete. A surviving mutant can be an equivalent mutant with no observable behavior change.
+
+StrykerJS does the mutation testing. Tautest is the pull request layer around it. If you already run StrykerJS on every pull request and act on its reports, Tautest may not add much. See [Why Tautest?](docs/WHY_TAUTEST.md) and the [Positioning FAQ](docs/POSITIONING_FAQ.md).
+
+## Commands
+
+```bash
+tautest init --yes --runner vitest --no-install
+tautest doctor
+tautest run --base origin/main
+tautest run --dry-run --base origin/main   # show the mutate scope without running Stryker
+tautest prompt --style codex
+tautest report --html
+tautest demo
 ```
 
-After the missing boundary test is added:
+Useful `run` options:
 
-```text
-Tautest: STRONG (100.00%, threshold 60.00%)
-Killed: 4 | Survived: 0
-```
+- `--threshold <number>` sets the minimum score;
+- `--max-files` and `--max-changed-lines` stop before Stryker starts on a change that is too large;
+- `--json` prints machine-readable output.
 
-## AI fix prompt workflow
-
-1. Run Tautest.
-2. Open `.tautest/fix-prompt.md`.
-3. Paste it into Claude Code, Cursor, Codex, OpenCode, or use it yourself.
-4. Add or strengthen tests only.
-5. Re-run the normal test suite.
-6. Re-run Tautest.
-
-Agent workflow docs:
-
-- [Agent workflow packs](docs/AGENT_WORKFLOWS.md)
-- [Optional LLM suggestions](docs/LLM_SUGGESTIONS.md)
-- [Claude Code workflow](docs/CLAUDE_CODE_WORKFLOW.md)
-- [Cursor workflow](docs/CURSOR_WORKFLOW.md)
-- [Codex workflow](docs/CODEX_WORKFLOW.md)
-- [OpenCode workflow](docs/OPENCODE_WORKFLOW.md)
-
-## Example projects
-
-- [examples/vitest-basic](examples/vitest-basic)
-- [examples/vitest-react](examples/vitest-react)
-- [examples/jest-basic](examples/jest-basic)
-- [Framework recipes for Next.js, Vue, Turborepo, and Nx](docs/FRAMEWORK_RECIPES.md)
+`watch`, `predict-flaky`, `scaffold`, `time-travel` and `chaos` are experimental and outside the supported setup. Python and Java support is parser-only groundwork. See the [CLI reference](docs/CLI_REFERENCE.md).
 
 ## Generated files
 
-Tautest writes run outputs to `.tautest/` by default:
+`tautest run` writes to `.tautest/`: `report.md`, `report.json` (schema version `1`, see [docs/report.schema.json](docs/report.schema.json)), `fix-prompt.md` and Stryker's raw `mutation.json`. These are generated artifacts; do not commit them. Editor integrations should read `report.json`; see the [IDE integration contract](docs/IDE_INTEGRATION.md).
 
-- `.tautest/report.md`
-- `.tautest/report.json`
-- `.tautest/report.html` when `tautest report --html` is used
-- `.tautest/fix-prompt.md`
-- `.tautest/llm-suggestion.md` when `tautest prompt --suggest` is explicitly enabled
-- `.tautest/stryker-incremental.json`
-- `.tautest/flaky-report.json` and `.tautest/flaky-report.md` from `tautest predict-flaky`
-- `.tautest/watch-report.json` and `.tautest/watch-report.md` from `tautest watch`
-- `.tautest/chaos-report.json` and `.tautest/chaos-report.md` from `tautest chaos`
+## More documentation
 
-The machine-readable `.tautest/report.json` file uses schema version `1`. See [docs/report.schema.json](docs/report.schema.json) for the JSON Schema contract.
-
-IDE and editor integrations should use `.tautest/report.json` as the source of truth. See [IDE integration contract](docs/IDE_INTEGRATION.md).
-
-GitHub Actions also writes a job summary with the mutation score and top surviving mutants when summary output is available.
-
-These files are generated artifacts and normally should not be committed.
-
-## Validated on real pull requests
-
-Tautest 2.0 was run on merged pull requests of three open source libraries, next to a full-file Stryker run on the same files (Stryker 10, each project's own Vitest):
-
-| Pull request | Changed-line mutants | Tautest | Time (Tautest / full file) |
-| --- | --- | --- | --- |
-| [unjs/ufo#313](https://github.com/unjs/ufo/pull/313): `withBase`/`withoutBase` prefix fix | 25 | STRONG 92%, 2 survivors | 63s / 196s |
-| [unjs/defu#156](https://github.com/unjs/defu/pull/156): `__proto__` pollution fix | 1 | STRONG 100% | 13s / 28s |
-| [unjs/destr#136](https://github.com/unjs/destr/pull/136): faster string checks | 39 | MIXED 77%, 9 survivors | 27s / 38s |
-
-- Every mutant Tautest tested got the same status as in the full-file run. It covered 65 of the 71 mutants that touch the changed lines; the 6 it left out also span unchanged lines, and all 6 were killed.
-- The two ufo survivors are a real gap: no test called `withBase` with a query string right after the base, so dropping the new `nextChar === "?"` check, which turns `withBase("/api?x=1", "/api")` into `/api/api?x=1`, went unnoticed.
-- Six of the nine destr survivors only switch off the new fast path, which then falls back to the general path with the same result: mutation testing cannot tell a performance-only branch from a missing test. The other three change results for inputs the tests did not cover, such as `'abc"'`.
-
-## Validated before v1
-
-- `tautest@1.0.0` published.
-- `@tautest/core@1.0.0` published.
-- Main Release Readiness workflow passed.
-- Source-changing PR smoke passed.
-- Mutation run completed in GitHub Actions.
-- JSON output parsed.
-- Sticky PR comment create/update verified.
-- Artifact upload verified.
-
-## Limitations
-
-- Tautest uses StrykerJS; it is not a mutation engine.
-- Tested Jest paths cover CommonJS, native ESM, and Babel TypeScript. Heavily customized transforms may still need explicit Stryker/Jest config.
-- Monorepo support is a workspace execution beta for pnpm and package.json workspaces.
-- Python and Java support are parser-only alpha groundwork, not `tautest run` execution paths.
-- Runtime depends on project size and test speed.
-- CLI support is validated on Node 22 and 24. The GitHub Action runs on the Node 24 action runtime.
-- Vitest 5 is not usable with `@stryker-mutator/vitest-runner` 10.0.0 or older (stryker-mutator/stryker-js#6210); see [Install](#install).
-- Cache hit was not proven in v1 smoke, but graceful cache handling was validated.
-- Tautest does not classify AI-written tests with certainty.
-
-See [limitations](docs/LIMITATIONS.md).
-See [multi-language alpha](docs/MULTI_LANGUAGE_ALPHA.md) for runner plugin groundwork.
-
-## Trust and safety
-
-Tautest is local-first, does not call LLM APIs by default, and writes generated artifacts under `.tautest/`. See [trust and safety](docs/TRUST_AND_SAFETY.md) for CI permissions, token handling, generated file boundaries, optional provider suggestions, and safe agent-use rules.
-
-## Roadmap
-
-- Vitest 5, as soon as `@stryker-mutator/vitest-runner` runs tests on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210)). The root cause is a Vitest 5 test-name-separator change the runner does not yet account for; a fix is proposed but unreleased in [stryker-js#6214](https://github.com/stryker-mutator/stryker-js/pull/6214), with a complementary "never report a zero-test run as survived" fix in [stryker-js#6146](https://github.com/stryker-mutator/stryker-js/pull/6146). Re-test once both land in a release; the compatibility matrix will show when it's safe to lift this guard.
-- Workspace mode: read each package's Stryker `mutate` list, as single-package runs already do.
-- Jest in the compatibility matrix, and more Jest fixtures.
-- Better cache observability.
-- Richer PR review annotations beyond survivor workflow annotations.
-
-See [roadmap](docs/ROADMAP.md).
+- [Quickstart](docs/QUICKSTART.md), [GitHub Action](docs/GITHUB_ACTION.md), [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [CLI reference](docs/CLI_REFERENCE.md), [Configuration reference](docs/CONFIG_REFERENCE.md), [Package managers](docs/PACKAGE_MANAGERS.md)
+- [Agent workflows](docs/AGENT_WORKFLOWS.md), [Framework recipes](docs/FRAMEWORK_RECIPES.md), [Examples](examples)
+- [Limitations](docs/LIMITATIONS.md), [Trust and safety](docs/TRUST_AND_SAFETY.md), [Roadmap](docs/ROADMAP.md)
 
 ## Contributing
 
@@ -362,9 +190,7 @@ pnpm test
 pnpm build
 ```
 
-Small reproducible examples are the most useful issue reports. Include your test runner, package manager, Node version, StrykerJS version, and generated `.tautest/report.json` when possible.
-
-Security reports should follow [SECURITY.md](SECURITY.md).
+Small reproducible examples make the most useful issue reports. Include your test runner, package manager, Node version, StrykerJS version and `.tautest/report.json` when possible. Report security issues as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
