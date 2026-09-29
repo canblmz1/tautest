@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import JSON5 from 'json5';
 import type { PackageJson, ProjectInfo } from '../types';
 
 const VITEST_CONFIG_FILES = ['vitest.config.ts', 'vitest.config.js', 'vitest.config.mjs', 'vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
@@ -10,7 +11,7 @@ export function detectProject(startDir: string): ProjectInfo {
   const rootDir = packageJsonPath ? path.dirname(packageJsonPath) : path.resolve(startDir);
   const packageJson = packageJsonPath ? readJsonFile<PackageJson>(packageJsonPath) : null;
   const tsconfigPath = findExisting(rootDir, ['tsconfig.json']);
-  const tsconfig = tsconfigPath ? readJsonFile<TsConfig>(tsconfigPath) : null;
+  const tsconfig = tsconfigPath ? readTsConfig(tsconfigPath) : null;
   const monorepoSignals = [...detectMonorepoSignals(rootDir, packageJson), ...detectAncestorMonorepoSignals(rootDir)];
 
   return {
@@ -113,6 +114,17 @@ function findExistingMany(rootDir: string, fileNames: string[]): string[] {
 
 function readJsonFile<T>(filePath: string): T {
   return JSON.parse(readFileSync(filePath, 'utf8')) as T;
+}
+
+// tsconfig.json is JSON with comments and trailing commas (`tsc --init` writes comments), so plain
+// JSON.parse rejects many real ones; JSON5 accepts both. It is only read here for baseUrl/paths
+// hints — Stryker and TypeScript parse it themselves — so an unreadable tsconfig must not stop the run.
+function readTsConfig(filePath: string): TsConfig | null {
+  try {
+    return JSON5.parse(readFileSync(filePath, 'utf8')) as TsConfig;
+  } catch {
+    return null;
+  }
 }
 
 function hasDependency(packageJson: PackageJson | null, name: string): boolean {
