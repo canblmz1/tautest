@@ -135,6 +135,10 @@ If tests pass normally but fail under Stryker, make sure your runner config and 
 
 Native Jest ESM usually needs Node's `--experimental-vm-modules` flag in the test command. See `examples/jest-esm`.
 
+Tautest turns off Stryker's `jest.enableFindRelatedTests`, so Stryker's initial run executes your whole Jest suite rather than only the tests Jest can trace to the changed file; per-test coverage still limits which tests each mutant runs. Jest's related-test lookup can miss tests that reach a file indirectly. On moment/luxon it found none, and Stryker stopped with `No tests were executed`.
+
+Stryker 10 parses your source with Babel 8, which refuses a project Babel 7 config (`.babelrc`, `babel.config.js`) with `Requires Babel "^7.0.0-0", but was loaded with "8.0.6"`. Use `@stryker-mutator/core` and `@stryker-mutator/jest-runner` 9.6.1 for such projects until they move to Babel 8.
+
 If Jest config lives outside the project root, set `stryker.jestConfigFile`:
 
 ```ts

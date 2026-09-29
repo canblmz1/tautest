@@ -70,6 +70,10 @@ function buildBaseStrykerConfig(options: GenerateStrykerConfigOptions): PartialS
     base.incrementalFile = options.incrementalFile;
   }
 
+  // Related-test selection (Vitest `related`, Jest `findRelatedTests`) runs only tests the runner can
+  // trace to the mutated files, so it misses tests that reach them indirectly: a missed test turns a
+  // killable mutant into a false survivor. Run the whole suite in Stryker's initial run instead;
+  // per-test coverage still limits which tests each mutant runs.
   if (options.testRunner === 'vitest') {
     base.plugins = ['@stryker-mutator/vitest-runner'];
     base.vitest = {
@@ -79,13 +83,14 @@ function buildBaseStrykerConfig(options: GenerateStrykerConfigOptions): PartialS
     };
   }
 
-  if (options.testRunner === 'jest' && options.jestConfigFile) {
+  if (options.testRunner === 'jest') {
     base.plugins = ['@stryker-mutator/jest-runner'];
+    // On moment/luxon, findRelatedTests found no test at all for a changed src/impl file and
+    // Stryker stopped with "No tests were executed".
     base.jest = {
-      configFile: options.jestConfigFile
+      ...(options.jestConfigFile ? { configFile: options.jestConfigFile } : {}),
+      enableFindRelatedTests: false
     };
-  } else if (options.testRunner === 'jest') {
-    base.plugins = ['@stryker-mutator/jest-runner'];
   }
 
   return base;

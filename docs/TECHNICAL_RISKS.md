@@ -41,7 +41,7 @@ Jest runner considerations:
 
 - ESM projects may need `testRunnerNodeArgs` such as `--experimental-vm-modules`.
 - Custom Jest environments can require special handling for Stryker coverage analysis.
-- `enableFindRelatedTests` can reduce test execution but may be wrong for integration-style tests.
+- `enableFindRelatedTests` can reduce test execution but may be wrong for integration-style tests. Tautest turns it off (as it does Vitest's `related`): on moment/luxon it found no test at all for a changed file, so Stryker stopped with `No tests were executed`.
 
 Decision for MVP: support simple Vitest and Jest projects first; fail clearly with setup diagnostics when runner configuration is outside the supported path.
 
