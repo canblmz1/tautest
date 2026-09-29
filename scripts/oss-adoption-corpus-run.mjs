@@ -57,12 +57,32 @@ if (!Number.isInteger(repetitions) || repetitions < 1 || repetitions > 5) {
 
 const runnerPlugin = { vitest: '@stryker-mutator/vitest-runner', jest: '@stryker-mutator/jest-runner' }[args.runner];
 
+// Tautest supports Stryker ^9.6.1 || ^10.0.0. 10.0.0 instruments with Babel 8, which refuses a
+// project's Babel 7 config (.babelrc, babel.config.js); such projects need 9.6.1.
+const strykerVersion = args['stryker-version'] ?? '10.0.0';
+if (!['9.6.1', '10.0.0'].includes(strykerVersion)) {
+  fail('--stryker-version must be 9.6.1 or 10.0.0');
+}
+
 if (!runnerPlugin) {
   fail(`unsupported --runner ${args.runner} (use vitest or jest)`);
 }
 
 const workDir = mkdtempSync(path.join(tmpdir(), 'tautest-corpus-'));
-const result = { repo: args.repo, pr: args.pr ?? null, base: args.base, head: args.head, runner: args.runner, tautestVersion: args['tautest-version'], repetitions, workDir };
+const result = { repo: args.repo, pr: args.pr ?? null, base: args.base, head: args.head, runner: args.runner, tautestVersion: args['tautest-version'], strykerVersion, repetitions, workDir };
+
+// Environment the project's own CI sets for its tests (for example TZ), applied to every command.
+if (args.env) {
+  result.setupEnv = {};
+  for (const pair of args.env.split(',').filter(Boolean)) {
+    const [key, ...value] = pair.split('=');
+    if (!/^[A-Z_][A-Z0-9_]*$/i.test(key) || value.length === 0) {
+      fail(`--env expects KEY=VALUE pairs separated by commas, got "${pair}"`);
+    }
+    process.env[key] = value.join('=');
+    result.setupEnv[key] = value.join('=');
+  }
+}
 const stepFailures = [];
 
 try {
@@ -104,8 +124,17 @@ try {
     requireExit(result.build, 'build');
   }
 
-  const toolSpecs = ['tautest@' + args['tautest-version'], '@stryker-mutator/core@10.0.0', runnerPlugin + '@10.0.0'];
-  result.installTestTools = step('installTestTools', () => run(workDir, pm, devInstallArgs(workDir, pm, toolSpecs)));
+  const toolSpecs = ['tautest@' + args['tautest-version'], `@stryker-mutator/core@${strykerVersion}`, `${runnerPlugin}@${strykerVersion}`];
+  // A project with pnpm's minimumReleaseAge refuses a Tautest release younger than its window.
+  // --allow-fresh-tautest exempts only tautest and @tautest/core for this install; the project's
+  // own dependencies keep the setting.
+  const freshToolArgs = 'allow-fresh-tautest' in args && pm === 'pnpm'
+    ? ['--config.minimumReleaseAgeExclude=tautest', '--config.minimumReleaseAgeExclude=@tautest/core']
+    : [];
+  if (freshToolArgs.length > 0) {
+    result.installDeviations = ['minimumReleaseAge waived for tautest and @tautest/core only'];
+  }
+  result.installTestTools = step('installTestTools', () => run(workDir, pm, [...devInstallArgs(workDir, pm, toolSpecs), ...freshToolArgs]));
   requireExit(result.installTestTools, 'installTestTools');
   const cliEntry = path.join(workDir, 'node_modules', 'tautest', 'dist', 'index.js');
   result.toolchain = inspectToolchain(workDir, cliEntry, runnerPlugin, args['tautest-version']);
@@ -132,16 +161,20 @@ try {
   result.normalTests = step('normalTests', () => run(workDir, normalTestCommand[0], normalTestCommand[1]));
   requireExit(result.normalTests, 'normalTests');
 
-  // Exit 1 is a valid measured threshold failure. Other nonzero exits are setup/run errors.
-  result.tautest = step('tautest', () => run(workDir, 'node', [cliEntry, 'run', '--base', args.base, '--json']), [0, 1]);
-  requireExit(result.tautest, 'tautest', [0, 1]);
+  // Exit 1 is a valid measured threshold failure, and exit 2 means Stryker generated no mutants for
+  // the changed lines (for example a type-only change). Other nonzero exits are setup/run errors.
+  result.tautest = step('tautest', () => run(workDir, 'node', [cliEntry, 'run', '--base', args.base, '--json']), [0, 1, 2]);
+  requireExit(result.tautest, 'tautest', [0, 1, 2]);
   const tautestReport = JSON.parse(extractJson(result.tautest.stdout));
+  if (result.tautest.exitCode === 2) {
+    result.noOp = { message: tautestReport.message, mutatePatterns: tautestReport.mutatePatterns ?? [] };
+  }
   const mutatePatterns = tautestReport.report?.scope?.mutatePatterns ?? [];
   result.tautestSummary = tautestReport.report?.summary;
   result.tautestChangedFileCount = tautestReport.metrics?.changedFileCount;
   result.mutatePatterns = mutatePatterns;
 
-  if (mutatePatterns.length > 0) {
+  if (mutatePatterns.length > 0 && !result.noOp) {
     const mutationPath = tautestReport.paths?.mutationJson ?? path.join(workDir, '.tautest', 'mutation.json');
     const tautestMutationReport = safeReadJson(mutationPath);
     if (!tautestMutationReport?.config) {
@@ -201,13 +234,14 @@ try {
       });
     }
   } else {
-    result.directStryker = { skipped: 'no mutate patterns from Tautest run' };
+    result.directStryker = { skipped: result.noOp ? 'Stryker generated no mutants for the changed lines' : 'no mutate patterns from Tautest run' };
   }
 
   result.stepFailures = stepFailures;
-  // A clean pair is not necessarily repeatable; --repeat checks that separately.
+  // A clean pair is not necessarily repeatable; --repeat checks that separately. A no-op run has
+  // nothing to compare: it is neither a measured row nor a failure.
   const unstable = result.repeatability?.some((repeat) => !repeat.sameMutatePatterns || !repeat.comparison.identical);
-  result.status = unstable ? 'unstable' : result.comparison?.identical ? 'ok' : 'completed-with-differences';
+  result.status = result.noOp ? 'no-op' : unstable ? 'unstable' : result.comparison?.identical ? 'ok' : 'completed-with-differences';
 } catch (error) {
   result.stepFailures = stepFailures;
   result.status = 'error';
@@ -360,8 +394,8 @@ function inspectToolchain(cwd, cliEntry, runnerPlugin, expectedVersion) {
   if (cliPackage.version !== expectedVersion || corePackage.version !== expectedVersion || cliPackage.dependencies?.['@tautest/core'] !== expectedVersion) {
     throw new Error(`Tautest/core version mismatch: requested ${expectedVersion}, CLI ${cliPackage.version}, CLI dependency ${cliPackage.dependencies?.['@tautest/core']}, resolved core ${corePackage.version}.`);
   }
-  if (strykerPackage.version !== '10.0.0' || runnerPackage.version !== '10.0.0') {
-    throw new Error(`Stryker/runner mismatch: expected 10.0.0, loaded ${strykerPackage.version}/${runnerPackage.version}.`);
+  if (strykerPackage.version !== strykerVersion || runnerPackage.version !== strykerVersion) {
+    throw new Error(`Stryker/runner mismatch: expected ${strykerVersion}, loaded ${strykerPackage.version}/${runnerPackage.version}.`);
   }
   if (testFramework.version !== projectFramework.version) {
     throw new Error(`${args.runner} version mismatch: Stryker runner loads ${testFramework.version}, project loads ${projectFramework.version}.`);
