@@ -14,7 +14,7 @@ node scripts/oss-adoption-corpus-run.mjs \
   --runner=vitest --package-manager=pnpm --tautest-version=2.0.5 --build --repeat=2
 ```
 
-Use the full base/head SHAs recorded for each PR below. The harness leaves its clone for inspection and exits non-zero if a step fails. For ohash#151 and #195, the unconfigured Tautest run is expected to fail on a bundle-size assertion; their successful mutation rows require an opt-in test exclusion in that clone, as shown for #195 below. The harness alone does not produce those successful rows.
+Use the full base/head SHAs recorded for each PR below. The harness leaves its clone for inspection and exits non-zero if a step fails. For ohash#151 and #195, the unconfigured Tautest run is expected to fail on a bundle-size assertion. Pass `--exclude-from-mutation=test/bundle.test.ts` to apply the documented mutation-only exclusion; the harness writes the Stryker-only Vitest config into the clone and records it as a deviation.
 The default normal-test command is the locally installed `vitest run` or `jest --runInBand` (no registry fallback); pass `--normal-test-script=<package.json-script>` when that commit needs its own test setup.
 Pass `--repeat=2` (up to 5) for a pilot-acceptance check: the harness reruns the normal suite and Tautest, compares each repeated raw mutant status with the first run, and returns `status: unstable` plus a non-zero exit if any mutant or mutate range changes. A single `status: ok` pair remains only a point measurement.
 The fenced commands use Bash `\` continuations; in PowerShell, put each command on one line.
@@ -80,7 +80,10 @@ These are the plan v2 task 7 attempts, chosen by a rule before any result was se
 
 If a repository's normal suite needs its own build or setup step, that step is added and recorded, and the attempt without it stays in the table.
 
-**Addendum after the runs.** The protocol said 2.0.4 for every row. The two luxon rows were rerun with Tautest 2.0.5 after the corpus exposed a Tautest defect, fixed in #23. Their 2.0.4 attempts stay in the ledger, and every other row is on 2.0.4.
+**Addendum after the runs.** Where the runs departed from the text above:
+- **Tautest version.** The protocol said 2.0.4 for every row. The two luxon rows were rerun with Tautest 2.0.5 after the corpus exposed a Tautest defect, fixed in #23. Their 2.0.4 attempts stay in the ledger, and every other row is on 2.0.4.
+- **Harness options.** Three harness options were added after this list was fixed, because the runs needed them: `--env` (luxon's CI timezone), `--stryker-version=9.6.1` (luxon's Babel 7 config) and `--allow-fresh-tautest` (zustand's pnpm `minimumReleaseAge`). Each row that uses one records it, and the attempt that ran without it stays in the ledger.
+- **Evidence path.** Evidence went to `docs/evidence/sprint2/<repo>-<pr>`, not `docs/evidence/<repo>-<pr>`.
 
 ## Failure ledger
 
@@ -277,11 +280,13 @@ The normal run passes this test; Stryker's instrumented copy of `src/utils/diff.
 
 **Temp directory on 2.0.1.** Every Tautest run removed its sandbox and `.stryker-tmp/tautest/` but left an empty `.stryker-tmp/` in the project. A run with a build of the per-run temp-directory change in #12 left nothing behind.
 
-## Next entries needed
+## What the corpus does not cover
 
-- A Jest beta repo (none attempted yet).
-- 2+ more non-owned Vitest repos beyond the unjs org, for diversity beyond one maintainer's style/tooling.
-- A PR that changes more than one production file: every entry so far mutates a single source file (ohash#195's 156/-29 production lines are all in `src/utils/diff.ts`).
+- **Jest:** one measured row (luxon#1787), on Stryker 9.6.1.
+- **Monorepo packages:** none measured. cli-testing-library#50 was rejected, and remeda was excluded because the harness does not support npm workspaces.
+- **Excluded setups:** no Yarn rows (es-toolkit was excluded for Yarn PnP) and no Vitest 5 rows (no released Stryker runner supports it).
+- **Platforms:** every Sprint 2 row ran in a Linux container on Node 22; there are no Windows or macOS rows under this protocol.
+- **Runtime:** plan task 8 (full-file direct Stryker, Stryker incremental mode, median/p90 runtimes) is still open.
 
 ## Rejected candidate: crutchcorn/cli-testing-library#50
 
