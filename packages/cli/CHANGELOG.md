@@ -1,5 +1,12 @@
 # tautest
 
+## 2.0.5
+
+### Patch Changes
+
+- Updated dependencies [a0dbdcf]
+  - @tautest/core@2.0.5
+
 ## 2.0.4
 
 ### Patch Changes
