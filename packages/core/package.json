@@ -1,6 +1,6 @@
 {
   "name": "@tautest/core",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Core engine for Tautest, a PR-focused mutation testing workflow layer on top of StrykerJS",
   "license": "MIT",
   "author": "Tautest contributors",
@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "jiti": "^2.4.2",
+    "json5": "^2.2.3",
     "tinyglobby": "^0.2.16",
     "yaml": "^2.9.0",
     "zod": "^3.24.4"

@@ -1,0 +1,2 @@
+{ "stryker": { "vitestConfigFile": "vitest.stryker-root.config.ts", "concurrency": 7, "timeoutMS": 5000,
+  "userConfig": { "ignorePatterns": ["website"] } } }

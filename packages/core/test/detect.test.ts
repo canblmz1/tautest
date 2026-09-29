@@ -100,6 +100,46 @@ describe('project detector', () => {
     });
   });
 
+  // tsconfig.json is JSON with comments: `tsc --init` writes one full of them, and
+  // crutchcorn/cli-testing-library's root tsconfig has `// TODO enable`. Plain JSON.parse made
+  // Tautest exit 11 before Stryker ran on such projects.
+  it('reads a tsconfig with comments and trailing commas without touching // inside strings', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-tsconfig-jsonc-'));
+    writeFileSync(path.join(root, 'package.json'), JSON.stringify({ devDependencies: { typescript: '^5.0.0' } }));
+    writeFileSync(
+      path.join(root, 'tsconfig.json'),
+      [
+        '{',
+        '  "$schema": "https://json.schemastore.org/tsconfig", // a URL, then a comment',
+        '  /* block comment',
+        '     spanning lines */',
+        '  "compilerOptions": {',
+        '    "baseUrl": "./src/*/not-a-comment",',
+        '    "paths": { "@app/*": ["src/*",], "@odd/*": ["lib/,]\\"/*",] },',
+        '    "noUnusedLocals": false, // TODO enable',
+        '  },',
+        '}'
+      ].join('\n')
+    );
+
+    expect(detectProject(root).tsconfig).toEqual({
+      path: path.join(root, 'tsconfig.json'),
+      baseUrl: './src/*/not-a-comment',
+      paths: { '@app/*': ['src/*'], '@odd/*': ['lib/,]"/*'] }
+    });
+  });
+
+  it('keeps going without path hints when tsconfig cannot be parsed at all', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-tsconfig-broken-'));
+    writeFileSync(path.join(root, 'package.json'), '{}');
+    writeFileSync(path.join(root, 'tsconfig.json'), '{ "compilerOptions": { "baseUrl": ');
+
+    expect(detectProject(root)).toMatchObject({
+      hasTypeScript: true,
+      tsconfig: { path: path.join(root, 'tsconfig.json'), baseUrl: undefined, paths: undefined }
+    });
+  });
+
   it('exposes monorepo detection as warn-level signals', () => {
     expect(detectMonorepoSignals('unused', { workspaces: ['packages/*'] })).toEqual(['package.json workspaces']);
   });

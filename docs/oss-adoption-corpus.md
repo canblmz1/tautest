@@ -2,6 +2,8 @@
 
 Sprint 2, task 5-6 of [docs/oss-adoption-90-day-plan.md](oss-adoption-90-day-plan.md): a frozen, non-owned external-PR corpus comparing Tautest against a normal test run and against direct Stryker scoped to the same `mutate` pattern Tautest computed. Every row below is a real run recorded as-is, including failures; nothing is cherry-picked.
 
+Rejected candidates count as evidence too. crutchcorn/cli-testing-library#50 is not a measured row: its normal test suite fails on its own. A controlled experiment traced its changing mutant statuses to those flaky tests and to machine load, with direct Stryker changing the same way. The setup, raw reports and per-mutant comparison are in [evidence/cli-testing-library-50](evidence/cli-testing-library-50/README.md).
+
 Start a frozen run with `scripts/oss-adoption-corpus-run.mjs`; this example is ohash#196:
 
 ```bash
