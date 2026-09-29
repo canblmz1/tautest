@@ -11,7 +11,7 @@ node scripts/oss-adoption-corpus-run.mjs \
   --repo=https://github.com/unjs/ohash.git --pr=196 \
   --base=2c6e231ccfc229ab90a3e026635984f1ccd89b1d \
   --head=a65d622c4c390061baf408b0ecdf4d5031753c69 \
-  --runner=vitest --package-manager=pnpm --tautest-version=2.0.3 --build --repeat=2
+  --runner=vitest --package-manager=pnpm --tautest-version=2.0.5 --build --repeat=2
 ```
 
 Use the full base/head SHAs recorded for each PR below. The harness leaves its clone for inspection and exits non-zero if a step fails. For ohash#151 and #195, the unconfigured Tautest run is expected to fail on a bundle-size assertion; their successful mutation rows require an opt-in test exclusion in that clone, as shown for #195 below. The harness alone does not produce those successful rows.
@@ -40,14 +40,20 @@ The same `--repeat=2` check on ohash#196 passed both normal suites and reproduce
 
 ## Status
 
-**As of 2026-09-29: 9 PRs measured under the Sprint 2 protocol, from 5 repositories (unjs/ohash, unjs/defu, unjs/destr, radashi-org/radashi, pmndrs/zustand).** Every measured row has retained raw reports. Tautest matched direct Stryker mutant for mutant in all nine, and every repeated run matched the first. Of 13 attempted PRs:
-- **9 measured.**
-- **1 no-op:** a type-only change with no mutants.
-- **1 unstable:** luxon#1790.
-- **1 failed on a Tautest default, now fixed in #23:** luxon#1787.
+**As of 2026-09-29: 10 PRs measured under the Sprint 2 protocol, from 6 repositories** (unjs/ohash, unjs/defu, unjs/destr, radashi-org/radashi, pmndrs/zustand, moment/luxon). Every measured row has retained raw reports. Tautest matched direct Stryker mutant for mutant in all ten, and every repeated run matched the first. Of 13 attempted PRs:
+- **10 measured.**
+- **1 no-op:** zustand#3511, a type-only change with no mutants.
+- **1 unstable:** luxon#1790. A Killed/Timeout race that direct Stryker shows too.
 - **1 rejected:** cli-testing-library#50, whose normal suite is flaky.
 
-See the ledger below. The plan v2 target is at least 10 measured PRs across at least 5 non-owned repositories, at least two outside `unjs`, with a Jest path and a multi-production-file PR. Met: repositories, `unjs` diversity, the multi-file PR. **Still missing: a measured Jest row and the tenth PR.** Plan task 8 is still open too: full-file direct Stryker, Stryker incremental mode, and median/p90 runtimes on the valid corpus.
+See the ledger below. **The plan v2 corpus target is met:** at least 10 measured PRs across at least 5 non-owned repositories, 3 of them outside `unjs`, including a Jest row (luxon#1787) and a multi-production-file PR (radashi#481).
+
+The runs surfaced one Tautest defect: Jest related-test lookup was left on, fixed in 2.0.5 (#23). They also surfaced three setup findings that users can hit:
+- Stryker 10 refuses a project's Babel 7 config.
+- pnpm `minimumReleaseAge` blocks a same-day Tautest release.
+- A project's tests may need its CI environment, such as luxon's `TZ`.
+
+Plan task 8 is still open: full-file direct Stryker, Stryker incremental mode, and median/p90 runtimes on the valid corpus.
 
 ## Sprint 2 attempt list (fixed before any run, 2026-09-29)
 
@@ -74,6 +80,8 @@ These are the plan v2 task 7 attempts, chosen by a rule before any result was se
 
 If a repository's normal suite needs its own build or setup step, that step is added and recorded, and the attempt without it stays in the table.
 
+**Addendum after the runs.** The protocol said 2.0.4 for every row. The two luxon rows were rerun with Tautest 2.0.5 after the corpus exposed a Tautest defect, fixed in #23. Their 2.0.4 attempts stay in the ledger, and every other row is on 2.0.4.
+
 ## Failure ledger
 
 Every attempt under the Sprint 2 protocol, with every earlier attempt of the same PR kept alongside it. Unless a row says otherwise, each attempt used published Tautest 2.0.4 installed in the clone, Stryker 10.0.0, a frozen lockfile, `--repeat=2`, and a disposable `node:22-bookworm` container (Node 22.23.3). A row counts as **measured** only with harness status `ok`: normal suite passing twice, Tautest identical to direct Stryker mutant for mutant, and the repeated Tautest run identical to the first. Base and head SHAs were checked against the GitHub API.
@@ -90,11 +98,11 @@ Every attempt under the Sprint 2 protocol, with every earlier attempt of the sam
 | 8 | radashi-org/radashi#481 | **measured**, two production files | Vitest 2.1.9, pnpm 10.29.3 | 8: 8 killed | | [sprint2/radashi-org-radashi-481](evidence/sprint2/radashi-org-radashi-481) |
 | 9 | pmndrs/zustand#3469 | **measured**, install deviation | Vitest 4.1.0, pnpm 10.18.3 | 11: 7 killed, 4 timeout | Attempt 1: the project's pnpm `minimumReleaseAge: 1440` refused the same-day 2.0.4 release. Attempt 2: `--allow-fresh-tautest` (age waived for tautest and @tautest/core only) | [sprint2/pmndrs-zustand-3469](evidence/sprint2/pmndrs-zustand-3469) |
 | 10 | pmndrs/zustand#3511 | **no-op** | Vitest 4.1.5, pnpm 11.3.0 | none: Stryker generates no mutants for the type-only change at `src/middleware/devtools.ts:99` | Attempt 1 recorded the no-op as an error; the harness now reports it as `no-op` | [sprint2/pmndrs-zustand-3511](evidence/sprint2/pmndrs-zustand-3511) |
-| 11 | moment/luxon#1790 | **unstable** | Jest 29.4.3, npm 10.9.9 | Stryker 9.6.1: first run 4 killed, identical to direct; repeated run: all 4 **Timeout** | Attempt 1: the normal suite needs luxon's CI environment (`TZ=America/New_York`). Attempt 2: Stryker 10 parses with Babel 8, which refuses luxon's Babel 7 config. Attempt 3: `--build --env=TZ=America/New_York,LIMIT_JEST=yes --stryker-version=9.6.1` | [sprint2/moment-luxon-1790](evidence/sprint2/moment-luxon-1790) |
-| 12 | moment/luxon#1787 | **failed**, Tautest-owned, fix in #23 | Jest 29.4.3, npm 10.9.9 | Stryker 9.6.1: `No tests were executed`; Jest's related-test lookup found no test for the changed file. Direct Stryker with its defaults fails the same way and works with `enableFindRelatedTests: false`; a #23 build ran the PR twice with identical results (24 mutants) | Attempts 1 and 2 as for #1790; attempt 3 as for #1790. Rerun under the protocol after #23 is released | [sprint2/moment-luxon-1787](evidence/sprint2/moment-luxon-1787) |
+| 11 | moment/luxon#1790 | **unstable** | Jest 29.4.3, npm 10.9.9 | 4 mutants, 100% every time; on the repeated run all 4 turn from Killed to Timeout (attempts 3 and 5) | Its mutants make a test hang, and whether Jest's test timeout (Killed) or Stryker's mutant timeout (Timeout) fires first varies between runs, **in direct Stryker too** (controlled run in `timeout-experiment.txt`: Tautest T,T; direct T,K; both K after a normal run). Attempts: 1 without luxon's CI timezone; 2 Stryker 10 (Babel 8 refuses luxon's Babel 7 config); 3 and 5 with `--build --env=TZ=America/New_York,LIMIT_JEST=yes --stryker-version=9.6.1` on 2.0.4 and 2.0.5; 4 failed cloning (network) | [sprint2/moment-luxon-1790](evidence/sprint2/moment-luxon-1790) |
+| 12 | moment/luxon#1787 | **measured** (Jest) | Jest 29.4.3, npm 10.9.9 | 24: 16 killed, 7 timeout, 1 no coverage (Tautest 2.0.5, Stryker 9.6.1) | `--build --env=TZ=America/New_York,LIMIT_JEST=yes --stryker-version=9.6.1`. Attempts 1 and 2 as for #1790. Attempt 3 on 2.0.4 stopped with `No tests were executed`: Tautest left Jest's related-test lookup on, and it found no test; fixed in 2.0.5 (#23) | [sprint2/moment-luxon-1787](evidence/sprint2/moment-luxon-1787) |
 | 13 | crutchcorn/cli-testing-library#50 | **rejected** | Vitest 4.1.10, pnpm 11.21.0 | workspace root: same 41 mutants, statuses drift in both tools | the normal suite fails on its own (5 of 23 runs at the head); workspace-root Vitest config, `website` ignore | [cli-testing-library-50](evidence/cli-testing-library-50/README.md) |
 
-**Measured: 9 PRs from 5 repositories**, 2 of them outside `unjs` (radashi, zustand), including a multi-production-file PR (radashi#481). Six rows need no deviation, one needed an install-only waiver, and two use the documented bundle-size exclusion. Not measured yet: a Jest row, and the plan's tenth PR. The rows before this protocol (Windows desktop, local CLI build, raw reports not retained) are superseded by rows 1–5; their history stays in each entry below.
+**Measured: 10 PRs from 6 repositories**, 3 of them outside `unjs` (radashi, zustand, luxon), including a Jest row (luxon#1787) and a multi-production-file PR (radashi#481). Seven rows need no deviation beyond their project's own setup, one needed an install-only waiver, and two use the documented bundle-size exclusion. The rows before this protocol (Windows desktop, local CLI build, raw reports not retained) are superseded by rows 1–5; their history stays in each entry below.
 
 **Reproduce a row** with the harness command at the top of this file plus the options in its row; each evidence directory holds the result row with every recorded setting, the raw Stryker reports, the direct Stryker config and the environment. **Reproduce the rejected row** with the scripts and steps in its evidence log.
 

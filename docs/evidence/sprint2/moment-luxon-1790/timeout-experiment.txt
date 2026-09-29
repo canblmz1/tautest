@@ -1,0 +1,7 @@
+tautest A: exit 0 29s -> Timeout,Timeout,Timeout,Timeout
+tautest B (no normal run in between): exit 0 31s -> Timeout,Timeout,Timeout,Timeout
+direct C: exit 0 35s -> Timeout,Timeout,Timeout,Timeout
+direct D: exit 0 33s -> Killed,Killed,Killed,Killed
+normal jest run: exit 0  (jest cache dir: /tmp/jest_0)
+tautest E (after a normal jest run): exit 0 23s -> Killed,Killed,Killed,Killed
+direct F (after a normal jest run): exit 0 25s -> Killed,Killed,Killed,Killed

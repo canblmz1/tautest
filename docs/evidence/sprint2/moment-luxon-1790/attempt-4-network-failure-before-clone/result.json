@@ -1,0 +1,18 @@
+{
+  "repo": "https://github.com/moment/luxon.git",
+  "pr": "1790",
+  "base": "b6b9d03709085008287ed7f4ce5067f0f4be53f2",
+  "head": "35e83d6fabfcd02758a54e14f5afc34b5b1cf914",
+  "runner": "jest",
+  "tautestVersion": "2.0.5",
+  "strykerVersion": "9.6.1",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-0dTq3A",
+  "setupEnv": {
+    "TZ": "America/New_York",
+    "LIMIT_JEST": "yes"
+  },
+  "stepFailures": [],
+  "status": "error",
+  "error": "Command failed: git clone --quiet https://github.com/moment/luxon.git .\nerror: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.\nerror: 5288 bytes of body are still expected\nfetch-pack: unexpected disconnect while reading sideband packet\nfatal: early EOF\nfatal: fetch-pack: invalid index-pack output\n"
+}

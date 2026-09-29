@@ -1,0 +1,197 @@
+{
+  "repo": "https://github.com/moment/luxon.git",
+  "pr": "1790",
+  "base": "b6b9d03709085008287ed7f4ce5067f0f4be53f2",
+  "head": "35e83d6fabfcd02758a54e14f5afc34b5b1cf914",
+  "runner": "jest",
+  "tautestVersion": "2.0.5",
+  "strykerVersion": "9.6.1",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-vstjFg",
+  "setupEnv": {
+    "TZ": "America/New_York",
+    "LIMIT_JEST": "yes"
+  },
+  "install": {
+    "command": "npm ci",
+    "exitCode": 0,
+    "stdout": "\n> luxon@3.7.2 prepare\n> husky install\n\nhusky - Git hooks installed\n\nadded 1050 packages, and audited 1051 packages in 23s\n\n196 packages are looking for funding\n  run `npm fund` for details\n\n29 vulnerabilities (4 low, 11 moderate, 14 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+    "stderr": "npm warn deprecated rollup-plugin-terser@7.0.2: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser\nnpm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead\nnpm warn deprecated codecov@3.8.3: https://about.codecov.io/blog/codecov-uploader-deprecation-plan/\n",
+    "durationMs": 23000
+  },
+  "installMode": "frozen-lockfile",
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "stdout": "\n> luxon@3.7.2 build\n> babel-node tasks/buildAll.js\n\nBuilding node\nBuilding cjs-browser\nBuilding es6\nBuilding amd\nBuilding global\nBuilding global-es6\nBuilt node\nBuilt es6\nBuilt cjs-browser\nBuilt global\nBuilt global-es6\nBuilt amd\n",
+    "stderr": "Browserslist: caniuse-lite is outdated. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 16081
+  },
+  "installTestTools": {
+    "command": "npm install --save-dev --ignore-scripts tautest@2.0.5 @stryker-mutator/core@9.6.1 @stryker-mutator/jest-runner@9.6.1",
+    "exitCode": 0,
+    "stdout": "\nadded 108 packages, removed 14 packages, changed 49 packages, and audited 1145 packages in 48s\n\n224 packages are looking for funding\n  run `npm fund` for details\n\n25 vulnerabilities (3 low, 10 moderate, 12 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+    "stderr": "",
+    "durationMs": 48031
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.5",
+      "path": "/tmp/tautest-corpus-vstjFg/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.5",
+      "path": "/tmp/tautest-corpus-vstjFg/node_modules/tautest/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "9.6.1",
+      "path": "/tmp/tautest-corpus-vstjFg/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "9.6.1",
+      "path": "/tmp/tautest-corpus-vstjFg/node_modules/@stryker-mutator/jest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "29.4.3",
+      "path": "/tmp/tautest-corpus-vstjFg/node_modules/jest/package.json",
+      "projectPath": "/tmp/tautest-corpus-vstjFg/node_modules/jest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package-lock.json",
+    "package.json"
+  ],
+  "prChangedFiles": [
+    "src/interval.js",
+    "test/interval/info.test.js"
+  ],
+  "normalTests": {
+    "command": "npx --no-install jest --runInBand",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "PASS test/datetime/tokenParse.test.js (6.204 s)\nPASS test/datetime/create.test.js\nPASS test/datetime/toFormat.test.js\nPASS test/datetime/format.test.js\nPASS test/datetime/regexParse.test.js\nPASS test/datetime/math.test.js\nPASS test/duration/format.test.js\nPASS test/datetime/relative.test.js\nPASS test/interval/many.test.js\nPASS test/duration/units.test.js\nPASS test/datetime/zone.test.js\nPASS test/datetime/localeWeek.test.js\nPASS test/interval/parse.test.js\nPASS test/datetime/diff.test.js\nPASS test/datetime/set.test.js\nPASS test/interval/info.test.js\nPASS test/interval/format.test.js\nPASS test/datetime/dst.test.js\nPASS test/info/listers.test.js\nPASS test/duration/math.test.js\nPASS test/impl/english.test.js\nPASS test/datetime/getters.test.js\nPASS test/zones/IANA.test.js\nPASS test/datetime/misc.test.js\nPASS test/duration/create.test.js\nPASS test/duration/parse.test.js\nPASS test/interval/create.test.js\nPASS test/info/zones.test.js\nPASS test/datetime/invalid.test.js\nPASS test/zones/fixedOffset.test.js\nPASS test/duration/equality.test.js\nPASS test/datetime/many.test.js\nPASS test/info/localeWeek.test.js\nPASS test/datetime/reconfigure.test.js\nPASS test/duration/getters.test.js\nPASS test/duration/invalid.test.js\nPASS test/datetime/transform.test.js\nPASS test/datetime/equality.test.js\nPASS test/duration/reconfigure.test.js\nPASS test/duration/customMatrix.test.js\nPASS test/duration/set.test.js\nPASS test/duration/accuracy.test.js\nPASS test/interval/localeWeek.test.js\nPASS test/zones/local.test.js\nPASS test/datetime/info.test.js\nPASS test/duration/typecheck.test.js\nPASS test/datetime/typecheck.test.js\nPASS test/interval/typecheck.test.js\nPASS test/interval/getters.test.js\nPASS test/interval/setter.test.js\nPASS test/zones/invalid.test.js\nPASS test/info/features.test.js\nPASS test/duration/info.test.js\nPASS test/interval/proto.test.js\nPASS test/datetime/proto.test.js\nPASS test/datetime/degrade.test.js\nPASS test/duration/proto.test.js\nPASS test/zones/zoneInterface.test.js\n\nTest Suites: 58 passed, 58 total\nTests:       1209 passed, 1209 total\nSnapshots:   1 passed, 1 total\nTime:        13.589 s\nRan all test suites.\n",
+    "durationMs": 14760
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-vstjFg/node_modules/tautest/dist/index.js run --base b6b9d03709085008287ed7f4ce5067f0f4be53f2 --json",
+    "exitCode": 0,
+    "stdout": "{\n  \"status\": \"passed\",\n  \"threshold\": 60,\n  \"report\": {\n    \"version\": \"1\",\n    \"schemaVersion\": \"1\",\n    \"createdAt\": \"2026-09-29T12:37:33.370Z\",\n    \"summary\": {\n      \"verdict\": \"STRONG\",\n      \"mutationScore\": 100,\n      \"threshold\": 60,\n      \"total\": 4,\n      \"killed\": 4,\n      \"survived\": 0,\n      \"noCoverage\": 0,\n      \"timeout\": 0,\n      \"runtimeError\": 0,\n      \"compileError\": 0,\n      \"ignored\": 0\n    },\n    \"scope\": {\n      \"baseRef\": \"b6b9d03709085008287ed7f4ce5067f0f4be53f2\",\n      \"runner\": \"jest\",\n      \"mutatePatterns\": [\n        \"src/interval.js:288-291\"\n      ],\n      \"mutatedFiles\": [\n        \"src/interval.js\"\n      ]\n    },\n    \"metrics\": {\n      \"changedFileCount\": 2,\n      \"changedSourceFileCount\": 1,\n      \"changedSourceLineCount\": 4,\n      \"mutatedFileCount\": 1,\n      \"mutatePatternCount\": 1,\n      \"partial\": false,\n      \"stageMs\": {\n        \"scopeMs\": 20,\n        \"configMs\": 1,\n        \"mutationMs\": 29761,\n        \"parseMs\": 32,\n        \"reportMs\": 4\n      },\n      \"runtimeMs\": 29761\n    },\n    \"diagnostics\": {\n      \"strykerConfig\": []\n    },\n    \"aiSignals\": {\n      \"promptStyle\": \"agent\",\n      \"author\": {\n        \"author\": \"unknown\",\n        \"confidence\": \"low\",\n        \"reason\": \"No known AI-author environment signal detected.\"\n      },\n      \"hardRules\": [\n        \"Do not change production code.\",\n        \"Only edit or add test files.\",\n        \"Every new test must pass against the original production code.\",\n        \"Every new test must fail against the listed mutant behavior.\",\n        \"Do not weaken existing assertions.\",\n        \"Do not delete, skip, or mark existing tests as todo.\",\n        \"Do not write filler tests such as expect(true).toBe(true).\",\n        \"Do not add new dependencies.\",\n        \"If you find a real production bug, stop and report it instead of silently rewriting implementation.\"\n      ],\n      \"validationLoop\": [\n        \"Run the normal test suite.\",\n        \"Run Tautest again.\",\n        \"Confirm the mutation score increased or stayed strong while the listed mutant was killed.\",\n        \"If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.\"\n      ],\n      \"commands\": [\n        \"tautest run --base b6b9d03709085008287ed7f4ce5067f0f4be53f2\",\n        \"jest\"\n      ]\n    },\n    \"surviving\": [],\n    \"stryker\": {\n      \"schemaVersion\": \"1.0\",\n      \"projectRoot\": \"/tmp/tautest-corpus-vstjFg\",\n      \"frameworkName\": \"StrykerJS\",\n      \"frameworkVersion\": \"9.6.1\",\n      \"thresholds\": {\n        \"break\": 0,\n        \"high\": 0,\n        \"low\": 0\n      },\n      \"config\": {\n        \"testRunner\": \"jest\",\n        \"packageManager\": \"npm\",\n        \"coverageAnalysis\": \"perTest\",\n        \"mutate\": [\n          \"src/interval.js:288-291\"\n        ],\n        \"reporters\": [\n          \"json\"\n        ]\n      }\n    }\n  },\n  \"paths\": {\n    \"report\": \"/tmp/tautest-corpus-vstjFg/.tautest/report.md\",\n    \"json\": \"/tmp/tautest-corpus-vstjFg/.tautest/report.json\",\n    \"prompt\": \"/tmp/tautest-corpus-vstjFg/.tautest/fix-prompt.md\",\n    \"mutationJson\": \"/tmp/tautest-corpus-vstjFg/.tautest/mutation.json\"\n  },\n  \"metrics\": {\n    \"changedFileCount\": 2,\n    \"changedSourceFileCount\": 1,\n    \"changedSourceLineCount\": 4,\n    \"mutatedFileCount\": 1,\n    \"mutatePatternCount\": 1,\n    \"partial\": false,\n    \"stageMs\": {\n      \"scopeMs\": 20,\n      \"configMs\": 1,\n      \"mutationMs\": 29761,\n      \"parseMs\": 32,\n      \"reportMs\": 4\n    },\n    \"runtimeMs\": 29761\n  },\n  \"diagnostics\": {\n    \"strykerConfig\": []\n  }\n}\n",
+    "stderr": "",
+    "durationMs": 30009
+  },
+  "tautestSummary": {
+    "verdict": "STRONG",
+    "mutationScore": 100,
+    "threshold": 60,
+    "total": 4,
+    "killed": 4,
+    "survived": 0,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "tautestChangedFileCount": 2,
+  "mutatePatterns": [
+    "src/interval.js:288-291"
+  ],
+  "tautestMutationReportPath": "/tmp/tautest-corpus-vstjFg/.tautest/corpus-run-1.json",
+  "directStryker": {
+    "command": "npx --no-install stryker run stryker.config.json",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "",
+    "durationMs": 41104
+  },
+  "directStrykerReportPath": "/tmp/tautest-corpus-vstjFg/stryker-direct-report.json",
+  "directStrykerSummary": {
+    "total": 4,
+    "statuses": {
+      "Killed": 4
+    },
+    "framework": {
+      "name": "StrykerJS",
+      "version": "9.6.1"
+    }
+  },
+  "comparison": {
+    "leftCount": 4,
+    "rightCount": 4,
+    "missingFromLeft": [],
+    "missingFromRight": [],
+    "statusDifferences": [],
+    "identical": true
+  },
+  "repeatability": [
+    {
+      "runNumber": 2,
+      "mutationReportPath": "/tmp/tautest-corpus-vstjFg/.tautest/corpus-run-2.json",
+      "normalTestsDurationMs": 7045,
+      "tautestDurationMs": 25180,
+      "summary": {
+        "verdict": "STRONG",
+        "mutationScore": 100,
+        "threshold": 60,
+        "total": 4,
+        "killed": 0,
+        "survived": 0,
+        "noCoverage": 0,
+        "timeout": 4,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "sameMutatePatterns": true,
+      "comparison": {
+        "leftCount": 4,
+        "rightCount": 4,
+        "missingFromLeft": [],
+        "missingFromRight": [],
+        "statusDifferences": [
+          {
+            "identity": "[\"src/interval.js\",\"BooleanLiteral\",288,9,288,22,\"this.isValid\"]",
+            "left": [
+              "Killed"
+            ],
+            "right": [
+              "Timeout"
+            ]
+          },
+          {
+            "identity": "[\"src/interval.js\",\"ConditionalExpression\",288,9,288,22,\"false\"]",
+            "left": [
+              "Killed"
+            ],
+            "right": [
+              "Timeout"
+            ]
+          },
+          {
+            "identity": "[\"src/interval.js\",\"ConditionalExpression\",288,9,288,22,\"true\"]",
+            "left": [
+              "Killed"
+            ],
+            "right": [
+              "Timeout"
+            ]
+          },
+          {
+            "identity": "[\"src/interval.js\",\"BooleanLiteral\",288,31,288,36,\"true\"]",
+            "left": [
+              "Killed"
+            ],
+            "right": [
+              "Timeout"
+            ]
+          }
+        ],
+        "identical": false
+      }
+    }
+  ],
+  "stepFailures": [],
+  "status": "unstable"
+}
