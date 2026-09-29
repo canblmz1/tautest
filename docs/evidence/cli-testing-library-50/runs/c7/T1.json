@@ -1,0 +1,1516 @@
+{
+  "status": "threshold-failed",
+  "threshold": 60,
+  "report": {
+    "version": "1",
+    "schemaVersion": "1",
+    "createdAt": "2026-09-29T06:06:42.120Z",
+    "summary": {
+      "verdict": "WEAK",
+      "mutationScore": 26.82926829268293,
+      "threshold": 60,
+      "total": 41,
+      "killed": 8,
+      "survived": 20,
+      "noCoverage": 10,
+      "timeout": 3,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 0
+    },
+    "scope": {
+      "baseRef": "1caf209a4e42da33201bc006880abe3133ba0d8a",
+      "runner": "vitest",
+      "mutatePatterns": [
+        "packages/cli-testing-library/src/helpers.ts:1-1",
+        "packages/cli-testing-library/src/helpers.ts:7-8",
+        "packages/cli-testing-library/src/helpers.ts:28-29",
+        "packages/cli-testing-library/src/index.ts:2-2",
+        "packages/cli-testing-library/src/index.ts:15-16",
+        "packages/cli-testing-library/src/index.ts:19-19",
+        "packages/cli-testing-library/src/index.ts:23-23",
+        "packages/cli-testing-library/src/jest.ts:4-10",
+        "packages/cli-testing-library/src/test-runner-globals.ts:1-15",
+        "packages/cli-testing-library/src/wait-for.ts:6-6",
+        "packages/cli-testing-library/src/wait-for.ts:85-88",
+        "packages/cli-testing-library/src/wait-for.ts:106-110"
+      ],
+      "mutatedFiles": [
+        "packages/cli-testing-library/src/helpers.ts",
+        "packages/cli-testing-library/src/index.ts",
+        "packages/cli-testing-library/src/jest.ts",
+        "packages/cli-testing-library/src/test-runner-globals.ts",
+        "packages/cli-testing-library/src/types.ts",
+        "packages/cli-testing-library/src/wait-for.ts"
+      ]
+    },
+    "metrics": {
+      "changedFileCount": 15,
+      "changedSourceFileCount": 6,
+      "changedSourceLineCount": 42,
+      "mutatedFileCount": 6,
+      "mutatePatternCount": 12,
+      "partial": false,
+      "stageMs": {
+        "scopeMs": 16,
+        "configMs": 0,
+        "mutationMs": 41195,
+        "parseMs": 2,
+        "reportMs": 2
+      },
+      "runtimeMs": 41195
+    },
+    "diagnostics": {
+      "strykerConfig": []
+    },
+    "aiSignals": {
+      "promptStyle": "agent",
+      "author": {
+        "author": "unknown",
+        "confidence": "low",
+        "reason": "No known AI-author environment signal detected."
+      },
+      "hardRules": [
+        "Do not change production code.",
+        "Only edit or add test files.",
+        "Every new test must pass against the original production code.",
+        "Every new test must fail against the listed mutant behavior.",
+        "Do not weaken existing assertions.",
+        "Do not delete, skip, or mark existing tests as todo.",
+        "Do not write filler tests such as expect(true).toBe(true).",
+        "Do not add new dependencies.",
+        "If you find a real production bug, stop and report it instead of silently rewriting implementation."
+      ],
+      "validationLoop": [
+        "Run the normal test suite.",
+        "Run Tautest again.",
+        "Confirm the mutation score increased or stayed strong while the listed mutant was killed.",
+        "If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code."
+      ],
+      "commands": [
+        "tautest run --base 1caf209a4e42da33201bc006880abe3133ba0d8a",
+        "vitest run"
+      ]
+    },
+    "surviving": [
+      {
+        "id": "0",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 7,
+        "mutatorName": "ConditionalExpression",
+        "original": "(testRunnerGlobals.vi?.isFakeTimers?.() ?? false) ||\n    testRunnerGlobals.jest !== undefined",
+        "replacement": "true",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 41,
+            "line": 8
+          },
+          "start": {
+            "column": 5,
+            "line": 7
+          }
+        },
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "19",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43"
+        ],
+        "coveringTests": [
+          {
+            "id": "0",
+            "name": "findByError should show stderr",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "1",
+            "name": "findByText should find stdout",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "2",
+            "name": "findByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "3",
+            "name": "queryByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "5",
+            "name": "getByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "6",
+            "name": "getByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "7",
+            "name": "fireEvent write works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "8",
+            "name": "FireEvent SigTerm works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "9",
+            "name": "FireEvent SigKill works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "10",
+            "name": "userEvent basic keyboard works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "11",
+            "name": "userEvent basic keyboard works when bound",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "12",
+            "name": "UserEvent.keyboard enter key works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "13",
+            "name": "toBeInTheConsole should pass when something is in console",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "19",
+            "name": "toHaveErrorMessage should fail when something is not in stderr",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "21",
+            "name": "Should expect error codes when intended",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "22",
+            "name": "Should handle argument passing",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "23",
+            "name": "Is able to make terminal input and view in-progress stdout",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "24",
+            "name": "waits callback to not throw an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "25",
+            "name": "can accept an interval of 0",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "26",
+            "name": "can timeout after the given timeout time",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "27",
+            "name": "if no error is thrown then throws a timeout error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "28",
+            "name": "if showOriginalStackTrace on a timeout error then the stack trace does not include this file",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "29",
+            "name": "uses full stack error trace when showOriginalStackTrace present",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "30",
+            "name": "does not change the stack trace if the thrown error is not a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "31",
+            "name": "provides an improved stack trace if the thrown error is a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "33",
+            "name": "should delegate to config.getInstanceError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "34",
+            "name": "when a promise is returned, it does not call the callback again until that promise rejects",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "35",
+            "name": "when a promise is returned, if that is not resolved within the timeout, then waitFor is rejected",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "36",
+            "name": "if you switch from fake timers to real timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "37",
+            "name": "if you switch from real timers to fake timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "38",
+            "name": "the fake timers => real timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "39",
+            "name": "the real timers => fake timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "40",
+            "name": "Should pretty print with ANSI codes properly",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "41",
+            "name": "Should escape ANSI codes properly when sliced too thin",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "42",
+            "name": "Should show proper stderr and stdout output",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "43",
+            "name": "Should render { and } in user keyboard",
+            "filePath": "packages/cli-testing-library/tests/user-keyboard.spec.ts"
+          }
+        ],
+        "insight": {
+          "category": "branch",
+          "missingBehavior": "One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.",
+          "whyThisMatters": "A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.",
+          "suggestedTestIdea": "If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "4",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 7,
+        "mutatorName": "OptionalChaining",
+        "original": "testRunnerGlobals.vi?.isFakeTimers?.()",
+        "replacement": "testRunnerGlobals.vi?.isFakeTimers()",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 44,
+            "line": 7
+          },
+          "start": {
+            "column": 6,
+            "line": 7
+          }
+        },
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "19",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43"
+        ],
+        "coveringTests": [
+          {
+            "id": "0",
+            "name": "findByError should show stderr",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "1",
+            "name": "findByText should find stdout",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "2",
+            "name": "findByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "3",
+            "name": "queryByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "5",
+            "name": "getByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "6",
+            "name": "getByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "7",
+            "name": "fireEvent write works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "8",
+            "name": "FireEvent SigTerm works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "9",
+            "name": "FireEvent SigKill works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "10",
+            "name": "userEvent basic keyboard works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "11",
+            "name": "userEvent basic keyboard works when bound",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "12",
+            "name": "UserEvent.keyboard enter key works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "13",
+            "name": "toBeInTheConsole should pass when something is in console",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "19",
+            "name": "toHaveErrorMessage should fail when something is not in stderr",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "21",
+            "name": "Should expect error codes when intended",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "22",
+            "name": "Should handle argument passing",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "23",
+            "name": "Is able to make terminal input and view in-progress stdout",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "24",
+            "name": "waits callback to not throw an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "25",
+            "name": "can accept an interval of 0",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "26",
+            "name": "can timeout after the given timeout time",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "27",
+            "name": "if no error is thrown then throws a timeout error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "28",
+            "name": "if showOriginalStackTrace on a timeout error then the stack trace does not include this file",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "29",
+            "name": "uses full stack error trace when showOriginalStackTrace present",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "30",
+            "name": "does not change the stack trace if the thrown error is not a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "31",
+            "name": "provides an improved stack trace if the thrown error is a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "33",
+            "name": "should delegate to config.getInstanceError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "34",
+            "name": "when a promise is returned, it does not call the callback again until that promise rejects",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "35",
+            "name": "when a promise is returned, if that is not resolved within the timeout, then waitFor is rejected",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "36",
+            "name": "if you switch from fake timers to real timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "37",
+            "name": "if you switch from real timers to fake timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "38",
+            "name": "the fake timers => real timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "39",
+            "name": "the real timers => fake timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "40",
+            "name": "Should pretty print with ANSI codes properly",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "41",
+            "name": "Should escape ANSI codes properly when sliced too thin",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "42",
+            "name": "Should show proper stderr and stdout output",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "43",
+            "name": "Should render { and } in user keyboard",
+            "filePath": "packages/cli-testing-library/tests/user-keyboard.spec.ts"
+          }
+        ],
+        "insight": {
+          "category": "generic",
+          "missingBehavior": "This mutant survived the current tests. It may point to a missing test, or it may be an equivalent mutant that does not change observable behavior.",
+          "whyThisMatters": "A surviving mutant is not automatically a missing test — confirm the original and replacement code actually disagree on some observable output before treating this as a gap.",
+          "suggestedTestIdea": "If you can find an input where the original and replacement code produce different observable results, add the smallest assertion that passes on the original and fails on the replacement. If no such input exists, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test."
+        }
+      },
+      {
+        "id": "5",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 7,
+        "mutatorName": "OptionalChaining",
+        "original": "testRunnerGlobals.vi?.isFakeTimers",
+        "replacement": "testRunnerGlobals.vi.isFakeTimers",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 40,
+            "line": 7
+          },
+          "start": {
+            "column": 6,
+            "line": 7
+          }
+        },
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "19",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43"
+        ],
+        "coveringTests": [
+          {
+            "id": "0",
+            "name": "findByError should show stderr",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "1",
+            "name": "findByText should find stdout",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "2",
+            "name": "findByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "3",
+            "name": "queryByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "5",
+            "name": "getByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "6",
+            "name": "getByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "7",
+            "name": "fireEvent write works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "8",
+            "name": "FireEvent SigTerm works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "9",
+            "name": "FireEvent SigKill works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "10",
+            "name": "userEvent basic keyboard works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "11",
+            "name": "userEvent basic keyboard works when bound",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "12",
+            "name": "UserEvent.keyboard enter key works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "13",
+            "name": "toBeInTheConsole should pass when something is in console",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "19",
+            "name": "toHaveErrorMessage should fail when something is not in stderr",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "21",
+            "name": "Should expect error codes when intended",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "22",
+            "name": "Should handle argument passing",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "23",
+            "name": "Is able to make terminal input and view in-progress stdout",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "24",
+            "name": "waits callback to not throw an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "25",
+            "name": "can accept an interval of 0",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "26",
+            "name": "can timeout after the given timeout time",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "27",
+            "name": "if no error is thrown then throws a timeout error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "28",
+            "name": "if showOriginalStackTrace on a timeout error then the stack trace does not include this file",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "29",
+            "name": "uses full stack error trace when showOriginalStackTrace present",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "30",
+            "name": "does not change the stack trace if the thrown error is not a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "31",
+            "name": "provides an improved stack trace if the thrown error is a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "33",
+            "name": "should delegate to config.getInstanceError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "34",
+            "name": "when a promise is returned, it does not call the callback again until that promise rejects",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "35",
+            "name": "when a promise is returned, if that is not resolved within the timeout, then waitFor is rejected",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "36",
+            "name": "if you switch from fake timers to real timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "37",
+            "name": "if you switch from real timers to fake timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "38",
+            "name": "the fake timers => real timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "39",
+            "name": "the real timers => fake timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "40",
+            "name": "Should pretty print with ANSI codes properly",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "41",
+            "name": "Should escape ANSI codes properly when sliced too thin",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "42",
+            "name": "Should show proper stderr and stdout output",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "43",
+            "name": "Should render { and } in user keyboard",
+            "filePath": "packages/cli-testing-library/tests/user-keyboard.spec.ts"
+          }
+        ],
+        "insight": {
+          "category": "generic",
+          "missingBehavior": "This mutant survived the current tests. It may point to a missing test, or it may be an equivalent mutant that does not change observable behavior.",
+          "whyThisMatters": "A surviving mutant is not automatically a missing test — confirm the original and replacement code actually disagree on some observable output before treating this as a gap.",
+          "suggestedTestIdea": "If you can find an input where the original and replacement code produce different observable results, add the smallest assertion that passes on the original and fails on the replacement. If no such input exists, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test."
+        }
+      },
+      {
+        "id": "7",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 8,
+        "mutatorName": "ConditionalExpression",
+        "original": "testRunnerGlobals.jest !== undefined",
+        "replacement": "false",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 41,
+            "line": 8
+          },
+          "start": {
+            "column": 5,
+            "line": 8
+          }
+        },
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "19",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43"
+        ],
+        "coveringTests": [
+          {
+            "id": "0",
+            "name": "findByError should show stderr",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "1",
+            "name": "findByText should find stdout",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "2",
+            "name": "findByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "3",
+            "name": "queryByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "5",
+            "name": "getByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "6",
+            "name": "getByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "7",
+            "name": "fireEvent write works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "8",
+            "name": "FireEvent SigTerm works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "9",
+            "name": "FireEvent SigKill works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "10",
+            "name": "userEvent basic keyboard works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "11",
+            "name": "userEvent basic keyboard works when bound",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "12",
+            "name": "UserEvent.keyboard enter key works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "13",
+            "name": "toBeInTheConsole should pass when something is in console",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "19",
+            "name": "toHaveErrorMessage should fail when something is not in stderr",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "21",
+            "name": "Should expect error codes when intended",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "22",
+            "name": "Should handle argument passing",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "23",
+            "name": "Is able to make terminal input and view in-progress stdout",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "24",
+            "name": "waits callback to not throw an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "25",
+            "name": "can accept an interval of 0",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "26",
+            "name": "can timeout after the given timeout time",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "27",
+            "name": "if no error is thrown then throws a timeout error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "28",
+            "name": "if showOriginalStackTrace on a timeout error then the stack trace does not include this file",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "29",
+            "name": "uses full stack error trace when showOriginalStackTrace present",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "30",
+            "name": "does not change the stack trace if the thrown error is not a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "31",
+            "name": "provides an improved stack trace if the thrown error is a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "33",
+            "name": "should delegate to config.getInstanceError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "34",
+            "name": "when a promise is returned, it does not call the callback again until that promise rejects",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "35",
+            "name": "when a promise is returned, if that is not resolved within the timeout, then waitFor is rejected",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "36",
+            "name": "if you switch from fake timers to real timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "37",
+            "name": "if you switch from real timers to fake timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "38",
+            "name": "the fake timers => real timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "39",
+            "name": "the real timers => fake timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "40",
+            "name": "Should pretty print with ANSI codes properly",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "41",
+            "name": "Should escape ANSI codes properly when sliced too thin",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "42",
+            "name": "Should show proper stderr and stdout output",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "43",
+            "name": "Should render { and } in user keyboard",
+            "filePath": "packages/cli-testing-library/tests/user-keyboard.spec.ts"
+          }
+        ],
+        "insight": {
+          "category": "branch",
+          "missingBehavior": "One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.",
+          "whyThisMatters": "A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.",
+          "suggestedTestIdea": "If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "8",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 8,
+        "mutatorName": "EqualityOperator",
+        "original": "testRunnerGlobals.jest !== undefined",
+        "replacement": "testRunnerGlobals.jest === undefined",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 41,
+            "line": 8
+          },
+          "start": {
+            "column": 5,
+            "line": 8
+          }
+        },
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "19",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43"
+        ],
+        "coveringTests": [
+          {
+            "id": "0",
+            "name": "findByError should show stderr",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "1",
+            "name": "findByText should find stdout",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "2",
+            "name": "findByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "3",
+            "name": "queryByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "5",
+            "name": "getByText should find text",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "6",
+            "name": "getByText should throw errors",
+            "filePath": "packages/cli-testing-library/tests/queries.spec.ts"
+          },
+          {
+            "id": "7",
+            "name": "fireEvent write works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "8",
+            "name": "FireEvent SigTerm works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "9",
+            "name": "FireEvent SigKill works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "10",
+            "name": "userEvent basic keyboard works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "11",
+            "name": "userEvent basic keyboard works when bound",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "12",
+            "name": "UserEvent.keyboard enter key works",
+            "filePath": "packages/cli-testing-library/tests/events.spec.ts"
+          },
+          {
+            "id": "13",
+            "name": "toBeInTheConsole should pass when something is in console",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "19",
+            "name": "toHaveErrorMessage should fail when something is not in stderr",
+            "filePath": "packages/cli-testing-library/tests/matchers.spec.ts"
+          },
+          {
+            "id": "21",
+            "name": "Should expect error codes when intended",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "22",
+            "name": "Should handle argument passing",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "23",
+            "name": "Is able to make terminal input and view in-progress stdout",
+            "filePath": "packages/cli-testing-library/tests/render-basics.spec.ts"
+          },
+          {
+            "id": "24",
+            "name": "waits callback to not throw an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "25",
+            "name": "can accept an interval of 0",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "26",
+            "name": "can timeout after the given timeout time",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "27",
+            "name": "if no error is thrown then throws a timeout error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "28",
+            "name": "if showOriginalStackTrace on a timeout error then the stack trace does not include this file",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "29",
+            "name": "uses full stack error trace when showOriginalStackTrace present",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "30",
+            "name": "does not change the stack trace if the thrown error is not a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "31",
+            "name": "provides an improved stack trace if the thrown error is a TestingLibraryElementError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "33",
+            "name": "should delegate to config.getInstanceError",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "34",
+            "name": "when a promise is returned, it does not call the callback again until that promise rejects",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "35",
+            "name": "when a promise is returned, if that is not resolved within the timeout, then waitFor is rejected",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "36",
+            "name": "if you switch from fake timers to real timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "37",
+            "name": "if you switch from real timers to fake timers during the wait period you get an error",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "38",
+            "name": "the fake timers => real timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "39",
+            "name": "the real timers => fake timers error shows the original stack trace when configured to do so",
+            "filePath": "packages/cli-testing-library/tests/wait-for.spec.ts"
+          },
+          {
+            "id": "40",
+            "name": "Should pretty print with ANSI codes properly",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "41",
+            "name": "Should escape ANSI codes properly when sliced too thin",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "42",
+            "name": "Should show proper stderr and stdout output",
+            "filePath": "packages/cli-testing-library/tests/pretty-cli.spec.ts"
+          },
+          {
+            "id": "43",
+            "name": "Should render { and } in user keyboard",
+            "filePath": "packages/cli-testing-library/tests/user-keyboard.spec.ts"
+          }
+        ],
+        "insight": {
+          "category": "boundary",
+          "missingBehavior": "The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.",
+          "whyThisMatters": "A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.",
+          "suggestedTestIdea": "If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "10",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 28,
+        "mutatorName": "ConditionalExpression",
+        "original": "typeof testRunnerGlobals.afterEach === \"function\"",
+        "replacement": "false",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 54,
+            "line": 28
+          },
+          "start": {
+            "column": 5,
+            "line": 28
+          }
+        },
+        "coveredBy": [],
+        "coveringTests": [],
+        "insight": {
+          "category": "branch",
+          "missingBehavior": "One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.",
+          "whyThisMatters": "A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.",
+          "suggestedTestIdea": "If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "9",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 28,
+        "mutatorName": "ConditionalExpression",
+        "original": "typeof testRunnerGlobals.afterEach === \"function\"",
+        "replacement": "true",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 54,
+            "line": 28
+          },
+          "start": {
+            "column": 5,
+            "line": 28
+          }
+        },
+        "coveredBy": [],
+        "coveringTests": [],
+        "insight": {
+          "category": "branch",
+          "missingBehavior": "One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.",
+          "whyThisMatters": "A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.",
+          "suggestedTestIdea": "If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "11",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 28,
+        "mutatorName": "EqualityOperator",
+        "original": "typeof testRunnerGlobals.afterEach === \"function\"",
+        "replacement": "typeof testRunnerGlobals.afterEach !== \"function\"",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 54,
+            "line": 28
+          },
+          "start": {
+            "column": 5,
+            "line": 28
+          }
+        },
+        "coveredBy": [],
+        "coveringTests": [],
+        "insight": {
+          "category": "boundary",
+          "missingBehavior": "The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.",
+          "whyThisMatters": "A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.",
+          "suggestedTestIdea": "If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant."
+        }
+      },
+      {
+        "id": "12",
+        "filePath": "packages/cli-testing-library/src/helpers.ts",
+        "line": 28,
+        "mutatorName": "StringLiteral",
+        "original": "\"function\"",
+        "replacement": "\"\"",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 54,
+            "line": 28
+          },
+          "start": {
+            "column": 44,
+            "line": 28
+          }
+        },
+        "coveredBy": [],
+        "coveringTests": [],
+        "insight": {
+          "category": "generic",
+          "missingBehavior": "This mutant survived the current tests. It may point to a missing test, or it may be an equivalent mutant that does not change observable behavior.",
+          "whyThisMatters": "A surviving mutant is not automatically a missing test — confirm the original and replacement code actually disagree on some observable output before treating this as a gap.",
+          "suggestedTestIdea": "If you can find an input where the original and replacement code produce different observable results, add the smallest assertion that passes on the original and fails on the replacement. If no such input exists, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test."
+        }
+      },
+      {
+        "id": "14",
+        "filePath": "packages/cli-testing-library/src/index.ts",
+        "line": 15,
+        "mutatorName": "ConditionalExpression",
+        "original": "typeof testRunnerGlobals.afterEach === \"function\"",
+        "replacement": "false",
+        "status": "Survived",
+        "location": {
+          "end": {
+            "column": 56,
+            "line": 15
+          },
+          "start": {
+            "column": 7,
+            "line": 15
+          }
+        },
+        "coveredBy": [],
+        "coveringTests": [],
+        "insight": {
+          "category": "branch",
+          "missingBehavior": "One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.",
+          "whyThisMatters": "A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.",
+          "suggestedTestIdea": "If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant."
+        }
+      }
+    ],
+    "stryker": {
+      "schemaVersion": "1.0",
+      "projectRoot": "/work/repo",
+      "frameworkName": "StrykerJS",
+      "frameworkVersion": "10.0.0",
+      "thresholds": {
+        "break": 0,
+        "high": 0,
+        "low": 0
+      },
+      "config": {
+        "testRunner": "vitest",
+        "packageManager": "pnpm",
+        "coverageAnalysis": "perTest",
+        "mutate": [
+          "packages/cli-testing-library/src/helpers.ts:1-1",
+          "packages/cli-testing-library/src/helpers.ts:7-8",
+          "packages/cli-testing-library/src/helpers.ts:28-29",
+          "packages/cli-testing-library/src/index.ts:2-2",
+          "packages/cli-testing-library/src/index.ts:15-16",
+          "packages/cli-testing-library/src/index.ts:19-19",
+          "packages/cli-testing-library/src/index.ts:23-23",
+          "packages/cli-testing-library/src/jest.ts:4-10",
+          "packages/cli-testing-library/src/test-runner-globals.ts:1-15",
+          "packages/cli-testing-library/src/wait-for.ts:6-6",
+          "packages/cli-testing-library/src/wait-for.ts:85-88",
+          "packages/cli-testing-library/src/wait-for.ts:106-110"
+        ],
+        "reporters": [
+          "json"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "report": "/work/repo/.tautest/report.md",
+    "json": "/work/repo/.tautest/report.json",
+    "prompt": "/work/repo/.tautest/fix-prompt.md",
+    "mutationJson": "/work/repo/.tautest/mutation.json"
+  },
+  "metrics": {
+    "changedFileCount": 15,
+    "changedSourceFileCount": 6,
+    "changedSourceLineCount": 42,
+    "mutatedFileCount": 6,
+    "mutatePatternCount": 12,
+    "partial": false,
+    "stageMs": {
+      "scopeMs": 16,
+      "configMs": 0,
+      "mutationMs": 41195,
+      "parseMs": 2,
+      "reportMs": 2
+    },
+    "runtimeMs": 41195
+  },
+  "diagnostics": {
+    "strykerConfig": []
+  }
+}

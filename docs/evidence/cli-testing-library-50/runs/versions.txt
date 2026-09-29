@@ -1,0 +1,9 @@
+os: Debian GNU/Linux 12 (bookworm) 6.6.87.2-microsoft-standard-WSL2
+node: v22.23.3  pnpm: 11.21.0  cpus: 8
+tautest (candidate tarball) 2.0.2 /work/repo/node_modules/.pnpm/tautest@file+..+cand+tautest-2.0.2.tgz_@stryker-mutator+api@10.0.0_@stryker-mutator+cor_3b6b91dd9b7c0ef6958af8157f69917c/node_modules/tautest
+@tautest/core (candidate tarball, JSONC fix present: 2) /work/repo/node_modules/.pnpm/@tautest+core@file+..+cand+tautest-core-2.0.2.tgz_@stryker-mutator+api@10.0.0_@stryker-_3f34a0b0349ec981f8dd88fd1c4fd381/node_modules/@tautest/core
+@stryker-mutator/core 10.0.0 /work/repo/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@24.13.3/node_modules/@stryker-mutator/core
+@stryker-mutator/vitest-runner 10.0.0 /work/repo/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@24.13.3__vitest@4.1.10/node_modules/@stryker-mutator/vitest-runner
+vitest 4.1.10 /work/repo/node_modules/.pnpm/vitest@4.1.10_@types+node@24.13.3_@vitest+coverage-istanbul@4.1.10_vite@8.2.1_@types+no_7a0ecf644c5005fe3f8642229b07ad3d/node_modules/vitest
+Stryker as seen from core: /work/repo/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@24.13.3/node_modules/@stryker-mutator/core
+runner as seen from core: /work/repo/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@24.13.3__vitest@4.1.10/node_modules/@stryker-mutator/vitest-runner

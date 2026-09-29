@@ -1,0 +1,7 @@
+candidate commit 93819fb (fix/tsconfig-jsonc, PR #16), packed and installed with an @tautest/core override
+tautest-2.0.2.tgz      sha256 71336785f392913997d6a211c095819c1cdc7b73cf487e8d9c4134be67dc1c77
+tautest-core-2.0.2.tgz sha256 15fe27bd9e7eecd781a285338da319007feb10eb03d63cc25ab012e310464ca9
+cli:   /work/repo/node_modules/.pnpm/tautest@file+..+cand2+tautest-2.0.2.tgz_@stryker-mutator+api@10.0.0_@stryker-mutator+co_028188cf0a71b1578829c7d6ebb05f92/node_modules/tautest
+core:  /work/repo/node_modules/.pnpm/@tautest+core@file+..+cand2+tautest-core-2.0.2.tgz_@stryker-mutator+api@10.0.0_@stryker_502b5b2742b736102e7d7f2f362a52d2/node_modules/@tautest/core (dist uses JSON5.parse)
+json5: /work/repo/node_modules/.pnpm/json5@2.2.3/node_modules/json5
+Stryker core, vitest-runner and Vitest as in ../versions.txt (10.0.0, 10.0.0, 4.1.10 from the clone)
