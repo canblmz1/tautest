@@ -1,14 +1,12 @@
 # GitHub Action
 
-Tautest ships a JavaScript GitHub Action from this monorepo at `packages/github-action`.
+The Tautest action runs `tautest run` on a pull request. It then posts a sticky comment, writes a job summary and uploads the reports as an artifact. It ships from this repository at `packages/github-action`.
 
-Use the monorepo action path:
+The action runs the Tautest CLI installed in your project (`node_modules/.bin/tautest`). Install `tautest` and Stryker as dev dependencies first, as in the [Quickstart](QUICKSTART.md), so your lockfile pins their versions. Without a local install, the action falls back to `npm exec`, `yarn exec`, `pnpm exec` or `bunx`, and with npm or Bun that can download whatever Tautest version is newest.
 
-```yaml
-uses: canblmz1/tautest/packages/github-action@v1
-```
+## Advisory Workflow
 
-## Workflow Example
+Start here. A low score is reported but does not fail the job:
 
 ```yaml
 name: Tautest
@@ -32,44 +30,56 @@ jobs:
         with:
           node-version: 22
 
+      # Reads the pnpm version from "packageManager" in package.json; without that field, add `with: version`.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
 
-      - uses: canblmz1/tautest/packages/github-action@v1
+      # tautest@2.0.5. Pin the commit of the release you install; the old `v1` tag is the 1.x action.
+      - uses: canblmz1/tautest/packages/github-action@df9d2e1bf5c02970149d97ed11e6d6fa4b152208
         with:
-          base: ${{ github.base_ref }}
-          threshold: 60
-          max-changed-lines: 25
-          comment: changes
-          annotations: survivors
-          cache: true
+          fail-on-threshold: false
 ```
 
-`fetch-depth: 0` is required because Tautest compares the pull request with the base ref.
+- **Git history.** `fetch-depth: 0` is required: Tautest diffs the pull request against its base.
+- **Base.** The action uses the pull request's base commit unless you set `base`.
+- **Build step.** If your tests need one, run it before the Tautest step. Set any environment variable your tests need, such as `TZ`, on the job or step.
+- **Advisory mode.** `fail-on-threshold: false` changes only the threshold outcome (exit code `1`). A configuration, Stryker or git error still fails the job, because the score would be meaningless.
+- **Version pin.** Pin the action to the commit tagged with the Tautest release you installed, as above. The `v1` tag still points at the 1.x action from May 2026. That action runs on Node 20 and has no `annotations` input.
 
-`pull-requests: write` is required for sticky pull request comments. If the token cannot write comments, mutation testing and artifacts can still run, but the comment step will warn instead of updating the PR.
+## Pull Requests From Forks
+
+A `pull_request` run from a fork gets a read-only token, so the sticky comment cannot be written. The action logs a warning and carries on. The same report is in the job summary and in the `tautest-report` artifact.
+
+Do not switch to `pull_request_target` to get the comment back. That trigger runs with a write token, and this job executes the pull request's code: Stryker runs its tests.
+
+## Turning On The Gate
+
+Keep the job advisory until all of these hold:
+
+- the normal suite passes repeatedly on the unmodified code;
+- repeated Tautest runs on the same commit give the same mutate scope and mutant statuses;
+- the team has reviewed real pull requests and knows which survivors it treats as real gaps and which as equivalent mutants.
+
+Then drop `fail-on-threshold: false`, or set it to `true`, to fail the job when the score is below `threshold`. If mutant statuses change between runs, see [Mutant Statuses Change Between Runs](TROUBLESHOOTING.md#mutant-statuses-change-between-runs) first.
 
 ## Inputs
 
 | Input | Default | Description |
 | --- | --- | --- |
 | `base` | PR base SHA | Base ref or SHA passed to `tautest run --base`. |
-| `threshold` | `60` | Minimum mutation score expected by CI. |
+| `threshold` | `60` | Minimum mutation score. |
+| `fail-on-threshold` | `true` | Fails the job when the score is below `threshold`. Start with `false`. |
 | `max-files` | empty | Optional changed source file budget passed to `tautest run --max-files`. |
 | `max-changed-lines` | empty | Optional changed production line budget passed to `tautest run --max-changed-lines`. |
-| `fail-on-threshold` | `true` | Fails the job when the score is below threshold. |
-| `comment` | `changes` | PR comment mode: `always`, `changes`, or `never`. |
+| `comment` | `changes` | Sticky PR comment mode: `always`, `changes`, or `never`. |
 | `annotations` | `never` | Inline annotation mode: `never` or `survivors`. |
 | `config` | empty | Optional path to `tautest.config.ts/js/mjs/json`. |
-| `prompt-style` | config default | Optional fix-prompt style: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`. |
+| `prompt-style` | config default | Fix-prompt style: `agent`, `human`, `claude-code`, `cursor`, `codex`, or `opencode`. |
 | `working-directory` | `.` | Project directory where Tautest runs. |
 | `package-manager` | `auto` | `auto`, `npm`, `pnpm`, `yarn`, or `bun`. |
-| `install` | `false` | Runs dependency install before Tautest. Most workflows should install dependencies explicitly before invoking the action. |
-| `cache` | `true` | Restores and saves `.tautest/stryker-incremental.json` when available. |
+| `install` | `false` | Runs a dependency install before Tautest. Most workflows should install dependencies in their own step. |
+| `cache` | `true` | Restores and saves `.tautest/stryker-incremental.json`; see [Cache](#cache). |
 | `github-token` | `${{ github.token }}` | Token used for sticky PR comments. |
 
 ## Outputs
@@ -89,51 +99,34 @@ jobs:
 | `runtime-ms` | Tautest runtime in milliseconds. |
 | `changed-source-lines` | Changed production source lines considered by Tautest. |
 
-## Advisory First Week
-
-A surviving mutant is not automatically a missing test; it can be an equivalent mutant that never changes observable behavior. Before a new team trusts Tautest as a hard merge gate, run it in advisory mode for about a week so reviewers can see what a normal ratio of real-versus-equivalent survivors looks like on their own codebase:
-
-```yaml
-- uses: canblmz1/tautest/packages/github-action@v1
-  with:
-    base: ${{ github.base_ref }}
-    threshold: 60
-    fail-on-threshold: false
-    comment: changes
-```
-
-`fail-on-threshold: false` still runs mutation testing, still posts the sticky comment and job summary, and still uploads reports; it only stops the action from failing the job on a low score. Once a team has reviewed a week's worth of comments and is comfortable with the survivor patterns Tautest surfaces on real PRs, switch back to the default `fail-on-threshold: true` (or drop the input) to enforce it.
-
-This does not change the threshold math or exit codes documented above. It only changes whether that exit code fails the job.
-
 ## CI Budgets
 
-Use `max-files` and `max-changed-lines` to keep CI predictable on large PRs:
+Use `max-files` and `max-changed-lines` to keep CI predictable on large pull requests:
 
 ```yaml
 with:
-  threshold: 60
+  fail-on-threshold: false
   max-files: 5
   max-changed-lines: 25
 ```
 
-When a budget is exceeded, Tautest stops before StrykerJS starts and the action fails with CLI diagnostics. Developers can run `tautest run --dry-run` locally to inspect the changed mutation scope.
+When a budget is exceeded, Tautest stops before StrykerJS starts and the job fails with a diagnostic. Run `tautest run --dry-run` locally to see the mutation scope.
 
-## Workspace Projects
+## Monorepo Packages
 
-For pnpm or `package.json` workspaces, start with the CLI planner in a separate job:
+Run the action from the package directory with `working-directory`. Workspace mode is beta. To plan which packages a pull request touches, run the CLI planner in a separate job:
 
 ```yaml
 - run: pnpm exec tautest run --workspace --dry-run --json --base ${{ github.event.pull_request.base.sha }} > workspace-plan.json
 ```
 
-Small workspaces can run the internal sequential beta directly:
+Small workspaces can run the sequential beta directly:
 
 ```yaml
 - run: pnpm exec tautest run --workspace --json --base ${{ github.event.pull_request.base.sha }}
 ```
 
-Large workspaces should use the dry-run JSON to build a matrix and then invoke this action with `working-directory: ${{ matrix.packagePath }}`. Sequential workspace execution is deterministic but can be slower when many packages are selected.
+Large workspaces can build a job matrix from the dry-run JSON and invoke this action with `working-directory: ${{ matrix.packagePath }}`. See [Monorepo](TROUBLESHOOTING.md#monorepo) for the tsconfig layouts Stryker cannot handle.
 
 ## PR Comments
 
@@ -143,36 +136,32 @@ The action writes a sticky PR comment with this marker:
 <!-- tautest:report v=1 -->
 ```
 
-If a previous Tautest comment exists, it is updated. Otherwise, a new comment is created.
-
-The comment is formatted as a patch mutation quality gate. It shows:
+If a previous Tautest comment exists, it is updated. Otherwise, a new comment is created. The comment shows:
 
 - `Tautest Patch Mutation Gate: <verdict>`
-- patch mutation score and threshold
+- the mutation score and threshold
 - killed, survived, and no-coverage counts
-- a one-line advisory when the threshold passed but survivors or no-coverage mutants still need review
-- top surviving mutants
-- likely missing behavior when the JSON report includes mutant insight data
+- a one-line note when the threshold passed but survivors or uncovered mutants still need review
+- the top surviving mutants
+- likely missing behavior, when the JSON report includes mutant insight data
 - a collapsible fix prompt
-
-Fork PRs may not have `pull-requests: write` permission. In that case the action warns and continues; mutation testing and artifacts still work.
 
 ## Inline Annotations
 
-Set `annotations: survivors` to emit GitHub workflow annotations for the top surviving mutants. Each annotation points to the mutant file and line when GitHub can map the path, and includes the original expression, replacement, and likely missing behavior.
+Set `annotations: survivors` to emit GitHub workflow annotations for the top surviving mutants. Each annotation points to the mutant's file and line when GitHub can map the path. It includes the original expression, the replacement and the likely missing behavior.
 
-Annotations are intentionally separate from sticky comments. Keep `comment: never` for quiet PR threads while still surfacing file-level mutation feedback in the Checks UI.
+Annotations are separate from the sticky comment. With `comment: never`, the pull request thread stays quiet while the Checks UI still shows the survivors.
 
 ## Job Summary
 
-When `GITHUB_STEP_SUMMARY` is available, the action writes a GitHub job summary with:
+When `GITHUB_STEP_SUMMARY` is available, the action writes a job summary with:
 
-- verdict and mutation score
-- killed, survived, and no-coverage counts
-- top surviving mutants
-- generated report file paths
+- the verdict and mutation score;
+- killed, survived and no-coverage counts;
+- the top surviving mutants;
+- the generated report file paths.
 
-This summary is useful when PR comments are disabled, unavailable for fork PRs, or hidden in a busy pull request discussion.
+It is the report for fork pull requests, and for runs where comments are off.
 
 ## Artifacts
 
@@ -185,33 +174,37 @@ The action uploads a `tautest-report` artifact when files are present under `.ta
 
 ## Cache
 
-When `cache: true`, the action restores and saves:
+With `cache: true`, the default, the action restores and saves `.tautest/stryker-incremental.json`. Tautest does not write that file by default: Stryker's incremental mode is off (`stryker.incremental: false`). The cache therefore does nothing unless you configure both settings:
 
-```text
-.tautest/stryker-incremental.json
+```ts
+export default defineConfig({
+  stryker: {
+    incremental: true,
+    incrementalFile: '.tautest/stryker-incremental.json'
+  }
+});
 ```
 
-The v1 source PR smoke validated graceful cache handling. A real cache hit was not proven before v1, so better cache observability is tracked as follow-up work.
+Even then, expect little reuse on a typical pull request. Stryker reuses a mutant's result only if its covering tests are unchanged. The Vitest runner reports no test locations, so a change anywhere in a test file counts as a change to every test in it.
 
 ## Security Notes
 
-- Do not log `github-token` or secrets. The action masks the token before use.
-- PR comments sanitize dynamic markdown from reports and prompts.
-- Prefer `pull_request` with `contents: read` and `pull-requests: write`.
-- Avoid `pull_request_target` unless you fully understand the risk.
-- Running StrykerJS on pull request code is code execution by design.
+- The action masks `github-token` before use. Do not log it or other secrets.
+- PR comments sanitize dynamic Markdown from reports and prompts.
+- Use `pull_request` with `contents: read` and `pull-requests: write`.
+- Avoid `pull_request_target`: running StrykerJS on pull request code is code execution by design.
 
 ## Troubleshooting
 
-- If no changed production files are found, confirm the PR changes source files and that `base` points to the expected branch or SHA.
-- If Git diff fails, confirm `actions/checkout` uses `fetch-depth: 0`.
-- If no sticky comment appears, confirm `pull-requests: write` is present and the PR token has permission to write comments.
-- If the action cannot find the CLI, make sure dependencies are installed and `pnpm build` completed before the action step.
-- If mutation testing is slow, start with smaller PRs and review StrykerJS runner configuration.
+- **No changed production files.** Confirm the pull request changes source files and that `base` points to the expected branch or SHA.
+- **Git diff fails.** Confirm `actions/checkout` uses `fetch-depth: 0`.
+- **No sticky comment.** Confirm `pull-requests: write` is granted and the pull request is not from a fork.
+- **The action cannot find the CLI.** Install `tautest` as a dev dependency and run your package manager's install before the action step.
+- **Mutation testing is slow.** Keep pull requests small, set `max-changed-lines`, and see [Slow Test Suite](TROUBLESHOOTING.md#slow-test-suite).
 
 ## Local Development
 
-From this monorepo:
+From this repository:
 
 ```bash
 pnpm install
@@ -220,4 +213,4 @@ pnpm --filter @tautest/github-action typecheck
 pnpm --filter @tautest/github-action build
 ```
 
-The bundled entrypoint is `packages/github-action/dist/index.js`, which is the file referenced by `action.yml`.
+The bundled entrypoint is `packages/github-action/dist/index.js`, which is the file `action.yml` references.
