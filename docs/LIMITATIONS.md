@@ -18,7 +18,7 @@ These limitations are intentional product boundaries for the current release lin
 - The GitHub Action runs on the Node 24 action runtime.
 - Tautest uses the Stryker installed in the project and supports `@stryker-mutator/core` 9.6.1 and 10.x.
 - Vitest 5 cannot be used yet: `@stryker-mutator/vitest-runner` 10.0.0 and older run no tests for mutants on it ([stryker-mutator/stryker-js#6210](https://github.com/stryker-mutator/stryker-js/issues/6210); tracked fix in [stryker-js#6214](https://github.com/stryker-mutator/stryker-js/pull/6214), unreleased). `tautest doctor` flags that combination and `tautest run` refuses to score it; keep `vitest` on `^4` until the runner supports Vitest 5.
-- Cache hit was not proven in the v1 smoke, but graceful cache handling was validated.
+- The GitHub Action's `cache` input has no effect with the default config: Tautest runs Stryker with `incremental: false`, so no incremental file is written and no cache hit is expected. A hit needs `stryker.incremental: true` and `stryker.incrementalFile: '.tautest/stryker-incremental.json'`, and even then a change anywhere in a test file invalidates every cached result those tests cover. See [Cache](GITHUB_ACTION.md#cache). Graceful cache handling was validated in the v1 smoke.
 
 ## Support tier summary
 
