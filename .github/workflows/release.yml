@@ -100,42 +100,15 @@ jobs:
           cd "$smoke_dir"
           node --input-type=module -e "import('@tautest/core').then((m) => { if (!m.buildMarkdownReport) throw new Error('missing core export'); })"
 
-      - name: Validate npm publish availability
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cli_version="$(node -p "require('./packages/cli/package.json').version")"
-          core_version="$(node -p "require('./packages/core/package.json').version")"
-
-          if [ "$cli_version" != "$core_version" ]; then
-            echo "tautest@$cli_version and @tautest/core@$core_version must stay version-aligned." >&2
-            exit 1
-          fi
-
-          cli_exists=false
-          core_exists=false
-
-          if npm view "tautest@$cli_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
-            cli_exists=true
-          fi
-
-          if npm view "@tautest/core@$core_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
-            core_exists=true
-          fi
-
-          if [ "$cli_exists" = true ] && [ "$core_exists" = true ]; then
-            echo "tautest@$cli_version and @tautest/core@$core_version already exist on npm."
-          elif [ "$cli_exists" = true ] || [ "$core_exists" = true ]; then
-            echo "Partial npm publish detected for $cli_version; refusing to continue automatically." >&2
-            echo "tautest exists: $cli_exists" >&2
-            echo "@tautest/core exists: $core_exists" >&2
-            exit 1
-          else
-            echo "tautest@$cli_version and @tautest/core@$core_version are available for publish."
-          fi
+      # Decides what to do without publishing anything: scripts/release-decision.mjs only reads the
+      # registry. It skips the Changesets step when no changeset is pending and both current versions
+      # are already on npm, and fails when only one is, or when the registry cannot be queried.
+      - name: Decide release action
+        id: decide
+        run: node scripts/release-decision.mjs
 
       - name: Create release PR or publish packages
+        if: steps.decide.outputs.action == 'changesets'
         uses: changesets/action@v1
         with:
           title: "chore: version packages"

@@ -75,4 +75,6 @@ pnpm changeset
 
 The Release workflow creates a version PR on `main` when changesets are present. Merging that version PR updates package versions and changelogs, then the same workflow publishes with `NPM_TOKEN`.
 
+A push to `main` that carries no changeset and whose `tautest` and `@tautest/core` versions are both already on npm skips the Changesets step and finishes successfully. The workflow fails instead of guessing when only one of the two versions is on npm or when the registry answers with anything but a 200 or a 404. The decision lives in `scripts/release-decision.mjs`, which only reads the registry and is covered by `scripts/release-decision.test.mjs`.
+
 Manual tag publishing is kept as a guarded fallback. Tags must match the already committed versions in `packages/core/package.json` and `packages/cli/package.json`; do not tag a version before the version PR is merged.
