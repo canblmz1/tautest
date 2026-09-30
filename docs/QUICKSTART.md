@@ -27,13 +27,29 @@ pnpm exec tautest init --yes --runner vitest --no-install
 
 `init` creates `tautest.config.ts` and adds `.tautest/` to `.gitignore`. It would also add missing Stryker packages to `package.json`, but the first command already installed them.
 
+Check which Tautest release pnpm installed, and compare it with the latest one:
+
+```bash
+pnpm exec tautest --version
+pnpm view tautest version
+```
+
+The two versions should match. pnpm skips releases younger than its `minimumReleaseAge` (one day by default since pnpm 11; a project can set its own), so an unpinned install right after a Tautest release picks the previous release. To install a specific release, pin it and check again:
+
+```bash
+pnpm add -D tautest@<version>
+pnpm exec tautest --version
+```
+
+With pnpm 11's default window, pnpm accepts a pinned release that is still inside it and records an exemption for it in `pnpm-workspace.yaml`. If the project sets `minimumReleaseAge` itself, pnpm refuses such a release: wait until the window has passed, or exempt only `tautest` and `@tautest/core` with `minimumReleaseAgeExclude`.
+
 ## 3. Check The Setup
 
 ```bash
 pnpm exec tautest doctor
 ```
 
-Each check prints `OK`, `WARN` or `ERR`, and the last line is `Result: <n> error(s), <n> warning(s)`. Fix every error before going on. Read each warning, together with its suggestion line: some are harmless for your project, but a warning about the test runner, Vitest 5, git history or the tsconfig predicts a failed or misleading run.
+Each check prints `OK`, `WARN` or `ERR`, and the last line is `Result: <n> error(s), <n> warning(s)`. Fix every `ERR` before going on, for example an undetected test runner, or Vitest 5 with `@stryker-mutator/vitest-runner` 10.0.0 or older, which Tautest cannot score. Read each `WARN`, together with its suggestion line: some are harmless for your project, but a warning about git history or the tsconfig predicts a failed or misleading run.
 
 ## 4. Run On Your Change
 
@@ -54,9 +70,12 @@ Stages: scope 45ms | config 3ms | mutation 13.9s | parse 12ms | report 8ms
 Top surviving mutants:
 - src/discount.ts:2 EqualityOperator - ...
 
-Fix prompt: .tautest/fix-prompt.md
-Report: .tautest/report.md
+Fix prompt: <project>/.tautest/fix-prompt.md
+Report: <project>/.tautest/report.md
+JSON: <project>/.tautest/report.json
 ```
+
+The three paths at the end are absolute; `<project>` stands for your project directory.
 
 The verdict is `STRONG` at 80% or more, `MIXED` at 60% or more and `WEAK` below that. The exit code is:
 
