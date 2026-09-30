@@ -10,7 +10,7 @@
     "coverage": "pnpm -r --if-present test:coverage",
     "lint": "pnpm -r --if-present lint",
     "release": "changeset publish",
-    "test": "pnpm -r test && node --test scripts/oss-adoption-corpus-compare.test.mjs",
+    "test": "pnpm -r test && node --test scripts/oss-adoption-corpus-compare.test.mjs scripts/release-decision.test.mjs",
     "typecheck": "pnpm -r typecheck",
     "test:example": "vitest run --config examples/vitest-basic/vitest.config.ts",
     "prototype": "tsx scripts/prototype-run.ts",
