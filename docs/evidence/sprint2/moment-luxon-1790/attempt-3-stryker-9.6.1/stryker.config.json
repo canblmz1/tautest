@@ -1,0 +1,79 @@
+{
+  "allowConsoleColors": false,
+  "cleanTempDir": "always",
+  "coverageAnalysis": "perTest",
+  "disableTypeChecks": true,
+  "dryRunTimeoutMinutes": 2,
+  "incremental": false,
+  "jsonReporter": {
+    "fileName": "stryker-direct-report.json"
+  },
+  "fileLogLevel": "off",
+  "logLevel": "error",
+  "mutate": [
+    "src/interval.js:288-291"
+  ],
+  "reporters": [
+    "json"
+  ],
+  "tempDirName": ".stryker-tmp-direct",
+  "testRunner": "jest",
+  "thresholds": {
+    "break": 0,
+    "high": 0,
+    "low": 0
+  },
+  "timeoutMS": 5000,
+  "tsconfigFile": "tsconfig.json",
+  "packageManager": "npm",
+  "plugins": [
+    "@stryker-mutator/jest-runner"
+  ],
+  "jest": {
+    "configFile": "jest.config.js",
+    "projectType": "custom",
+    "enableFindRelatedTests": true
+  },
+  "checkers": [],
+  "checkerNodeArgs": [],
+  "commandRunner": {
+    "command": "npm test"
+  },
+  "clearTextReporter": {
+    "allowColor": true,
+    "allowEmojis": false,
+    "logTests": true,
+    "maxTestsToLog": 3,
+    "reportTests": true,
+    "reportMutants": true,
+    "reportScoreTable": true,
+    "skipFull": false
+  },
+  "dryRunOnly": false,
+  "eventReporter": {
+    "baseDir": "reports/mutation/events"
+  },
+  "ignorePatterns": [],
+  "ignoreStatic": false,
+  "incrementalFile": "reports/stryker-incremental.json",
+  "force": false,
+  "inPlace": false,
+  "maxConcurrentTestRunners": 9007199254740991,
+  "maxTestRunnerReuse": 0,
+  "mutator": {
+    "plugins": null,
+    "excludedMutations": []
+  },
+  "appendPlugins": [],
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "symlinkNodeModules": true,
+  "testRunnerNodeArgs": [],
+  "timeoutFactor": 1.5,
+  "warnings": true,
+  "disableBail": false,
+  "allowEmpty": false,
+  "ignorers": [],
+  "testFiles": []
+}

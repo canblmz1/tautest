@@ -1,0 +1,92 @@
+{
+  "repo": "moment/luxon",
+  "ranAt": "2026-09-29T10:55:08.185Z",
+  "rule": {
+    "take": 1,
+    "minProductionFiles": 2,
+    "scan": 300
+  },
+  "picked": [
+    {
+      "number": 1720,
+      "title": "Add support for parsing partial end dates in ISO intervals",
+      "mergedAt": "2025-08-11T17:16:53Z",
+      "base": "4cc03e5b71240ece26ba1424cabcf35b8a939c56",
+      "head": "1160092e4253769137b3b3dfc2629d51c904517b",
+      "production": [
+        "src/datetime.js",
+        "src/impl/regexParser.js",
+        "src/interval.js"
+      ],
+      "tests": [
+        "test/interval/parse.test.js"
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "number": 1790,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1787,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1786,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1784,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1782,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1781,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1789,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 1775,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 1771,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 1763,
+      "reason": "production files 0, test files 0"
+    },
+    {
+      "number": 1743,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 1766,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 1767,
+      "reason": "production files 1, test files 0"
+    },
+    {
+      "number": 1756,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1753,
+      "reason": "production files 1, test files 1"
+    },
+    {
+      "number": 1752,
+      "reason": "production files 1, test files 4"
+    }
+  ]
+}

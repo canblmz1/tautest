@@ -1,0 +1,38 @@
+{
+  "repo": "radashi-org/radashi",
+  "ranAt": "2026-09-29T10:52:19.608Z",
+  "rule": {
+    "take": 2,
+    "minProductionFiles": 1,
+    "scan": 100
+  },
+  "picked": [
+    {
+      "number": 486,
+      "title": "fix(memo): stop inherited Object.prototype keys from being treated as cache hits",
+      "mergedAt": "2026-09-21T19:44:03Z",
+      "base": "e990698bb24cab204914952e2620340ab5bb6591",
+      "head": "afbf30dbec3911ede0c0d0702712b3228694429e",
+      "production": [
+        "src/curry/memo.ts"
+      ],
+      "tests": [
+        "tests/curry/memo.test.ts"
+      ]
+    },
+    {
+      "number": 485,
+      "title": "fix(toggle): remove a matching undefined element instead of appending",
+      "mergedAt": "2026-09-17T01:33:20Z",
+      "base": "b4766cb42f5a4328cbbe471d0ca35a8ae1060651",
+      "head": "b9bd827fc1fd8178f1d63f29843351c8bda8224b",
+      "production": [
+        "src/array/toggle.ts"
+      ],
+      "tests": [
+        "tests/array/toggle.test.ts"
+      ]
+    }
+  ],
+  "skipped": []
+}

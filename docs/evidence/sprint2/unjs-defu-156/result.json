@@ -1,0 +1,148 @@
+{
+  "repo": "https://github.com/unjs/defu.git",
+  "pr": "156",
+  "base": "89df6bb1dfb4161b9d285f96e0b4ad1a993a647c",
+  "head": "5767f6f0b2478007cfcbdd102f1bee21fd7eb7f5",
+  "runner": "vitest",
+  "tautestVersion": "2.0.4",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-uoSexy",
+  "install": {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +378\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 378, reused 0, downloaded 40, added 40\nProgress: resolved 378, reused 0, downloaded 132, added 131\nProgress: resolved 378, reused 0, downloaded 201, added 201\nProgress: resolved 378, reused 0, downloaded 245, added 245\nProgress: resolved 378, reused 0, downloaded 281, added 281\nProgress: resolved 378, reused 0, downloaded 331, added 331\nProgress: resolved 378, reused 0, downloaded 370, added 370\nProgress: resolved 378, reused 0, downloaded 376, added 376\nProgress: resolved 378, reused 0, downloaded 377, added 377\nProgress: resolved 378, reused 0, downloaded 378, added 377\nProgress: resolved 378, reused 0, downloaded 378, added 378, done\n\ndevDependencies:\n+ @types/node 25.5.0\n+ @typescript/native-preview 7.0.0-dev.20260401.1\n+ @vitest/coverage-v8 4.1.2\n+ changelogen 0.6.2\n+ eslint-config-unjs 0.6.2\n+ expect-type 1.3.0\n+ oxfmt 0.43.0\n+ oxlint 1.58.0\n+ typescript 6.0.2\n+ unbuild 3.6.1\n+ vitest 4.1.2\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│   Ignored build scripts: esbuild@0.25.12.                                    │\n│   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     │\n│   to run scripts.                                                            │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\nDone in 10.6s using pnpm v10.33.0\n",
+    "stderr": "",
+    "durationMs": 13077
+  },
+  "installMode": "frozen-lockfile",
+  "installTestTools": {
+    "command": "pnpm add -D --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0",
+    "exitCode": 0,
+    "stdout": "Progress: resolved 0, reused 1, downloaded 0, added 0\nProgress: resolved 161, reused 158, downloaded 2, added 0\nProgress: resolved 334, reused 312, downloaded 17, added 0\nProgress: resolved 351, reused 313, downloaded 27, added 0\nProgress: resolved 394, reused 315, downloaded 28, added 0\nProgress: resolved 450, reused 320, downloaded 35, added 0\nProgress: resolved 499, reused 324, downloaded 74, added 0\nProgress: resolved 561, reused 327, downloaded 133, added 0\nProgress: resolved 572, reused 334, downloaded 146, added 0\nProgress: resolved 625, reused 367, downloaded 146, added 0\nProgress: resolved 641, reused 378, downloaded 146, added 0\nProgress: resolved 645, reused 378, downloaded 150, added 0\nPackages: +153 -7\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----\nProgress: resolved 645, reused 378, downloaded 151, added 153, done\n WARN  Issues with peer dependencies found\n.\n└─┬ unbuild 3.6.1\n  └── ✕ unmet peer typescript@^5.9.2: found 6.0.2\n\ndevDependencies:\n+ @stryker-mutator/core 10.0.0\n+ @stryker-mutator/vitest-runner 10.0.0\n+ tautest 2.0.4\n\nDone in 13.3s using pnpm v10.33.0\n",
+    "stderr": "",
+    "durationMs": 13613
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/tautest@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.5_ccee5b16c91f66d59ccb6cf47e5d8111/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/@tautest+core@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+nod_f0facbc90bae25997e51496589d4d99a/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@25.5.0/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.5.0___47f52145e78b0a7066439eb4135b2075/node_modules/@stryker-mutator/vitest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "4.1.2",
+      "path": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/vitest@4.1.2_@types+node@25.5.0_vite@8.0.3_@emnapi+core@1.9.1_@emnapi+runtime@1.9.1_@ty_b7bedddc9c53b2a09db9d05138ac35cc/node_modules/vitest/package.json",
+      "projectPath": "/tmp/tautest-corpus-uoSexy/node_modules/.pnpm/vitest@4.1.2_@types+node@25.5.0_vite@8.0.3_@emnapi+core@1.9.1_@emnapi+runtime@1.9.1_@ty_b7bedddc9c53b2a09db9d05138ac35cc/node_modules/vitest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "prChangedFiles": [
+    "src/defu.ts",
+    "test/defu.test.ts"
+  ],
+  "normalTests": {
+    "command": "npx --no-install vitest run",
+    "exitCode": 0,
+    "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.1.2 \u001b[39m\u001b[90m/tmp/tautest-corpus-uoSexy\u001b[39m\n\nTAP version 13\n# Subtest: isPlainObject\nok 1 - isPlainObject\n  ---\n  duration_ms: 2.721697\n  type: 'suite'\n  ...\n \u001b[32m✓\u001b[39m test/utils.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 12\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/defu.test.ts \u001b[2m(\u001b[22m\u001b[2m20 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 21\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m2 passed\u001b[39m\u001b[22m\u001b[90m (2)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m22 passed\u001b[39m\u001b[22m\u001b[90m (22)\u001b[39m\n\u001b[2m   Start at \u001b[22m 10:58:09\n\u001b[2m   Duration \u001b[22m 370ms\u001b[2m (transform 207ms, setup 0ms, import 295ms, tests 33ms, environment 0ms)\u001b[22m\n\n",
+    "stderr": "",
+    "durationMs": 1362
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-uoSexy/node_modules/tautest/dist/index.js run --base 89df6bb1dfb4161b9d285f96e0b4ad1a993a647c --json",
+    "exitCode": 0,
+    "stdout": "{\n  \"status\": \"passed\",\n  \"threshold\": 60,\n  \"report\": {\n    \"version\": \"1\",\n    \"schemaVersion\": \"1\",\n    \"createdAt\": \"2026-09-29T10:58:15.076Z\",\n    \"summary\": {\n      \"verdict\": \"STRONG\",\n      \"mutationScore\": 100,\n      \"threshold\": 60,\n      \"total\": 1,\n      \"killed\": 1,\n      \"survived\": 0,\n      \"noCoverage\": 0,\n      \"timeout\": 0,\n      \"runtimeError\": 0,\n      \"compileError\": 0,\n      \"ignored\": 0\n    },\n    \"scope\": {\n      \"baseRef\": \"89df6bb1dfb4161b9d285f96e0b4ad1a993a647c\",\n      \"runner\": \"vitest\",\n      \"mutatePatterns\": [\n        \"src/defu.ts:10-10\"\n      ],\n      \"mutatedFiles\": [\n        \"src/defu.ts\"\n      ]\n    },\n    \"metrics\": {\n      \"changedFileCount\": 2,\n      \"changedSourceFileCount\": 1,\n      \"changedSourceLineCount\": 1,\n      \"mutatedFileCount\": 1,\n      \"mutatePatternCount\": 1,\n      \"partial\": false,\n      \"stageMs\": {\n        \"scopeMs\": 18,\n        \"configMs\": 0,\n        \"mutationMs\": 4487,\n        \"parseMs\": 1,\n        \"reportMs\": 0\n      },\n      \"runtimeMs\": 4487\n    },\n    \"diagnostics\": {\n      \"strykerConfig\": []\n    },\n    \"aiSignals\": {\n      \"promptStyle\": \"agent\",\n      \"author\": {\n        \"author\": \"unknown\",\n        \"confidence\": \"low\",\n        \"reason\": \"No known AI-author environment signal detected.\"\n      },\n      \"hardRules\": [\n        \"Do not change production code.\",\n        \"Only edit or add test files.\",\n        \"Every new test must pass against the original production code.\",\n        \"Every new test must fail against the listed mutant behavior.\",\n        \"Do not weaken existing assertions.\",\n        \"Do not delete, skip, or mark existing tests as todo.\",\n        \"Do not write filler tests such as expect(true).toBe(true).\",\n        \"Do not add new dependencies.\",\n        \"If you find a real production bug, stop and report it instead of silently rewriting implementation.\"\n      ],\n      \"validationLoop\": [\n        \"Run the normal test suite.\",\n        \"Run Tautest again.\",\n        \"Confirm the mutation score increased or stayed strong while the listed mutant was killed.\",\n        \"If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.\"\n      ],\n      \"commands\": [\n        \"tautest run --base 89df6bb1dfb4161b9d285f96e0b4ad1a993a647c\",\n        \"vitest run\"\n      ]\n    },\n    \"surviving\": [],\n    \"stryker\": {\n      \"schemaVersion\": \"1.0\",\n      \"projectRoot\": \"/tmp/tautest-corpus-uoSexy\",\n      \"frameworkName\": \"StrykerJS\",\n      \"frameworkVersion\": \"10.0.0\",\n      \"thresholds\": {\n        \"break\": 0,\n        \"high\": 0,\n        \"low\": 0\n      },\n      \"config\": {\n        \"testRunner\": \"vitest\",\n        \"packageManager\": \"pnpm\",\n        \"coverageAnalysis\": \"perTest\",\n        \"mutate\": [\n          \"src/defu.ts:10-10\"\n        ],\n        \"reporters\": [\n          \"json\"\n        ]\n      }\n    }\n  },\n  \"paths\": {\n    \"report\": \"/tmp/tautest-corpus-uoSexy/.tautest/report.md\",\n    \"json\": \"/tmp/tautest-corpus-uoSexy/.tautest/report.json\",\n    \"prompt\": \"/tmp/tautest-corpus-uoSexy/.tautest/fix-prompt.md\",\n    \"mutationJson\": \"/tmp/tautest-corpus-uoSexy/.tautest/mutation.json\"\n  },\n  \"metrics\": {\n    \"changedFileCount\": 2,\n    \"changedSourceFileCount\": 1,\n    \"changedSourceLineCount\": 1,\n    \"mutatedFileCount\": 1,\n    \"mutatePatternCount\": 1,\n    \"partial\": false,\n    \"stageMs\": {\n      \"scopeMs\": 18,\n      \"configMs\": 0,\n      \"mutationMs\": 4487,\n      \"parseMs\": 1,\n      \"reportMs\": 0\n    },\n    \"runtimeMs\": 4487\n  },\n  \"diagnostics\": {\n    \"strykerConfig\": []\n  }\n}\n",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 4671
+  },
+  "tautestSummary": {
+    "verdict": "STRONG",
+    "mutationScore": 100,
+    "threshold": 60,
+    "total": 1,
+    "killed": 1,
+    "survived": 0,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "tautestChangedFileCount": 2,
+  "mutatePatterns": [
+    "src/defu.ts:10-10"
+  ],
+  "tautestMutationReportPath": "/tmp/tautest-corpus-uoSexy/.tautest/corpus-run-1.json",
+  "directStryker": {
+    "command": "npx --no-install stryker run stryker.config.json",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 3984
+  },
+  "directStrykerReportPath": "/tmp/tautest-corpus-uoSexy/stryker-direct-report.json",
+  "directStrykerSummary": {
+    "total": 1,
+    "statuses": {
+      "Killed": 1
+    },
+    "framework": {
+      "name": "StrykerJS",
+      "version": "10.0.0"
+    }
+  },
+  "comparison": {
+    "leftCount": 1,
+    "rightCount": 1,
+    "missingFromLeft": [],
+    "missingFromRight": [],
+    "statusDifferences": [],
+    "identical": true
+  },
+  "repeatability": [
+    {
+      "runNumber": 2,
+      "mutationReportPath": "/tmp/tautest-corpus-uoSexy/.tautest/corpus-run-2.json",
+      "normalTestsDurationMs": 1032,
+      "tautestDurationMs": 3965,
+      "summary": {
+        "verdict": "STRONG",
+        "mutationScore": 100,
+        "threshold": 60,
+        "total": 1,
+        "killed": 1,
+        "survived": 0,
+        "noCoverage": 0,
+        "timeout": 0,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "sameMutatePatterns": true,
+      "comparison": {
+        "leftCount": 1,
+        "rightCount": 1,
+        "missingFromLeft": [],
+        "missingFromRight": [],
+        "statusDifferences": [],
+        "identical": true
+      }
+    }
+  ],
+  "stepFailures": [],
+  "status": "ok"
+}

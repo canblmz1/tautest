@@ -1,0 +1,34 @@
+{
+  "repo": "https://github.com/pmndrs/zustand.git",
+  "pr": "3469",
+  "base": "4b96f4e3a53abdbb1419cacadddc9b1bd786dab3",
+  "head": "30ad99f59900a1ac9202ff566edb4062cd9a038c",
+  "runner": "vitest",
+  "tautestVersion": "2.0.4",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-XxuZCk",
+  "install": {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +478\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 478, reused 0, downloaded 57, added 57\nProgress: resolved 478, reused 0, downloaded 115, added 115\nProgress: resolved 478, reused 0, downloaded 170, added 170\nProgress: resolved 478, reused 0, downloaded 332, added 331\nProgress: resolved 478, reused 0, downloaded 408, added 406\nProgress: resolved 478, reused 0, downloaded 478, added 478, done\n\ndevDependencies:\n+ @eslint/js 9.39.4\n+ @redux-devtools/extension 4.0.0\n+ @rollup/plugin-alias 6.0.0\n+ @rollup/plugin-node-resolve 16.0.3\n+ @rollup/plugin-replace 6.0.3\n+ @rollup/plugin-typescript 12.3.0\n+ @testing-library/jest-dom 6.9.1\n+ @testing-library/react 16.3.2\n+ @types/node 25.5.0\n+ @types/react 19.2.14\n+ @types/react-dom 19.2.3\n+ @types/use-sync-external-store 1.5.0\n+ @vitest/coverage-v8 4.1.0\n+ @vitest/eslint-plugin 1.6.12\n+ @vitest/ui 4.1.0\n+ esbuild 0.27.4\n+ eslint 9.39.4\n+ eslint-import-resolver-typescript 4.4.4\n+ eslint-plugin-import 2.32.0\n+ eslint-plugin-jest-dom 5.5.0\n+ eslint-plugin-react 7.37.5\n+ eslint-plugin-react-hooks 7.0.1\n+ eslint-plugin-testing-library 7.16.0\n+ immer 11.1.4\n+ jsdom 27.4.0\n+ json 11.0.0\n+ prettier 3.8.1\n+ react 19.2.4\n+ react-dom 19.2.4\n+ redux 5.0.1\n+ rollup 4.59.0\n+ rollup-plugin-esbuild 6.2.1\n+ shelljs 0.10.0\n+ shx 0.4.0\n+ tslib 2.8.1\n+ typescript 5.9.3\n+ typescript-eslint 8.57.0\n+ use-sync-external-store 1.6.0\n+ vitest 4.1.0\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│   Ignored build scripts: esbuild, unrs-resolver.                             │\n│   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     │\n│   to run scripts.                                                            │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\n\nDone in 5.5s using pnpm v10.18.3\n",
+    "stderr": "",
+    "durationMs": 7807
+  },
+  "installMode": "frozen-lockfile",
+  "installTestTools": {
+    "command": "pnpm add -D -w --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0",
+    "exitCode": 1,
+    "stdout": "Progress: resolved 0, reused 1, downloaded 0, added 0\n ERR_PNPM_NO_MATCHING_VERSION  No matching version found for tautest@2.0.4 published by Mon Sep 28 2026 11:11:15 GMT+0000 (Coordinated Universal Time) while fetching it from https://registry.npmjs.org/. Version 2.0.4 satisfies the specs but was released at Tue Sep 29 2026 08:54:06 GMT+0000 (Coordinated Universal Time)\n\nThis error happened while installing a direct dependency of /tmp/tautest-corpus-XxuZCk\n\nThe latest release of tautest is \"2.0.4\". Published at 9/29/2026 8:54:06 AM\n\nIf you need the full list of all 15 published versions run \"$ pnpm view tautest versions\".\n\nIf you want to install the matched version ignoring the time it was published, you can add the package name to the minimumReleaseAgeExclude setting. Read more about it: https://pnpm.io/settings#minimumreleaseageexclude\n",
+    "stderr": "",
+    "durationMs": 709
+  },
+  "stepFailures": [
+    {
+      "step": "installTestTools",
+      "exitCode": 1,
+      "command": "pnpm add -D -w --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0"
+    }
+  ],
+  "status": "error",
+  "error": "installTestTools failed with exit 1; refusing to produce a mutation comparison."
+}

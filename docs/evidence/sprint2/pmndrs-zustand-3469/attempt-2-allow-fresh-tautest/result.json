@@ -1,0 +1,153 @@
+{
+  "repo": "https://github.com/pmndrs/zustand.git",
+  "pr": "3469",
+  "base": "4b96f4e3a53abdbb1419cacadddc9b1bd786dab3",
+  "head": "30ad99f59900a1ac9202ff566edb4062cd9a038c",
+  "runner": "vitest",
+  "tautestVersion": "2.0.4",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-jqqJib",
+  "install": {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +478\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 478, reused 0, downloaded 54, added 54\nProgress: resolved 478, reused 0, downloaded 116, added 116\nProgress: resolved 478, reused 0, downloaded 215, added 214\nProgress: resolved 478, reused 0, downloaded 311, added 311\nProgress: resolved 478, reused 0, downloaded 421, added 421\nProgress: resolved 478, reused 0, downloaded 476, added 476\nProgress: resolved 478, reused 0, downloaded 478, added 478, done\n\ndevDependencies:\n+ @eslint/js 9.39.4\n+ @redux-devtools/extension 4.0.0\n+ @rollup/plugin-alias 6.0.0\n+ @rollup/plugin-node-resolve 16.0.3\n+ @rollup/plugin-replace 6.0.3\n+ @rollup/plugin-typescript 12.3.0\n+ @testing-library/jest-dom 6.9.1\n+ @testing-library/react 16.3.2\n+ @types/node 25.5.0\n+ @types/react 19.2.14\n+ @types/react-dom 19.2.3\n+ @types/use-sync-external-store 1.5.0\n+ @vitest/coverage-v8 4.1.0\n+ @vitest/eslint-plugin 1.6.12\n+ @vitest/ui 4.1.0\n+ esbuild 0.27.4\n+ eslint 9.39.4\n+ eslint-import-resolver-typescript 4.4.4\n+ eslint-plugin-import 2.32.0\n+ eslint-plugin-jest-dom 5.5.0\n+ eslint-plugin-react 7.37.5\n+ eslint-plugin-react-hooks 7.0.1\n+ eslint-plugin-testing-library 7.16.0\n+ immer 11.1.4\n+ jsdom 27.4.0\n+ json 11.0.0\n+ prettier 3.8.1\n+ react 19.2.4\n+ react-dom 19.2.4\n+ redux 5.0.1\n+ rollup 4.59.0\n+ rollup-plugin-esbuild 6.2.1\n+ shelljs 0.10.0\n+ shx 0.4.0\n+ tslib 2.8.1\n+ typescript 5.9.3\n+ typescript-eslint 8.57.0\n+ use-sync-external-store 1.6.0\n+ vitest 4.1.0\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│   Ignored build scripts: esbuild, unrs-resolver.                             │\n│   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     │\n│   to run scripts.                                                            │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\n\nDone in 7.1s using pnpm v10.18.3\n",
+    "stderr": "",
+    "durationMs": 9498
+  },
+  "installMode": "frozen-lockfile",
+  "installDeviations": [
+    "minimumReleaseAge waived for tautest and @tautest/core only"
+  ],
+  "installTestTools": {
+    "command": "pnpm add -D -w --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0 --config.minimumReleaseAgeExclude=tautest --config.minimumReleaseAgeExclude=@tautest/core",
+    "exitCode": 0,
+    "stdout": "Progress: resolved 0, reused 1, downloaded 0, added 0\nProgress: resolved 305, reused 301, downloaded 2, added 0\nProgress: resolved 509, reused 462, downloaded 24, added 0\nProgress: resolved 591, reused 465, downloaded 48, added 0\nProgress: resolved 640, reused 465, downloaded 90, added 0\nProgress: resolved 666, reused 466, downloaded 132, added 0\nProgress: resolved 667, reused 466, downloaded 132, added 0\nProgress: resolved 678, reused 478, downloaded 132, added 0\nPackages: +146 -18\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------\nProgress: resolved 678, reused 478, downloaded 132, added 146, done\n\ndevDependencies:\n+ @stryker-mutator/core 10.0.0\n+ @stryker-mutator/vitest-runner 10.0.0\n+ tautest 2.0.4\n\nDone in 8.8s using pnpm v10.18.3\n",
+    "stderr": "",
+    "durationMs": 8911
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/tautest@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.5_2b34ca7b47cb5e2fb4009385c828ce7f/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/@tautest+core@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+nod_0c21c3baa4a78c7b5aed848b3408c22e/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@25.5.0/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@25.5.0__vitest@4.1.0/node_modules/@stryker-mutator/vitest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "4.1.0",
+      "path": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/vitest@4.1.0_@types+node@25.5.0_@vitest+ui@4.1.0_jsdom@27.4.0_vite@7.3.1_@types+node@25.5.0_jiti@2.7.0_yaml@2.9.1_/node_modules/vitest/package.json",
+      "projectPath": "/tmp/tautest-corpus-jqqJib/node_modules/.pnpm/vitest@4.1.0_@types+node@25.5.0_@vitest+ui@4.1.0_jsdom@27.4.0_vite@7.3.1_@types+node@25.5.0_jiti@2.7.0_yaml@2.9.1_/node_modules/vitest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "prChangedFiles": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+  ],
+  "normalTests": {
+    "command": "npx --no-install vitest run",
+    "exitCode": 0,
+    "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.1.0 \u001b[39m\u001b[90m/tmp/tautest-corpus-jqqJib\u001b[39m\n\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/vanilla/shallow.test.tsx \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 20\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/types.test.tsx \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 10\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/persistSync.test.tsx \u001b[2m(\u001b[22m\u001b[2m22 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 41\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/middlewareTypes.test.tsx \u001b[2m(\u001b[22m\u001b[2m25 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 51\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/devtools.test.tsx \u001b[2m(\u001b[22m\u001b[2m59 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 209\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/persistAsync.test.tsx \u001b[2m(\u001b[22m\u001b[2m21 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 276\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/basic.test.tsx \u001b[2m(\u001b[22m\u001b[2m22 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 261\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/subscribe.test.tsx \u001b[2m(\u001b[22m\u001b[2m12 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 21\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/vanilla/subscribe.test.tsx \u001b[2m(\u001b[22m\u001b[2m9 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 15\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/vanilla/basic.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 21\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/shallow.test.tsx \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 62\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/immer.test.tsx \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 10\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m \u001b[30m\u001b[42m zustand \u001b[49m\u001b[39m tests/ssr.test.tsx \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 93\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m13 passed\u001b[39m\u001b[22m\u001b[90m (13)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m213 passed\u001b[39m\u001b[22m\u001b[90m (213)\u001b[39m\n\u001b[2m   Start at \u001b[22m 11:28:06\n\u001b[2m   Duration \u001b[22m 4.44s\u001b[2m (transform 2.14s, setup 2.03s, import 4.39s, tests 1.09s, environment 17.25s)\u001b[22m\n\n",
+    "stderr": "",
+    "durationMs": 4079
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-jqqJib/node_modules/tautest/dist/index.js run --base 4b96f4e3a53abdbb1419cacadddc9b1bd786dab3 --json",
+    "exitCode": 0,
+    "stdout": "{\n  \"status\": \"passed\",\n  \"threshold\": 60,\n  \"report\": {\n    \"version\": \"1\",\n    \"schemaVersion\": \"1\",\n    \"createdAt\": \"2026-09-29T11:28:48.443Z\",\n    \"summary\": {\n      \"verdict\": \"STRONG\",\n      \"mutationScore\": 100,\n      \"threshold\": 60,\n      \"total\": 11,\n      \"killed\": 7,\n      \"survived\": 0,\n      \"noCoverage\": 0,\n      \"timeout\": 4,\n      \"runtimeError\": 0,\n      \"compileError\": 0,\n      \"ignored\": 0\n    },\n    \"scope\": {\n      \"baseRef\": \"4b96f4e3a53abdbb1419cacadddc9b1bd786dab3\",\n      \"runner\": \"vitest\",\n      \"mutatePatterns\": [\n        \"src/middleware/devtools.ts:169-174\",\n        \"src/middleware/devtools.ts:182-185\"\n      ],\n      \"mutatedFiles\": [\n        \"src/middleware/devtools.ts\"\n      ]\n    },\n    \"metrics\": {\n      \"changedFileCount\": 2,\n      \"changedSourceFileCount\": 1,\n      \"changedSourceLineCount\": 10,\n      \"mutatedFileCount\": 1,\n      \"mutatePatternCount\": 2,\n      \"partial\": false,\n      \"stageMs\": {\n        \"scopeMs\": 12,\n        \"configMs\": 1,\n        \"mutationMs\": 38552,\n        \"parseMs\": 6,\n        \"reportMs\": 1\n      },\n      \"runtimeMs\": 38552\n    },\n    \"diagnostics\": {\n      \"strykerConfig\": []\n    },\n    \"aiSignals\": {\n      \"promptStyle\": \"agent\",\n      \"author\": {\n        \"author\": \"unknown\",\n        \"confidence\": \"low\",\n        \"reason\": \"No known AI-author environment signal detected.\"\n      },\n      \"hardRules\": [\n        \"Do not change production code.\",\n        \"Only edit or add test files.\",\n        \"Every new test must pass against the original production code.\",\n        \"Every new test must fail against the listed mutant behavior.\",\n        \"Do not weaken existing assertions.\",\n        \"Do not delete, skip, or mark existing tests as todo.\",\n        \"Do not write filler tests such as expect(true).toBe(true).\",\n        \"Do not add new dependencies.\",\n        \"If you find a real production bug, stop and report it instead of silently rewriting implementation.\"\n      ],\n      \"validationLoop\": [\n        \"Run the normal test suite.\",\n        \"Run Tautest again.\",\n        \"Confirm the mutation score increased or stayed strong while the listed mutant was killed.\",\n        \"If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.\"\n      ],\n      \"commands\": [\n        \"tautest run --base 4b96f4e3a53abdbb1419cacadddc9b1bd786dab3\",\n        \"vitest run\"\n      ]\n    },\n    \"surviving\": [],\n    \"stryker\": {\n      \"schemaVersion\": \"1.0\",\n      \"projectRoot\": \"/tmp/tautest-corpus-jqqJib\",\n      \"frameworkName\": \"StrykerJS\",\n      \"frameworkVersion\": \"10.0.0\",\n      \"thresholds\": {\n        \"break\": 0,\n        \"high\": 0,\n        \"low\": 0\n      },\n      \"config\": {\n        \"testRunner\": \"vitest\",\n        \"packageManager\": \"pnpm\",\n        \"coverageAnalysis\": \"perTest\",\n        \"mutate\": [\n          \"src/middleware/devtools.ts:169-174\",\n          \"src/middleware/devtools.ts:182-185\"\n        ],\n        \"reporters\": [\n          \"json\"\n        ]\n      }\n    }\n  },\n  \"paths\": {\n    \"report\": \"/tmp/tautest-corpus-jqqJib/.tautest/report.md\",\n    \"json\": \"/tmp/tautest-corpus-jqqJib/.tautest/report.json\",\n    \"prompt\": \"/tmp/tautest-corpus-jqqJib/.tautest/fix-prompt.md\",\n    \"mutationJson\": \"/tmp/tautest-corpus-jqqJib/.tautest/mutation.json\"\n  },\n  \"metrics\": {\n    \"changedFileCount\": 2,\n    \"changedSourceFileCount\": 1,\n    \"changedSourceLineCount\": 10,\n    \"mutatedFileCount\": 1,\n    \"mutatePatternCount\": 2,\n    \"partial\": false,\n    \"stageMs\": {\n      \"scopeMs\": 12,\n      \"configMs\": 1,\n      \"mutationMs\": 38552,\n      \"parseMs\": 6,\n      \"reportMs\": 1\n    },\n    \"runtimeMs\": 38552\n  },\n  \"diagnostics\": {\n    \"strykerConfig\": []\n  }\n}\n",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 38772
+  },
+  "tautestSummary": {
+    "verdict": "STRONG",
+    "mutationScore": 100,
+    "threshold": 60,
+    "total": 11,
+    "killed": 7,
+    "survived": 0,
+    "noCoverage": 0,
+    "timeout": 4,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "tautestChangedFileCount": 2,
+  "mutatePatterns": [
+    "src/middleware/devtools.ts:169-174",
+    "src/middleware/devtools.ts:182-185"
+  ],
+  "tautestMutationReportPath": "/tmp/tautest-corpus-jqqJib/.tautest/corpus-run-1.json",
+  "directStryker": {
+    "command": "npx --no-install stryker run stryker.config.json",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 39963
+  },
+  "directStrykerReportPath": "/tmp/tautest-corpus-jqqJib/stryker-direct-report.json",
+  "directStrykerSummary": {
+    "total": 11,
+    "statuses": {
+      "Killed": 7,
+      "Timeout": 4
+    },
+    "framework": {
+      "name": "StrykerJS",
+      "version": "10.0.0"
+    }
+  },
+  "comparison": {
+    "leftCount": 11,
+    "rightCount": 11,
+    "missingFromLeft": [],
+    "missingFromRight": [],
+    "statusDifferences": [],
+    "identical": true
+  },
+  "repeatability": [
+    {
+      "runNumber": 2,
+      "mutationReportPath": "/tmp/tautest-corpus-jqqJib/.tautest/corpus-run-2.json",
+      "normalTestsDurationMs": 4307,
+      "tautestDurationMs": 47817,
+      "summary": {
+        "verdict": "STRONG",
+        "mutationScore": 100,
+        "threshold": 60,
+        "total": 11,
+        "killed": 7,
+        "survived": 0,
+        "noCoverage": 0,
+        "timeout": 4,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "sameMutatePatterns": true,
+      "comparison": {
+        "leftCount": 11,
+        "rightCount": 11,
+        "missingFromLeft": [],
+        "missingFromRight": [],
+        "statusDifferences": [],
+        "identical": true
+      }
+    }
+  ],
+  "stepFailures": [],
+  "status": "ok"
+}

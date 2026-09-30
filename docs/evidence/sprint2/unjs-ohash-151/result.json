@@ -1,0 +1,178 @@
+{
+  "repo": "https://github.com/unjs/ohash.git",
+  "pr": "151",
+  "base": "d7f7f9dae66992435e4960d664ca5be3485a02b2",
+  "head": "d76fb98e4e676be6c560cce6e12b06b539ded73b",
+  "runner": "vitest",
+  "tautestVersion": "2.0.4",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-VOfJGm",
+  "install": {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +414\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 414, reused 0, downloaded 14, added 11\nProgress: resolved 414, reused 0, downloaded 78, added 78\nProgress: resolved 414, reused 0, downloaded 142, added 142\nProgress: resolved 414, reused 0, downloaded 221, added 220\nProgress: resolved 414, reused 0, downloaded 308, added 308\nProgress: resolved 414, reused 0, downloaded 398, added 398\nProgress: resolved 414, reused 0, downloaded 412, added 412\nProgress: resolved 414, reused 0, downloaded 413, added 413\nProgress: resolved 414, reused 0, downloaded 414, added 414, done\n\ndevDependencies:\n+ @types/node 22.13.5\n+ @vitest/coverage-v8 3.0.7\n+ automd 0.4.0\n+ changelogen 0.6.0\n+ esbuild 0.25.0\n+ eslint 9.21.0\n+ eslint-config-unjs 0.4.2\n+ mitata 1.0.34\n+ prettier 3.5.2\n+ typescript 5.7.3\n+ unbuild 3.5.0\n+ vitest 3.0.7\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮│                                                                              ││   Ignored build scripts: @parcel/watcher, esbuild.                           ││   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     ││   to run scripts.                                                            ││                                                                              │╰──────────────────────────────────────────────────────────────────────────────╯\n\nDone in 9.2s using pnpm v10.5.2\n",
+    "stderr": "",
+    "durationMs": 12191
+  },
+  "installMode": "frozen-lockfile",
+  "build": {
+    "command": "pnpm run build",
+    "exitCode": 0,
+    "stdout": "\n> ohash@2.0.11 build /tmp/tautest-corpus-VOfJGm\n> unbuild\n\n[info] Automatically detected entries: src/index, src/utils/index, src/crypto/node/index, src/crypto/js/index [esm] [dts]\n[info] Building ohash\n[info] Cleaning dist directory: `./dist`\n[success] Build succeeded for ohash\n[log]   dist/index.mjs (total size: 3.42 kB, chunk size: 290 B, exports: digest, hash, isEqual, serialize)\n  └─ dist/shared/ohash.v9Eo82Nf.mjs (3.13 kB)\n\n[log]   dist/utils/index.mjs (total size: 5.54 kB, chunk size: 2.41 kB, exports: diff, isEqual)\n  └─ dist/shared/ohash.v9Eo82Nf.mjs (3.13 kB)\n\n[log]   dist/crypto/node/index.mjs (total size: 309 B, chunk size: 309 B, exports: digest)\n\n[log]   dist/crypto/js/index.mjs (total size: 3.23 kB, chunk size: 3.23 kB, exports: digest)\n\nΣ Total dist size (byte size): 14.9 kB\n[log]\n",
+    "stderr": "",
+    "durationMs": 2508
+  },
+  "installTestTools": {
+    "command": "pnpm add -D --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/vitest-runner@10.0.0",
+    "exitCode": 0,
+    "stdout": "Progress: resolved 0, reused 1, downloaded 0, added 0\nProgress: resolved 410, reused 388, downloaded 13, added 0\nProgress: resolved 450, reused 391, downloaded 30, added 0\nProgress: resolved 508, reused 398, downloaded 49, added 0\nProgress: resolved 572, reused 399, downloaded 86, added 0\nProgress: resolved 604, reused 403, downloaded 114, added 0\nProgress: resolved 644, reused 413, downloaded 153, added 0\nPackages: +159\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 644, reused 413, downloaded 154, added 159, done\n\ndevDependencies:\n+ @stryker-mutator/core 10.0.0\n+ @stryker-mutator/vitest-runner 10.0.0\n+ tautest 2.0.4\n\nDone in 6s using pnpm v10.5.2\n",
+    "stderr": "",
+    "durationMs": 6107
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/tautest@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+node@22.1_8412cdb3a85e33440881d89ec8032f4f/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/@tautest+core@2.0.4_@stryker-mutator+api@10.0.0_@stryker-mutator+core@10.0.0_@types+nod_80ce168f5cd16ddc1f2ddcf07cdcd15c/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/@stryker-mutator+core@10.0.0_@types+node@22.13.5/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/@stryker-mutator+vitest-runner@10.0.0_@stryker-mutator+core@10.0.0_@types+node@22.13.5__7669611de5f9feaf4b0e12b7b4cb6c9e/node_modules/@stryker-mutator/vitest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "3.0.7",
+      "path": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/vitest@3.0.7_@types+node@22.13.5_jiti@2.4.2_yaml@2.9.1/node_modules/vitest/package.json",
+      "projectPath": "/tmp/tautest-corpus-VOfJGm/node_modules/.pnpm/vitest@3.0.7_@types+node@22.13.5_jiti@2.4.2_yaml@2.9.1/node_modules/vitest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "prChangedFiles": [
+    "eslint.config.mjs",
+    "src/serialize.ts",
+    "test/bundle.test.ts",
+    "test/serialize.test.ts"
+  ],
+  "deviations": {
+    "excludedFromMutation": [
+      "test/bundle.test.ts"
+    ],
+    "vitestConfigFile": "vitest.corpus-mutation.config.ts",
+    "extendsProjectConfig": null,
+    "files": [
+      "vitest.corpus-mutation.config.ts",
+      "tautest.config.json"
+    ]
+  },
+  "normalTests": {
+    "command": "npx --no-install vitest run",
+    "exitCode": 0,
+    "stdout": "\n\u001b[1m\u001b[7m\u001b[36m RUN \u001b[39m\u001b[27m\u001b[22m \u001b[36mv3.0.7 \u001b[39m\u001b[90m/tmp/tautest-corpus-VOfJGm\u001b[39m\n\n \u001b[32m✓\u001b[39m test/crypto.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 5\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/utils.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 15\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/hash.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 15\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/bundle.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 39\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m test/serialize.test.ts \u001b[2m(\u001b[22m\u001b[2m54 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 82\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m67 passed\u001b[39m\u001b[22m\u001b[90m (67)\u001b[39m\n\u001b[2m   Start at \u001b[22m 10:59:46\n\u001b[2m   Duration \u001b[22m 667ms\u001b[2m (transform 324ms, setup 0ms, collect 738ms, tests 157ms, environment 3ms, prepare 599ms)\u001b[22m\n\n",
+    "stderr": "",
+    "durationMs": 1404
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-VOfJGm/node_modules/tautest/dist/index.js run --base d7f7f9dae66992435e4960d664ca5be3485a02b2 --json",
+    "exitCode": 0,
+    "stdout": "{\n  \"status\": \"passed\",\n  \"threshold\": 60,\n  \"report\": {\n    \"version\": \"1\",\n    \"schemaVersion\": \"1\",\n    \"createdAt\": \"2026-09-29T11:00:01.688Z\",\n    \"summary\": {\n      \"verdict\": \"MIXED\",\n      \"mutationScore\": 67.08860759493672,\n      \"threshold\": 60,\n      \"total\": 79,\n      \"killed\": 47,\n      \"survived\": 26,\n      \"noCoverage\": 0,\n      \"timeout\": 6,\n      \"runtimeError\": 0,\n      \"compileError\": 0,\n      \"ignored\": 0\n    },\n    \"scope\": {\n      \"baseRef\": \"d7f7f9dae66992435e4960d664ca5be3485a02b2\",\n      \"runner\": \"vitest\",\n      \"mutatePatterns\": [\n        \"src/serialize.ts:44-57\",\n        \"src/serialize.ts:59-60\",\n        \"src/serialize.ts:63-72\",\n        \"src/serialize.ts:75-75\",\n        \"src/serialize.ts:82-82\",\n        \"src/serialize.ts:130-132\",\n        \"src/serialize.ts:157-157\",\n        \"src/serialize.ts:163-163\",\n        \"src/serialize.ts:217-217\"\n      ],\n      \"mutatedFiles\": [\n        \"src/serialize.ts\"\n      ]\n    },\n    \"metrics\": {\n      \"changedFileCount\": 4,\n      \"changedSourceFileCount\": 1,\n      \"changedSourceLineCount\": 34,\n      \"mutatedFileCount\": 1,\n      \"mutatePatternCount\": 9,\n      \"partial\": false,\n      \"stageMs\": {\n        \"scopeMs\": 11,\n        \"configMs\": 1,\n        \"mutationMs\": 13726,\n        \"parseMs\": 6,\n        \"reportMs\": 2\n      },\n      \"runtimeMs\": 13726\n    },\n    \"diagnostics\": {\n      \"strykerConfig\": []\n    },\n    \"aiSignals\": {\n      \"promptStyle\": \"agent\",\n      \"author\": {\n        \"author\": \"unknown\",\n        \"confidence\": \"low\",\n        \"reason\": \"No known AI-author environment signal detected.\"\n      },\n      \"hardRules\": [\n        \"Do not change production code.\",\n        \"Only edit or add test files.\",\n        \"Every new test must pass against the original production code.\",\n        \"Every new test must fail against the listed mutant behavior.\",\n        \"Do not weaken existing assertions.\",\n        \"Do not delete, skip, or mark existing tests as todo.\",\n        \"Do not write filler tests such as expect(true).toBe(true).\",\n        \"Do not add new dependencies.\",\n        \"If you find a real production bug, stop and report it instead of silently rewriting implementation.\"\n      ],\n      \"validationLoop\": [\n        \"Run the normal test suite.\",\n        \"Run Tautest again.\",\n        \"Confirm the mutation score increased or stayed strong while the listed mutant was killed.\",\n        \"If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.\"\n      ],\n      \"commands\": [\n        \"tautest run --base d7f7f9dae66992435e4960d664ca5be3485a02b2\",\n        \"vitest run\"\n      ]\n    },\n    \"surviving\": [\n      {\n        \"id\": \"6\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 44,\n        \"mutatorName\": \"ConditionalExpression\",\n        \"original\": \"typeA === \\\"bigint\\\"\",\n        \"replacement\": \"false\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 51,\n            \"line\": 44\n          },\n          \"start\": {\n            \"column\": 33,\n            \"line\": 44\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\",\n          \"32\",\n          \"53\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"32\",\n            \"name\": \"serialize object with entries()\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"53\",\n            \"name\": \"Object.prototype.toString issues FormData\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"branch\",\n          \"missingBehavior\": \"One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.\",\n          \"whyThisMatters\": \"A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.\",\n          \"suggestedTestIdea\": \"If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"8\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 44,\n        \"mutatorName\": \"StringLiteral\",\n        \"original\": \"\\\"bigint\\\"\",\n        \"replacement\": \"\\\"\\\"\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 51,\n            \"line\": 44\n          },\n          \"start\": {\n            \"column\": 43,\n            \"line\": 44\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\",\n          \"32\",\n          \"53\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"32\",\n            \"name\": \"serialize object with entries()\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"53\",\n            \"name\": \"Object.prototype.toString issues FormData\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"generic\",\n          \"missingBehavior\": \"This mutant survived the current tests. It may point to a missing test, or it may be an equivalent mutant that does not change observable behavior.\",\n          \"whyThisMatters\": \"A surviving mutant is not automatically a missing test — confirm the original and replacement code actually disagree on some observable output before treating this as a gap.\",\n          \"suggestedTestIdea\": \"If you can find an input where the original and replacement code produce different observable results, add the smallest assertion that passes on the original and fails on the replacement. If no such input exists, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test.\"\n        }\n      },\n      {\n        \"id\": \"12\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 45,\n        \"mutatorName\": \"EqualityOperator\",\n        \"original\": \"a < b\",\n        \"replacement\": \"a <= b\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 21,\n            \"line\": 45\n          },\n          \"start\": {\n            \"column\": 16,\n            \"line\": 45\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"boundary\",\n          \"missingBehavior\": \"The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.\",\n          \"whyThisMatters\": \"A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.\",\n          \"suggestedTestIdea\": \"If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"16\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 45,\n        \"mutatorName\": \"ConditionalExpression\",\n        \"original\": \"a > b\",\n        \"replacement\": \"false\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 34,\n            \"line\": 45\n          },\n          \"start\": {\n            \"column\": 29,\n            \"line\": 45\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"branch\",\n          \"missingBehavior\": \"One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.\",\n          \"whyThisMatters\": \"A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.\",\n          \"suggestedTestIdea\": \"If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"15\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 45,\n        \"mutatorName\": \"ConditionalExpression\",\n        \"original\": \"a > b\",\n        \"replacement\": \"true\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 34,\n            \"line\": 45\n          },\n          \"start\": {\n            \"column\": 29,\n            \"line\": 45\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"branch\",\n          \"missingBehavior\": \"One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.\",\n          \"whyThisMatters\": \"A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.\",\n          \"suggestedTestIdea\": \"If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"18\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 45,\n        \"mutatorName\": \"EqualityOperator\",\n        \"original\": \"a > b\",\n        \"replacement\": \"a <= b\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 34,\n            \"line\": 45\n          },\n          \"start\": {\n            \"column\": 29,\n            \"line\": 45\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"boundary\",\n          \"missingBehavior\": \"The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.\",\n          \"whyThisMatters\": \"A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.\",\n          \"suggestedTestIdea\": \"If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"17\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 45,\n        \"mutatorName\": \"EqualityOperator\",\n        \"original\": \"a > b\",\n        \"replacement\": \"a >= b\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 34,\n            \"line\": 45\n          },\n          \"start\": {\n            \"column\": 29,\n            \"line\": 45\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"boundary\",\n          \"missingBehavior\": \"The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.\",\n          \"whyThisMatters\": \"A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.\",\n          \"suggestedTestIdea\": \"If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"19\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 47,\n        \"mutatorName\": \"ConditionalExpression\",\n        \"original\": \"typeA !== \\\"string\\\"\",\n        \"replacement\": \"true\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 29,\n            \"line\": 47\n          },\n          \"start\": {\n            \"column\": 11,\n            \"line\": 47\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\",\n          \"32\",\n          \"53\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"32\",\n            \"name\": \"serialize object with entries()\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"53\",\n            \"name\": \"Object.prototype.toString issues FormData\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"branch\",\n          \"missingBehavior\": \"One branch direction may be forced without the current tests failing. Confirm both directions actually produce different observable results before treating this as a gap.\",\n          \"whyThisMatters\": \"A branch condition can be forced to true or false without the current tests noticing, but if both directions lead to the same observable outcome, this is an equivalent mutant rather than a gap.\",\n          \"suggestedTestIdea\": \"If the branch not currently taken changes the observable result, add one test for it and one nearby case for the other branch. If both directions behave the same, this is likely an equivalent mutant.\"\n        }\n      },\n      {\n        \"id\": \"22\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 47,\n        \"mutatorName\": \"StringLiteral\",\n        \"original\": \"\\\"string\\\"\",\n        \"replacement\": \"\\\"\\\"\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 29,\n            \"line\": 47\n          },\n          \"start\": {\n            \"column\": 21,\n            \"line\": 47\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\",\n          \"32\",\n          \"53\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"32\",\n            \"name\": \"serialize object with entries()\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"53\",\n            \"name\": \"Object.prototype.toString issues FormData\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"generic\",\n          \"missingBehavior\": \"This mutant survived the current tests. It may point to a missing test, or it may be an equivalent mutant that does not change observable behavior.\",\n          \"whyThisMatters\": \"A surviving mutant is not automatically a missing test — confirm the original and replacement code actually disagree on some observable output before treating this as a gap.\",\n          \"suggestedTestIdea\": \"If you can find an input where the original and replacement code produce different observable results, add the smallest assertion that passes on the original and fails on the replacement. If no such input exists, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test.\"\n        }\n      },\n      {\n        \"id\": \"26\",\n        \"filePath\": \"src/serialize.ts\",\n        \"line\": 51,\n        \"mutatorName\": \"EqualityOperator\",\n        \"original\": \"a < b\",\n        \"replacement\": \"a <= b\",\n        \"status\": \"Survived\",\n        \"location\": {\n          \"end\": {\n            \"column\": 19,\n            \"line\": 51\n          },\n          \"start\": {\n            \"column\": 14,\n            \"line\": 51\n          }\n        },\n        \"coveredBy\": [\n          \"10\",\n          \"11\",\n          \"32\",\n          \"53\"\n        ],\n        \"coveringTests\": [\n          {\n            \"id\": \"10\",\n            \"name\": \"serialize primitive and builtins set\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"11\",\n            \"name\": \"serialize primitive and builtins map\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"32\",\n            \"name\": \"serialize object with entries()\",\n            \"filePath\": \"test/serialize.test.ts\"\n          },\n          {\n            \"id\": \"53\",\n            \"name\": \"Object.prototype.toString issues FormData\",\n            \"filePath\": \"test/serialize.test.ts\"\n          }\n        ],\n        \"insight\": {\n          \"category\": \"boundary\",\n          \"missingBehavior\": \"The comparison boundary may not be protected by tests on both sides of the decision point. Confirm the two sides actually produce different results before treating this as a gap.\",\n          \"whyThisMatters\": \"A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.\",\n          \"suggestedTestIdea\": \"If the two sides of the boundary produce different observable results, add tests for the exact boundary value and the nearest value on each side. If they behave the same, this is likely an equivalent mutant.\"\n        }\n      }\n    ],\n    \"stryker\": {\n      \"schemaVersion\": \"1.0\",\n      \"projectRoot\": \"/tmp/tautest-corpus-VOfJGm\",\n      \"frameworkName\": \"StrykerJS\",\n      \"frameworkVersion\": \"10.0.0\",\n      \"thresholds\": {\n        \"break\": 0,\n        \"high\": 0,\n        \"low\": 0\n      },\n      \"config\": {\n        \"testRunner\": \"vitest\",\n        \"packageManager\": \"pnpm\",\n        \"coverageAnalysis\": \"perTest\",\n        \"mutate\": [\n          \"src/serialize.ts:44-57\",\n          \"src/serialize.ts:59-60\",\n          \"src/serialize.ts:63-72\",\n          \"src/serialize.ts:75-75\",\n          \"src/serialize.ts:82-82\",\n          \"src/serialize.ts:130-132\",\n          \"src/serialize.ts:157-157\",\n          \"src/serialize.ts:163-163\",\n          \"src/serialize.ts:217-217\"\n        ],\n        \"reporters\": [\n          \"json\"\n        ]\n      }\n    }\n  },\n  \"paths\": {\n    \"report\": \"/tmp/tautest-corpus-VOfJGm/.tautest/report.md\",\n    \"json\": \"/tmp/tautest-corpus-VOfJGm/.tautest/report.json\",\n    \"prompt\": \"/tmp/tautest-corpus-VOfJGm/.tautest/fix-prompt.md\",\n    \"mutationJson\": \"/tmp/tautest-corpus-VOfJGm/.tautest/mutation.json\"\n  },\n  \"metrics\": {\n    \"changedFileCount\": 4,\n    \"changedSourceFileCount\": 1,\n    \"changedSourceLineCount\": 34,\n    \"mutatedFileCount\": 1,\n    \"mutatePatternCount\": 9,\n    \"partial\": false,\n    \"stageMs\": {\n      \"scopeMs\": 11,\n      \"configMs\": 1,\n      \"mutationMs\": 13726,\n      \"parseMs\": 6,\n      \"reportMs\": 2\n    },\n    \"runtimeMs\": 13726\n  },\n  \"diagnostics\": {\n    \"strykerConfig\": []\n  }\n}\n",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 19 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 14094
+  },
+  "tautestSummary": {
+    "verdict": "MIXED",
+    "mutationScore": 67.08860759493672,
+    "threshold": 60,
+    "total": 79,
+    "killed": 47,
+    "survived": 26,
+    "noCoverage": 0,
+    "timeout": 6,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "tautestChangedFileCount": 4,
+  "mutatePatterns": [
+    "src/serialize.ts:44-57",
+    "src/serialize.ts:59-60",
+    "src/serialize.ts:63-72",
+    "src/serialize.ts:75-75",
+    "src/serialize.ts:82-82",
+    "src/serialize.ts:130-132",
+    "src/serialize.ts:157-157",
+    "src/serialize.ts:163-163",
+    "src/serialize.ts:217-217"
+  ],
+  "tautestMutationReportPath": "/tmp/tautest-corpus-VOfJGm/.tautest/corpus-run-1.json",
+  "directStryker": {
+    "command": "npx --no-install stryker run stryker.config.json",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "Browserslist: browsers data (caniuse-lite) is 19 months old. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 14392
+  },
+  "directStrykerReportPath": "/tmp/tautest-corpus-VOfJGm/stryker-direct-report.json",
+  "directStrykerSummary": {
+    "total": 79,
+    "statuses": {
+      "Killed": 47,
+      "Survived": 26,
+      "Timeout": 6
+    },
+    "framework": {
+      "name": "StrykerJS",
+      "version": "10.0.0"
+    }
+  },
+  "comparison": {
+    "leftCount": 79,
+    "rightCount": 79,
+    "missingFromLeft": [],
+    "missingFromRight": [],
+    "statusDifferences": [],
+    "identical": true
+  },
+  "repeatability": [
+    {
+      "runNumber": 2,
+      "mutationReportPath": "/tmp/tautest-corpus-VOfJGm/.tautest/corpus-run-2.json",
+      "normalTestsDurationMs": 2220,
+      "tautestDurationMs": 16360,
+      "summary": {
+        "verdict": "MIXED",
+        "mutationScore": 67.08860759493672,
+        "threshold": 60,
+        "total": 79,
+        "killed": 47,
+        "survived": 26,
+        "noCoverage": 0,
+        "timeout": 6,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "sameMutatePatterns": true,
+      "comparison": {
+        "leftCount": 79,
+        "rightCount": 79,
+        "missingFromLeft": [],
+        "missingFromRight": [],
+        "statusDifferences": [],
+        "identical": true
+      }
+    }
+  ],
+  "stepFailures": [],
+  "status": "ok"
+}

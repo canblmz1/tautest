@@ -1,0 +1,92 @@
+{
+  "repo": "https://github.com/moment/luxon.git",
+  "pr": "1790",
+  "base": "b6b9d03709085008287ed7f4ce5067f0f4be53f2",
+  "head": "35e83d6fabfcd02758a54e14f5afc34b5b1cf914",
+  "runner": "jest",
+  "tautestVersion": "2.0.4",
+  "repetitions": 2,
+  "workDir": "/tmp/tautest-corpus-gqKrFL",
+  "setupEnv": {
+    "TZ": "America/New_York",
+    "LIMIT_JEST": "yes"
+  },
+  "install": {
+    "command": "npm ci",
+    "exitCode": 0,
+    "stdout": "\n> luxon@3.7.2 prepare\n> husky install\n\nhusky - Git hooks installed\n\nadded 1050 packages, and audited 1051 packages in 28s\n\n196 packages are looking for funding\n  run `npm fund` for details\n\n29 vulnerabilities (4 low, 11 moderate, 14 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+    "stderr": "npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead\nnpm warn deprecated rollup-plugin-terser@7.0.2: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser\nnpm warn deprecated codecov@3.8.3: https://about.codecov.io/blog/codecov-uploader-deprecation-plan/\n",
+    "durationMs": 29166
+  },
+  "installMode": "frozen-lockfile",
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "stdout": "\n> luxon@3.7.2 build\n> babel-node tasks/buildAll.js\n\nBuilding node\nBuilding cjs-browser\nBuilding es6\nBuilding amd\nBuilding global\nBuilding global-es6\nBuilt es6\nBuilt global-es6\nBuilt global\nBuilt amd\nBuilt node\nBuilt cjs-browser\n",
+    "stderr": "Browserslist: caniuse-lite is outdated. Please run:\n  npx update-browserslist-db@latest\n  Why you should do it regularly: https://github.com/browserslist/update-db#readme\n",
+    "durationMs": 11929
+  },
+  "installTestTools": {
+    "command": "npm install --save-dev --ignore-scripts tautest@2.0.4 @stryker-mutator/core@10.0.0 @stryker-mutator/jest-runner@10.0.0",
+    "exitCode": 0,
+    "stdout": "\nadded 149 packages, changed 21 packages, and audited 1200 packages in 22s\n\n229 packages are looking for funding\n  run `npm fund` for details\n\n27 vulnerabilities (4 low, 11 moderate, 12 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+    "stderr": "",
+    "durationMs": 22194
+  },
+  "toolchain": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "tautest": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-gqKrFL/node_modules/tautest/dist/index.js"
+    },
+    "core": {
+      "version": "2.0.4",
+      "path": "/tmp/tautest-corpus-gqKrFL/node_modules/@tautest/core/package.json"
+    },
+    "stryker": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/core/package.json"
+    },
+    "runner": {
+      "version": "10.0.0",
+      "path": "/tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/jest-runner/package.json"
+    },
+    "testFramework": {
+      "version": "29.4.3",
+      "path": "/tmp/tautest-corpus-gqKrFL/node_modules/jest/package.json",
+      "projectPath": "/tmp/tautest-corpus-gqKrFL/node_modules/jest/package.json"
+    }
+  },
+  "setupModifiedTrackedFiles": [
+    "package-lock.json",
+    "package.json"
+  ],
+  "prChangedFiles": [
+    "src/interval.js",
+    "test/interval/info.test.js"
+  ],
+  "normalTests": {
+    "command": "npx --no-install jest --runInBand",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "PASS test/datetime/tokenParse.test.js\nPASS test/datetime/create.test.js\nPASS test/datetime/toFormat.test.js\nPASS test/datetime/format.test.js\nPASS test/datetime/regexParse.test.js\nPASS test/datetime/math.test.js\nPASS test/duration/format.test.js\nPASS test/datetime/relative.test.js\nPASS test/interval/many.test.js\nPASS test/duration/units.test.js\nPASS test/datetime/zone.test.js\nPASS test/datetime/localeWeek.test.js\nPASS test/interval/parse.test.js\nPASS test/datetime/diff.test.js\nPASS test/datetime/set.test.js\nPASS test/interval/info.test.js\nPASS test/interval/format.test.js\nPASS test/datetime/dst.test.js\nPASS test/info/listers.test.js\nPASS test/duration/math.test.js\nPASS test/impl/english.test.js\nPASS test/datetime/getters.test.js\nPASS test/zones/IANA.test.js\nPASS test/datetime/misc.test.js\nPASS test/duration/create.test.js\nPASS test/duration/parse.test.js\nPASS test/interval/create.test.js\nPASS test/info/zones.test.js\nPASS test/datetime/invalid.test.js\nPASS test/zones/fixedOffset.test.js\nPASS test/duration/equality.test.js\nPASS test/datetime/many.test.js\nPASS test/info/localeWeek.test.js\nPASS test/datetime/reconfigure.test.js\nPASS test/duration/getters.test.js\nPASS test/duration/invalid.test.js\nPASS test/datetime/transform.test.js\nPASS test/datetime/equality.test.js\nPASS test/duration/reconfigure.test.js\nPASS test/duration/customMatrix.test.js\nPASS test/duration/set.test.js\nPASS test/duration/accuracy.test.js\nPASS test/interval/localeWeek.test.js\nPASS test/zones/local.test.js\nPASS test/datetime/info.test.js\nPASS test/duration/typecheck.test.js\nPASS test/datetime/typecheck.test.js\nPASS test/interval/typecheck.test.js\nPASS test/interval/getters.test.js\nPASS test/interval/setter.test.js\nPASS test/zones/invalid.test.js\nPASS test/info/features.test.js\nPASS test/duration/info.test.js\nPASS test/interval/proto.test.js\nPASS test/datetime/proto.test.js\nPASS test/datetime/degrade.test.js\nPASS test/duration/proto.test.js\nPASS test/zones/zoneInterface.test.js\n\nTest Suites: 58 passed, 58 total\nTests:       1209 passed, 1209 total\nSnapshots:   1 passed, 1 total\nTime:        5.905 s\nRan all test suites.\n",
+    "durationMs": 6723
+  },
+  "tautest": {
+    "command": "node /tmp/tautest-corpus-gqKrFL/node_modules/tautest/dist/index.js run --base b6b9d03709085008287ed7f4ce5067f0f4be53f2 --json",
+    "exitCode": 12,
+    "stdout": "07:32:04 (163) ERROR Stryker Unexpected error occurred while running Stryker Error: [BABEL] /tmp/tautest-corpus-gqKrFL/src/interval.js: Requires Babel \"^7.0.0-0\", but was loaded with \"8.0.6\". If you are sure you have a compatible version of @babel/core, it is likely that something in your build process is loading the wrong version. Inspect the stack trace of this error to look for the first entry that doesn't mention \"@babel/core\" or \"babel-core\" to see what is calling Babel. (While processing: \"/tmp/tautest-corpus-gqKrFL/node_modules/@babel/preset-env/lib/index.js\")\n    at Object.assertVersion (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:1769:15)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/@babel/preset-env/lib/index.js:201:7\n    at /tmp/tautest-corpus-gqKrFL/node_modules/@babel/helper-plugin-utils/lib/index.js:31:12\n    at async (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/caching-shared.js:18:33)\n    at async (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:186:15)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:216:13\n    at Generator.next (<anonymous>)\n    at file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:2060:21\n    at Generator.next (<anonymous>)\n    at Function.<anonymous> (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/caching-shared.js:4:3)\n    at Generator.next (<anonymous>)\n    at step (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:269:25)\n    at evaluateAsync (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:291:5)\n    at Function.errback (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:113:7)\n    at errback (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/caching-shared.js:41:18)\n    at async (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:188:17)\n    at onFirstPause (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:216:13)\n    at Generator.next (<anonymous>)\n    at cachedFunction (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/caching-shared.js:112:22)\n    at cachedFunction.next (<anonymous>)\n    at loadPresetDescriptor (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:2175:43)\n    at loadPresetDescriptor.next (<anonymous>)\n    at recursePresetDescriptors (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:1954:31)\n    at recursePresetDescriptors.next (<anonymous>)\n    at file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:2034:21\n    at Generator.next (<anonymous>)\n    at loadFullConfig (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:1990:5)\n    at loadFullConfig.next (<anonymous>)\n    at parse (file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/index-shared.js:2895:25)\n    at parse.next (<anonymous>)\n    at step (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:269:25)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:273:13\n    at async.call.result.err.err (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:223:11)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:189:28\n    at file:///tmp/tautest-corpus-gqKrFL/node_modules/@stryker-mutator/instrumenter/node_modules/@babel/core/lib/caching-shared.js:43:7\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:113:33\n    at step (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:287:14)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:273:13\n    at async.call.result.err.err (/tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:223:11)\n    at /tmp/tautest-corpus-gqKrFL/node_modules/gensync/index.js:189:28\n    at FSReqCallback.readFileAfterClose [as oncomplete] (node:internal/fs/read/context:68:3) {\n  code: 'BABEL_VERSION_UNSUPPORTED',\n  version: '8.0.6',\n  range: '^7.0.0-0'\n}\n",
+    "stderr": "Error: Stryker mutation run failed: [BABEL] /tmp/tautest-corpus-gqKrFL/src/interval.js: Requires Babel \"^7.0.0-0\", but was loaded with \"8.0.6\". If you are sure you have a compatible version of @babel/core, it is likely that something in your build process is loading the wrong version. Inspect the stack trace of this error to look for the first entry that doesn't mention \"@babel/core\" or \"babel-core\" to see what is calling Babel. (While processing: \"/tmp/tautest-corpus-gqKrFL/node_modules/@babel/preset-env/lib/index.js\")\n",
+    "durationMs": 1089
+  },
+  "stepFailures": [
+    {
+      "step": "tautest",
+      "exitCode": 12,
+      "command": "node /tmp/tautest-corpus-gqKrFL/node_modules/tautest/dist/index.js run --base b6b9d03709085008287ed7f4ce5067f0f4be53f2 --json"
+    }
+  ],
+  "status": "error",
+  "error": "tautest failed with exit 12; refusing to produce a mutation comparison."
+}
