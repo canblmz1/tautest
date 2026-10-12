@@ -229,8 +229,32 @@ for (const { name, routes, workspace: options, code, action, stdout, stderr } of
 
 // ---- the workflow that uses it ----
 
+function assertNpmTokenScope(workflow, allowedSteps) {
+  const [header, ...steps] = workflow.split(/(?=^ {6}- name: )/m);
+  const tokenName = /\b(?:NPM_TOKEN|NODE_AUTH_TOKEN)\b/;
+  assert.doesNotMatch(header, tokenName, 'npm tokens are never workflow-wide or job-wide');
+  const tokenSteps = [];
+  for (const step of steps) {
+    const name = step.match(/^ {6}- name: (.+)\n/)[1];
+    const tokenLines = step.split('\n').filter((line) => tokenName.test(line));
+    const expectedTokens = allowedSteps[name] ?? [];
+    assert.deepEqual(tokenLines, expectedTokens.map((token) =>
+      '          ' + token + ': ${{ secrets.NPM_TOKEN }}'
+    ), name + ' receives only its allowed step-scoped npm tokens');
+    if (expectedTokens.length > 0) {
+      assert.match(step, /\n {8}env:\n/, name + ' has a step environment');
+      tokenSteps.push(name);
+    }
+  }
+  assert.deepEqual(tokenSteps, Object.keys(allowedSteps), 'all expected publish-capable steps are present');
+}
+
 test('release.yml runs Changesets only when the decision says so, keeps both Changesets paths, and grants nothing new', () => {
   const workflow = readFileSync(workflowFile, 'utf8').replace(/\r\n/g, '\n');
+  // Changesets still shares one step environment between version-PR and publish paths.
+  assertNpmTokenScope(workflow, {
+    'Create release PR or publish packages': ['NPM_TOKEN', 'NODE_AUTH_TOKEN']
+  });
   const decisionStep = workflow.indexOf('id: decide');
   const changesetsUse = workflow.indexOf('uses: changesets/action@v1');
   assert.ok(decisionStep > 0 && changesetsUse > decisionStep, 'the decision step comes before the Changesets step');
@@ -311,6 +335,10 @@ for (const { name, routes, code, output, stderr } of tagScenarios) {
 
 test('publish-npm.yml uses the strict preflight before both guarded publish steps and grants nothing new', () => {
   const { workflow, step, source } = tagAvailability();
+  assertNpmTokenScope(workflow, {
+    'Publish @tautest/core': ['NODE_AUTH_TOKEN'],
+    'Publish tautest': ['NODE_AUTH_TOKEN']
+  });
   assert.match(source, /import \{ PACKAGES, decide, registryState \} from '\.\/scripts\/release-decision\.mjs';/);
   assert.match(source, /pendingChangesets: \[\]/);
   assert.doesNotMatch(step, /npm view|continue-on-error/);
