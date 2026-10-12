@@ -62,7 +62,8 @@ export function parseStrykerMutationReport(report: StrykerMutationReport): Mutat
   const compileError = countStatus(allMutants, 'CompileError');
   const ignored = countStatus(allMutants, 'Ignored');
   const total = allMutants.length;
-  const scoreBase = killed + survived + noCoverage + timeout + runtimeError + compileError;
+  // Stryker scores valid mutants only; invalid, ignored and pending states remain in total/diagnostics.
+  const scoreBase = killed + survived + noCoverage + timeout;
   const detected = killed + timeout;
 
   return {

@@ -4,6 +4,9 @@ import type { ChangedFile, ChangedFileStatus, DiffParseOptions, GitDiffOptions }
 const DEFAULT_SOURCE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mts', '.cts', '.mjs', '.cjs'];
 const DEFAULT_TEST_PATTERN = /(^|[/\\])(__tests__|test|tests)([/\\]|$)|\.(test|spec)\.[cm]?[tj]sx?$/;
 const GIT_DIFF_MAX_BUFFER = 50 * 1024 * 1024;
+const GIT_PATH_ESCAPES: Record<string, string> = {
+  a: '\x07', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t', v: '\v', '"': '"', '\\': '\\'
+};
 
 interface MutableChangedFile extends ChangedFile {
   lineSet: Set<number>;
@@ -151,9 +154,9 @@ export function getChangedSourceFiles(files: ChangedFile[]): ChangedFile[] {
 }
 
 function createDiffFile(line: string, options: DiffParseOptions): MutableChangedFile {
-  const match = line.match(/^diff --git a\/(.+?) b\/(.+)$/);
-  const filePath = normalizeGitPath(match?.[2] ?? '');
-  const oldPath = normalizeGitPath(match?.[1] ?? filePath);
+  const match = line.match(/^diff --git (a\/.+?|"a\/(?:[^"\\]|\\.)*") (b\/.+|"b\/(?:[^"\\]|\\.)*")$/);
+  const filePath = normalizePatchPath(match?.[2] ?? '') ?? '';
+  const oldPath = normalizePatchPath(match?.[1] ?? '') ?? filePath;
 
   return {
     path: filePath,
@@ -203,17 +206,53 @@ function isTestFile(filePath: string, pattern = DEFAULT_TEST_PATTERN): boolean {
 }
 
 function normalizePatchPath(rawPath: string): string | undefined {
-  const trimmed = rawPath.trim();
+  const decoded = normalizeGitPath(rawPath);
 
-  if (trimmed === '/dev/null') {
+  if (decoded === '/dev/null') {
     return undefined;
   }
 
-  return normalizeGitPath(trimmed.replace(/^[ab]\//, ''));
+  return decoded.replace(/^[ab]\//, '');
 }
 
 function normalizeGitPath(rawPath: string): string {
-  return toPosix(rawPath.trim().replace(/^"|"$/g, ''));
+  const trimmed = rawPath.trim();
+  // Git already uses '/' separators. In a quoted path, '\\' encodes a literal backslash.
+  if (!trimmed.startsWith('"')) {
+    return trimmed;
+  }
+  if (!trimmed.endsWith('"')) {
+    throw new Error('Unterminated quoted Git path.');
+  }
+
+  const body = trimmed.slice(1, -1);
+  const parts: Buffer[] = [];
+  let literalStart = 0;
+  for (let index = 0; index < body.length; index += 1) {
+    if (body[index] !== '\\') {
+      continue;
+    }
+    parts.push(Buffer.from(body.slice(literalStart, index), 'utf8'));
+    const octal = body.slice(index + 1, index + 4).match(/^[0-7]{1,3}/)?.[0];
+    if (octal) {
+      const byte = Number.parseInt(octal, 8);
+      if (byte > 255) {
+        throw new Error('Invalid octal byte in quoted Git path.');
+      }
+      parts.push(Buffer.from([byte]));
+      index += octal.length;
+    } else {
+      const escaped = GIT_PATH_ESCAPES[body[index + 1]];
+      if (escaped === undefined) {
+        throw new Error('Invalid escape in quoted Git path.');
+      }
+      parts.push(Buffer.from(escaped, 'utf8'));
+      index += 1;
+    }
+    literalStart = index + 1;
+  }
+  parts.push(Buffer.from(body.slice(literalStart), 'utf8'));
+  return new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(parts));
 }
 
 function toPosix(value: string): string {
