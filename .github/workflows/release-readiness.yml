@@ -187,6 +187,10 @@ jobs:
           pnpm --filter @tautest/core pack --pack-destination .tautest/release-packs
           pnpm --filter tautest pack --pack-destination .tautest/release-packs
 
+      - name: Verify unpublished Yarn tarball resolution
+        if: matrix.package-manager == 'yarn'
+        run: node --test scripts/yarn-packed-smoke.test.mjs
+
       - name: Smoke install via ${{ matrix.package-manager }}
         shell: bash
         run: |
@@ -211,7 +215,8 @@ jobs:
           pkg.resolutions = { '@tautest/core': `file:${process.argv[2]}` };
           fs.writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
-            yarn add "file:$core_tgz" "file:$cli_tgz"
+            # Named requests keep Yarn's resolution matching independent of the hidden tarball path.
+            yarn add "@tautest/core@file:$core_tgz" "tautest@file:$cli_tgz"
             yarn tautest --version
           fi
 
