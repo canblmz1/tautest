@@ -1,5 +1,18 @@
 # tautest
 
+## 2.0.6
+
+### Patch Changes
+
+- 869df94: Preserve changed-line mutation scope when source hunk content resembles Git file headers. Adding `++ counter;` or removing `-- counter;` no longer changes the parsed file path or skips the changed line.
+- be4a317: Exclude runtime-error and compile-error mutants from Stryker's mutation-score denominator while retaining their counts and diagnostics. Runs without valid mutants now retain an undefined score and UNKNOWN verdict.
+
+  Decode Git's quoted UTF-8 byte paths and C-style escapes before removing patch prefixes, so non-ASCII source filenames remain in the correct changed-line mutation scope.
+
+- Updated dependencies [869df94]
+- Updated dependencies [be4a317]
+  - @tautest/core@2.0.6
+
 ## 2.0.5
 
 ### Patch Changes
