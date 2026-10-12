@@ -204,6 +204,13 @@ jobs:
             npx tautest --version
           elif [ "${{ matrix.package-manager }}" = "yarn" ]; then
             yarn init -y
+            # Resolve the CLI's unpublished core dependency inside this fixture only.
+            node - "$core_tgz" <<'NODE'
+          const fs = require('node:fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.resolutions = { '@tautest/core': `file:${process.argv[2]}` };
+          fs.writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
             yarn add "file:$core_tgz" "file:$cli_tgz"
             yarn tautest --version
           fi
