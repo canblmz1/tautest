@@ -97,28 +97,26 @@ jobs:
           set -euo pipefail
           tag_version="${{ steps.release.outputs.version }}"
 
-          cli_exists=false
-          core_exists=false
+          node --input-type=module - "$tag_version" <<'NODE'
+          import { appendFileSync } from 'node:fs';
+          import { PACKAGES, decide, registryState } from './scripts/release-decision.mjs';
 
-          if npm view "tautest@$tag_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
-            cli_exists=true
-          fi
-
-          if npm view "@tautest/core@$tag_version" version --registry=https://registry.npmjs.org/ >/dev/null 2>&1; then
-            core_exists=true
-          fi
-
-          if [ "$cli_exists" = true ] && [ "$core_exists" = true ]; then
-            echo "tautest@$tag_version and @tautest/core@$tag_version already exist on npm; publish steps will be skipped."
-            echo "already_published=true" >> "$GITHUB_OUTPUT"
-          elif [ "$cli_exists" = true ] || [ "$core_exists" = true ]; then
-            echo "Partial npm publish detected for $tag_version; refusing to continue automatically." >&2
-            echo "tautest exists: $cli_exists" >&2
-            echo "@tautest/core exists: $core_exists" >&2
-            exit 1
-          else
-            echo "already_published=false" >> "$GITHUB_OUTPUT"
-          fi
+          const version = process.argv[2];
+          const versions = Object.fromEntries(PACKAGES.map(({ name }) => [name, version]));
+          const states = await Promise.all(PACKAGES.map(async ({ name }) => [
+            name,
+            await registryState('https://registry.npmjs.org', name, version)
+          ]));
+          // A tag publishes this exact version; pending changesets must not turn an existing
+          // version into a publish attempt.
+          const result = decide({ versions, pendingChangesets: [], registry: Object.fromEntries(states) });
+          if (result.action === 'error') {
+            console.error(result.reason);
+            process.exit(1);
+          }
+          console.log(result.reason);
+          appendFileSync(process.env.GITHUB_OUTPUT, `already_published=${result.action === 'skip'}\n`);
+          NODE
 
       - name: Typecheck
         run: pnpm typecheck

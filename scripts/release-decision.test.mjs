@@ -244,3 +244,82 @@ test('release.yml runs Changesets only when the decision says so, keeps both Cha
   assert.match(workflow, /\npermissions:\n {2}contents: write\n {2}pull-requests: write\n {2}id-token: write\n\n/);
   assert.doesNotMatch(workflow, /skip[ -]?ci|ci[ -]?skip|no[ -]ci|skip[ -]actions|actions[ -]skip/i);
 });
+
+// ---- the tag workflow reuses the strict registry decision without a Changesets path ----
+
+const tagWorkflowFile = fileURLToPath(new URL('../.github/workflows/publish-npm.yml', import.meta.url));
+
+function tagAvailability() {
+  const workflow = readFileSync(tagWorkflowFile, 'utf8').replace(/\r\n/g, '\n');
+  const step = workflow.match(/      - name: Validate release availability\n[\s\S]*?(?=\n      - name:)/)?.[0];
+  assert.ok(step, 'the tag workflow has an availability step');
+  const inline = step.match(/node --input-type=module - "\$tag_version" <<'NODE'\n([\s\S]*?)\n {10}NODE\n/);
+  assert.ok(inline, 'the availability step runs the inline Node preflight');
+  return { workflow, step, source: inline[1].replace(/^ {10}/gm, '') };
+}
+
+async function runTagAvailability(root, registry) {
+  const outputFile = path.join(root, 'tag-github-output.txt');
+  writeFileSync(outputFile, '');
+  // Run the workflow's exact Node body. Redirect its fetch calls to the mock registry;
+  // reject any other origin so this test cannot contact the public registry.
+  const redirectFetch = [
+    'const originalFetch = globalThis.fetch;',
+    'globalThis.fetch = (url, options) => {',
+    '  const target = new URL(url);',
+    "  if (target.origin !== 'https://registry.npmjs.org') throw new Error('unexpected registry origin');",
+    '  return originalFetch(' + JSON.stringify(registry.url) + ' + target.pathname, options);',
+    '};'
+  ].join('\n');
+  const args = ['--input-type=module', '--eval', redirectFetch + '\n' + tagAvailability().source, '-', '2.0.5'];
+  const options = { cwd: path.dirname(path.dirname(script)), env: { ...process.env, GITHUB_OUTPUT: outputFile } };
+  try {
+    const { stdout, stderr } = await execFileAsync(process.execPath, args, options);
+    return { code: 0, stdout, stderr, output: readFileSync(outputFile, 'utf8') };
+  } catch (error) {
+    return { code: error.code, stdout: error.stdout, stderr: error.stderr, output: readFileSync(outputFile, 'utf8') };
+  }
+}
+
+const tagScenarios = [
+  { name: 'both exact versions exist: skip publishing', routes: bothPublished, code: 0, output: 'already_published=true\n' },
+  { name: 'both versions are 404: allow publishing', routes: {}, code: 0, output: 'already_published=false\n' },
+  { name: 'only tautest exists: stop', routes: { '/tautest/2.0.5': published('tautest', '2.0.5') }, code: 1, output: '', stderr: /partial npm publish/ },
+  { name: 'only core exists: stop', routes: { '/@tautest%2Fcore/2.0.5': published('@tautest/core', '2.0.5') }, code: 1, output: '', stderr: /partial npm publish/ },
+  { name: 'both lookups fail with 503: stop without a publish output', routes: { '/tautest/2.0.5': { status: 503 }, '/@tautest%2Fcore/2.0.5': { status: 503 } }, code: 1, output: '', stderr: /HTTP 503/ },
+  { name: '403 and 404 are not two missing versions: stop', routes: { '/tautest/2.0.5': { status: 403 } }, code: 1, output: '', stderr: /HTTP 403/ },
+  { name: 'a 200 with the wrong package identity: stop', routes: { ...bothPublished, '/tautest/2.0.5': published('someone-else', '2.0.5') }, code: 1, output: '', stderr: /HTTP 200 without tautest@2.0.5/ }
+];
+
+for (const { name, routes, code, output, stderr } of tagScenarios) {
+  test('publish-npm.yml availability: ' + name, async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tag-availability-'));
+    const registry = await startRegistry(routes);
+    try {
+      const result = await runTagAvailability(root, registry);
+      assert.equal(result.code, code, result.stdout + '\n' + result.stderr);
+      assert.equal(result.output, output);
+      if (stderr) assert.match(result.stderr, stderr);
+      assert.ok(registry.requests.every(({ method }) => method === 'GET'), summary(registry).join('\n'));
+      assert.deepEqual([...new Set(registry.requests.map(({ url }) => url))].sort(), ['/@tautest%2Fcore/2.0.5', '/tautest/2.0.5']);
+    } finally {
+      await registry.close();
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+}
+
+test('publish-npm.yml uses the strict preflight before both guarded publish steps and grants nothing new', () => {
+  const { workflow, step, source } = tagAvailability();
+  assert.match(source, /import \{ PACKAGES, decide, registryState \} from '\.\/scripts\/release-decision\.mjs';/);
+  assert.match(source, /pendingChangesets: \[\]/);
+  assert.doesNotMatch(step, /npm view|continue-on-error/);
+  const availabilityIndex = workflow.indexOf(step);
+  for (const name of ['@tautest/core', 'tautest']) {
+    const publishStep = workflow.indexOf('- name: Publish ' + name + '\n');
+    assert.ok(publishStep > availabilityIndex, 'availability precedes publishing ' + name);
+    assert.match(workflow.slice(publishStep, workflow.indexOf('run: |', publishStep)), /if: steps\.availability\.outputs\.already_published != 'true'/);
+  }
+  assert.match(workflow, /\npermissions:\n {2}contents: read\n {2}id-token: write\n\n/);
+  assert.doesNotMatch(workflow, /skip[ -]?ci|ci[ -]?skip|no[ -]ci|skip[ -]actions|actions[ -]skip/i);
+});
