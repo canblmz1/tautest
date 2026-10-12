@@ -370,7 +370,7 @@ test('release-readiness.yml keeps real Yarn tarball installation and CLI executi
   const yarnBranch = step.indexOf('elif [ "${{ matrix.package-manager }}" = "yarn" ]; then');
   const init = step.indexOf('yarn init -y', yarnBranch);
   const resolution = step.indexOf('node - "$core_tgz"', init);
-  const install = step.indexOf('yarn add "file:$core_tgz" "file:$cli_tgz"', resolution);
+  const install = step.indexOf('yarn add "@tautest/core@file:$core_tgz" "tautest@file:$cli_tgz"', resolution);
   const run = step.indexOf('yarn tautest --version', install);
   assert.ok(enterFixture >= 0 && yarnBranch > enterFixture && init > yarnBranch && resolution > init && install > resolution && run > install);
   assert.doesNotMatch(step, /continue-on-error|\|\|\s*true|\bpublish\b|\bexit\s+0\b/);
