@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -804,6 +805,20 @@ describe('run scope and the project Stryker mutate config', () => {
     'src/price.js': 'export const price = (amount) => amount;\n',
     'scripts/build.mjs': 'console.log("build");\n'
   };
+
+  it('keeps a quoted UTF-8 source filename in the real git dry-run scope', async () => {
+    const root = gitProject({
+      ...baseFiles,
+      'src/öğe.js': 'export const value = 1;\n'
+    });
+    execFileSync('git', ['config', 'core.quotePath', 'true'], { cwd: root });
+    writeFileSync(path.join(root, 'src/öğe.js'), 'export const value = 2;\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+
+    expect(result.exitCode).toBe(0);
+    expect(JSON.parse(result.output).mutatePatterns).toEqual(['src/öğe.js:1-1']);
+  });
 
   it('keeps a prefix increment in the real git diff dry-run scope', async () => {
     const root = gitProject({

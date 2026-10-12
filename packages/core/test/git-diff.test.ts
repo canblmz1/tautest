@@ -1,4 +1,6 @@
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getChangedSourceFiles, parseGitDiff } from '../src/git/diff';
@@ -7,6 +9,55 @@ import { changedFilesToStrykerMutate } from '../src/git/ranges';
 const fixturesDir = path.join(import.meta.dirname, 'fixtures');
 
 describe('git diff parser', () => {
+  it.each([true, false])('parses a real Git UTF-8 path with core.quotePath=%s', (quotePath) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-quoted-diff-'));
+    for (const dir of ['old', 'new']) {
+      mkdirSync(path.join(root, dir, 'src'), { recursive: true });
+      writeFileSync(path.join(root, dir, 'src', 'öğe name.ts'), `export const value = ${dir === 'old' ? 1 : 2};\n`);
+    }
+    const diff = spawnSync('git', ['-c', `core.quotePath=${quotePath}`, 'diff', '--no-index', '--unified=0', '--no-color', 'old', 'new'], {
+      cwd: root,
+      encoding: 'utf8'
+    });
+    expect(diff.status).toBe(1);
+    expect(parseGitDiff(diff.stdout)).toMatchObject([{
+      path: 'new/src/öğe name.ts',
+      oldPath: 'old/src/öğe name.ts',
+      isSource: true,
+      ranges: [{ start: 1, end: 1 }]
+    }]);
+  });
+
+  it('decodes Git C-style escapes without treating literal backslashes as Windows separators', () => {
+    const rawPath = String.raw`src/name\twith\"quote\\slash.ts`;
+    const files = parseGitDiff(`diff --git "a/${rawPath}" "b/${rawPath}"
+--- "a/${rawPath}"
++++ "b/${rawPath}"
+@@ -1 +1 @@
+-export const value = 1;
++export const value = 2;`);
+    expect(files[0]).toMatchObject({ path: 'src/name\twith"quote\\slash.ts', oldPath: 'src/name\twith"quote\\slash.ts' });
+  });
+
+  it('preserves literal UTF-8 characters inside a C-quoted path', () => {
+    const files = parseGitDiff('diff --git "a/src/öğe\\tname.ts" "b/src/öğe\\tname.ts"\n+++ "b/src/öğe\\tname.ts"');
+    expect(files[0].path).toBe('src/öğe\tname.ts');
+  });
+
+  it('decodes quoted paths on a binary diff without patch path headers', () => {
+    const files = parseGitDiff(String.raw`diff --git "a/src/\303\266\304\237e.ts" "b/src/\303\266\304\237e.ts"
+Binary files "a/src/\303\266\304\237e.ts" and "b/src/\303\266\304\237e.ts" differ`);
+    expect(files[0]).toMatchObject({ path: 'src/öğe.ts', oldPath: 'src/öğe.ts', status: 'binary', isBinary: true });
+  });
+
+  it('decodes quoted rename metadata while preserving spaces', () => {
+    const files = parseGitDiff(String.raw`diff --git "a/src/\303\266\304\237e old.ts" "b/src/\303\266\304\237e new.ts"
+similarity index 100%
+rename from "src/\303\266\304\237e old.ts"
+rename to "src/\303\266\304\237e new.ts"`);
+    expect(files[0]).toMatchObject({ path: 'src/öğe new.ts', oldPath: 'src/öğe old.ts', status: 'renamed' });
+  });
+
   it.each([
     { before: 'counter++;', after: '++ counter;' },
     { before: '-- counter;', after: 'counter--;' }
