@@ -351,3 +351,57 @@ test('publish-npm.yml uses the strict preflight before both guarded publish step
   assert.match(workflow, /\npermissions:\n {2}contents: read\n {2}id-token: write\n\n/);
   assert.doesNotMatch(workflow, /skip[ -]?ci|ci[ -]?skip|no[ -]ci|skip[ -]actions|actions[ -]skip/i);
 });
+
+// ---- unpublished packed packages must resolve locally in the Yarn smoke fixture ----
+
+function yarnSmoke() {
+  const workflow = readFileSync(new URL('../.github/workflows/release-readiness.yml', import.meta.url), 'utf8');
+  const step = workflow.match(/ {6}- name: Smoke install via [^\n]+\n[\s\S]*?(?=\n {6}- name:|$)/)?.[0];
+  assert.ok(step, 'the readiness workflow keeps the package-manager smoke step');
+  const inline = step.match(/node - "\$core_tgz" <<'NODE'\n([\s\S]*?)\n {10}NODE\n/);
+  assert.ok(inline, 'the Yarn fixture resolves its packed core dependency before installation');
+  return { step, source: inline[1].replace(/^ {10}/gm, '') };
+}
+
+test('release-readiness.yml keeps real Yarn tarball installation and CLI execution inside the temporary fixture', () => {
+  const { step } = yarnSmoke();
+  assert.match(step, /smoke_dir="\$\(mktemp -d\)"/);
+  const enterFixture = step.indexOf('cd "$smoke_dir"');
+  const yarnBranch = step.indexOf('elif [ "${{ matrix.package-manager }}" = "yarn" ]; then');
+  const init = step.indexOf('yarn init -y', yarnBranch);
+  const resolution = step.indexOf('node - "$core_tgz"', init);
+  const install = step.indexOf('yarn add "file:$core_tgz" "file:$cli_tgz"', resolution);
+  const run = step.indexOf('yarn tautest --version', install);
+  assert.ok(enterFixture >= 0 && yarnBranch > enterFixture && init > yarnBranch && resolution > init && install > resolution && run > install);
+  assert.doesNotMatch(step, /continue-on-error|\|\|\s*true|\bpublish\b|\bexit\s+0\b/);
+});
+
+test('release-readiness.yml adds only a fixture-local core resolution and leaves production manifests and the tarball unchanged', async () => {
+  const { source } = yarnSmoke();
+  const root = mkdtempSync(path.join(tmpdir(), 'yarn-smoke-resolution-'));
+  const fixture = path.join(root, 'smoke fixture');
+  const coreTgz = path.join(root, 'release packs', 'tautest-core-9.9.9.tgz');
+  const untouched = new Map(['package.json', 'packages/core/package.json', 'packages/cli/package.json'].map((file) =>
+    [path.join(root, file), readFileSync(new URL('../' + file, import.meta.url), 'utf8')]
+  ));
+  untouched.set(coreTgz, 'packed core artifact');
+  try {
+    for (const [file, content] of untouched) {
+      mkdirSync(path.dirname(file), { recursive: true });
+      writeFileSync(file, content);
+    }
+    mkdirSync(fixture);
+    const manifest = { name: 'tautest-yarn-smoke', version: '1.0.0', private: true };
+    writeFileSync(path.join(fixture, 'package.json'), JSON.stringify(manifest));
+    await execFileAsync(process.execPath, ['--eval', source, '-', coreTgz], { cwd: fixture });
+    assert.deepEqual(JSON.parse(readFileSync(path.join(fixture, 'package.json'), 'utf8')), {
+      ...manifest,
+      resolutions: { '@tautest/core': `file:${coreTgz}` }
+    });
+    for (const [file, content] of untouched) {
+      assert.equal(readFileSync(file, 'utf8'), content, `${file} stays unchanged`);
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
