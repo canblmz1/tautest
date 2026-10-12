@@ -805,6 +805,19 @@ describe('run scope and the project Stryker mutate config', () => {
     'scripts/build.mjs': 'console.log("build");\n'
   };
 
+  it('keeps a prefix increment in the real git diff dry-run scope', async () => {
+    const root = gitProject({
+      ...baseFiles,
+      'src/counter.js': 'let counter = 0;\ncounter++;\nexport { counter };\n'
+    });
+    writeFileSync(path.join(root, 'src/counter.js'), 'let counter = 0;\n++ counter;\nexport { counter };\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', dryRun: true, json: true });
+
+    expect(result.exitCode).toBe(0);
+    expect(JSON.parse(result.output).mutatePatterns).toEqual(['src/counter.js:2-2']);
+  });
+
   it('leaves changed files outside the mutate config out of the mutation run', async () => {
     const root = gitProject(baseFiles);
     writeFileSync(path.join(root, 'src/price.js'), 'export const price = (amount) => (amount > 0 ? amount : 0);\n');

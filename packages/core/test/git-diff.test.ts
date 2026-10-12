@@ -2,10 +2,33 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getChangedSourceFiles, parseGitDiff } from '../src/git/diff';
+import { changedFilesToStrykerMutate } from '../src/git/ranges';
 
 const fixturesDir = path.join(import.meta.dirname, 'fixtures');
 
 describe('git diff parser', () => {
+  it.each([
+    { before: 'counter++;', after: '++ counter;' },
+    { before: '-- counter;', after: 'counter--;' }
+  ])('keeps hunk content resembling file headers in the changed-line scope: $before -> $after', ({ before, after }) => {
+    const files = parseGitDiff(`diff --git a/src/counter.ts b/src/counter.ts
+--- a/src/counter.ts
++++ b/src/counter.ts
+@@ -2 +2 @@
+-${before}
++${after}`);
+
+    expect(files).toMatchObject([
+      {
+        path: 'src/counter.ts',
+        oldPath: 'src/counter.ts',
+        isSource: true,
+        ranges: [{ start: 2, end: 2 }]
+      }
+    ]);
+    expect(changedFilesToStrykerMutate(getChangedSourceFiles(files))).toEqual(['src/counter.ts:2-2']);
+  });
+
   it('parses changed source ranges and excludes tests', () => {
     const diff = readFileSync(path.join(fixturesDir, 'changed-source.diff'), 'utf8');
 

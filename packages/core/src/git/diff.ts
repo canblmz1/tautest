@@ -94,7 +94,7 @@ export function parseGitDiff(diff: string, options: DiffParseOptions = {}): Chan
       continue;
     }
 
-    if (line.startsWith('+++ ')) {
+    if (!inHunk && line.startsWith('+++ ')) {
       const nextPath = normalizePatchPath(line.slice(4));
 
       if (nextPath) {
@@ -105,7 +105,7 @@ export function parseGitDiff(diff: string, options: DiffParseOptions = {}): Chan
       continue;
     }
 
-    if (line.startsWith('--- ')) {
+    if (!inHunk && line.startsWith('--- ')) {
       const oldPath = normalizePatchPath(line.slice(4));
 
       if (oldPath) {
