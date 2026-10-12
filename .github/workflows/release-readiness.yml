@@ -17,6 +17,7 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
+      - "scripts/**"
 
 permissions:
   contents: read
@@ -46,6 +47,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      # Check version-only candidates before package lifecycle scripts can run.
+      - name: Preflight version-only changes
+        env:
+          CHANGESET_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: node scripts/check-changesets.mjs --preflight "$CHANGESET_BASE"
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -55,7 +62,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check Changesets config
-        run: pnpm changeset status --since=origin/main
+        env:
+          CHANGESET_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: node scripts/check-changesets.mjs "$CHANGESET_BASE"
 
       - name: Lint
         run: pnpm lint
@@ -154,6 +163,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      # Check version-only candidates before package lifecycle scripts can run.
+      - name: Preflight version-only changes
+        env:
+          CHANGESET_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: node scripts/check-changesets.mjs --preflight "$CHANGESET_BASE"
 
       - name: Setup pnpm (for workspace build)
         uses: pnpm/action-setup@v4

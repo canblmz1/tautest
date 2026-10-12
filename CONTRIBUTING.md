@@ -73,6 +73,8 @@ Release-facing package changes should use Changesets:
 pnpm changeset
 ```
 
+Release Readiness keeps `changeset status --since=<base>` for contributor PRs. A PR that consumes changesets must instead match an exact replay of `changeset version` from that base, with no changes outside the consumed changesets and core/CLI version manifests and changelogs. All pending changesets must be consumed, and no new one is needed on the generated version PR. Before dependency installation in both readiness jobs, a dependency-free preflight checks the same file restrictions and allows only stable version fields to change in package manifests, so candidate lifecycle scripts and dependency edits are rejected before installation. Source, dependency, lockfile, workflow, and other changes cannot use this path; the remaining checks still run. Run `node scripts/check-changesets.mjs --preflight origin/main` before installing, then `node scripts/check-changesets.mjs origin/main` after installing with the frozen lockfile. Prerelease and lockfile-changing candidates need a separately reviewed extension.
+
 The Release workflow creates a version PR on `main` when changesets are present. Merging that version PR updates package versions and changelogs, then the same workflow publishes with `NPM_TOKEN`.
 
 A push to `main` that carries no changeset and whose `tautest` and `@tautest/core` versions are both already on npm skips the Changesets step and finishes successfully. The workflow fails instead of guessing when only one of the two versions is on npm or when the registry answers with anything but a 200 or a 404. The decision lives in `scripts/release-decision.mjs`, which only reads the registry and is covered by `scripts/release-decision.test.mjs`.
