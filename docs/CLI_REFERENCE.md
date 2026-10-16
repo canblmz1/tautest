@@ -170,6 +170,8 @@ This is expected for docs-only, config-only, deleted-only, binary-only, or test-
 
 When the project has a Stryker config with a `mutate` list, changed files outside it are skipped with the reason `outside Stryker mutate scope`, even if their extension is a source extension.
 
+An explicit `mutate: []` skips all changed source files and exits with code `2` without starting Stryker. Omitting `mutate` keeps Tautest's default changed-source scope.
+
 A run whose changed lines contain no mutable code (for example only comments, imports, or declarations) also exits with code `2` and status `no-op` instead of failing the threshold.
 
 ### Machine-readable report

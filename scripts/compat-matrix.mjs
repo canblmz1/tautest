@@ -74,7 +74,7 @@ write(
     2
   )
 );
-write('pnpm-workspace.yaml', `overrides:\n  "@tautest/core": ${JSON.stringify(override['@tautest/core'])}\n`);
+write('pnpm-workspace.yaml', `packages:\n  - "."\noverrides:\n  "@tautest/core": ${JSON.stringify(override['@tautest/core'])}\n`);
 run('pnpm', ['install']);
 
 const coreDir = realpathSync(path.join(realpathSync(path.join(root, 'node_modules', 'tautest')), '..', '@tautest', 'core'));
@@ -111,6 +111,19 @@ if (Number(args.vitest.split('.')[0]) >= 5 && compareVersions(args.stryker, '10.
   }
   console.log(`ok  ${label}: 7 killed / 4 survived, each kill by an executed test, run by StrykerJS ${framework.version}`);
 }
+
+// Explicitly disabling mutation must remain a no-op in an installed package too,
+// including runner combinations that would be rejected if Stryker actually ran.
+write('stryker.config.json', JSON.stringify({ mutate: [] }));
+const disabled = spawnSync('pnpm', ['exec', 'tautest', 'run', '--base', base, '--json'], { cwd: root, encoding: 'utf8', shell });
+if (disabled.status !== 2) {
+  fail(`${label}: mutate: [] expected exit 2, got ${disabled.status}\n${disabled.stdout}\n${disabled.stderr}`);
+}
+const disabledFile = JSON.parse(disabled.stdout).changedFiles.find((file) => file.path === 'src/price.js');
+if (disabledFile?.reason !== 'outside Stryker mutate scope') {
+  fail(`${label}: mutate: [] did not exclude the changed source file`);
+}
+console.log(`ok  ${label}: explicit empty mutate scope skips Stryker (exit 2)`);
 
 function priceTest(cases) {
   const body = cases.map(([name, assertion]) => `  it("${name}", () => { ${assertion} });`).join('\n');

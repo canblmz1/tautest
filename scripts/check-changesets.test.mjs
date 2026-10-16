@@ -275,7 +275,7 @@ test('the production replay runs the installed CLI on the base, not any reposito
 });
 
 test('readiness retains all checks and runs this gate against the PR comparison base', () => {
-  const workflow = readFileSync(new URL('../.github/workflows/release-readiness.yml', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/release-readiness.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   assert.match(workflow, /CHANGESET_BASE: \$\{\{ github\.event\.pull_request\.base\.sha \|\| 'origin\/main' \}\}/);
   assert.match(workflow, /run: node scripts\/check-changesets\.mjs "\$CHANGESET_BASE"/);
   assert.match(workflow, /- "scripts\/\*\*"/);

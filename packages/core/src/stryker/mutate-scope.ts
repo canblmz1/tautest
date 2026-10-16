@@ -25,7 +25,8 @@ export async function readStrykerMutateScope(rootDir: string): Promise<string[] 
   const config = configPath.endsWith('.json') ? JSON.parse(readFileSync(configPath, 'utf8')) : await loadConfigFile(configPath);
   const mutate = (config as { mutate?: unknown } | null)?.mutate;
 
-  return Array.isArray(mutate) && mutate.length > 0 && mutate.every((entry) => typeof entry === 'string') ? mutate : undefined;
+  // An empty list explicitly disables mutation; only an absent list uses Tautest's default scope.
+  return Array.isArray(mutate) && mutate.every((entry) => typeof entry === 'string') ? mutate : undefined;
 }
 
 // A changed file the project's own Stryker config would never mutate (build scripts,
