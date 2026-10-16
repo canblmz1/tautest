@@ -355,7 +355,7 @@ test('publish-npm.yml uses the strict preflight before both guarded publish step
 // ---- unpublished packed packages must resolve locally in the Yarn smoke fixture ----
 
 function yarnSmoke() {
-  const workflow = readFileSync(new URL('../.github/workflows/release-readiness.yml', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/release-readiness.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const step = workflow.match(/ {6}- name: Smoke install via [^\n]+\n[\s\S]*?(?=\n {6}- name:|$)/)?.[0];
   assert.ok(step, 'the readiness workflow keeps the package-manager smoke step');
   const inline = step.match(/node - "\$core_tgz" <<'NODE'\n([\s\S]*?)\n {10}NODE\n/);

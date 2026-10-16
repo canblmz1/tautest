@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -805,6 +805,22 @@ describe('run scope and the project Stryker mutate config', () => {
     'src/price.js': 'export const price = (amount) => amount;\n',
     'scripts/build.mjs': 'console.log("build");\n'
   };
+
+  it('does not start Stryker when the project explicitly disables mutation', async () => {
+    const root = gitProject({
+      ...baseFiles,
+      'stryker.config.json': JSON.stringify({ mutate: [] })
+    });
+    writeFileSync(path.join(root, 'src/price.js'), 'export const price = (amount) => (amount > 0 ? amount : 0);\n');
+
+    const result = await runMutationCommand(root, { base: 'HEAD', json: true });
+
+    expect(result.exitCode).toBe(2);
+    expect(JSON.parse(result.output).changedFiles).toContainEqual(
+      expect.objectContaining({ path: 'src/price.js', reason: 'outside Stryker mutate scope' })
+    );
+    expect(existsSync(result.reportDir)).toBe(false);
+  });
 
   it('keeps a quoted UTF-8 source filename in the real git dry-run scope', async () => {
     const root = gitProject({

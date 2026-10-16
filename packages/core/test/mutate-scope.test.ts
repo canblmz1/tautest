@@ -45,6 +45,12 @@ describe('readStrykerMutateScope', () => {
 
     expect(await readStrykerMutateScope(root)).toBeUndefined();
   });
+
+  it('preserves an explicitly empty mutate scope', async () => {
+    const root = projectWith({ 'stryker.config.json': JSON.stringify({ mutate: [] }) });
+
+    expect(await readStrykerMutateScope(root)).toEqual([]);
+  });
 });
 
 describe('markOutsideMutateScope', () => {
@@ -84,5 +90,13 @@ describe('markOutsideMutateScope', () => {
     const [build] = markOutsideMutateScope([changedSource('scripts/build.mjs')], undefined, root);
 
     expect(build.isSource).toBe(true);
+  });
+
+  it('excludes all source files when the mutate scope is explicitly empty', () => {
+    const root = projectWith({ 'src/price.ts': '' });
+
+    const [price] = markOutsideMutateScope([changedSource('src/price.ts')], [], root);
+
+    expect(price).toMatchObject({ isSource: false, outsideMutateScope: true });
   });
 });
