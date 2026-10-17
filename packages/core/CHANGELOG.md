@@ -1,5 +1,17 @@
 # @tautest/core
 
+## 2.1.0
+
+### Minor Changes
+
+- 744eb60: Analyze existing raw Stryker JSON reports without changing the project's mutation setup. Group actionable mutants by source expression and record manual review decisions that expire when the report or project files change, preserving raw statuses and scores.
+
+  Add sandboxed test-fix verification with an execution budget. A successful result requires a passing initial suite and an executed killing test in the selected candidate file for the exact original mutant; timeouts and incomplete runs never count as verified fixes.
+
+### Patch Changes
+
+- 467b4d6: Respect an explicitly empty Stryker `mutate` list. Tautest now reports a no-op instead of unexpectedly mutation-testing changed source files when the project disables mutation with `mutate: []`.
+
 ## 2.0.6
 
 ### Patch Changes
