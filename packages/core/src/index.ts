@@ -15,6 +15,7 @@ export * from './report/html';
 export * from './report/json';
 export * from './report/terminal';
 export * from './report/insights';
+export * from './report/review';
 export * from './report/normalize';
 export * from './prompt/builder';
 export * from './config/defaults';

@@ -82,6 +82,7 @@ if (!coreDir.includes('file+')) {
   fail(`tautest resolved @tautest/core from ${coreDir}, not from the local pack`);
 }
 
+write('tautest.config.json', JSON.stringify({ stryker: { concurrency: 1 } }));
 const result = spawnSync('pnpm', ['exec', 'tautest', 'run', '--base', base, '--json'], { cwd: root, encoding: 'utf8', shell });
 const label = `Stryker ${args.stryker} + Vitest ${args.vitest}`;
 
@@ -110,6 +111,51 @@ if (Number(args.vitest.split('.')[0]) >= 5 && compareVersions(args.stryker, '10.
     fail(`${label}: ${notExecuted.length} killed mutant(s) report no executed or killing test`);
   }
   console.log(`ok  ${label}: 7 killed / 4 survived, each kill by an executed test, run by StrykerJS ${framework.version}`);
+
+  // Exercise the installed worker entry point, local config inheritance, and actual
+  // test attribution. A unit stub cannot establish any of these properties.
+  const target = raw.files['src/price.js'].mutants.find(m => m.status === 'Survived' && m.location.start.line === 2 && m.replacement === 'false');
+  if (!target) fail(`${label}: missing negative-amount canary survivor`);
+  write('baseline.json', JSON.stringify(raw));
+  write('vitest.mutation.config.mjs', 'export default { test: { include: ["test/price.test.js"] } };\n');
+  write('test/excluded.test.js', 'throw new Error("local Vitest config must exclude this file");\n');
+  write('stryker.config.json', JSON.stringify({ testRunner: 'vitest', plugins: ['@stryker-mutator/vitest-runner'],
+    vitest: { configFile: 'vitest.mutation.config.mjs', related: false }, coverageAnalysis: 'perTest', concurrency: 1, logLevel: 'error' }));
+  const analysis = cliJson(['analyze', '--from', 'baseline.json', '--json'], 0);
+  if (analysis.rawSummary.survived !== 4 || !analysis.groups.length) fail(`${label}: imported report lost survivors`);
+  const weak = cliJson(['verify', '--from', 'baseline.json', '--mutant', target.id, '--test', 'test/price.test.js', '--budget', '90', '--json'], 1);
+  if (weak.status !== 'not-verified') fail(`${label}: weak tests were reported verified`);
+  write('test/price.test.js', priceTest([
+    ['returns amount for non-members', 'expect(finalPrice(100, false)).toBe(100);'],
+    ['members pay less', 'expect(finalPrice(100, true)).toBeLessThan(100);'],
+    ['negative amounts return zero', 'expect(finalPrice(-1, false)).toBe(0);']
+  ]));
+  const verified = cliJson(['verify', '--from', 'baseline.json', '--mutant', target.id, '--test', 'test/price.test.js', '--budget', '90', '--json'], 0);
+  if (verified.status !== 'verified' || !(verified.testsCompleted > 0) || !verified.killedBy.length) fail(`${label}: missing executed candidate kill`);
+  if (readFileSync(path.join(root, 'src/price.js'), 'utf8') !== raw.files['src/price.js'].source) fail(`${label}: production source changed`);
+  write('test/price.test.js', priceTest([['broken baseline', 'expect(finalPrice(100, false)).toBe(-999);']]));
+  const broken = cliJson(['verify', '--from', 'baseline.json', '--mutant', target.id, '--test', 'test/price.test.js', '--budget', '90', '--json'], 12);
+  if (broken.status !== 'error') fail(`${label}: a failing initial suite was accepted`);
+  write('test/price.test.js', priceTest([['original passes', 'expect(finalPrice(100, false)).toBe(100);']]));
+  write('stryker.config.json', JSON.stringify({ testRunner: 'vitest', buildCommand: 'node -e "setTimeout(()=>{},10000)"',
+    plugins: ['@stryker-mutator/vitest-runner'], vitest: { configFile: 'vitest.mutation.config.mjs' }, logLevel: 'error' }));
+  const limited = cliJson(['verify', '--from', 'baseline.json', '--mutant', target.id, '--test', 'test/price.test.js', '--budget', '1', '--json'], 12);
+  if (limited.status !== 'incomplete' || !limited.execution.budgetExceeded) fail(`${label}: budget exhaustion was not incomplete`);
+  console.log(`ok  ${label}: imported report, weak-test refusal, executed candidate kill, failed baseline, execution budget`);
+
+  // Report-only users must not have to install a mutation engine.
+  const lean = mkdtempSync(path.join(tmpdir(), 'tautest-analyze-only-'));
+  writeFileSync(path.join(lean, 'package.json'), JSON.stringify({ private: true, type: 'module',
+    dependencies: { tautest: `file:${cliTgz}`, '@tautest/core': `file:${coreTgz}` }, pnpm: { overrides: override } }));
+  writeFileSync(path.join(lean, 'pnpm-workspace.yaml'), `packages:\n  - "."\noverrides:\n  "@tautest/core": ${JSON.stringify(override['@tautest/core'])}\n`);
+  writeFileSync(path.join(lean, 'raw.json'), JSON.stringify(raw));
+  const leanInstall = spawnSync('pnpm', ['install', '--ignore-scripts'], { cwd: lean, encoding: 'utf8', shell });
+  if (leanInstall.status !== 0) fail(`${label}: report-only install failed\n${leanInstall.stdout}\n${leanInstall.stderr}`);
+  const noEngine = spawnSync(process.execPath, ['--input-type=module', '-e', `import {createRequire} from 'node:module'; const coreRequire=createRequire(import.meta.resolve('@tautest/core')); try { coreRequire.resolve('@stryker-mutator/core'); process.exit(1); } catch (e) { if(e.code !== 'MODULE_NOT_FOUND') throw e; }`], { cwd: lean, encoding: 'utf8' });
+  if (noEngine.status !== 0) fail(`${label}: could not establish engine-free report-only installation\n${noEngine.stderr}`);
+  const leanAnalysis = spawnSync('pnpm', ['exec', 'tautest', 'analyze', '--from', 'raw.json', '--json'], { cwd: lean, encoding: 'utf8', shell });
+  if (leanAnalysis.status !== 0 || JSON.parse(leanAnalysis.stdout).rawSummary.survived !== 4) fail(`${label}: report-only analysis failed\n${leanAnalysis.stdout}\n${leanAnalysis.stderr}`);
+  console.log(`ok  ${label}: report analysis works with no Stryker installed, package config or git repository`);
 }
 
 // Explicitly disabling mutation must remain a no-op in an installed package too,
@@ -128,6 +174,12 @@ console.log(`ok  ${label}: explicit empty mutate scope skips Stryker (exit 2)`);
 function priceTest(cases) {
   const body = cases.map(([name, assertion]) => `  it("${name}", () => { ${assertion} });`).join('\n');
   return `import { describe, it, expect } from "vitest";\nimport { finalPrice } from "../src/price.js";\n\ndescribe("finalPrice", () => {\n${body}\n});\n`;
+}
+
+function cliJson(commandArgs, expectedExit) {
+  const output = spawnSync('pnpm', ['exec', 'tautest', ...commandArgs], { cwd: root, encoding: 'utf8', shell });
+  if (output.status !== expectedExit) fail(`${commandArgs[0]}: expected ${expectedExit}, got ${output.status}\n${output.stdout}\n${output.stderr}`);
+  return JSON.parse(output.stdout);
 }
 
 function compareVersions(left, right) {

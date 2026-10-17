@@ -41,6 +41,9 @@ describe('CLI program', () => {
       'time-travel',
       'chaos',
       'prompt',
+      'analyze',
+      'review',
+      'verify',
       'report'
     ]);
   });

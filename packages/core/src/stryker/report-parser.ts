@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import type { CoveringTest, MutationLocation, MutationSummary, StrykerReportMetadata, SurvivingMutant } from '../types';
 import { TautestError } from '../types';
 
-interface StrykerMutationReport {
+export interface StrykerMutationReport {
   schemaVersion?: string;
   thresholds?: unknown;
   projectRoot?: string;
@@ -35,7 +35,7 @@ interface StrykerMutationReport {
   >;
 }
 
-interface StrykerMutant {
+export interface StrykerMutant {
   id?: string;
   status: string;
   mutatorName: string;

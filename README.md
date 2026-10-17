@@ -29,6 +29,8 @@ One setup is supported. Anything else is listed under [Exceptions](#exceptions).
 
 ## Try it on a branch
 
+Already have a Stryker JSON report? Start with `npx tautest analyze --from reports/mutation/mutation.json`. It produces a review queue and test-fix checklist without running tests, loading project config, requiring Git, or changing your Stryker setup. Stryker is optional for this report-only path. To prove a test kills a particular survivor, use [`tautest verify`](docs/CLI_REFERENCE.md#tautest-verify) with the original report, mutant id and candidate test file. See [the report review workflow](docs/STRYKER_REVIEW.md).
+
 Run these from the project root, on a branch that changes source code:
 
 ```bash
