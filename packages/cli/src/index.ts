@@ -14,6 +14,8 @@ import { runMutationCommand } from './commands/run';
 import { runScaffoldCommand } from './commands/scaffold';
 import { runTimeTravelCommand } from './commands/time-travel';
 import { runWatchCommand } from './commands/watch';
+import { runAnalyzeCommand, runReviewCommand } from './commands/analyze';
+import { runVerifyCommand } from './commands/verify';
 import { mapUnknownError, printCliError } from './lib/errors';
 import { EXIT_CODES } from './lib/exit-codes';
 
@@ -195,6 +197,34 @@ export function buildProgram(): Command {
         return EXIT_CODES.ok;
       });
     });
+
+  program.command('analyze')
+    .description('analyze an existing Stryker JSON report without running tests or project configuration')
+    .requiredOption('--from <path>', 'existing Stryker mutation.json')
+    .option('--prompt-style <style>', 'test-fix prompt style', parsePromptStyle)
+    .option('--runner <runner>', 'test style for prompts when not recorded in the report', parseRunner)
+    .option('--report-dir <dir>', 'analysis output directory', '.tautest/review')
+    .option('--json', 'print machine-readable analysis')
+    .action(async options => { await runAction(program, () => { writeStdout(runAnalyzeCommand(process.cwd(), options)); return EXIT_CODES.ok; }); });
+
+  program.command('review <groupId>')
+    .description('record a manual expression review without changing the raw mutation score')
+    .requiredOption('--decision <decision>', 'needs-test, equivalent, or accepted-risk')
+    .requiredOption('--reason <text>', 'reason for the manual decision')
+    .option('--report-dir <dir>', 'analysis output directory', '.tautest/review')
+    .action(async (groupId, options) => { await runAction(program, () => { writeStdout(runReviewCommand(process.cwd(), groupId, options)); return EXIT_CODES.ok; }); });
+
+  program.command('verify')
+    .description('verify that a selected test file kills an exact previously surviving mutant in a Stryker sandbox')
+    .requiredOption('--from <path>', 'original Stryker mutation.json')
+    .requiredOption('--mutant <id>', 'original mutant id')
+    .requiredOption('--test <path>', 'candidate test file that must kill the mutant')
+    .option('--file <path>', 'source file when ids repeat across files')
+    .option('--runner <runner>', 'runner override or runner when no local Stryker config exists', parseRunner)
+    .option('--report-dir <dir>', 'verification output directory', '.tautest/verification')
+    .option('--budget <seconds>', 'total execution budget in seconds', '180')
+    .option('--json', 'print machine-readable verification evidence')
+    .action(async options => { await runAction(program, async () => { const result = await runVerifyCommand(process.cwd(), options); writeStdout(result.output); return result.exitCode; }); });
 
   program
     .command('report')

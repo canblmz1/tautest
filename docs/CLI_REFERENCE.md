@@ -1,5 +1,56 @@
 # CLI Reference
 
+## `tautest analyze`
+
+Analyze a **raw Stryker JSON report** without running tests, evaluating config files, installing a mutation engine, or requiring Git:
+
+```bash
+tautest analyze --from reports/mutation/mutation.json
+tautest analyze --from mutation.json --runner vitest --json
+```
+
+`--from` is required. `--report-dir` defaults to `.tautest/review`. `--runner vitest|jest` overrides the report's runner for the test-fix prompt; `--prompt-style` accepts the same styles as `run`. Without a supported recorded runner, analysis still works and the prompt explains how to choose one. This differs from `report --from`, which reads an already normalized Tautest report.
+
+Outputs: `report.md`, normalized schema-v1 `report.json`, expression groups in `review.json`, and `fix-prompt.md`. All Survived and NoCoverage findings remain in the report. Groups share a source expression; grouping does not prove behavioral equivalence. Unknown or pending states produce `complete: false` and an UNKNOWN verdict. Exit 0 means analysis succeeded, not that the project passed a new mutation gate. Malformed input exits 10; explicit zero-test survivors exit 12. Import size is limited to 128 MiB.
+
+## `tautest review`
+
+Record a manual judgment using the full group id from `review.json`:
+
+```bash
+tautest review GROUP_ID --decision equivalent --reason "Explain why every mutation in this expression is equivalent"
+tautest review GROUP_ID --decision accepted-risk --reason "Describe the accepted behavior and impact"
+tautest review GROUP_ID --decision needs-test --reason "Add the missing boundary assertion"
+```
+
+`--decision` accepts `needs-test`, `equivalent`, or `accepted-risk`; `--reason` is required and nonempty. `--report-dir` selects the analysis directory. Tautest records these as manual judgments, never equivalence proofs, and never changes raw mutant statuses or scores. Manually equivalent or accepted-risk groups leave the generated test-fix queue but remain in the report. A judgment applies to every mutant in its expression group.
+
+Decisions require matching local source and a current project snapshot. They expire when the imported report or project files change, including tests, config and lockfiles. The conservative snapshot skips symlinks, dependencies, Git data, generated `dist`, `coverage`, `reports`, `.tautest`, `.stryker-tmp` directories, and `.env*` files. Snapshot limits are 64 MiB and 20,000 files; when unavailable or exceeded, analysis works but review persistence is disabled. Review from a package root and keep verification-relevant inputs outside skipped generated directories.
+
+## `tautest verify`
+
+Verify a specific survivor against a candidate test file using a fresh, scoped Stryker run:
+
+```bash
+tautest verify --from mutation.json --mutant 7 --test test/price.test.js --budget 180
+tautest verify --from mutation.json --file src/price.js --mutant 7 --test test/price.test.js --json
+```
+
+Required: `--from`, `--mutant`, and `--test`. Use `--file` when ids repeat across files. `--runner vitest|jest` explicitly overrides the local runner; otherwise Tautest uses the project's Stryker config runner, then the report's Vitest/Jest runner. `--report-dir` defaults to `.tautest/verification`; each run gets a unique directory. `--budget` is a whole number of seconds, 1–86400, default 180. It covers worker startup, config loading, build, initial tests and mutation tests. This flag applies to `verify`, not `run`.
+
+Source must match the report and the target must be Survived or NoCoverage. Paths for verification must be project-relative and resolve inside the package. The initial suite must pass, the exact target must be reproduced and Killed with `testsCompleted > 0`, and `killedBy` must identify an executed test in the selected file. Run-local mutant ids may change; identity is matched by file, location, mutator and replacement. This proves attribution to a file, not to one newly added assertion or to every test in the project.
+
+Verification uses installed Stryker and its runner, with the same [supported versions](../README.md#supported-setup). It loads the first local `stryker.config.{json,mjs,js,cjs}` or `stryker.conf.{json,mjs,js,cjs}` and retains runner settings, plugins and other options. Embedded report config is data and is never executed or replayed. Overrides enforce the selected source lines, JSON output, sandbox mode, no incremental reuse, a complete mutation run, zero break threshold and sandbox cleanup. Custom config filenames and TypeScript Stryker config files are not supported by this command yet. Test files are not edited or selected automatically; the selected file must participate in the configured suite.
+
+Each run writes `verification.json`, `verification.md`, `engine.log`, and its worker request; completed runs also contain the fresh `mutation.json`. Exit codes:
+
+- `0`: verified candidate kill and passing initial suite.
+- `1`: completed but the required candidate kill was not established.
+- `10`: invalid selection, stale source, malformed input or invalid budget.
+- `12`: engine failure or incomplete evidence, including budget exhaustion.
+
+On budget exhaustion Tautest terminates the worker process tree and records `incomplete`. A termination failure is recorded in execution evidence. Abrupt termination may leave Stryker sandbox files; inspect the evidence and remove only that run's leftover sandbox. Neither a timeout, a compiler error, nor a failing initial suite is proof of a test fix. Verification never changes the imported report or claims a new full-project score.
+
 ## `tautest demo`
 
 Prints a copy-paste demo that shows the core Tautest loop: normal tests pass, changed-line mutation testing finds a surviving boundary mutant, and the generated prompt points to the missing test.

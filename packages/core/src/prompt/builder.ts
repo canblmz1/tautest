@@ -7,6 +7,7 @@ export function buildFixPrompt(input: {
   mutants: SurvivingMutant[];
   testRunner: 'vitest' | 'jest';
   commands?: string[];
+  validationLoop?: string[];
   maxMutants?: number;
   style?: PromptStyle;
 }): string {
@@ -36,7 +37,7 @@ ${enrichedMutants.length > 0 ? enrichedMutants.map(formatMutant).join('\n\n') : 
 ## Validation Loop
 
 1. Add or strengthen the smallest test that observes the behavioral difference.
-${PROMPT_VALIDATION_LOOP.map((step, index) => `${index + 2}. ${step}`).join('\n')}
+${(input.validationLoop ?? PROMPT_VALIDATION_LOOP).map((step, index) => `${index + 2}. ${step}`).join('\n')}
 
 ## Commands
 
@@ -48,7 +49,7 @@ ${commands.join('\n')}
 
 function formatMutant(mutant: ReportMutant, index: number): string {
   return `${index + 1}. \`${mutant.filePath}:${mutant.line}\`
-   - Status: ${mutant.status}
+${mutant.id === undefined ? '' : `   - Mutant id: ${mutant.id}\n`}   - Status: ${mutant.status}
    - Mutator: ${mutant.mutatorName}
    - Original: ${inlineCode(mutant.original)}
    - Replacement: ${inlineCode(mutant.replacement)}
