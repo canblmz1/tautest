@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0",
+  "framework": {
+    "name": "StrykerJS",
+    "version": "9.6.1",
+    "branding": {
+      "homepageUrl": "https://stryker-mutator.io",
+      "imageUrl": "data:image/svg+xml;utf8,%3Csvg viewBox='0 0 1458 1458' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='2'%3E%3Cpath fill='none' d='M0 0h1458v1458H0z'/%3E%3CclipPath id='a'%3E%3Cpath d='M0 0h1458v1458H0z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23a)'%3E%3Cpath d='M1458 729c0 402.655-326.345 729-729 729S0 1131.655 0 729C0 326.445 326.345 0 729 0s729 326.345 729 729' fill='%23e74c3c' fill-rule='nonzero'/%3E%3Cpath d='M778.349 1456.15L576.6 1254.401l233-105 85-78.668v-64.332l-257-257-44-187-50-208 251.806-82.793L1076.6 389.401l380.14 379.15c-19.681 367.728-311.914 663.049-678.391 687.599z' fill-opacity='.3'/%3E%3Cpath d='M753.4 329.503c41.79 0 74.579 7.83 97.925 25.444 23.571 18.015 41.69 43.956 55.167 77.097l11.662 28.679 165.733-58.183-14.137-32.13c-26.688-60.655-64.896-108.61-114.191-144.011-49.329-35.423-117.458-54.302-204.859-54.302-50.78 0-95.646 7.376-134.767 21.542-40.093 14.671-74.09 34.79-102.239 60.259-28.84 26.207-50.646 57.06-65.496 92.701-14.718 35.052-22.101 72.538-22.101 112.401 0 72.536 20.667 133.294 61.165 182.704 38.624 47.255 98.346 88.037 179.861 121.291 42.257 17.475 78.715 33.125 109.227 46.994 27.193 12.361 49.294 26.124 66.157 41.751 15.309 14.186 26.497 30.584 33.63 49.258 7.721 20.214 11.16 45.69 11.16 76.402 0 28.021-4.251 51.787-13.591 71.219-8.832 18.374-20.171 33.178-34.523 44.219-14.787 11.374-31.193 19.591-49.393 24.466-19.68 5.359-39.14 7.993-58.69 7.993-29.359 0-54.387-3.407-75.182-10.747-20.112-7.013-37.144-16.144-51.259-27.486-13.618-11.009-24.971-23.766-33.744-38.279-9.64-15.8-17.272-31.924-23.032-48.408l-10.965-31.376-161.669 60.585 10.734 30.124c10.191 28.601 24.197 56.228 42.059 82.748 18.208 27.144 41.322 51.369 69.525 72.745 27.695 21.075 60.904 38.218 99.481 51.041 37.777 12.664 82.004 19.159 132.552 19.159 49.998 0 95.818-8.321 137.611-24.622 42.228-16.471 78.436-38.992 108.835-67.291 30.719-28.597 54.631-62.103 71.834-100.642 17.263-38.56 25.923-79.392 25.923-122.248 0-54.339-8.368-100.37-24.208-138.32-16.29-38.759-38.252-71.661-65.948-98.797-26.965-26.418-58.269-48.835-93.858-67.175-33.655-17.241-69.196-33.11-106.593-47.533-35.934-13.429-65.822-26.601-89.948-39.525-22.153-11.868-40.009-24.21-53.547-37.309-11.429-11.13-19.83-23.678-24.718-37.664-5.413-15.49-7.98-33.423-7.98-53.577 0-40.883 11.293-71.522 37.086-90.539 28.443-20.825 64.985-30.658 109.311-30.658z' fill='%23f1c40f' fill-rule='nonzero'/%3E%3Cpath d='M720 0h18v113h-18zM1458 738v-18h-113v18h113zM720 1345h18v113h-18zM113 738v-18H0v18h113z'/%3E%3C/g%3E%3C/svg%3E"
+    },
+    "dependencies": {
+      "typescript": "5.9.3"
+    }
+  },
+  "files": {
+    "src/staruml-client.ts": {
+      "language": "typescript",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "LogicalOperator",
+          "replacement": "options.extPort && DEFAULT_EXT_PORT",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 14,
+          "coveredBy": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13"
+          ],
+          "location": {
+            "end": {
+              "column": 56,
+              "line": 38
+            },
+            "start": {
+              "column": 21,
+              "line": 38
+            }
+          }
+        }
+      ],
+      "source": "import { z } from \"zod\";\n\nconst DEFAULT_HOST = \"http://localhost\";\nconst DEFAULT_API_PORT = 58321;\nconst DEFAULT_EXT_PORT = 58322;\n\nconst StarUMLResponseSchema = z.object({\n  success: z.boolean(),\n  data: z.unknown().optional(),\n  error: z.string().optional(),\n});\n\nexport class StarUMLApiError extends Error {\n  constructor(\n    message: string,\n    public readonly slug: string,\n    public readonly status?: number,\n  ) {\n    super(message);\n    this.name = \"StarUMLApiError\";\n  }\n}\n\nexport interface StarUMLClientOptions {\n  host?: string;\n  port?: number;\n  extPort?: number;\n}\n\nexport class StarUMLClient {\n  private readonly host: string;\n  private readonly baseUrl: string;\n  private readonly extUrl: string;\n\n  constructor(options: StarUMLClientOptions = {}) {\n    this.host = options.host ?? DEFAULT_HOST;\n    const port = options.port ?? DEFAULT_API_PORT;\n    const extPort = options.extPort ?? DEFAULT_EXT_PORT;\n    this.baseUrl = `${this.host}:${port}`;\n    this.extUrl = `${this.host}:${extPort}`;\n  }\n\n  // === Built-in StarUML API (port 58321) ===\n\n  async generateDiagram(code: string): Promise<void> {\n    await this.callBase(\"/generate_diagram\", { code });\n  }\n\n  async getAllDiagramsInfo(): Promise<unknown> {\n    return this.callBase(\"/get_all_diagrams_info\", {});\n  }\n\n  async getCurrentDiagramInfo(): Promise<unknown> {\n    return this.callBase(\"/get_current_diagram_info\", {});\n  }\n\n  async getDiagramImageById(diagramId: string): Promise<string> {\n    const result = await this.callBase(\"/get_diagram_image_by_id\", { diagramId });\n    if (typeof result !== \"string\") {\n      throw new StarUMLApiError(\n        \"Expected image string, got different type\",\n        \"/get_diagram_image_by_id\",\n      );\n    }\n    return result;\n  }\n\n  async ping(): Promise<boolean> {\n    try {\n      const res = await fetch(this.baseUrl, { method: \"GET\" });\n      return res.ok;\n    } catch {\n      return false;\n    }\n  }\n\n  // === Extension API (port 58322, requires staruml-mcp-extension installed) ===\n\n  async pingExtension(): Promise<boolean> {\n    try {\n      const res = await fetch(this.extUrl, { method: \"GET\" });\n      return res.ok;\n    } catch {\n      return false;\n    }\n  }\n\n  async getAllCommands(): Promise<unknown> {\n    return this.callExt(\"/get_all_commands\", {});\n  }\n\n  async executeCommand(id: string, args?: unknown[]): Promise<unknown> {\n    return this.callExt(\"/execute_command\", { id, args: args ?? [] });\n  }\n\n  async getProjectInfo(): Promise<unknown> {\n    return this.callExt(\"/get_project_info\", {});\n  }\n\n  async saveProject(filename?: string): Promise<unknown> {\n    return this.callExt(\"/save_project\", filename ? { filename } : {});\n  }\n\n  async saveProjectAs(filename: string): Promise<unknown> {\n    return this.callExt(\"/save_project_as\", { filename });\n  }\n\n  async newProject(): Promise<unknown> {\n    return this.callExt(\"/new_project\", {});\n  }\n\n  async openProject(filename: string): Promise<unknown> {\n    return this.callExt(\"/open_project\", { filename });\n  }\n\n  async getElementById(id: string): Promise<unknown> {\n    return this.callExt(\"/get_element_by_id\", { id });\n  }\n\n  async findElements(filter: { type?: string; name?: string } = {}): Promise<unknown> {\n    return this.callExt(\"/find_elements\", filter);\n  }\n\n  async createElement(input: { type: string; parentId: string; name?: string }): Promise<unknown> {\n    return this.callExt(\"/create_element\", input);\n  }\n\n  async createElementWithView(input: {\n    type: string;\n    parentId: string;\n    diagramId: string;\n    name?: string;\n    x?: number;\n    y?: number;\n    x2?: number;\n    y2?: number;\n  }): Promise<unknown> {\n    return this.callExt(\"/create_element_with_view\", input);\n  }\n\n  async createEdgeWithView(input: {\n    type: string;\n    parentId: string;\n    diagramId: string;\n    tailViewId: string;\n    headViewId: string;\n    name?: string;\n    x?: number;\n    y?: number;\n    x2?: number;\n    y2?: number;\n  }): Promise<unknown> {\n    return this.callExt(\"/create_edge_with_view\", input);\n  }\n\n  async updateElement(input: { id: string; field: string; value: unknown }): Promise<unknown> {\n    return this.callExt(\"/update_element\", input);\n  }\n\n  async deleteElement(id: string): Promise<unknown> {\n    return this.callExt(\"/delete_element\", { id });\n  }\n\n  async createDiagram(input: { type: string; parentId: string; name?: string }): Promise<unknown> {\n    return this.callExt(\"/create_diagram\", input);\n  }\n\n  async switchDiagram(id: string): Promise<unknown> {\n    return this.callExt(\"/switch_diagram\", { id });\n  }\n\n  async closeDiagram(id: string): Promise<unknown> {\n    return this.callExt(\"/close_diagram\", { id });\n  }\n\n  // === Internal ===\n\n  private callBase(slug: string, body: Record<string, unknown>): Promise<unknown> {\n    return this.post(this.baseUrl, slug, body, \"StarUML built-in API\");\n  }\n\n  private callExt(slug: string, body: Record<string, unknown>): Promise<unknown> {\n    return this.post(\n      this.extUrl,\n      slug,\n      body,\n      \"staruml-mcp-extension (install from https://github.com/ezrabrilliant/staruml-mcp-extension)\",\n    );\n  }\n\n  private async post(\n    baseUrl: string,\n    slug: string,\n    body: Record<string, unknown>,\n    hint: string,\n  ): Promise<unknown> {\n    let res: Response;\n    try {\n      res = await fetch(`${baseUrl}${slug}`, {\n        method: \"POST\",\n        headers: { \"Content-Type\": \"application/json\" },\n        body: JSON.stringify(body),\n      });\n    } catch (error) {\n      throw new StarUMLApiError(\n        `Failed to reach ${baseUrl}. Is StarUML running? ${hint}. (${String(error)})`,\n        slug,\n      );\n    }\n\n    if (!res.ok) {\n      throw new StarUMLApiError(\n        `HTTP ${res.status} ${res.statusText} for ${slug}`,\n        slug,\n        res.status,\n      );\n    }\n\n    const json = StarUMLResponseSchema.parse(await res.json());\n\n    if (!json.success) {\n      throw new StarUMLApiError(json.error ?? `Unknown error from ${baseUrl}${slug}`, slug);\n    }\n\n    return json.data;\n  }\n}\n"
+    }
+  },
+  "testFiles": {
+    "tests/staruml-client.test.ts": {
+      "tests": [
+        {
+          "id": "0",
+          "name": "StarUMLClient constructor uses default host and port when no options given"
+        },
+        {
+          "id": "1",
+          "name": "StarUMLClient constructor uses custom host and port when provided"
+        },
+        {
+          "id": "2",
+          "name": "StarUMLClient generateDiagram sends POST with correct body shape"
+        },
+        {
+          "id": "3",
+          "name": "StarUMLClient generateDiagram throws StarUMLApiError when response.success is false"
+        },
+        {
+          "id": "4",
+          "name": "StarUMLClient generateDiagram throws StarUMLApiError with status when HTTP not ok"
+        },
+        {
+          "id": "5",
+          "name": "StarUMLClient generateDiagram throws StarUMLApiError with helpful message when fetch itself fails"
+        },
+        {
+          "id": "6",
+          "name": "StarUMLClient getAllDiagramsInfo returns data field from response"
+        },
+        {
+          "id": "7",
+          "name": "StarUMLClient getCurrentDiagramInfo returns data field from response"
+        },
+        {
+          "id": "8",
+          "name": "StarUMLClient getCurrentDiagramInfo returns undefined when data is absent"
+        },
+        {
+          "id": "9",
+          "name": "StarUMLClient getDiagramImageById returns the image string from data"
+        },
+        {
+          "id": "10",
+          "name": "StarUMLClient getDiagramImageById throws when data is not a string"
+        },
+        {
+          "id": "11",
+          "name": "StarUMLClient ping returns true when HTTP 200"
+        },
+        {
+          "id": "12",
+          "name": "StarUMLClient ping returns false when HTTP not ok"
+        },
+        {
+          "id": "13",
+          "name": "StarUMLClient ping returns false when fetch throws"
+        }
+      ],
+      "source": "import { afterEach, beforeEach, describe, expect, it, vi } from \"vitest\";\nimport { StarUMLClient } from \"../src/staruml-client.js\";\n\ndescribe(\"StarUMLClient\", () => {\n  let fetchSpy: ReturnType<typeof vi.spyOn>;\n\n  beforeEach(() => {\n    fetchSpy = vi.spyOn(globalThis, \"fetch\");\n  });\n\n  afterEach(() => {\n    vi.restoreAllMocks();\n  });\n\n  function mockJsonResponse(body: unknown, status = 200): void {\n    fetchSpy.mockResolvedValueOnce(\n      new Response(JSON.stringify(body), {\n        status,\n        headers: { \"Content-Type\": \"application/json\" },\n      }),\n    );\n  }\n\n  describe(\"constructor\", () => {\n    it(\"uses default host and port when no options given\", () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: true });\n      void client.generateDiagram(\"flowchart LR\\n  A --> B\");\n      expect(fetchSpy).toHaveBeenCalledWith(\n        \"http://localhost:58321/generate_diagram\",\n        expect.any(Object),\n      );\n    });\n\n    it(\"uses custom host and port when provided\", () => {\n      const client = new StarUMLClient({ host: \"http://example.com\", port: 1234 });\n      mockJsonResponse({ success: true });\n      void client.generateDiagram(\"flowchart LR\\n  A --> B\");\n      expect(fetchSpy).toHaveBeenCalledWith(\n        \"http://example.com:1234/generate_diagram\",\n        expect.any(Object),\n      );\n    });\n  });\n\n  describe(\"generateDiagram\", () => {\n    it(\"sends POST with correct body shape\", async () => {\n      const client = new StarUMLClient();\n      const code = \"erDiagram\\n  USER ||--o{ ORDER : places\";\n      mockJsonResponse({ success: true });\n\n      await client.generateDiagram(code);\n\n      expect(fetchSpy).toHaveBeenCalledTimes(1);\n      const [url, init] = fetchSpy.mock.calls[0]!;\n      expect(url).toBe(\"http://localhost:58321/generate_diagram\");\n      expect(init?.method).toBe(\"POST\");\n      expect(init?.headers).toEqual({ \"Content-Type\": \"application/json\" });\n      expect(JSON.parse(init?.body as string)).toEqual({ code });\n    });\n\n    it(\"throws StarUMLApiError when response.success is false\", async () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: false, error: \"Invalid Mermaid syntax\" });\n\n      await expect(client.generateDiagram(\"invalid\")).rejects.toMatchObject({\n        name: \"StarUMLApiError\",\n        slug: \"/generate_diagram\",\n        message: expect.stringContaining(\"Invalid Mermaid syntax\"),\n      });\n    });\n\n    it(\"throws StarUMLApiError with status when HTTP not ok\", async () => {\n      const client = new StarUMLClient();\n      fetchSpy.mockResolvedValueOnce(new Response(\"Server error\", { status: 500 }));\n\n      await expect(client.generateDiagram(\"x\")).rejects.toMatchObject({\n        slug: \"/generate_diagram\",\n        status: 500,\n      });\n    });\n\n    it(\"throws StarUMLApiError with helpful message when fetch itself fails\", async () => {\n      const client = new StarUMLClient();\n      fetchSpy.mockRejectedValueOnce(new Error(\"ECONNREFUSED\"));\n\n      await expect(client.generateDiagram(\"x\")).rejects.toMatchObject({\n        slug: \"/generate_diagram\",\n        message: expect.stringContaining(\"Is StarUML running\"),\n      });\n    });\n  });\n\n  describe(\"getAllDiagramsInfo\", () => {\n    it(\"returns data field from response\", async () => {\n      const client = new StarUMLClient();\n      const diagrams = [{ id: \"d1\", name: \"Flow\", type: \"flowchart\" }];\n      mockJsonResponse({ success: true, data: diagrams });\n\n      const result = await client.getAllDiagramsInfo();\n\n      expect(result).toEqual(diagrams);\n    });\n  });\n\n  describe(\"getCurrentDiagramInfo\", () => {\n    it(\"returns data field from response\", async () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: true, data: { id: \"x\", name: \"Current\" } });\n\n      const result = await client.getCurrentDiagramInfo();\n\n      expect(result).toEqual({ id: \"x\", name: \"Current\" });\n    });\n\n    it(\"returns undefined when data is absent\", async () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: true });\n\n      const result = await client.getCurrentDiagramInfo();\n\n      expect(result).toBeUndefined();\n    });\n  });\n\n  describe(\"getDiagramImageById\", () => {\n    it(\"returns the image string from data\", async () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: true, data: \"iVBORw0KGgo=\" });\n\n      const result = await client.getDiagramImageById(\"d1\");\n\n      expect(result).toBe(\"iVBORw0KGgo=\");\n    });\n\n    it(\"throws when data is not a string\", async () => {\n      const client = new StarUMLClient();\n      mockJsonResponse({ success: true, data: { wrong: \"shape\" } });\n\n      await expect(client.getDiagramImageById(\"d1\")).rejects.toThrow(/Expected image string/);\n    });\n  });\n\n  describe(\"ping\", () => {\n    it(\"returns true when HTTP 200\", async () => {\n      const client = new StarUMLClient();\n      fetchSpy.mockResolvedValueOnce(new Response(\"OK\", { status: 200 }));\n\n      await expect(client.ping()).resolves.toBe(true);\n    });\n\n    it(\"returns false when HTTP not ok\", async () => {\n      const client = new StarUMLClient();\n      fetchSpy.mockResolvedValueOnce(new Response(\"Not found\", { status: 404 }));\n\n      await expect(client.ping()).resolves.toBe(false);\n    });\n\n    it(\"returns false when fetch throws\", async () => {\n      const client = new StarUMLClient();\n      fetchSpy.mockRejectedValueOnce(new Error(\"network down\"));\n\n      await expect(client.ping()).resolves.toBe(false);\n    });\n  });\n});\n"
+    }
+  },
+  "config": {
+    "testRunner": "vitest",
+    "mutate": [
+      "src/staruml-client.ts:38-38"
+    ]
+  }
+}

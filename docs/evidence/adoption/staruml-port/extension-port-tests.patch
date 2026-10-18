@@ -1,0 +1,20 @@
+diff --git a/tests/staruml-client.test.ts b/tests/staruml-client.test.ts
+index 4bbcd86..bcfd56b 100644
+--- a/tests/staruml-client.test.ts
++++ b/tests/staruml-client.test.ts
+@@ -45,0 +46,15 @@ describe("StarUMLClient", () => {
++  describe("extension port regression", () => {
++    it("uses the default extension port", async () => {
++      const client = new StarUMLClient();
++      mockJsonResponse({ success: true, data: { name: "project" } });
++      await client.getProjectInfo();
++      expect(fetchSpy).toHaveBeenCalledWith("http://localhost:58322/get_project_info", expect.any(Object));
++    });
++    it("uses a custom extension port", async () => {
++      const client = new StarUMLClient({ extPort: 58400 });
++      mockJsonResponse({ success: true, data: { name: "project" } });
++      await client.getProjectInfo();
++      expect(fetchSpy).toHaveBeenCalledWith("http://localhost:58400/get_project_info", expect.any(Object));
++    });
++  });
++

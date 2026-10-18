@@ -1,0 +1,144 @@
+{
+  "checkedAt": "2026-10-18T19:16:19.073Z",
+  "repo": "hqqw2h-lgtm/staruml-mcp",
+  "head": "3a58d812d7c52b559ac920bf17fc0fa1cf19dcf3",
+  "node": "v22.23.3",
+  "toolchain": {
+    "tautest": "2.1.0",
+    "stryker": "9.6.1",
+    "vitest": "2.1.9"
+  },
+  "sourceFile": "src/staruml-client.ts",
+  "candidate": "tests/staruml-client.test.ts",
+  "sourceSha256": "fb4a8b2da538104950d3fe7a6006523c47eb1a71e3697e59cbeec0e3d808cdcf",
+  "originalTestsSha256": "40964a629c32c784494fc41bf045c3262274d4e0dec8c8a8b9b6ef86bc8197d2",
+  "candidateSha256": "2278369255eff9bc376d635f62a7b7abc87e8ef24742f985235d230017f176ef",
+  "scope": "Only the extPort expression on line 38, with the existing 14 client tests and then the same tests plus two port regression tests. Not a repository-wide score.",
+  "before": {
+    "total": 1,
+    "Killed": 0,
+    "Survived": 1,
+    "NoCoverage": 0,
+    "Timeout": 0,
+    "RuntimeError": 0
+  },
+  "after": {
+    "total": 1,
+    "Killed": 1,
+    "Survived": 0,
+    "NoCoverage": 0,
+    "Timeout": 0,
+    "RuntimeError": 0
+  },
+  "target": {
+    "id": "0",
+    "mutatorName": "LogicalOperator",
+    "replacement": "options.extPort && DEFAULT_EXT_PORT",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 14,
+    "coveredBy": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13"
+    ],
+    "location": {
+      "end": {
+        "column": 56,
+        "line": 38
+      },
+      "start": {
+        "column": 21,
+        "line": 38
+      }
+    }
+  },
+  "verification": {
+    "version": "1",
+    "status": "verified",
+    "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+    "createdAt": "2026-10-18T19:16:17.078Z",
+    "source": {
+      "report": "/home/runner/work/tautest/tautest/project/.tautest/adoption-proof/before.mutation.json",
+      "sha256": "3d94aa5422797f7c16522850110544f8cfcdb1a29c08582ff144765e1ed132ad",
+      "file": "src/staruml-client.ts",
+      "sourceSha256": "fb4a8b2da538104950d3fe7a6006523c47eb1a71e3697e59cbeec0e3d808cdcf"
+    },
+    "target": {
+      "originalId": "0",
+      "mutatorName": "LogicalOperator",
+      "location": {
+        "start": {
+          "line": 38,
+          "column": 21
+        },
+        "end": {
+          "line": 38,
+          "column": 56
+        }
+      },
+      "replacement": "options.extPort && DEFAULT_EXT_PORT"
+    },
+    "candidate": {
+      "file": "tests/staruml-client.test.ts",
+      "sha256": "2278369255eff9bc376d635f62a7b7abc87e8ef24742f985235d230017f176ef"
+    },
+    "testsCompleted": 3,
+    "killedBy": [
+      "2"
+    ],
+    "execution": {
+      "exitCode": 0,
+      "budgetExceeded": false
+    },
+    "budgetSeconds": 120,
+    "paths": {
+      "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9",
+      "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9/verification.json",
+      "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9/engine.log"
+    }
+  },
+  "killingTests": [
+    {
+      "file": "tests/staruml-client.test.ts",
+      "id": "2",
+      "name": "StarUMLClient extension port regression uses the default extension port"
+    }
+  ],
+  "expressionGroups": 1,
+  "steps": [
+    {
+      "label": "original-tests",
+      "exitCode": 0
+    },
+    {
+      "label": "analysis",
+      "exitCode": 0
+    },
+    {
+      "label": "apply-tests",
+      "exitCode": 0
+    },
+    {
+      "label": "candidate-tests",
+      "exitCode": 0
+    },
+    {
+      "label": "verified",
+      "exitCode": 0
+    }
+  ],
+  "sourceUnchanged": true,
+  "note": "Maintainer-run proof, not external adoption. No production or dependency changes are proposed."
+}
