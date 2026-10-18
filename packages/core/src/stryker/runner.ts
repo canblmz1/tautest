@@ -1,3 +1,6 @@
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type { RunStrykerOptions, StrykerRunResult } from '../types';
 import { TautestError } from '../types';
 
@@ -7,11 +10,32 @@ import { TautestError } from '../types';
 export async function runStryker(options: RunStrykerOptions): Promise<StrykerRunResult> {
   const startedAt = new Date();
   const originalCwd = process.cwd();
+  const projectRoot = path.resolve(options.cwd);
 
   try {
-    process.chdir(options.cwd);
+    process.chdir(projectRoot);
     // Loaded on use, so init, doctor and --version still work before the project installs Stryker.
-    const { Stryker } = await import('@stryker-mutator/core');
+    // An npx/global CLI lives outside the project. Changing cwd does not change ESM resolution.
+    // Prefer the project's engine; keep the co-installed engine fallback for isolated toolchains.
+    let projectEngine: string | undefined;
+    const projectRequire = createRequire(path.join(projectRoot, 'package.json'));
+    try {
+      projectEngine = projectRequire.resolve('@stryker-mutator/core');
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') throw error;
+      // An installed package with a missing entry is broken, not an absent project engine.
+      let manifestPresent = false;
+      try {
+        projectRequire.resolve('@stryker-mutator/core/package.json');
+        manifestPresent = true;
+      } catch (manifestError) {
+        if ((manifestError as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') throw error;
+      }
+      if (manifestPresent) throw error;
+    }
+    const { Stryker } = projectEngine
+      ? await import(pathToFileURL(projectEngine).href)
+      : await import('@stryker-mutator/core');
     const stryker = new Stryker(options.config);
     await stryker.runMutationTest();
 

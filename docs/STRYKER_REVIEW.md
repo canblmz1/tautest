@@ -16,6 +16,8 @@ npx tautest verify --from reports/mutation/mutation.json --mutant 7 --test test/
 
 Replace the sample id and test path with values from your project; add `--file src/price.js` if ids repeat. Install Stryker and its runner if they are absent. Verification uses the local Stryker configuration and its initial suite, mutates the selected source lines in a sandbox, and checks the exact mutant's executed killing test. Production source stays unchanged. An engine error, timeout, missing test attribution or failing initial suite cannot produce `verified`.
 
+Execution resolves Stryker from the target package first, so an external `npx` or global Tautest installation can use that package's existing engine. If no project engine resolves, Tautest tries the engine installed alongside itself. A broken project engine is reported without silently switching to another version.
+
 Inspect the printed `verification.json` path for the original report hash, source and test hashes, target identity, killing tests and execution outcome. The scoped verification report is evidence for that target, not a replacement for a full mutation score. Re-run your existing Stryker command and analyze the refreshed report to measure the remaining queue.
 
 Verification attributes a kill to the selected **test file**. If that file contains both older and new tests, `verified` does not by itself prove the new test caused the kill. Put candidate assertions in a new test file, or inspect the fresh `mutation.json` report: join `killedBy` ids to `testFiles` and confirm the actual named killing test before claiming a new-test contribution. Test ids and mutant ids can change between runs.
