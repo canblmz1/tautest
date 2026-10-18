@@ -1,0 +1,1 @@
+{"name":"verification-control-tools","private":true,"type":"module","dependencies":{"@stryker-mutator/core":"10.0.0","@stryker-mutator/vitest-runner":"10.0.0","@tautest/core":"2.1.1","tautest":"2.1.1","typescript":"5.9.3","vitest":"4.1.11"}}

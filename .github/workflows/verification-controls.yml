@@ -1,0 +1,67 @@
+name: Adoption proof - verification controls
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/verification-controls.yml
+      - scripts/adoption-proof/verification-controls/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verification-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.1
+          run_install: false
+      - name: Checkout frozen fixture
+        uses: actions/checkout@v4
+        with:
+          repository: Thang4869/TriAD-Backend
+          ref: 7e41358c9936186d5469437584845335ec255ad1
+          path: project
+          persist-credentials: false
+      - name: Install original fixture dependencies
+        working-directory: project
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install separate published tools
+        working-directory: scripts/adoption-proof/verification-controls
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Exercise negative and positive verification controls
+        run: node scripts/adoption-proof/verification-controls/prove-controls.mjs "$GITHUB_WORKSPACE/project"
+      - name: Summarize measured controls
+        if: success()
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const p = JSON.parse(readFileSync('project/.tautest/verification-controls/evidence.json', 'utf8'));
+          const lines = ['# Verification controls', '', 'Maintainer-run experiment, not external adoption.', '',
+            '| Selected candidate | Exact target status | Tautest result |', '| --- | --- | --- |',
+            ...Object.entries(p.cases).map(([name,c]) => `| ${name} | ${c.targetStatus} | ${c.verification.status} |`), '',
+            `Original tests: ${p.baseline.passed}; weak candidate suite: ${p.weakSuite.passed}; positive suite: ${p.positiveSuite.passed}.`, '',
+            `Production source unchanged: ${p.sourceUnchanged}; original report unchanged: ${p.inputUnchanged}.`, '', p.limitation, '', p.scope];
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n'));
+          NODE
+      - name: Retain controls, raw reports and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-controls
+          path: |
+            project/.tautest/verification-controls/
+            project/.tautest/verification/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
