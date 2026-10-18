@@ -1,0 +1,26 @@
+name: First run feedback or help
+description: Share the result of trying Tautest, or get help with a command that failed.
+title: "[First run]: "
+body:
+  - type: textarea
+    id: command
+    attributes:
+      label: What did you run?
+      description: Paste the command and, if available, the Tautest version.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What happened?
+      description: Paste the terminal summary or error, and say what you wanted to do next. A full source report is not needed.
+    validations:
+      required: true
+  - type: input
+    id: reproduction
+    attributes:
+      label: Public example (optional)
+      description: A public repository, CI run or small reproduction can help us check your setup.
+    validations:
+      required: false
