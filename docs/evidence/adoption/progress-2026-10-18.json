@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-18T20:02:11.426Z",
+  "checkedAt": "2026-10-18T20:59:02.570Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
   },
   "observed": {
-    "approvedInvitationsPosted": 6,
+    "approvedInvitationsPosted": 7,
     "documentedRealUsers": 0,
     "externalRepliesToInvitations": 0,
     "actualUserPopulation": null,
@@ -15,7 +15,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
-      "verifiedAt": "2026-10-18T20:02:11.426Z",
+      "verifiedAt": "2026-10-18T20:59:02.285Z",
       "note": "Lagged rolling API window, not unique users. Core counts are not added."
     },
     "coreDownloads": {
@@ -24,7 +24,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/@tautest/core",
-      "verifiedAt": "2026-10-18T20:02:11.355Z"
+      "verifiedAt": "2026-10-18T20:59:02.570Z"
     }
   },
   "release": {
@@ -89,6 +89,15 @@
       "invitation": "https://github.com/cplieger/sse/issues/39#issuecomment-6254114177",
       "reportRun": "https://github.com/cplieger/ci/actions/runs/39073826408",
       "scope": "326 expression groups for 311 Survived + 35 NoCoverage. Existing Vitest 5 engine path remains unsupported; no execution/verification offered."
+    },
+    {
+      "repo": "laurigates/claude-plugins",
+      "issue": 3097,
+      "status": "Seventh contact posted once after explicit account-owner authorization. Verified on GitHub; no external reply/use yet.",
+      "invitation": "https://github.com/laurigates/claude-plugins/issues/3097#issuecomment-6255065998",
+      "postedAt": "2026-10-18T20:58:21Z",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39160543364",
+      "scope": "Optional supported StrykerJS recipe with weak-candidate, wrong-file and positive controls. File attribution limitation explicit; maintainer-run evidence is not adoption."
     }
   ],
   "engineeringResults": [
@@ -175,7 +184,7 @@
     }
   ],
   "nextActions": [
-    "Await the pending authorization for the prepared laurigates/claude-plugins#3097 comment. It has not been posted; elapsed time is not authorization.",
+    "The explicitly authorized seventh comment was sent once and verified. Wait for an independent response or first run; do not count sending it as a user.",
     "Respond to any human maintainer feedback and help them perform their own first Tautest run; retain a public or permissioned result before counting a user.",
     "Do not send another reminder to silent approved contacts. Do not merge external contributions on behalf of maintainers.",
     "Qualify additional candidates by their actual report/review needs and supported setup before proposing any new contact."
@@ -185,8 +194,10 @@
     {
       "repo": "laurigates/claude-plugins",
       "issue": 3097,
-      "status": "Prepared with public passing proof; explicit new-recipient authorization requested and pending. Not posted.",
+      "status": "Explicitly authorized and posted once; GitHub comment read back and verified.",
       "draft": ".tautest/laurigates-outreach.md",
+      "invitation": "https://github.com/laurigates/claude-plugins/issues/3097#issuecomment-6255065998",
+      "postedAt": "2026-10-18T20:58:21Z",
       "externalUse": false
     }
   ],
