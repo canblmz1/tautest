@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-18T19:16:19.073Z",
+  "checkedAt": "2026-10-18T19:18:18.308Z",
   "repo": "hqqw2h-lgtm/staruml-mcp",
   "head": "3a58d812d7c52b559ac920bf17fc0fa1cf19dcf3",
   "node": "v22.23.3",
@@ -12,7 +12,7 @@
   "candidate": "tests/staruml-client.test.ts",
   "sourceSha256": "fb4a8b2da538104950d3fe7a6006523c47eb1a71e3697e59cbeec0e3d808cdcf",
   "originalTestsSha256": "40964a629c32c784494fc41bf045c3262274d4e0dec8c8a8b9b6ef86bc8197d2",
-  "candidateSha256": "2278369255eff9bc376d635f62a7b7abc87e8ef24742f985235d230017f176ef",
+  "candidateSha256": "1da3cbf61da01d4c46adb0d47283edd21e00d70fcf7d7c1fe38c9f01289501f8",
   "scope": "Only the extPort expression on line 38, with the existing 14 client tests and then the same tests plus two port regression tests. Not a repository-wide score.",
   "before": {
     "total": 1,
@@ -68,7 +68,7 @@
     "version": "1",
     "status": "verified",
     "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
-    "createdAt": "2026-10-18T19:16:17.078Z",
+    "createdAt": "2026-10-18T19:18:16.252Z",
     "source": {
       "report": "/home/runner/work/tautest/tautest/project/.tautest/adoption-proof/before.mutation.json",
       "sha256": "3d94aa5422797f7c16522850110544f8cfcdb1a29c08582ff144765e1ed132ad",
@@ -92,7 +92,7 @@
     },
     "candidate": {
       "file": "tests/staruml-client.test.ts",
-      "sha256": "2278369255eff9bc376d635f62a7b7abc87e8ef24742f985235d230017f176ef"
+      "sha256": "1da3cbf61da01d4c46adb0d47283edd21e00d70fcf7d7c1fe38c9f01289501f8"
     },
     "testsCompleted": 3,
     "killedBy": [
@@ -104,9 +104,9 @@
     },
     "budgetSeconds": 120,
     "paths": {
-      "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9",
-      "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9/verification.json",
-      "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-xnTlF9/engine.log"
+      "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-34RFNA",
+      "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-34RFNA/verification.json",
+      "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-34RFNA/engine.log"
     }
   },
   "killingTests": [

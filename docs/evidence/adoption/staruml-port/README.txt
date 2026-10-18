@@ -2,7 +2,7 @@ StarUML extension-port proof, 2026-10-18
 
 Project: hqqw2h-lgtm/staruml-mcp
 Inspected revision: 3a58d812d7c52b559ac920bf17fc0fa1cf19dcf3
-Successful public CI: https://github.com/canblmz1/tautest/actions/runs/39157965530
+Successful public CI: https://github.com/canblmz1/tautest/actions/runs/39158116239
 Reproduction: scripts/adoption-proof/staruml/README.txt on this branch.
 
 The proposed patch adds two fetch-mocked tests for the default and custom
