@@ -1,0 +1,252 @@
+{
+  "checkedAt": "2026-10-18T19:50:33.382Z",
+  "repo": "Thang4869/TriAD-Backend",
+  "head": "7e41358c9936186d5469437584845335ec255ad1",
+  "node": "v22.23.3",
+  "toolchain": {
+    "tautest": "2.1.1",
+    "stryker": "10.0.0",
+    "vitest": "4.1.11"
+  },
+  "sourceFile": "src/shared/value-objects/address.ts",
+  "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+  "inputSha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+  "baseline": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "weakSuite": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "positiveSuite": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "target": {
+    "id": "11",
+    "mutatorName": "EqualityOperator",
+    "replacement": "normalized.length >= 500",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 1,
+    "coveredBy": [
+      "0"
+    ],
+    "location": {
+      "end": {
+        "column": 59,
+        "line": 6
+      },
+      "start": {
+        "column": 36,
+        "line": 6
+      }
+    }
+  },
+  "cases": {
+    "weak": {
+      "selectedFile": "tests/unit/shared/value-objects/address-empty-only.test.ts",
+      "verification": {
+        "version": "1",
+        "status": "not-verified",
+        "reason": "Target status: Survived. Verification requires an executed killing test from tests/unit/shared/value-objects/address-empty-only.test.ts.",
+        "createdAt": "2026-10-18T19:50:22.109Z",
+        "source": {
+          "report": "/home/runner/work/tautest/tautest/project/.tautest/verification-controls/original.mutation.json",
+          "sha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+          "file": "src/shared/value-objects/address.ts",
+          "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+        },
+        "target": {
+          "originalId": "11",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 59
+            }
+          },
+          "replacement": "normalized.length >= 500"
+        },
+        "candidate": {
+          "file": "tests/unit/shared/value-objects/address-empty-only.test.ts",
+          "sha256": "bef8edec4bcdbc6637f376c681b050ccd8b0f5813b6492cba9dfc705c6586cc0"
+        },
+        "testsCompleted": 1,
+        "killedBy": [],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-Kv2bos",
+          "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-Kv2bos/verification.json",
+          "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-Kv2bos/engine.log"
+        }
+      },
+      "targetStatus": "Survived",
+      "originalId": "11",
+      "replayedId": "6",
+      "testsCompleted": 1,
+      "killingTests": []
+    },
+    "wrongFile": {
+      "selectedFile": "tests/unit/shared/value-objects/address-empty-only.test.ts",
+      "verification": {
+        "version": "1",
+        "status": "not-verified",
+        "reason": "Target status: Killed. Verification requires an executed killing test from tests/unit/shared/value-objects/address-empty-only.test.ts.",
+        "createdAt": "2026-10-18T19:50:28.150Z",
+        "source": {
+          "report": "/home/runner/work/tautest/tautest/project/.tautest/verification-controls/original.mutation.json",
+          "sha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+          "file": "src/shared/value-objects/address.ts",
+          "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+        },
+        "target": {
+          "originalId": "11",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 59
+            }
+          },
+          "replacement": "normalized.length >= 500"
+        },
+        "candidate": {
+          "file": "tests/unit/shared/value-objects/address-empty-only.test.ts",
+          "sha256": "bef8edec4bcdbc6637f376c681b050ccd8b0f5813b6492cba9dfc705c6586cc0"
+        },
+        "testsCompleted": 1,
+        "killedBy": [
+          "3"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-yfqFRn",
+          "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-yfqFRn/verification.json",
+          "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-yfqFRn/engine.log"
+        }
+      },
+      "targetStatus": "Killed",
+      "originalId": "11",
+      "replayedId": "6",
+      "testsCompleted": 1,
+      "killingTests": [
+        {
+          "file": "tests/unit/shared/value-objects/address.test.ts",
+          "id": "3",
+          "name": "Address length limit accepts exactly 500 characters after trimming"
+        }
+      ]
+    },
+    "positive": {
+      "selectedFile": "tests/unit/shared/value-objects/address.test.ts",
+      "verification": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-18T19:50:33.376Z",
+        "source": {
+          "report": "/home/runner/work/tautest/tautest/project/.tautest/verification-controls/original.mutation.json",
+          "sha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+          "file": "src/shared/value-objects/address.ts",
+          "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+        },
+        "target": {
+          "originalId": "11",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 59
+            }
+          },
+          "replacement": "normalized.length >= 500"
+        },
+        "candidate": {
+          "file": "tests/unit/shared/value-objects/address.test.ts",
+          "sha256": "f9dcb569a1001b8243ecf5f9e1481b44d9da11247dd9e190097da951f5413ac5"
+        },
+        "testsCompleted": 1,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-3dgHMt",
+          "evidence": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-3dgHMt/verification.json",
+          "log": "/home/runner/work/tautest/tautest/project/.tautest/verification/run-3dgHMt/engine.log"
+        }
+      },
+      "targetStatus": "Killed",
+      "originalId": "11",
+      "replayedId": "6",
+      "testsCompleted": 1,
+      "killingTests": [
+        {
+          "file": "tests/unit/shared/value-objects/address.test.ts",
+          "id": "0",
+          "name": "Address length limit accepts exactly 500 characters after trimming"
+        }
+      ]
+    }
+  },
+  "sourceUnchanged": true,
+  "inputUnchanged": true,
+  "steps": [
+    {
+      "label": "baseline",
+      "exitCode": 0
+    },
+    {
+      "label": "weak-suite",
+      "exitCode": 0
+    },
+    {
+      "label": "weak-candidate",
+      "exitCode": 1
+    },
+    {
+      "label": "positive-suite",
+      "exitCode": 0
+    },
+    {
+      "label": "wrong-file",
+      "exitCode": 1
+    },
+    {
+      "label": "positive-candidate",
+      "exitCode": 0
+    }
+  ],
+  "limitation": "Tautest attributes kills to a selected file, not to a requested individual test name. The positive file contains only newly added tests; fresh report test names are checked separately. No general new-test guarantee is claimed for files mixing old and new tests.",
+  "scope": "Exact address upper-bound survivor. No full-project mutation score, agent quality comparison or external adoption is claimed.",
+  "publicRun": "https://github.com/canblmz1/tautest/actions/runs/39160543364"
+}
