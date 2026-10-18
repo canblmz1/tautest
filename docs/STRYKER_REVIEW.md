@@ -18,6 +18,8 @@ Replace the sample id and test path with values from your project; add `--file s
 
 Inspect the printed `verification.json` path for the original report hash, source and test hashes, target identity, killing tests and execution outcome. The scoped verification report is evidence for that target, not a replacement for a full mutation score. Re-run your existing Stryker command and analyze the refreshed report to measure the remaining queue.
 
+Analysis works with only a downloaded report. Recording decisions requires running `analyze` and `review` from a matching project checkout: each source file in the report must exist locally with the same contents. Without those files, the imported report is read-only. Repeating `analyze` in a folder containing only the report will not enable decisions. If the source has changed, generate a fresh Stryker report first. The [review snapshot limits](CLI_REFERENCE.md#tautest-review) also apply.
+
 Some survivors are equivalent or an accepted risk. Use the full expression-group id from `review.json` and explain the judgment:
 
 ```bash

@@ -76,9 +76,26 @@ describe('analyze and manual review', () => {
     writeFileSync(path.join(root, 'src/discount.js'), 'changed');
     const result = analyze(root);
     expect(result.contextHash).toBeNull();
-    expect(() => runReviewCommand(root, result.groups[0].id, { decision: 'equivalent', reason: 'reason' })).toThrow('context changed');
+    expect(() => runReviewCommand(root, result.groups[0].id, { decision: 'equivalent', reason: 'reason' })).toThrow('Local review context is unavailable or stale');
     writeFileSync(path.join(root, 'report.json'), JSON.stringify(raw()));
     expect(() => runAnalyzeCommand(root, { from: 'report.json', reportDir: '.' })).toThrow('input report');
+  });
+
+  it('explains why report-only analysis cannot record decisions until the matching source is available', () => {
+    const root = fixture();
+    rmSync(path.join(root, 'src/discount.js'));
+    const imported = analyze(root);
+    expect(imported).toMatchObject({ contextHash: null, complete: true });
+    expect(imported.groups).toHaveLength(1);
+    expect(() => runReviewCommand(root, imported.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' })).toThrow('Use the matching project checkout');
+    expect(existsSync(path.join(root, '.tautest/review/decisions.json'))).toBe(false);
+    expect(readFileSync(path.join(root, '.tautest/review/report.md'), 'utf8')).toContain('analysis is read-only');
+
+    writeFileSync(path.join(root, 'src/discount.js'), source);
+    const local = analyze(root);
+    runReviewCommand(root, local.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' });
+    expect(analyze(root).groups[0].review.decision).toBe('needs-test');
+    expect(analyze(root).rawSummary).toEqual(imported.rawSummary);
   });
 
   it('protects hardlinked input and preserves an explicit prompt runner across reviews in the project root', () => {
