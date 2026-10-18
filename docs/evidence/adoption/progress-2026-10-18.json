@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-18T19:24:04.273Z",
+  "checkedAt": "2026-10-18T19:36:01.680Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
@@ -29,6 +29,14 @@
     "cli": "published and public-registry smoke passed",
     "core": "published and public-registry smoke passed",
     "run": "https://github.com/canblmz1/tautest/actions/runs/39057388383"
+  },
+  "onboarding": {
+    "readmePr": "https://github.com/canblmz1/tautest/pull/39",
+    "readmeStatus": "merged, 95bb663bb8805ee5cf1de776bdc6240941c641cf",
+    "publicSample": "Pinned real StarUML report imported by npm exec tautest@2.1.0 in a clean directory without a project checkout. One survivor, 14 covering tests. No Stryker installation required.",
+    "guidancePr": "https://github.com/canblmz1/tautest/pull/40",
+    "guidanceStatus": "open; 66 CLI tests, typecheck, core/CLI builds, matching-source smoke and Changesets status passed; Linux CI in progress. Not published.",
+    "guidanceReason": "Report-only import works without a checkout; manual decision persistence deliberately requires matching local source. Improve the error instead of weakening that requirement."
   },
   "contacts": [
     {
