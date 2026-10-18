@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-18T19:44:54.029Z",
+  "checkedAt": "2026-10-18T20:02:11.426Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
@@ -15,13 +15,16 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
+      "verifiedAt": "2026-10-18T20:02:11.426Z",
       "note": "Lagged rolling API window, not unique users. Core counts are not added."
     },
     "coreDownloads": {
       "package": "@tautest/core",
       "count": 1205,
       "start": "2026-09-17",
-      "end": "2026-10-16"
+      "end": "2026-10-16",
+      "source": "https://api.npmjs.org/downloads/point/last-month/@tautest/core",
+      "verifiedAt": "2026-10-18T20:02:11.355Z"
     }
   },
   "release": {
@@ -38,7 +41,14 @@
     "publicSample": "Pinned real StarUML report imported by npm exec tautest@2.1.0 in a clean directory without a project checkout. One survivor, 14 covering tests. No Stryker installation required.",
     "guidancePr": "https://github.com/canblmz1/tautest/pull/40",
     "guidanceStatus": "merged and published in 2.1.1; source PR #40 and version PR #41 each passed all 13 CI checks. All 66 local CLI tests, builds, typecheck, registry tarballs and clean public-npm install smoke passed. Matching-source review preserved the raw score and input.",
-    "guidanceReason": "Report-only import works without a checkout; manual decision persistence deliberately requires matching local source. Improve the error instead of weakening that requirement."
+    "guidanceReason": "Report-only import works without a checkout; manual decision persistence deliberately requires matching local source. Improve the error instead of weakening that requirement.",
+    "firstRunForm": {
+      "pr": "https://github.com/canblmz1/tautest/pull/42",
+      "commit": "aaf819638e8ad13ada1fa9eb83e546b994cdb162",
+      "status": "merged after all five applicable CI checks passed; main Release run succeeded without another package release",
+      "url": "https://github.com/canblmz1/tautest/issues/new?template=first-run.yml",
+      "fields": "Two required fields: command and result. Public reproduction optional. YAML parsed and source verified on main; browser rendering was not verified."
+    }
   },
   "contacts": [
     {
@@ -143,12 +153,61 @@
       "Ignored": 548,
       "expressionGroups": 326,
       "note": "Imported existing public report without running project config or installing/rerunning its engine. Maintainer experiment, not external adoption."
+    },
+    {
+      "case": "Verification negative controls",
+      "tautest": "2.1.1",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39160543364",
+      "normalTests": [
+        3,
+        4,
+        6
+      ],
+      "weakCandidate": "not-verified; target Survived",
+      "wrongFile": "not-verified despite target Killed by another file",
+      "positive": "verified; new boundary-test file is the named killer",
+      "originalId": "11",
+      "replayedId": "6",
+      "sourceUnchanged": true,
+      "inputUnchanged": true,
+      "limit": "File attribution is not a guarantee about an individual new test in a file mixing old and new tests.",
+      "adoption": false
     }
   ],
   "nextActions": [
+    "Await the pending authorization for the prepared laurigates/claude-plugins#3097 comment. It has not been posted; elapsed time is not authorization.",
     "Respond to any human maintainer feedback and help them perform their own first Tautest run; retain a public or permissioned result before counting a user.",
     "Do not send another reminder to silent approved contacts. Do not merge external contributions on behalf of maintainers.",
     "Qualify additional candidates by their actual report/review needs and supported setup before proposing any new contact."
   ],
-  "note": "All engineering results are experiments run by the Tautest maintainer. An invitation, a PR/check, our CI, a star, and npm downloads do not prove an external user. Target is not achieved; no token values were read."
+  "note": "All engineering results are experiments run by the Tautest maintainer. An invitation, a PR/check, our CI, a star, and npm downloads do not prove an external user. Target is not achieved; no token values were read.",
+  "preparedOutreach": [
+    {
+      "repo": "laurigates/claude-plugins",
+      "issue": 3097,
+      "status": "Prepared with public passing proof; explicit new-recipient authorization requested and pending. Not posted.",
+      "draft": ".tautest/laurigates-outreach.md",
+      "externalUse": false
+    }
+  ],
+  "publicMentionAudit": [
+    {
+      "repo": "TzolkinB/skills",
+      "source": "https://github.com/TzolkinB/skills/blob/4b121e46ff35b1e5ada0f97948110d1f96455af9/references/witness-ingestible-evidence-audit.md",
+      "finding": "Routes users to Tautest and reads source/releases; explicitly says the repo does not emit or ingest Tautest JSON. No independent Tautest execution proven.",
+      "countedUser": false
+    },
+    {
+      "repo": "pH34r-pH/Portfolio",
+      "source": "https://github.com/pH34r-pH/Portfolio/issues/49",
+      "finding": "Tautest mentioned only for possible future substantive JS/TS logic; current work is Python mutation testing. Not a current JS pilot.",
+      "countedUser": false
+    },
+    {
+      "repo": "rft0/timer",
+      "source": "https://github.com/rft0/timer/blob/24c60d1de7a01e9e7b9f14bbfd59a01042d76eb8/package.json",
+      "finding": "Unrelated private Tauri application named tautest, with no dependency on this tool.",
+      "countedUser": false
+    }
+  ]
 }
