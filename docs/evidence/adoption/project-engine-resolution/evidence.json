@@ -1,0 +1,91 @@
+{
+  "checkedAt": "2026-10-18T22:02:20.513Z",
+  "sourcePr": "https://github.com/canblmz1/tautest/pull/43",
+  "sourceCommit": "9a0016a32a843877fd6f625a34cd7cc52d4d1105",
+  "versionPr": "https://github.com/canblmz1/tautest/pull/44",
+  "releaseCommit": "b007aaffe76fe4d6a34a67a401bd886b686ffdfb",
+  "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39170171604",
+  "sourcePrChecks": 13,
+  "versionPrChecks": 13,
+  "coreTests": 233,
+  "node": "v22.23.2",
+  "registry": {
+    "checkedAt": "2026-10-18T22:00:35.682Z",
+    "states": [
+      {
+        "name": "tautest",
+        "status": 200,
+        "latest": "2.1.2",
+        "version": "2.1.2",
+        "publishedAt": "2026-10-18T22:00:29.504Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-x/GdVFfIoVdiFvqHPl0ut92MjTtfUetPbFJzFsn6m3pI4VkutFYTjl2zU31Bfsiy17bIjOA9Tz/QdJ5ZpUnHIg==",
+        "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.2.tgz"
+      },
+      {
+        "name": "@tautest/core",
+        "status": 200,
+        "latest": "2.1.2",
+        "version": "2.1.2",
+        "publishedAt": "2026-10-18T22:00:31.083Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-knWLwqBRxI6QocCBvrwXs++yjNv9YV9OefAFkTHOMuVkY1VhrPUfJCEy0OkJ6TF6SHPnhBehkYw+/YS0mcew7A==",
+        "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.2.tgz"
+      }
+    ]
+  },
+  "smoke": {
+    "cliVersion": "2.1.2",
+    "coreVersion": "2.1.2",
+    "installedFrom": "public npm registry",
+    "reportOnlyAnalysis": "passed",
+    "missingSourceGuidance": "passed",
+    "matchingSourceReview": "passed",
+    "engineAbsent": true,
+    "inputUnchanged": true,
+    "rawSummaryUnchanged": true
+  },
+  "projectEngine": {
+    "stryker": "10.0.0",
+    "vitest": "4.1.11",
+    "baselineTests": 2,
+    "verificationInitialTests": 3,
+    "cliInstallSeparate": true,
+    "engineAbsentBesideCLI": true
+  },
+  "before": {
+    "version": "2.1.1",
+    "status": "error",
+    "cliExit": 12,
+    "engineError": "Stryker failed because a required module or runner dependency was not found."
+  },
+  "after": {
+    "version": "2.1.2",
+    "status": "verified",
+    "cliExit": 0,
+    "testsCompleted": 3,
+    "killedBy": [
+      "0"
+    ],
+    "target": {
+      "originalId": "3",
+      "mutatorName": "EqualityOperator",
+      "location": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      },
+      "replacement": "age > 18"
+    }
+  },
+  "sourceSha256": "dcdb1f9d47a0c2d8da5ecf7469df9b1ef8df646ef93cd7a8ed8ea0a75332ef0e",
+  "inputSha256": "35961c2e33584e97d60bc80165da361c6ae4640c619b4c8f6e173a462fc34cb9",
+  "inputAndSourceUnchanged": true,
+  "rawRecordNote": "Retained mutation reports omit machine-specific config/projectRoot metadata; source, mutant and test records are unchanged.",
+  "externalAdoption": false
+}

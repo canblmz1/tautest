@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-18T20:59:02.570Z",
+  "checkedAt": "2026-10-18T22:02:22.299Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
@@ -15,7 +15,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
-      "verifiedAt": "2026-10-18T20:59:02.285Z",
+      "verifiedAt": "2026-10-18T22:02:22.299Z",
       "note": "Lagged rolling API window, not unique users. Core counts are not added."
     },
     "coreDownloads": {
@@ -24,16 +24,16 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/@tautest/core",
-      "verifiedAt": "2026-10-18T20:59:02.570Z"
+      "verifiedAt": "2026-10-18T22:02:22.245Z"
     }
   },
   "release": {
-    "version": "2.1.1",
+    "version": "2.1.2",
     "cli": "published and public-registry smoke passed",
     "core": "published and public-registry smoke passed",
-    "run": "https://github.com/canblmz1/tautest/actions/runs/39159793252",
-    "evidence": "docs/evidence/adoption/npm-2.1.1-release.json",
-    "previousVersion": "2.1.0"
+    "run": "https://github.com/canblmz1/tautest/actions/runs/39170171604",
+    "evidence": "docs/evidence/adoption/npm-2.1.2-release.json",
+    "previousVersion": "2.1.1"
   },
   "onboarding": {
     "readmePr": "https://github.com/canblmz1/tautest/pull/39",
@@ -181,9 +181,41 @@
       "inputUnchanged": true,
       "limit": "File attribution is not a guarantee about an individual new test in a file mixing old and new tests.",
       "adoption": false
+    },
+    {
+      "case": "Gazetta renderer report import",
+      "tautest": "2.1.1",
+      "originalReportRun": "https://github.com/gazetta-studio/gazetta-studio/actions/runs/39109392655",
+      "scope": "src/publish-renderers.ts, from the older report linked by issue 935",
+      "mutants": {
+        "Killed": 36,
+        "CompileError": 60,
+        "Survived": 55,
+        "NoCoverage": 7,
+        "total": 158
+      },
+      "actionable": 62,
+      "expressionGroups": 55,
+      "example": "The locale filename survivor has two covering tests named in the report.",
+      "limit": "Artifact is HTML-only. Embedded literal report was converted to JSON first; direct HTML import is not supported. No current source or test was changed/run.",
+      "evidence": "docs/evidence/adoption/gazetta-renderers/evidence.json",
+      "externalAdoption": false
+    },
+    {
+      "case": "External CLI project-engine resolution",
+      "tautest": "2.1.2",
+      "sourcePr": "https://github.com/canblmz1/tautest/pull/43",
+      "versionPr": "https://github.com/canblmz1/tautest/pull/44",
+      "checksPerPr": 13,
+      "coreTests": 233,
+      "before": "Published 2.1.1 could not find the working project engine from a separate CLI-only install: error, exit 12.",
+      "after": "Published 2.1.2 from a clean CLI-only registry install uses the existing project Stryker 10/Vitest 4 engine: verified, exit 0.",
+      "evidence": "docs/evidence/adoption/project-engine-resolution/evidence.json",
+      "externalAdoption": false
     }
   ],
   "nextActions": [
+    "Await the pending new-recipient authorization for the concrete Gazetta #935 comment, then preflight and send it once if approved.",
     "The explicitly authorized seventh comment was sent once and verified. Wait for an independent response or first run; do not count sending it as a user.",
     "Respond to any human maintainer feedback and help them perform their own first Tautest run; retain a public or permissioned result before counting a user.",
     "Do not send another reminder to silent approved contacts. Do not merge external contributions on behalf of maintainers.",
@@ -198,6 +230,14 @@
       "draft": ".tautest/laurigates-outreach.md",
       "invitation": "https://github.com/laurigates/claude-plugins/issues/3097#issuecomment-6255065998",
       "postedAt": "2026-10-18T20:58:21Z",
+      "externalUse": false
+    },
+    {
+      "repo": "gazetta-studio/gazetta-studio",
+      "issue": 935,
+      "status": "Prepared after analyzing the actual issue-linked report; explicit authorization requested and still pending. Not posted.",
+      "draft": ".tautest/gazetta-outreach.md",
+      "proof": "https://github.com/canblmz1/tautest/tree/4611b98/docs/evidence/adoption/gazetta-renderers",
       "externalUse": false
     }
   ],
@@ -218,6 +258,30 @@
       "repo": "rft0/timer",
       "source": "https://github.com/rft0/timer/blob/24c60d1de7a01e9e7b9f14bbfd59a01042d76eb8/package.json",
       "finding": "Unrelated private Tauri application named tautest, with no dependency on this tool.",
+      "countedUser": false
+    },
+    {
+      "repo": "bfxh/ADV",
+      "source": "https://github.com/bfxh/ADV/blob/0d5dd2c02b13fe476bb4d07dbcc9fffd9b295ec0/vendor/extensions/tautest/server.py",
+      "finding": "Historical real CLI adapter points to a local Tautest checkout. Its test asserts nonempty text, so an error also passes. CLI success/actual mutation use unproven. Adapter removed in rewrite 76acfb1be378af12c316e63f4d0d31b715bb6036 on 2026-08-23.",
+      "countedUser": false
+    },
+    {
+      "repo": "BrainerVirus/workit",
+      "source": "https://github.com/BrainerVirus/workit/blob/3b18edc815814658e9c06721dd32cb592814e1f9/docs/workit-next/research/inspiration-superpowers-specs-tools.md",
+      "finding": "Web research mentions Tautest, explicitly labels tooling details unverified; Bun-based proposed setup is not a Tautest execution.",
+      "countedUser": false
+    },
+    {
+      "repo": "hjkc111/RepoLift",
+      "source": "https://github.com/hjkc111/RepoLift",
+      "finding": "README lists Tautest as secondary design reference for a Stryker-based mutation module; no independent CLI use demonstrated.",
+      "countedUser": false
+    },
+    {
+      "repo": "leonyan1997/quality-gate",
+      "source": "https://github.com/leonyan1997/quality-gate",
+      "finding": "README mutation integration remains unchecked/planned, with a proposed --since command. No execution demonstrated; last push 2026-09-05.",
       "countedUser": false
     }
   ]
