@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-18T19:19:57.078Z",
+  "checkedAt": "2026-10-18T19:24:04.273Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
   },
   "observed": {
-    "approvedInvitationsPosted": 5,
+    "approvedInvitationsPosted": 6,
     "documentedRealUsers": 0,
     "externalRepliesToInvitations": 0,
     "actualUserPopulation": null,
@@ -61,6 +61,14 @@
       "status": "Minimal Node 22 prerequisite PR ready for review, existing checks passed. No human reply or confirmed Tautest use.",
       "pr": "https://github.com/ChopLogic/chop-logic-core/pull/53",
       "proof": "https://github.com/canblmz1/chop-logic-core/actions/runs/39157542032"
+    },
+    {
+      "repo": "cplieger/sse",
+      "issue": 39,
+      "status": "Separately approved sixth contact posted after importing the actual weekly report. Report-only offer; no external reply/use yet.",
+      "invitation": "https://github.com/cplieger/sse/issues/39#issuecomment-6254114177",
+      "reportRun": "https://github.com/cplieger/ci/actions/runs/39073826408",
+      "scope": "326 expression groups for 311 Survived + 35 NoCoverage. Existing Vitest 5 engine path remains unsupported; no execution/verification offered."
     }
   ],
   "engineeringResults": [
@@ -112,6 +120,19 @@
         "total": 8
       },
       "note": "One-line CI runtime fix; full scheduled dashboard workflow not run. Not Tautest adoption."
+    },
+    {
+      "case": "SSE weekly report import",
+      "tautest": "2.1.0",
+      "total": 3249,
+      "Killed": 1350,
+      "Survived": 311,
+      "NoCoverage": 35,
+      "Timeout": 36,
+      "CompileError": 969,
+      "Ignored": 548,
+      "expressionGroups": 326,
+      "note": "Imported existing public report without running project config or installing/rerunning its engine. Maintainer experiment, not external adoption."
     }
   ],
   "nextActions": [
