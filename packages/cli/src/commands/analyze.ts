@@ -51,7 +51,7 @@ export function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): string 
     markdown, '## Review queue', '',
     'Imported report only; no tests or configuration were executed. The raw mutation score is not a new quality-gate result.',
     incomplete ? 'Incomplete: unexecuted or unknown mutant states are present.' : 'All recorded mutant states are terminal.',
-    contextHash ? 'Review decisions expire when project files change.' : 'Local source context is unavailable or stale; previous decisions are not reused.', '',
+    contextHash ? 'Review decisions expire when project files change.' : 'Local source context is unavailable or stale; analysis is read-only and review decisions cannot be recorded. Use the matching project checkout to record decisions within the documented snapshot limits.', '',
     ...groups.map(g => `- ${g.id}: ${g.filePath}:${g.line} (${g.mutants.length} mutants), ${g.review ? `manual ${g.review.decision}: ${g.review.reason.replace(/\s+/g, ' ')}` : g.staleReview ? 'unreviewed (previous decision expired)' : 'unreviewed'}`), ''
   ].join('\n'));
   if (runner) {
@@ -70,7 +70,8 @@ export function runReviewCommand(cwd: string, groupId: string, options: { report
   const previous = readJsonFile<{ input: { path: string; sha256: string }; options?: { runner?: TestRunner; promptStyle?: PromptStyle }; contextHash: string | null; groups: Array<{ id: string }> }>(path.join(out, 'review.json'));
   const current = readReviewInput(cwd, previous.input.path);
   const contextHash = reviewContext(cwd, current.report, out, current.path);
-  if (!contextHash || contextHash !== previous.contextHash || current.hash !== previous.input.sha256) throw new CliError('Analysis context changed. Re-run analyze before recording a review.', EXIT_CODES.configError);
+  if (!contextHash) throw new CliError('Local review context is unavailable or stale. Decisions require matching source files and a project snapshot within the documented limits. Use the matching project checkout and re-run analyze, or refresh the Stryker report if source changed. See docs/STRYKER_REVIEW.md.', EXIT_CODES.configError);
+  if (contextHash !== previous.contextHash || current.hash !== previous.input.sha256) throw new CliError('Analysis context changed. Re-run analyze before recording a review.', EXIT_CODES.configError);
   if (!previous.groups.some(g => g.id === groupId)) throw new CliError('Unknown review group. Use the full group id from review.json.', EXIT_CODES.configError);
   const notesPath = path.join(out, 'decisions.json');
   const notes = readNotes(notesPath).filter(n => n.groupId !== groupId);
