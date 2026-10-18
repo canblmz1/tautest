@@ -1,0 +1,123 @@
+{
+  "checkedAt": "2026-10-18T19:19:57.078Z",
+  "objective": {
+    "documentedRealUsers": 5,
+    "monthlyDownloads": 200000
+  },
+  "observed": {
+    "approvedInvitationsPosted": 5,
+    "documentedRealUsers": 0,
+    "externalRepliesToInvitations": 0,
+    "actualUserPopulation": null,
+    "downloads": {
+      "package": "tautest",
+      "count": 1038,
+      "start": "2026-09-17",
+      "end": "2026-10-16",
+      "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
+      "note": "Lagged rolling API window, not unique users. Core counts are not added."
+    },
+    "coreDownloads": {
+      "package": "@tautest/core",
+      "count": 1205,
+      "start": "2026-09-17",
+      "end": "2026-10-16"
+    }
+  },
+  "release": {
+    "version": "2.1.0",
+    "cli": "published and public-registry smoke passed",
+    "core": "published and public-registry smoke passed",
+    "run": "https://github.com/canblmz1/tautest/actions/runs/39057388383"
+  },
+  "contacts": [
+    {
+      "repo": "Godgift-care/sci-healthcare-backend",
+      "issue": 67,
+      "status": "Issue completed by another contributor; no reply to invitation or confirmed Tautest use. No further contact."
+    },
+    {
+      "repo": "Nodal-stellar/Nodal-AI",
+      "issue": 831,
+      "status": "Open, no reply. Inspected main has syntax/merge problems, with other active fixes. Do not compete or claim a valid baseline."
+    },
+    {
+      "repo": "Thang4869/TriAD-Backend",
+      "issue": 145,
+      "status": "One substantive follow-up sent with a copyable test file and public passing Linux proof. No external reply/use.",
+      "followup": "https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39157061899"
+    },
+    {
+      "repo": "hqqw2h-lgtm/staruml-mcp",
+      "issue": 14,
+      "status": "One substantive follow-up sent with a test-only patch and public passing Linux proof. No external reply/use.",
+      "followup": "https://github.com/hqqw2h-lgtm/staruml-mcp/issues/14#issuecomment-6254066217",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39158116239"
+    },
+    {
+      "repo": "ChopLogic/chop-logic-core",
+      "issue": 52,
+      "status": "Minimal Node 22 prerequisite PR ready for review, existing checks passed. No human reply or confirmed Tautest use.",
+      "pr": "https://github.com/ChopLogic/chop-logic-core/pull/53",
+      "proof": "https://github.com/canblmz1/chop-logic-core/actions/runs/39157542032"
+    }
+  ],
+  "engineeringResults": [
+    {
+      "case": "TriAD Address",
+      "scope": "Full address.ts; existing three value-object tests plus two candidate boundary tests",
+      "before": {
+        "Killed": 13,
+        "Survived": 3,
+        "NoCoverage": 1,
+        "total": 17
+      },
+      "after": {
+        "Killed": 16,
+        "Survived": 0,
+        "NoCoverage": 1,
+        "total": 17
+      },
+      "exactTargetVerified": true,
+      "productionSourceUnchanged": true
+    },
+    {
+      "case": "StarUML extension port",
+      "scope": "Only src/staruml-client.ts:38-38; existing 14 client tests plus two candidate tests",
+      "before": {
+        "Killed": 0,
+        "Survived": 1,
+        "total": 1
+      },
+      "after": {
+        "Killed": 1,
+        "Survived": 0,
+        "total": 1
+      },
+      "exactTargetVerified": true,
+      "killer": "new default extension-port test",
+      "productionSourceUnchanged": true
+    },
+    {
+      "case": "ChopLogic Node runtime",
+      "normalSuites": 81,
+      "normalTests": 699,
+      "typecheck": "passed",
+      "mutationScope": "src/tokenizer/get-glyph-unicode.ts only",
+      "mutants": {
+        "Killed": 5,
+        "RuntimeError": 1,
+        "Ignored": 2,
+        "total": 8
+      },
+      "note": "One-line CI runtime fix; full scheduled dashboard workflow not run. Not Tautest adoption."
+    }
+  ],
+  "nextActions": [
+    "Respond to any human maintainer feedback and help them perform their own first Tautest run; retain a public or permissioned result before counting a user.",
+    "Do not send another reminder to silent approved contacts. Do not merge external contributions on behalf of maintainers.",
+    "Qualify additional candidates by their actual report/review needs and supported setup before proposing any new contact."
+  ],
+  "note": "All engineering results are experiments run by the Tautest maintainer. An invitation, a PR/check, our CI, a star, and npm downloads do not prove an external user. Target is not achieved; no token values were read."
+}
