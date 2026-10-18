@@ -1,5 +1,13 @@
 # tautest
 
+## 2.1.1
+
+### Patch Changes
+
+- 33514cd: Explain that manual review decisions require a matching local project checkout, while importing a downloaded Stryker report remains read-only without local source. Keep the paired core and CLI versions aligned.
+- Updated dependencies [33514cd]
+  - @tautest/core@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes
