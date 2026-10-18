@@ -1,0 +1,55 @@
+{
+  "version": "2.1.1",
+  "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39159793252",
+  "sourcePr": "https://github.com/canblmz1/tautest/pull/40",
+  "versionPr": "https://github.com/canblmz1/tautest/pull/41",
+  "sourceCommit": "33514cdfc98005deee5992ed8827e6511df10bc2",
+  "releaseCommit": "433a2c4ff4a505f15b2a7972f097eee0ef1ba50f",
+  "checks": {
+    "sourcePr": 13,
+    "versionPr": 13,
+    "localCliTests": 66
+  },
+  "registry": {
+    "checkedAt": "2026-10-18T19:43:16.308Z",
+    "states": [
+      {
+        "name": "tautest",
+        "status": 200,
+        "latest": "2.1.1",
+        "version": "2.1.1",
+        "publishedAt": "2026-10-18T19:43:05.884Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-3So48xXzcUkmn6thLTqtgMqDDzfuRhLlCR6QZeTgT0572W57XCOkwgqgdhzt++i6ClINpUo+W6fekSl38E9oMw==",
+        "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.1.tgz"
+      },
+      {
+        "name": "@tautest/core",
+        "status": 200,
+        "latest": "2.1.1",
+        "version": "2.1.1",
+        "publishedAt": "2026-10-18T19:43:06.696Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-kZju3vRiaoDPEC0Wa26h+oYJo7Vh+9NF9vW7kiE0+UkfTx76xGfNu68fjSiZYjzslPP0nMUKJE2yljU5nxDGvQ==",
+        "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.1.tgz"
+      }
+    ]
+  },
+  "smoke": {
+    "checkedAt": "2026-10-18T19:44:04.082Z",
+    "node": "v22.23.2",
+    "cliVersion": "2.1.1",
+    "coreVersion": "2.1.1",
+    "installedFrom": "public npm registry",
+    "reportOnlyAnalysis": "passed",
+    "missingSourceGuidance": "passed",
+    "matchingSourceReview": "passed",
+    "engineAbsent": true,
+    "inputUnchanged": true,
+    "rawSummaryUnchanged": true,
+    "reportSha256": "3d94aa5422797f7c16522850110544f8cfcdb1a29c08582ff144765e1ed132ad",
+    "note": "Tautest-maintainer smoke, not an external user."
+  },
+  "behavior": "Clarify matching-source prerequisites for manual decisions; preserve report-only analysis without Stryker or a project checkout.",
+  "adoption": "Maintainer-run release verification, not an external user."
+}
