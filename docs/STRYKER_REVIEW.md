@@ -18,6 +18,10 @@ Replace the sample id and test path with values from your project; add `--file s
 
 Inspect the printed `verification.json` path for the original report hash, source and test hashes, target identity, killing tests and execution outcome. The scoped verification report is evidence for that target, not a replacement for a full mutation score. Re-run your existing Stryker command and analyze the refreshed report to measure the remaining queue.
 
+Verification attributes a kill to the selected **test file**. If that file contains both older and new tests, `verified` does not by itself prove the new test caused the kill. Put candidate assertions in a new test file, or inspect the fresh `mutation.json` report: join `killedBy` ids to `testFiles` and confirm the actual named killing test before claiming a new-test contribution. Test ids and mutant ids can change between runs.
+
+The [runnable verification controls](https://github.com/canblmz1/tautest/tree/b4b9bda4da1c9788dba4daa09b788dae502f9c99/docs/evidence/adoption/verification-controls) demonstrate this with published Tautest 2.1.1: a passing but ineffective candidate is rejected; a target killed by another file is rejected for the selected file; a new boundary-test file is verified. The exact original target is matched when its id changes from `11` to `6`. The [Linux run](https://github.com/canblmz1/tautest/actions/runs/39160543364) retains raw reports and normal-test results. This is a maintainer-run control experiment.
+
 Analysis works with only a downloaded report. Recording decisions requires running `analyze` and `review` from a matching project checkout: each source file in the report must exist locally with the same contents. Without those files, the imported report is read-only. Repeating `analyze` in a folder containing only the report will not enable decisions. If the source has changed, generate a fresh Stryker report first. The [review snapshot limits](CLI_REFERENCE.md#tautest-review) also apply.
 
 Some survivors are equivalent or an accepted risk. Use the full expression-group id from `review.json` and explain the judgment:

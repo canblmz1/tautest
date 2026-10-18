@@ -28,6 +28,8 @@ In a [maintainer-run Linux reproduction](https://github.com/canblmz1/tautest/act
 
 For your own Stryker report, replace the sample filename with its path. See [report review and test verification](docs/STRYKER_REVIEW.md) for the next steps.
 
+Tried it or got stuck? [Share your first result or ask for help](https://github.com/canblmz1/tautest/issues/new?template=first-run.yml). The form asks for the command and its result; a public reproduction is optional.
+
 ## Supported setup
 
 One setup is supported. Anything else is listed under [Exceptions](#exceptions).
