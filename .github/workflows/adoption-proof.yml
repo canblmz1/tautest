@@ -1,0 +1,75 @@
+name: Adoption proof — TriAD address
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/adoption-proof.yml
+      - scripts/adoption-proof/triad/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  address-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.1
+          run_install: false
+      - name: Checkout inspected project revision
+        uses: actions/checkout@v4
+        with:
+          repository: Thang4869/TriAD-Backend
+          ref: 7e41358c9936186d5469437584845335ec255ad1
+          path: project
+          persist-credentials: false
+      - name: Install project dependencies without lifecycle scripts
+        working-directory: project
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install separate proof tools
+        working-directory: scripts/adoption-proof/triad
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Add candidate tests
+        run: cp scripts/adoption-proof/triad/address.test.ts project/tests/unit/shared/value-objects/address.test.ts
+      - name: Prove the original survivor and candidate kill
+        run: node scripts/adoption-proof/triad/prove-address.mjs "$GITHUB_WORKSPACE/project"
+      - name: Publish scoped evidence summary
+        if: success()
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const proof = JSON.parse(readFileSync('project/.tautest/adoption-proof/evidence.json', 'utf8'));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, [
+            '# TriAD Address boundary proof', '',
+            'Maintainer-run experiment; not external Tautest adoption.', '',
+            `Revision: ${proof.head}`, '',
+            `Scope: ${proof.scope}`, '',
+            `Before: ${JSON.stringify(proof.before)}`, '',
+            `After: ${JSON.stringify(proof.after)}`, '',
+            `Exact target: ${proof.target.replacement}`, '',
+            `Tautest verification: **${proof.verification.status}**; testsCompleted=${proof.verification.testsCompleted}; killedBy=${proof.verification.killedBy.join(', ')}`, '',
+            `Production source unchanged: ${proof.sourceUnchanged}`, '',
+            'This does not close the full mutation-testing issue or establish a project-wide threshold.'
+          ].join('\n'));
+          NODE
+      - name: Upload reports and verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triad-address-proof
+          path: |
+            project/.tautest/adoption-proof/
+            project/.tautest/verification/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
