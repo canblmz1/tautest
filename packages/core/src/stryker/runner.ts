@@ -18,10 +18,20 @@ export async function runStryker(options: RunStrykerOptions): Promise<StrykerRun
     // An npx/global CLI lives outside the project. Changing cwd does not change ESM resolution.
     // Prefer the project's engine; keep the co-installed engine fallback for isolated toolchains.
     let projectEngine: string | undefined;
+    const projectRequire = createRequire(path.join(projectRoot, 'package.json'));
     try {
-      projectEngine = createRequire(path.join(projectRoot, 'package.json')).resolve('@stryker-mutator/core');
+      projectEngine = projectRequire.resolve('@stryker-mutator/core');
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') throw error;
+      // An installed package with a missing entry is broken, not an absent project engine.
+      let manifestPresent = false;
+      try {
+        projectRequire.resolve('@stryker-mutator/core/package.json');
+        manifestPresent = true;
+      } catch (manifestError) {
+        if ((manifestError as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') throw error;
+      }
+      if (manifestPresent) throw error;
     }
     const { Stryker } = projectEngine
       ? await import(pathToFileURL(projectEngine).href)

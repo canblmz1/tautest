@@ -289,6 +289,19 @@ describe('runStryker leaves files to Stryker', () => {
     expect(process.cwd()).toBe(originalCwd);
   });
 
+  it('does not switch engines when an installed project package has a missing entry', async () => {
+    const root = tempProject('missing-engine-entry');
+    projectEngine(root, 'export class Stryker {}');
+    writeFileSync(path.join(root, 'node_modules', '@stryker-mutator', 'core', 'package.json'),
+      JSON.stringify({ name: '@stryker-mutator/core', type: 'module', exports: { '.': './missing.mjs', './package.json': './package.json' } }));
+    const bundledCalls = strykerConfigs.length;
+
+    await expect(runStryker({ cwd: root, config: {}, jsonReportPath: path.join(root, 'm.json') }))
+      .rejects.toMatchObject({ code: 'STRYKER_MODULE_NOT_FOUND' });
+
+    expect(strykerConfigs).toHaveLength(bundledCalls);
+  });
+
   it('passes the config to Stryker unchanged', async () => {
     runMutationTest.mockResolvedValueOnce(undefined);
     const root = tempProject('passthrough');
