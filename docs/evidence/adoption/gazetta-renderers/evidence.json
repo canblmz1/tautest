@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-10-18T21:43:42.556Z",
+  "candidate": "gazetta-studio/gazetta-studio",
+  "issue": 935,
+  "issueUrl": "https://github.com/gazetta-studio/gazetta-studio/issues/935",
+  "reportRun": "https://github.com/gazetta-studio/gazetta-studio/actions/runs/39109392655",
+  "reportCommit": "ccaed351",
+  "artifact": "mutation-report",
+  "htmlSha256": "3137c0de6faf0717c3dad6c439d26421db35296f61375bcbc2ce94a9ee0d324d",
+  "jsonSha256": "42f530fb10251e5e0904ba1138498a305a7985400b837763e4df189a8e351a9b",
+  "tautestVersion": "2.1.1",
+  "complete": true,
+  "rawSummary": {
+    "verdict": "WEAK",
+    "mutationScore": 57.03821656050956,
+    "total": 5174,
+    "killed": 1785,
+    "survived": 762,
+    "noCoverage": 587,
+    "timeout": 6,
+    "runtimeError": 0,
+    "compileError": 2034,
+    "ignored": 0
+  },
+  "expressionGroups": 1184,
+  "scope": {
+    "file": "src/publish-renderers.ts",
+    "statuses": {
+      "Killed": 36,
+      "CompileError": 60,
+      "Survived": 55,
+      "NoCoverage": 7
+    },
+    "expressionGroups": 55,
+    "jsonSha256": "3a31584c4552bc7e6cbb22d1a9186ac45715b14a93e2df3dc9b12da5a674ca17",
+    "note": "Source file and all 158 raw mutant records preserved; test metadata limited to referenced IDs. Full-project totals come from the separate original artifact, not this slice."
+  },
+  "sample": [
+    {
+      "line": 136,
+      "original": "childEntry.slice(1)",
+      "mutants": [
+        {
+          "id": "4766",
+          "status": "Survived",
+          "replacement": "childEntry",
+          "coveringTests": [
+            {
+              "id": "856",
+              "name": "publishItemCore — Ok happy path publishes a starter page in ESI mode and writes index + sidecars",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "858",
+              "name": "publishItemCore — Ok happy path writes hashed CSS file when renderer emits styles",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "860",
+              "name": "publishItemCore — STORAGE_WRITE_FAILED returns STORAGE_WRITE_FAILED when storage.writeFile throws",
+              "filePath": "tests/publish-item.test.ts"
+            }
+          ],
+          "coveredByCount": 10
+        }
+      ]
+    },
+    {
+      "line": 137,
+      "original": "`index.${ctx.locale}.html`",
+      "mutants": [
+        {
+          "id": "4767",
+          "status": "Survived",
+          "replacement": "``",
+          "coveringTests": [
+            {
+              "id": "1360",
+              "name": "renderPageWithEsi — pure fn locale-suffixes index file when locale set",
+              "filePath": "tests/publish-renderers.test.ts"
+            },
+            {
+              "id": "1524",
+              "name": "publishPage — wrapper preserves locale through to spine",
+              "filePath": "tests/publish-pages.test.ts"
+            }
+          ],
+          "coveredByCount": 2
+        }
+      ]
+    },
+    {
+      "line": 144,
+      "original": "rendered.css",
+      "mutants": [
+        {
+          "id": "4773",
+          "status": "Survived",
+          "replacement": "true",
+          "coveringTests": [
+            {
+              "id": "856",
+              "name": "publishItemCore — Ok happy path publishes a starter page in ESI mode and writes index + sidecars",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "858",
+              "name": "publishItemCore — Ok happy path writes hashed CSS file when renderer emits styles",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "860",
+              "name": "publishItemCore — STORAGE_WRITE_FAILED returns STORAGE_WRITE_FAILED when storage.writeFile throws",
+              "filePath": "tests/publish-item.test.ts"
+            }
+          ],
+          "coveredByCount": 10
+        },
+        {
+          "id": "4774",
+          "status": "Survived",
+          "replacement": "false",
+          "coveringTests": [
+            {
+              "id": "856",
+              "name": "publishItemCore — Ok happy path publishes a starter page in ESI mode and writes index + sidecars",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "858",
+              "name": "publishItemCore — Ok happy path writes hashed CSS file when renderer emits styles",
+              "filePath": "tests/publish-item.test.ts"
+            },
+            {
+              "id": "860",
+              "name": "publishItemCore — STORAGE_WRITE_FAILED returns STORAGE_WRITE_FAILED when storage.writeFile throws",
+              "filePath": "tests/publish-item.test.ts"
+            }
+          ],
+          "coveredByCount": 10
+        }
+      ]
+    }
+  ],
+  "inputUnchanged": true,
+  "externalUser": false,
+  "contactStatus": "Not posted; concrete draft will require authorization for a new recipient.",
+  "limitations": [
+    "The project publishes only HTML; this local experiment extracted its embedded literal report to JSON without running JavaScript. The CLI does not accept HTML directly.",
+    "Artifact source is the older run linked by issue 935. Current production source was not mutated or tested.",
+    "No automatic equivalence judgment or score improvement. CompileError and Timeout statuses remain unchanged.",
+    "Analyze used only embedded report source; persisting review decisions would require the matching package checkout.",
+    "Report-only result by Tautest maintainer, not external adoption."
+  ]
+}

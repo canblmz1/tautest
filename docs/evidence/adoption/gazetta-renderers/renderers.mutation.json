@@ -1,0 +1,5059 @@
+{
+  "files": {
+    "src/publish-renderers.ts": {
+      "language": "typescript",
+      "mutants": [
+        {
+          "id": "4733",
+          "mutatorName": "MethodExpression",
+          "replacement": "createHash('md5').update(content).digest('hex')",
+          "statusReason": "expected 'pages/home/styles.8e1d2bd7310cde97cd2…' to match /styles\\.[a-f0-9]{8}\\.css$/",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 2,
+          "killedBy": [
+            "1359"
+          ],
+          "coveredBy": [
+            "543",
+            "856",
+            "857",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1366",
+            "1367",
+            "1368",
+            "1521",
+            "1524",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 69,
+              "line": 98
+            },
+            "start": {
+              "column": 10,
+              "line": 98
+            }
+          }
+        },
+        {
+          "id": "4732",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(97,40): error TS2355: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "856",
+            "857",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1366",
+            "1367",
+            "1368",
+            "1521",
+            "1524",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 2,
+              "line": 99
+            },
+            "start": {
+              "column": 47,
+              "line": 97
+            }
+          }
+        },
+        {
+          "id": "4736",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(115,84): error TS2355: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1357",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 2,
+              "line": 223
+            },
+            "start": {
+              "column": 106,
+              "line": 115
+            }
+          }
+        },
+        {
+          "id": "4734",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "543"
+          ],
+          "coveredBy": [
+            "543",
+            "856",
+            "857",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1366",
+            "1367",
+            "1368",
+            "1521",
+            "1524",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 26,
+              "line": 98
+            },
+            "start": {
+              "column": 21,
+              "line": 98
+            }
+          }
+        },
+        {
+          "id": "4735",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "src/publish-renderers.ts(98,3): error TS2322: Type 'Buffer<ArrayBuffer>' is not assignable to type 'string'.\nsrc/publish-renderers.ts(98,51): error TS2345: Argument of type '\"\"' is not assignable to parameter of type 'BufferEncoding'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "856",
+            "857",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1366",
+            "1367",
+            "1368",
+            "1521",
+            "1524",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 56,
+              "line": 98
+            },
+            "start": {
+              "column": 51,
+              "line": 98
+            }
+          }
+        },
+        {
+          "id": "4737",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "page",
+          "statusReason": "src/publish-renderers.ts(118,18): error TS2345: Argument of type 'undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(132,24): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(183,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(184,14): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(185,12): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(206,19): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(207,16): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1357",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 117
+            },
+            "start": {
+              "column": 7,
+              "line": 117
+            }
+          }
+        },
+        {
+          "id": "4738",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(118,18): error TS2345: Argument of type '(PageManifest & { dir: string; }) | undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\n  Type 'undefined' is not assignable to type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(132,24): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(133,69): error TS2339: Property 'startsWith' does not exist on type 'ComponentEntry'.\n  Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(146,46): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\nsrc/publish-renderers.ts(155,47): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\nsrc/publish-renderers.ts(183,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(184,14): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(185,12): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(206,19): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(207,16): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1357",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 117
+            },
+            "start": {
+              "column": 7,
+              "line": 117
+            }
+          }
+        },
+        {
+          "id": "4739",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(118,18): error TS2345: Argument of type '(PageManifest & { dir: string; }) | undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\n  Type 'undefined' is not assignable to type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(132,24): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(183,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(184,14): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(185,12): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(206,19): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(207,16): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1357",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 117
+            },
+            "start": {
+              "column": 7,
+              "line": 117
+            }
+          }
+        },
+        {
+          "id": "4741",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(132,24): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(133,69): error TS2339: Property 'startsWith' does not exist on type 'ComponentEntry'.\n  Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(146,46): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\nsrc/publish-renderers.ts(155,47): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\nsrc/publish-renderers.ts(183,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(184,14): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(185,12): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(206,19): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(207,16): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 118
+            },
+            "start": {
+              "column": 7,
+              "line": 118
+            }
+          }
+        },
+        {
+          "id": "4750",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(132,24): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(133,69): error TS2339: Property 'startsWith' does not exist on type 'ComponentEntry'.\n  Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(146,46): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 47,
+              "line": 131
+            },
+            "start": {
+              "column": 19,
+              "line": 131
+            }
+          }
+        },
+        {
+          "id": "4755",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 84,
+              "line": 133
+            },
+            "start": {
+              "column": 24,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4756",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 84,
+              "line": 133
+            },
+            "start": {
+              "column": 24,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4757",
+          "mutatorName": "LogicalOperator",
+          "replacement": "typeof childEntry === 'string' || childEntry.startsWith('@')",
+          "statusReason": "src/publish-renderers.ts(133,69): error TS2339: Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 84,
+              "line": 133
+            },
+            "start": {
+              "column": 24,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4758",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(133,43): error TS2339: Property 'startsWith' does not exist on type 'ComponentEntry'.\n  Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 54,
+              "line": 133
+            },
+            "start": {
+              "column": 24,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4759",
+          "mutatorName": "EqualityOperator",
+          "replacement": "typeof childEntry !== 'string'",
+          "statusReason": "src/publish-renderers.ts(133,69): error TS2339: Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 54,
+              "line": 133
+            },
+            "start": {
+              "column": 24,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4763",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(146,46): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 19,
+              "line": 135
+            },
+            "start": {
+              "column": 9,
+              "line": 135
+            }
+          }
+        },
+        {
+          "id": "4760",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "src/publish-renderers.ts(133,24): error TS2367: This comparison appears to be unintentional because the types '\"string\" | \"number\" | \"bigint\" | \"boolean\" | \"symbol\" | \"undefined\" | \"object\" | \"function\"' and '\"\"' have no overlap.\nsrc/publish-renderers.ts(133,63): error TS2339: Property 'startsWith' does not exist on type 'InlineComponent'.\nsrc/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 54,
+              "line": 133
+            },
+            "start": {
+              "column": 46,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4764",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(136,35): error TS2339: Property 'slice' does not exist on type 'ComponentEntry'.\n  Property 'slice' does not exist on type 'InlineComponent'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 19,
+              "line": 135
+            },
+            "start": {
+              "column": 9,
+              "line": 135
+            }
+          }
+        },
+        {
+          "id": "4777",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(146,37): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 24,
+              "line": 146
+            },
+            "start": {
+              "column": 11,
+              "line": 146
+            }
+          }
+        },
+        {
+          "id": "4778",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(146,38): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 24,
+              "line": 146
+            },
+            "start": {
+              "column": 11,
+              "line": 146
+            }
+          }
+        },
+        {
+          "id": "4780",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(152,99): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.\nsrc/publish-renderers.ts(153,99): error TS2322: Type 'boolean' is not assignable to type 'string'.\nsrc/publish-renderers.ts(211,26): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 53,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4781",
+          "mutatorName": "LogicalOperator",
+          "replacement": "(ctx.seo?.locale || ctx.locale) && 'en'",
+          "statusReason": "src/publish-renderers.ts(153,99): error TS2322: Type 'string | undefined' is not assignable to type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\nsrc/publish-renderers.ts(211,26): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 53,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4784",
+          "mutatorName": "OptionalChaining",
+          "replacement": "ctx.seo.locale",
+          "statusReason": "src/publish-renderers.ts(151,16): error TS18048: 'ctx.seo' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 31,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4786",
+          "mutatorName": "ArrowFunction",
+          "replacement": "() => undefined",
+          "statusReason": "src/publish-renderers.ts(153,75): error TS2322: Type 'undefined[]' is not assignable to type 'RenderOutput[]'.\n  Type 'undefined' is not assignable to type 'RenderOutput'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 104,
+              "line": 152
+            },
+            "start": {
+              "column": 64,
+              "line": 152
+            }
+          }
+        },
+        {
+          "id": "4787",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(153,46): error TS2345: Argument of type '{}' is not assignable to parameter of type '{ content?: Record<string, unknown> | undefined; children?: RenderOutput[] | undefined; params?: Record<string, string> | undefined; locale: string; }'.\n  Property 'locale' is missing in type '{}' but required in type '{ content?: Record<string, unknown> | undefined; children?: RenderOutput[] | undefined; params?: Record<string, string> | undefined; locale: string; }'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 113,
+              "line": 153
+            },
+            "start": {
+              "column": 46,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "4779",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(152,99): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.\nsrc/publish-renderers.ts(153,99): error TS2322: Type 'boolean' is not assignable to type 'string'.\nsrc/publish-renderers.ts(211,26): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 53,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4790",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(155,36): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 22,
+              "line": 155
+            },
+            "start": {
+              "column": 7,
+              "line": 155
+            }
+          }
+        },
+        {
+          "id": "4740",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected [Function] to throw error matching /not found/i but got ''",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1357"
+          ],
+          "coveredBy": [
+            "1357"
+          ],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 117
+            },
+            "start": {
+              "column": 30,
+              "line": 117
+            }
+          }
+        },
+        {
+          "id": "4742",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "promise resolved \"{ indexFile: 'index.html', …(3) }\" instead of rejecting",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1356"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "927",
+            "932",
+            "1346",
+            "1356",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 118
+            },
+            "start": {
+              "column": 7,
+              "line": 118
+            }
+          }
+        },
+        {
+          "id": "4743",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "promise resolved \"{ indexFile: 'index.html', …(3) }\" instead of rejecting",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1356"
+          ],
+          "coveredBy": [
+            "1356"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 120
+            },
+            "start": {
+              "column": 25,
+              "line": 118
+            }
+          }
+        },
+        {
+          "id": "4744",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected [Function] to throw error matching /archived/i but got ''",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1356"
+          ],
+          "coveredBy": [
+            "1356"
+          ],
+          "location": {
+            "end": {
+              "column": 86,
+              "line": 119
+            },
+            "start": {
+              "column": 21,
+              "line": 119
+            }
+          }
+        },
+        {
+          "id": "4745",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 33,
+              "line": 125
+            },
+            "start": {
+              "column": 31,
+              "line": 125
+            }
+          }
+        },
+        {
+          "id": "4746",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 37,
+              "line": 126
+            },
+            "start": {
+              "column": 35,
+              "line": 126
+            }
+          }
+        },
+        {
+          "id": "4748",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 38,
+              "line": 128
+            },
+            "start": {
+              "column": 36,
+              "line": 128
+            }
+          }
+        },
+        {
+          "id": "4747",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 36,
+              "line": 127
+            },
+            "start": {
+              "column": 34,
+              "line": 127
+            }
+          }
+        },
+        {
+          "id": "4749",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 35,
+              "line": 129
+            },
+            "start": {
+              "column": 33,
+              "line": 129
+            }
+          }
+        },
+        {
+          "id": "4752",
+          "mutatorName": "EqualityOperator",
+          "replacement": "i >= resolved.children.length",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 47,
+              "line": 131
+            },
+            "start": {
+              "column": 19,
+              "line": 131
+            }
+          }
+        },
+        {
+          "id": "4751",
+          "mutatorName": "EqualityOperator",
+          "replacement": "i <= resolved.children.length",
+          "statusReason": "Cannot read properties of undefined (reading 'children')",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 47,
+              "line": 131
+            },
+            "start": {
+              "column": 19,
+              "line": 131
+            }
+          }
+        },
+        {
+          "id": "4753",
+          "mutatorName": "UpdateOperator",
+          "replacement": "i--",
+          "statusReason": "Cannot read properties of undefined (reading 'children')",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 52,
+              "line": 131
+            },
+            "start": {
+              "column": 49,
+              "line": 131
+            }
+          }
+        },
+        {
+          "id": "4754",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 148
+            },
+            "start": {
+              "column": 54,
+              "line": 131
+            }
+          }
+        },
+        {
+          "id": "4791",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(155,37): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 22,
+              "line": 155
+            },
+            "start": {
+              "column": 7,
+              "line": 155
+            }
+          }
+        },
+        {
+          "id": "4793",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "statusReason": "src/publish-renderers.ts(158,34): error TS2322: Type 'string' is not assignable to type 'RenderedFile'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 35,
+              "line": 158
+            },
+            "start": {
+              "column": 33,
+              "line": 158
+            }
+          }
+        },
+        {
+          "id": "4800",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(166,16): error TS2345: Argument of type '{}' is not assignable to parameter of type 'RenderedFile'.\n  Type '{}' is missing the following properties from type 'RenderedFile': path, content\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 51,
+              "line": 166
+            },
+            "start": {
+              "column": 16,
+              "line": 166
+            }
+          }
+        },
+        {
+          "id": "4808",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(176,16): error TS2345: Argument of type '{}' is not assignable to parameter of type 'RenderedFile'.\n  Type '{}' is missing the following properties from type 'RenderedFile': path, content\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "1358",
+            "1359",
+            "1360",
+            "1361"
+          ],
+          "location": {
+            "end": {
+              "column": 49,
+              "line": 176
+            },
+            "start": {
+              "column": 16,
+              "line": 176
+            }
+          }
+        },
+        {
+          "id": "4811",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(182,34): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ResolveSeoTagsInput'.\n  Property 'seo' is missing in type '{}' but required in type 'ResolveSeoTagsInput'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 188
+            },
+            "start": {
+              "column": 34,
+              "line": 182
+            }
+          }
+        },
+        {
+          "id": "4812",
+          "mutatorName": "LogicalOperator",
+          "replacement": "ctx.seo && {}",
+          "statusReason": "src/publish-renderers.ts(186,5): error TS2322: Type '{} | undefined' is not assignable to type 'SeoContext'.\n  Type 'undefined' is not assignable to type 'SeoContext'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 186
+            },
+            "start": {
+              "column": 10,
+              "line": 186
+            }
+          }
+        },
+        {
+          "id": "4820",
+          "mutatorName": "LogicalOperator",
+          "replacement": "page.cache?.browser && ctx.targetCache?.browser",
+          "statusReason": "src/publish-renderers.ts(206,19): error TS5076: '&&' and '??' operations cannot be mixed without parentheses.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 66,
+              "line": 206
+            },
+            "start": {
+              "column": 19,
+              "line": 206
+            }
+          }
+        },
+        {
+          "id": "4821",
+          "mutatorName": "OptionalChaining",
+          "replacement": "page.cache.browser",
+          "statusReason": "src/publish-renderers.ts(206,19): error TS18048: 'page.cache' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 38,
+              "line": 206
+            },
+            "start": {
+              "column": 19,
+              "line": 206
+            }
+          }
+        },
+        {
+          "id": "4822",
+          "mutatorName": "OptionalChaining",
+          "replacement": "ctx.targetCache.browser",
+          "statusReason": "src/publish-renderers.ts(206,42): error TS18048: 'ctx.targetCache' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 66,
+              "line": 206
+            },
+            "start": {
+              "column": 42,
+              "line": 206
+            }
+          }
+        },
+        {
+          "id": "4824",
+          "mutatorName": "LogicalOperator",
+          "replacement": "page.cache?.edge && ctx.targetCache?.edge",
+          "statusReason": "src/publish-renderers.ts(207,16): error TS5076: '&&' and '??' operations cannot be mixed without parentheses.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 57,
+              "line": 207
+            },
+            "start": {
+              "column": 16,
+              "line": 207
+            }
+          }
+        },
+        {
+          "id": "4825",
+          "mutatorName": "OptionalChaining",
+          "replacement": "page.cache.edge",
+          "statusReason": "src/publish-renderers.ts(207,16): error TS18048: 'page.cache' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 32,
+              "line": 207
+            },
+            "start": {
+              "column": 16,
+              "line": 207
+            }
+          }
+        },
+        {
+          "id": "4826",
+          "mutatorName": "OptionalChaining",
+          "replacement": "ctx.targetCache.edge",
+          "statusReason": "src/publish-renderers.ts(207,36): error TS18048: 'ctx.targetCache' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 57,
+              "line": 207
+            },
+            "start": {
+              "column": 36,
+              "line": 207
+            }
+          }
+        },
+        {
+          "id": "4831",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(222,3): error TS2739: Type '{}' is missing the following properties from type 'RenderOutput': indexFile, indexHtml, files, archived\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 58,
+              "line": 222
+            },
+            "start": {
+              "column": 10,
+              "line": 222
+            }
+          }
+        },
+        {
+          "id": "4833",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(238,83): error TS2355: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 2,
+              "line": 257
+            },
+            "start": {
+              "column": 105,
+              "line": 238
+            }
+          }
+        },
+        {
+          "id": "4834",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "page",
+          "statusReason": "src/publish-renderers.ts(241,18): error TS2345: Argument of type 'undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(247,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(248,12): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 240
+            },
+            "start": {
+              "column": 7,
+              "line": 240
+            }
+          }
+        },
+        {
+          "id": "4835",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(241,18): error TS2345: Argument of type '(PageManifest & { dir: string; }) | undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\n  Type 'undefined' is not assignable to type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(247,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(248,12): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 240
+            },
+            "start": {
+              "column": 7,
+              "line": 240
+            }
+          }
+        },
+        {
+          "id": "4836",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(241,18): error TS2345: Argument of type '(PageManifest & { dir: string; }) | undefined' is not assignable to parameter of type '{ archived?: boolean | undefined; }'.\n  Type 'undefined' is not assignable to type '{ archived?: boolean | undefined; }'.\nsrc/publish-renderers.ts(247,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(248,12): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 12,
+              "line": 240
+            },
+            "start": {
+              "column": 7,
+              "line": 240
+            }
+          }
+        },
+        {
+          "id": "4837",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 240
+            },
+            "start": {
+              "column": 30,
+              "line": 240
+            }
+          }
+        },
+        {
+          "id": "4838",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(247,15): error TS18048: 'page' is possibly 'undefined'.\nsrc/publish-renderers.ts(248,12): error TS18048: 'page' is possibly 'undefined'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 241
+            },
+            "start": {
+              "column": 7,
+              "line": 241
+            }
+          }
+        },
+        {
+          "id": "4843",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 254
+            },
+            "start": {
+              "column": 34,
+              "line": 254
+            }
+          }
+        },
+        {
+          "id": "4845",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(256,3): error TS2739: Type '{}' is missing the following properties from type 'RenderOutput': indexFile, indexHtml, files, archived\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 62,
+              "line": 256
+            },
+            "start": {
+              "column": 10,
+              "line": 256
+            }
+          }
+        },
+        {
+          "id": "4846",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "statusReason": "src/publish-renderers.ts(256,42): error TS2322: Type 'string' is not assignable to type 'RenderedFile'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 43,
+              "line": 256
+            },
+            "start": {
+              "column": 41,
+              "line": 256
+            }
+          }
+        },
+        {
+          "id": "4848",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(267,97): error TS2355: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "742",
+            "743",
+            "744",
+            "746",
+            "747",
+            "857",
+            "928",
+            "932",
+            "1365",
+            "1366",
+            "1367",
+            "1368",
+            "1401",
+            "1402",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 2,
+              "line": 301
+            },
+            "start": {
+              "column": 119,
+              "line": 267
+            }
+          }
+        },
+        {
+          "id": "4850",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(293,20): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "742",
+            "743",
+            "744",
+            "746",
+            "747",
+            "857",
+            "928",
+            "932",
+            "1365",
+            "1366",
+            "1367",
+            "1368",
+            "1401",
+            "1402",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 16,
+              "line": 269
+            },
+            "start": {
+              "column": 7,
+              "line": 269
+            }
+          }
+        },
+        {
+          "id": "4854",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "statusReason": "src/publish-renderers.ts(275,34): error TS2322: Type 'string' is not assignable to type 'RenderedFile'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 35,
+              "line": 275
+            },
+            "start": {
+              "column": 33,
+              "line": 275
+            }
+          }
+        },
+        {
+          "id": "4860",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(281,16): error TS2345: Argument of type '{}' is not assignable to parameter of type 'RenderedFile'.\n  Type '{}' is missing the following properties from type 'RenderedFile': path, content\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 56,
+              "line": 281
+            },
+            "start": {
+              "column": 16,
+              "line": 281
+            }
+          }
+        },
+        {
+          "id": "4864",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 290
+            },
+            "start": {
+              "column": 20,
+              "line": 285
+            }
+          }
+        },
+        {
+          "id": "4865",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 50,
+              "line": 287
+            },
+            "start": {
+              "column": 20,
+              "line": 287
+            }
+          }
+        },
+        {
+          "id": "4866",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(288,16): error TS2345: Argument of type '{}' is not assignable to parameter of type 'RenderedFile'.\n  Type '{}' is missing the following properties from type 'RenderedFile': path, content\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 54,
+              "line": 288
+            },
+            "start": {
+              "column": 16,
+              "line": 288
+            }
+          }
+        },
+        {
+          "id": "4867",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 70,
+              "line": 289
+            },
+            "start": {
+              "column": 20,
+              "line": 289
+            }
+          }
+        },
+        {
+          "id": "4868",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "src/publish-renderers.ts(293,20): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 20,
+              "line": 292
+            },
+            "start": {
+              "column": 7,
+              "line": 292
+            }
+          }
+        },
+        {
+          "id": "4869",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "src/publish-renderers.ts(293,20): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n  Type 'undefined' is not assignable to type 'string'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 20,
+              "line": 292
+            },
+            "start": {
+              "column": 7,
+              "line": 292
+            }
+          }
+        },
+        {
+          "id": "4870",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 294
+            },
+            "start": {
+              "column": 22,
+              "line": 292
+            }
+          }
+        },
+        {
+          "id": "4873",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "status": "NoCoverage",
+          "static": false,
+          "coveredBy": [],
+          "location": {
+            "end": {
+              "column": 91,
+              "line": 296
+            },
+            "start": {
+              "column": 89,
+              "line": 296
+            }
+          }
+        },
+        {
+          "id": "4877",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(300,3): error TS2739: Type '{}' is missing the following properties from type 'RenderOutput': indexFile, indexHtml, files, archived\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 58,
+              "line": 300
+            },
+            "start": {
+              "column": 10,
+              "line": 300
+            }
+          }
+        },
+        {
+          "id": "4879",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(317,4): error TS2355: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 2,
+              "line": 329
+            },
+            "start": {
+              "column": 17,
+              "line": 317
+            }
+          }
+        },
+        {
+          "id": "4881",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(323,44): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ArchiveMarker'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "859",
+            "1352",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 69,
+              "line": 323
+            },
+            "start": {
+              "column": 44,
+              "line": 323
+            }
+          }
+        },
+        {
+          "id": "4882",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "src/publish-renderers.ts(323,46): error TS2322: Type '\"\"' is not assignable to type '\"alias\" | \"gone\"'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "859",
+            "1352",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 59,
+              "line": 323
+            },
+            "start": {
+              "column": 52,
+              "line": 323
+            }
+          }
+        },
+        {
+          "id": "4883",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(323,87): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ArchiveMarker'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "1353",
+            "1565",
+            "1566",
+            "1567",
+            "1569",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 103,
+              "line": 323
+            },
+            "start": {
+              "column": 87,
+              "line": 323
+            }
+          }
+        },
+        {
+          "id": "4884",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "src/publish-renderers.ts(323,89): error TS2322: Type '\"\"' is not assignable to type '\"alias\" | \"gone\"'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "1353",
+            "1565",
+            "1566",
+            "1567",
+            "1569",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 101,
+              "line": 323
+            },
+            "start": {
+              "column": 95,
+              "line": 323
+            }
+          }
+        },
+        {
+          "id": "4887",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "src/publish-renderers.ts(328,3): error TS2739: Type '{}' is missing the following properties from type 'RenderOutput': indexFile, indexHtml, files, archived\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 61,
+              "line": 328
+            },
+            "start": {
+              "column": 10,
+              "line": 328
+            }
+          }
+        },
+        {
+          "id": "4888",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "statusReason": "src/publish-renderers.ts(328,42): error TS2322: Type 'string' is not assignable to type 'RenderedFile'.\n",
+          "status": "CompileError",
+          "static": false,
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 43,
+              "line": 328
+            },
+            "start": {
+              "column": 41,
+              "line": 328
+            }
+          }
+        },
+        {
+          "id": "4761",
+          "mutatorName": "MethodExpression",
+          "replacement": "childEntry.endsWith('@')",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 84,
+              "line": 133
+            },
+            "start": {
+              "column": 58,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4762",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 83,
+              "line": 133
+            },
+            "start": {
+              "column": 80,
+              "line": 133
+            }
+          }
+        },
+        {
+          "id": "4765",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 6,
+              "line": 141
+            },
+            "start": {
+              "column": 21,
+              "line": 135
+            }
+          }
+        },
+        {
+          "id": "4766",
+          "mutatorName": "MethodExpression",
+          "replacement": "childEntry",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 43,
+              "line": 136
+            },
+            "start": {
+              "column": 24,
+              "line": 136
+            }
+          }
+        },
+        {
+          "id": "4767",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 2,
+          "coveredBy": [
+            "1360",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 63,
+              "line": 137
+            },
+            "start": {
+              "column": 37,
+              "line": 137
+            }
+          }
+        },
+        {
+          "id": "4768",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1361",
+            "1521"
+          ],
+          "location": {
+            "end": {
+              "column": 78,
+              "line": 137
+            },
+            "start": {
+              "column": 66,
+              "line": 137
+            }
+          }
+        },
+        {
+          "id": "4769",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 59,
+              "line": 138
+            },
+            "start": {
+              "column": 24,
+              "line": 138
+            }
+          }
+        },
+        {
+          "id": "4770",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 54,
+              "line": 139
+            },
+            "start": {
+              "column": 24,
+              "line": 139
+            }
+          }
+        },
+        {
+          "id": "4771",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '<!--cache:browser=0,edge=86400-->\\n<!…' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 47,
+              "line": 140
+            },
+            "start": {
+              "column": 22,
+              "line": 140
+            }
+          }
+        },
+        {
+          "id": "4772",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 6,
+              "line": 147
+            },
+            "start": {
+              "column": 12,
+              "line": 141
+            }
+          }
+        },
+        {
+          "id": "4773",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 144
+            },
+            "start": {
+              "column": 11,
+              "line": 144
+            }
+          }
+        },
+        {
+          "id": "4774",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 144
+            },
+            "start": {
+              "column": 11,
+              "line": 144
+            }
+          }
+        },
+        {
+          "id": "4775",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 22,
+              "line": 145
+            },
+            "start": {
+              "column": 11,
+              "line": 145
+            }
+          }
+        },
+        {
+          "id": "4776",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 22,
+              "line": 145
+            },
+            "start": {
+              "column": 11,
+              "line": 145
+            }
+          }
+        },
+        {
+          "id": "4782",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 45,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4783",
+          "mutatorName": "LogicalOperator",
+          "replacement": "ctx.seo?.locale && ctx.locale",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 45,
+              "line": 151
+            },
+            "start": {
+              "column": 16,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4785",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 8,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1361",
+            "1521"
+          ],
+          "location": {
+            "end": {
+              "column": 53,
+              "line": 151
+            },
+            "start": {
+              "column": 49,
+              "line": 151
+            }
+          }
+        },
+        {
+          "id": "4788",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 21,
+              "line": 154
+            },
+            "start": {
+              "column": 7,
+              "line": 154
+            }
+          }
+        },
+        {
+          "id": "4789",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 21,
+              "line": 154
+            },
+            "start": {
+              "column": 7,
+              "line": 154
+            }
+          }
+        },
+        {
+          "id": "4792",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected 0 to be greater than or equal to 1",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 6,
+          "killedBy": [
+            "858"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 38,
+              "line": 157
+            },
+            "start": {
+              "column": 19,
+              "line": 157
+            }
+          }
+        },
+        {
+          "id": "4794",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 42,
+              "line": 161
+            },
+            "start": {
+              "column": 38,
+              "line": 161
+            }
+          }
+        },
+        {
+          "id": "4795",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 162
+            },
+            "start": {
+              "column": 21,
+              "line": 162
+            }
+          }
+        },
+        {
+          "id": "4796",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 14,
+              "line": 163
+            },
+            "start": {
+              "column": 7,
+              "line": 163
+            }
+          }
+        },
+        {
+          "id": "4797",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "expected 0 to be greater than or equal to 1",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 6,
+          "killedBy": [
+            "858"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 14,
+              "line": 163
+            },
+            "start": {
+              "column": 7,
+              "line": 163
+            }
+          }
+        },
+        {
+          "id": "4798",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "expected 0 to be greater than or equal to 1",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 8,
+          "killedBy": [
+            "858"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 168
+            },
+            "start": {
+              "column": 16,
+              "line": 163
+            }
+          }
+        },
+        {
+          "id": "4799",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected 0 to be greater than or equal to 1",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 2,
+          "killedBy": [
+            "858"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 52,
+              "line": 165
+            },
+            "start": {
+              "column": 21,
+              "line": 165
+            }
+          }
+        },
+        {
+          "id": "4801",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 63,
+              "line": 167
+            },
+            "start": {
+              "column": 19,
+              "line": 167
+            }
+          }
+        },
+        {
+          "id": "4802",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 40,
+              "line": 171
+            },
+            "start": {
+              "column": 36,
+              "line": 171
+            }
+          }
+        },
+        {
+          "id": "4803",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 22,
+              "line": 172
+            },
+            "start": {
+              "column": 20,
+              "line": 172
+            }
+          }
+        },
+        {
+          "id": "4804",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 13,
+              "line": 173
+            },
+            "start": {
+              "column": 7,
+              "line": 173
+            }
+          }
+        },
+        {
+          "id": "4805",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 13,
+              "line": 173
+            },
+            "start": {
+              "column": 7,
+              "line": 173
+            }
+          }
+        },
+        {
+          "id": "4806",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 4,
+          "coveredBy": [
+            "1358",
+            "1359",
+            "1360",
+            "1361"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 178
+            },
+            "start": {
+              "column": 15,
+              "line": 173
+            }
+          }
+        },
+        {
+          "id": "4807",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 4,
+          "coveredBy": [
+            "1358",
+            "1359",
+            "1360",
+            "1361"
+          ],
+          "location": {
+            "end": {
+              "column": 50,
+              "line": 175
+            },
+            "start": {
+              "column": 20,
+              "line": 175
+            }
+          }
+        },
+        {
+          "id": "4809",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 4,
+          "coveredBy": [
+            "1358",
+            "1359",
+            "1360",
+            "1361"
+          ],
+          "location": {
+            "end": {
+              "column": 68,
+              "line": 177
+            },
+            "start": {
+              "column": 18,
+              "line": 177
+            }
+          }
+        },
+        {
+          "id": "4810",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 48,
+              "line": 181
+            },
+            "start": {
+              "column": 44,
+              "line": 181
+            }
+          }
+        },
+        {
+          "id": "4813",
+          "mutatorName": "MethodExpression",
+          "replacement": "[`<meta charset=\"UTF-8\">`, `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">`, seoHead, ...localHeadParts, pageCssLink, ...esiHeadTags, pageJsLink]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 21,
+              "line": 199
+            },
+            "start": {
+              "column": 23,
+              "line": 190
+            }
+          }
+        },
+        {
+          "id": "4814",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 198
+            },
+            "start": {
+              "column": 23,
+              "line": 190
+            }
+          }
+        },
+        {
+          "id": "4815",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 29,
+              "line": 191
+            },
+            "start": {
+              "column": 5,
+              "line": 191
+            }
+          }
+        },
+        {
+          "id": "4816",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 77,
+              "line": 192
+            },
+            "start": {
+              "column": 5,
+              "line": 192
+            }
+          }
+        },
+        {
+          "id": "4817",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 17,
+              "line": 200
+            },
+            "start": {
+              "column": 11,
+              "line": 200
+            }
+          }
+        },
+        {
+          "id": "4818",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 42,
+              "line": 202
+            },
+            "start": {
+              "column": 38,
+              "line": 202
+            }
+          }
+        },
+        {
+          "id": "4819",
+          "mutatorName": "LogicalOperator",
+          "replacement": "(page.cache?.browser ?? ctx.targetCache?.browser) && 0",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 71,
+              "line": 206
+            },
+            "start": {
+              "column": 19,
+              "line": 206
+            }
+          }
+        },
+        {
+          "id": "4823",
+          "mutatorName": "LogicalOperator",
+          "replacement": "(page.cache?.edge ?? ctx.targetCache?.edge) && 86400",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 66,
+              "line": 207
+            },
+            "start": {
+              "column": 16,
+              "line": 207
+            }
+          }
+        },
+        {
+          "id": "4827",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "1361"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 72,
+              "line": 208
+            },
+            "start": {
+              "column": 24,
+              "line": 208
+            }
+          }
+        },
+        {
+          "id": "4828",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '' to match /<!--esi:\\/fragments\\/[^>]+\\…/fragments\\",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1358"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 9,
+              "line": 218
+            },
+            "start": {
+              "column": 21,
+              "line": 210
+            }
+          }
+        },
+        {
+          "id": "4829",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '' to be 'index.fr.html' // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1360"
+          ],
+          "coveredBy": [
+            "1360",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 220
+            },
+            "start": {
+              "column": 34,
+              "line": 220
+            }
+          }
+        },
+        {
+          "id": "4830",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "856"
+          ],
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1361",
+            "1521"
+          ],
+          "location": {
+            "end": {
+              "column": 75,
+              "line": 220
+            },
+            "start": {
+              "column": 63,
+              "line": 220
+            }
+          }
+        },
+        {
+          "id": "4832",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 10,
+          "coveredBy": [
+            "856",
+            "858",
+            "860",
+            "861",
+            "1358",
+            "1359",
+            "1360",
+            "1361",
+            "1521",
+            "1524"
+          ],
+          "location": {
+            "end": {
+              "column": 56,
+              "line": 222
+            },
+            "start": {
+              "column": 51,
+              "line": 222
+            }
+          }
+        },
+        {
+          "id": "4839",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "promise resolved \"{ indexFile: 'index.html', …(3) }\" instead of rejecting",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1362"
+          ],
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1362",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 23,
+              "line": 241
+            },
+            "start": {
+              "column": 7,
+              "line": 241
+            }
+          }
+        },
+        {
+          "id": "4840",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "promise resolved \"{ indexFile: 'index.html', …(3) }\" instead of rejecting",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1362"
+          ],
+          "coveredBy": [
+            "1362"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 243
+            },
+            "start": {
+              "column": 25,
+              "line": 241
+            }
+          }
+        },
+        {
+          "id": "4841",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected [Function] to throw error matching /archived/i but got ''",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1362"
+          ],
+          "coveredBy": [
+            "1362"
+          ],
+          "location": {
+            "end": {
+              "column": 86,
+              "line": 242
+            },
+            "start": {
+              "column": 21,
+              "line": 242
+            }
+          }
+        },
+        {
+          "id": "4842",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 13,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 250
+            },
+            "start": {
+              "column": 48,
+              "line": 246
+            }
+          }
+        },
+        {
+          "id": "4844",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 13,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 75,
+              "line": 254
+            },
+            "start": {
+              "column": 63,
+              "line": 254
+            }
+          }
+        },
+        {
+          "id": "4849",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "fragment",
+          "statusReason": "Fragment \"footer\" not found",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 2,
+          "killedBy": [
+            "1366"
+          ],
+          "coveredBy": [
+            "543",
+            "742",
+            "743",
+            "744",
+            "746",
+            "747",
+            "857",
+            "928",
+            "932",
+            "1365",
+            "1366",
+            "1367",
+            "1368",
+            "1401",
+            "1402",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 16,
+              "line": 269
+            },
+            "start": {
+              "column": 7,
+              "line": 269
+            }
+          }
+        },
+        {
+          "id": "4847",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 13,
+          "coveredBy": [
+            "542",
+            "543",
+            "544",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "1363",
+            "1364",
+            "1522"
+          ],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 256
+            },
+            "start": {
+              "column": 55,
+              "line": 256
+            }
+          }
+        },
+        {
+          "id": "4852",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected [Function] to throw error matching /not found/i but got ''",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1365"
+          ],
+          "coveredBy": [
+            "1365"
+          ],
+          "location": {
+            "end": {
+              "column": 72,
+              "line": 269
+            },
+            "start": {
+              "column": 34,
+              "line": 269
+            }
+          }
+        },
+        {
+          "id": "4853",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 46,
+              "line": 274
+            },
+            "start": {
+              "column": 19,
+              "line": 274
+            }
+          }
+        },
+        {
+          "id": "4851",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 17,
+          "coveredBy": [
+            "543",
+            "742",
+            "743",
+            "744",
+            "746",
+            "747",
+            "857",
+            "928",
+            "932",
+            "1365",
+            "1366",
+            "1367",
+            "1368",
+            "1401",
+            "1402",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 16,
+              "line": 269
+            },
+            "start": {
+              "column": 7,
+              "line": 269
+            }
+          }
+        },
+        {
+          "id": "4855",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[\"Stryker was here\"]",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 33,
+              "line": 276
+            },
+            "start": {
+              "column": 31,
+              "line": 276
+            }
+          }
+        },
+        {
+          "id": "4856",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 19,
+              "line": 278
+            },
+            "start": {
+              "column": 7,
+              "line": 278
+            }
+          }
+        },
+        {
+          "id": "4857",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 19,
+              "line": 278
+            },
+            "start": {
+              "column": 7,
+              "line": 278
+            }
+          }
+        },
+        {
+          "id": "4858",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 4,
+              "line": 283
+            },
+            "start": {
+              "column": 21,
+              "line": 278
+            }
+          }
+        },
+        {
+          "id": "4859",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 52,
+              "line": 280
+            },
+            "start": {
+              "column": 21,
+              "line": 280
+            }
+          }
+        },
+        {
+          "id": "4861",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 64,
+              "line": 282
+            },
+            "start": {
+              "column": 20,
+              "line": 282
+            }
+          }
+        },
+        {
+          "id": "4862",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 18,
+              "line": 285
+            },
+            "start": {
+              "column": 7,
+              "line": 285
+            }
+          }
+        },
+        {
+          "id": "4863",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 18,
+              "line": 285
+            },
+            "start": {
+              "column": 7,
+              "line": 285
+            }
+          }
+        },
+        {
+          "id": "4871",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "1367"
+          ],
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 86,
+              "line": 296
+            },
+            "start": {
+              "column": 42,
+              "line": 296
+            }
+          }
+        },
+        {
+          "id": "4874",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 2,
+          "killedBy": [
+            "1367"
+          ],
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 53,
+              "line": 297
+            },
+            "start": {
+              "column": 21,
+              "line": 297
+            }
+          }
+        },
+        {
+          "id": "4872",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 72,
+              "line": 296
+            },
+            "start": {
+              "column": 68,
+              "line": 296
+            }
+          }
+        },
+        {
+          "id": "4875",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '' to be 'index.fr.html' // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1368"
+          ],
+          "coveredBy": [
+            "1368",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 60,
+              "line": 298
+            },
+            "start": {
+              "column": 34,
+              "line": 298
+            }
+          }
+        },
+        {
+          "id": "4876",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "857"
+          ],
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1556"
+          ],
+          "location": {
+            "end": {
+              "column": 75,
+              "line": 298
+            },
+            "start": {
+              "column": 63,
+              "line": 298
+            }
+          }
+        },
+        {
+          "id": "4880",
+          "mutatorName": "LogicalOperator",
+          "replacement": "page.aliasOf && null",
+          "statusReason": "expected '<!-- gazetta:archived gone -->\\n' to contain 'alias=home'",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "859"
+          ],
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 38,
+              "line": 322
+            },
+            "start": {
+              "column": 18,
+              "line": 322
+            }
+          }
+        },
+        {
+          "id": "4878",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "true",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 7,
+          "coveredBy": [
+            "543",
+            "857",
+            "1366",
+            "1367",
+            "1368",
+            "1556",
+            "1558"
+          ],
+          "location": {
+            "end": {
+              "column": 56,
+              "line": 300
+            },
+            "start": {
+              "column": 51,
+              "line": 300
+            }
+          }
+        },
+        {
+          "id": "4885",
+          "mutatorName": "StringLiteral",
+          "replacement": "``",
+          "statusReason": "expected '' to be 'index.fr.html' // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "1354"
+          ],
+          "coveredBy": [
+            "1354",
+            "1565",
+            "1570"
+          ],
+          "location": {
+            "end": {
+              "column": 52,
+              "line": 324
+            },
+            "start": {
+              "column": 30,
+              "line": 324
+            }
+          }
+        },
+        {
+          "id": "4886",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "ENOENT: pages/archived-page/index.html",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "859"
+          ],
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 67,
+              "line": 324
+            },
+            "start": {
+              "column": 55,
+              "line": 324
+            }
+          }
+        },
+        {
+          "id": "4889",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "false",
+          "statusReason": "expected false to be true // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "1352"
+          ],
+          "coveredBy": [
+            "859",
+            "1352",
+            "1353",
+            "1354",
+            "1355",
+            "1523",
+            "1557",
+            "1565",
+            "1566",
+            "1567",
+            "1568",
+            "1569",
+            "1570",
+            "1571"
+          ],
+          "location": {
+            "end": {
+              "column": 59,
+              "line": 328
+            },
+            "start": {
+              "column": 55,
+              "line": 328
+            }
+          }
+        }
+      ],
+      "source": "/**\n * Pure-fn renderers — Cut 2 of publish pipeline extraction.\n *\n * Each renderer takes a resolved item + render context and returns\n * a `RenderOutput` describing what should be written to storage:\n * the index HTML body, plus zero-or-more hashed files (CSS/JS) that\n * the spine emits as separate writes.\n *\n * Renderers are PURE — no I/O, no side effects. They produce data;\n * the spine writes it. This separation lets us test each render\n * mode in isolation (fast unit tests, no storage mocks) and lets\n * future modes plug in without touching the spine.\n *\n * Per Q2 lock: 4 modes, each their own pure fn.\n *   - `renderPageWithEsi` — page-rendered (ESI placeholders for `@fragment`\n *     refs; fragments composed at request time by worker)\n *   - `renderPageStatic` — page-static (full-bake; fragments inlined)\n *   - `renderFragmentRendered` — fragment-rendered (standalone for ESI\n *     composition)\n *   - `renderArchiveMarker` — archive-marker (body-skip; emit ONLY the\n *     HTML comment marker line)\n *\n * Cut 2 introduces these as standalone fns; the existing 5 publish-*\n * exports in publish-rendered.ts stay and call into them inline.\n * Cut 3 wires them through `publishItemCore`'s spine; Cut 8 deletes\n * the publish-rendered.ts orchestration.\n */\n\nimport { createHash } from 'node:crypto'\nimport { isArchived } from './archive-helpers.js'\nimport { renderComponent, renderPage } from './renderer.js'\nimport { resolveFragment, resolvePage } from './resolver.js'\nimport { archiveMarker } from './runtime/archive-marker.js'\nimport { escapeAttr, resolveSeoTags, type SeoContext } from './seo.js'\nimport type { Site } from './site-loader.js'\nimport type { CacheConfig } from './types.js'\n\n/**\n * One file to write. The spine emits these — renderer produces the\n * descriptor. `path` is relative to the target's content root;\n * `content` is the body bytes.\n *\n * Hashed files (CSS/JS) get their content-hash computed by the\n * renderer (so the renderer can build the `<link>` / `<script>` tags\n * pointing at the hashed filename). The spine writes them as-is.\n */\ninterface RenderedFile {\n  readonly path: string\n  readonly content: string\n}\n\n/**\n * Output of a renderer pass. Spine consumes this:\n *   1. Writes `indexFile` content to `{itemDir}/{indexFile}`\n *   2. Writes each `files[i]` content to `files[i].path`\n *   3. Lists pre-existing hashed files at `itemDir`, removes any\n *      not in `files[]` (cleanup)\n *   4. Writes sidecars (hash + pub-state) if `sidecarHash` provided\n *\n * `archived` is true for the archive-marker renderer — spine uses it\n * to set the `noindex` flag on the publish-state sidecar.\n */\nexport interface RenderOutput {\n  /** Filename for the index HTML write (e.g., 'index.html' or 'index.fr.html'). */\n  readonly indexFile: string\n  /** HTML body to write at `{itemDir}/{indexFile}`. */\n  readonly indexHtml: string\n  /** Hashed CSS / JS files to write alongside the index. */\n  readonly files: readonly RenderedFile[]\n  /** True for archived-marker renderer (drives noindex flag in pub sidecar). */\n  readonly archived: boolean\n}\n\n/**\n * Page render context — assembled by per-kind wrapper from the\n * loaded site + target config. Renderers are agnostic to where this\n * came from; pure-fn input.\n */\nexport interface PageRenderContext {\n  /** Loaded site (shared across the publish run). */\n  readonly site: Site\n  /** Locale variant being rendered; undefined = default locale. */\n  readonly locale?: string\n  /** SEO fallback-chain context (target siteUrl + site name + locale + defaultOgImage). */\n  readonly seo?: SeoContext\n  /** Target-level cache config (browser / edge TTL); page-level overrides win in renderer. */\n  readonly targetCache?: CacheConfig\n}\n\n/** Fragment render context — same shape minus page-only fields. */\nexport interface FragmentRenderContext {\n  readonly site: Site\n  readonly locale?: string\n}\n\n/** 8-char MD5 prefix per the existing `.{8hex}.hash` sidecar convention. */\nfunction contentHash(content: string): string {\n  return createHash('md5').update(content).digest('hex').slice(0, 8)\n}\n\n// ─── Page (ESI mode) ────────────────────────────────────────────────────\n\n/**\n * Render a page in ESI mode: `@fragment` refs become ESI placeholders\n * for the worker to compose at request time; inline components are\n * baked into the page HTML. Used for `esi` targets.\n *\n * Pure fn: returns descriptors; caller (spine) writes them.\n *\n * Throws if the page is archived — caller must check `isArchived`\n * first and route to `renderArchiveMarker` instead. Same for\n * not-found pages (caller resolves from `site.pages.get` and\n * surfaces NOT_FOUND result).\n */\nexport async function renderPageWithEsi(pageName: string, ctx: PageRenderContext): Promise<RenderOutput> {\n  const page = ctx.site.pages.get(pageName)\n  if (!page) throw new Error(`Page \"${pageName}\" not found`)\n  if (isArchived(page)) {\n    throw new Error(`Page \"${pageName}\" is archived; use renderArchiveMarker instead`)\n  }\n\n  const resolved = await resolvePage(pageName, ctx.site, ctx.locale)\n\n  // Render each child — fragments become ESI placeholders, local components baked in\n  const bodyParts: string[] = []\n  const localCssParts: string[] = []\n  const localJsParts: string[] = []\n  const localHeadParts: string[] = []\n  const esiHeadTags: string[] = []\n\n  for (let i = 0; i < resolved.children.length; i++) {\n    const childEntry = page.components![i]\n    const isFragment = typeof childEntry === 'string' && childEntry.startsWith('@')\n\n    if (isFragment) {\n      const fragName = childEntry.slice(1)\n      const fragFile = ctx.locale ? `index.${ctx.locale}.html` : 'index.html'\n      const fragPath = `fragments/${fragName}/${fragFile}`\n      esiHeadTags.push(`<!--esi-head:/${fragPath}-->`)\n      bodyParts.push(`<!--esi:/${fragPath}-->`)\n    } else {\n      const rendered = await renderComponent(resolved.children[i])\n      bodyParts.push(rendered.html)\n      if (rendered.css) localCssParts.push(rendered.css)\n      if (rendered.js) localJsParts.push(rendered.js)\n      if (rendered.head) localHeadParts.push(rendered.head)\n    }\n  }\n\n  // Render page-level template (layout CSS, head tags)\n  const lang = ctx.seo?.locale || ctx.locale || 'en'\n  const childOutputs = await Promise.all(resolved.children.map(c => renderComponent(c, undefined, lang)))\n  const pageOutput = await resolved.template({ content: resolved.content, children: childOutputs, locale: lang })\n  if (pageOutput.css) localCssParts.unshift(pageOutput.css)\n  if (pageOutput.head) localHeadParts.unshift(pageOutput.head)\n\n  const pageDir = `pages/${pageName}`\n  const files: RenderedFile[] = []\n\n  // Hashed CSS file\n  const pageCss = localCssParts.join('\\n')\n  let pageCssLink = ''\n  if (pageCss) {\n    const hash = contentHash(pageCss)\n    const cssPath = `${pageDir}/styles.${hash}.css`\n    files.push({ path: cssPath, content: pageCss })\n    pageCssLink = `<link rel=\"stylesheet\" href=\"/${cssPath}\">`\n  }\n\n  // Hashed JS file\n  const pageJs = localJsParts.join('\\n')\n  let pageJsLink = ''\n  if (pageJs) {\n    const hash = contentHash(pageJs)\n    const jsPath = `${pageDir}/script.${hash}.js`\n    files.push({ path: jsPath, content: pageJs })\n    pageJsLink = `<script type=\"module\" src=\"/${jsPath}\"></script>`\n  }\n\n  // SEO tags (renderer dedupes against template head)\n  const templateHead = localHeadParts.join('\\n')\n  const seoHead = resolveSeoTags({\n    metadata: page.metadata,\n    content: page.content,\n    route: page.route,\n    seo: ctx.seo ?? {},\n    templateHead,\n  })\n\n  const headContent = [\n    `<meta charset=\"UTF-8\">`,\n    `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">`,\n    seoHead,\n    ...localHeadParts,\n    pageCssLink,\n    ...esiHeadTags,\n    pageJsLink,\n  ]\n    .filter(Boolean)\n    .join('\\n  ')\n\n  const bodyContent = bodyParts.join('\\n')\n\n  // Cache config: page → target → defaults. Comment is read by the\n  // worker on serve to set Cache-Control headers.\n  const browser = page.cache?.browser ?? ctx.targetCache?.browser ?? 0\n  const edge = page.cache?.edge ?? ctx.targetCache?.edge ?? 86400\n  const cacheComment = `<!--cache:browser=${browser},edge=${edge}-->\\n`\n\n  const indexHtml = `${cacheComment}<!DOCTYPE html>\n<html lang=\"${escapeAttr(lang)}\">\n<head>\n  ${headContent}\n</head>\n<body>\n${bodyContent}\n</body>\n</html>`\n\n  const indexFile = ctx.locale ? `index.${ctx.locale}.html` : 'index.html'\n\n  return { indexFile, indexHtml, files, archived: false }\n}\n\n// ─── Page (static mode) ─────────────────────────────────────────────────\n\n/**\n * Render a page in static mode: full-bake; fragments inlined; CSS/JS\n * inline. Used for `static` targets (no worker).\n *\n * Different output layout than ESI mode: writes to URL-derived path\n * (`/about` → `about/index.html`) rather than `pages/{name}/`. Caller\n * computes the output path from `page.route` + locale prefix.\n *\n * Returns the rendered HTML; spine handles directory layout decision\n * (caller knows the path conventions for the static-target layout).\n */\nexport async function renderPageStatic(pageName: string, ctx: PageRenderContext): Promise<RenderOutput> {\n  const page = ctx.site.pages.get(pageName)\n  if (!page) throw new Error(`Page \"${pageName}\" not found`)\n  if (isArchived(page)) {\n    throw new Error(`Page \"${pageName}\" is archived; use renderArchiveMarker instead`)\n  }\n\n  const resolved = await resolvePage(pageName, ctx.site, ctx.locale)\n  const indexHtml = await renderPage(resolved, {\n    metadata: page.metadata,\n    route: page.route,\n    seo: ctx.seo,\n  })\n\n  // Static mode bakes everything inline — no separate hashed CSS/JS files.\n  // The renderPage helper handles that internally.\n  const indexFile = ctx.locale ? `index.${ctx.locale}.html` : 'index.html'\n\n  return { indexFile, indexHtml, files: [], archived: false }\n}\n\n// ─── Fragment (rendered) ────────────────────────────────────────────────\n\n/**\n * Render a fragment standalone for ESI composition. Output is the\n * fragment's HTML wrapped in a `<head>` section if CSS/JS exist —\n * the worker injects head content before `</head>` and body content\n * at the ESI placeholder.\n */\nexport async function renderFragmentRendered(fragmentName: string, ctx: FragmentRenderContext): Promise<RenderOutput> {\n  const fragment = ctx.site.fragments.get(fragmentName)\n  if (!fragment) throw new Error(`Fragment \"${fragmentName}\" not found`)\n\n  const resolved = await resolveFragment(fragmentName, ctx.site, ctx.locale)\n  const rendered = await renderComponent(resolved)\n\n  const fragDir = `fragments/${fragmentName}`\n  const files: RenderedFile[] = []\n  const headParts: string[] = []\n\n  if (rendered.css) {\n    const hash = contentHash(rendered.css)\n    const cssPath = `${fragDir}/styles.${hash}.css`\n    files.push({ path: cssPath, content: rendered.css })\n    headParts.push(`<link rel=\"stylesheet\" href=\"/${cssPath}\">`)\n  }\n\n  if (rendered.js) {\n    const hash = contentHash(rendered.js)\n    const jsPath = `${fragDir}/script.${hash}.js`\n    files.push({ path: jsPath, content: rendered.js })\n    headParts.push(`<script type=\"module\" src=\"/${jsPath}\"></script>`)\n  }\n\n  if (rendered.head) {\n    headParts.push(rendered.head)\n  }\n\n  const headSection = headParts.length ? `<head>\\n${headParts.join('\\n')}\\n</head>\\n` : ''\n  const indexHtml = `${headSection}${rendered.html}`\n  const indexFile = ctx.locale ? `index.${ctx.locale}.html` : 'index.html'\n\n  return { indexFile, indexHtml, files, archived: false }\n}\n\n// ─── Archive marker ─────────────────────────────────────────────────────\n\n/**\n * Render the soft-delete archive marker — body-skip, single line.\n * The worker reads the first 200 bytes, sees the marker, and emits\n * 301 (alias) or 410 (gone) without composing. Per\n * design-soft-delete.md Q10.\n *\n * Caller checks `isArchived(page)` first; this is the dispatch\n * target for that branch.\n */\nexport function renderArchiveMarker(\n  page: { aliasOf?: string; metadata?: { robots?: string } },\n  locale?: string,\n): RenderOutput {\n  // Caller has already checked isArchived (dispatched HERE because of it).\n  // Read aliasOf directly — `aliasTarget()` re-checks archived state and\n  // returns null for non-archived inputs, which would emit gone-form for\n  // every test fixture that doesn't bother synthesizing an archived flag.\n  const target = page.aliasOf ?? null\n  const indexHtml = target ? archiveMarker({ kind: 'alias', target }) : archiveMarker({ kind: 'gone' })\n  const indexFile = locale ? `index.${locale}.html` : 'index.html'\n\n  // Archive emits no CSS/JS; spine's cleanup pass removes any stale\n  // hashed files from the prior live publish.\n  return { indexFile, indexHtml, files: [], archived: true }\n}\n"
+    }
+  },
+  "schemaVersion": "1.0",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  },
+  "testFiles": {
+    "tests/publish-run.test.ts": {
+      "tests": [
+        {
+          "id": "542",
+          "name": "publishRun — fan-out publishes one item to one target → ok aggregate"
+        },
+        {
+          "id": "543",
+          "name": "publishRun — fan-out publishes N items × M targets → N×M item results"
+        },
+        {
+          "id": "544",
+          "name": "publishRun — fan-out per-item NOT_FOUND continues run (fail-soft)"
+        },
+        {
+          "id": "546",
+          "name": "publishRun — fan-out passes manifestHash through to spine (sidecars get written)"
+        },
+        {
+          "id": "547",
+          "name": "publishRun — progress emission emits run-start / target-start / item-start / item-done / target-done / run-done"
+        },
+        {
+          "id": "548",
+          "name": "publishRun — progress emission item-start event carries resolved render mode"
+        },
+        {
+          "id": "549",
+          "name": "publishRun — per-target side effects writes site.json on each target by default"
+        },
+        {
+          "id": "550",
+          "name": "publishRun — per-target side effects publishSiteManifestAfter: false skips site.json emit"
+        },
+        {
+          "id": "551",
+          "name": "publishRun — per-target side effects writes dep-index sidecars to .gazetta/asset-refs/ by default"
+        },
+        {
+          "id": "552",
+          "name": "publishRun — per-target side effects publishDepIndicesAfter: false skips dep index rebuild"
+        }
+      ]
+    },
+    "tests/hooks-publish-integration.test.ts": {
+      "tests": [
+        {
+          "id": "742",
+          "name": "Cut 5 — end-to-end publish hooks beforePublish receives the requested items + target"
+        },
+        {
+          "id": "743",
+          "name": "Cut 5 — end-to-end publish hooks afterPublish fires with success result per target"
+        },
+        {
+          "id": "744",
+          "name": "Cut 5 — end-to-end publish hooks beforePublish chain mutation propagates to publish + afterPublish"
+        },
+        {
+          "id": "746",
+          "name": "Cut 5 — end-to-end publish hooks multi-target publish dispatches beforePublish + afterPublish per target"
+        },
+        {
+          "id": "747",
+          "name": "Cut 5 — end-to-end publish hooks publish works without hooks (opts.hooks undefined)"
+        }
+      ]
+    },
+    "tests/publish-item.test.ts": {
+      "tests": [
+        {
+          "id": "856",
+          "name": "publishItemCore — Ok happy path publishes a starter page in ESI mode and writes index + sidecars"
+        },
+        {
+          "id": "857",
+          "name": "publishItemCore — Ok happy path publishes a fragment in fragment-rendered mode"
+        },
+        {
+          "id": "858",
+          "name": "publishItemCore — Ok happy path writes hashed CSS file when renderer emits styles"
+        },
+        {
+          "id": "859",
+          "name": "publishItemCore — archive-marker mode routes archived items to marker renderer; emits single-line marker"
+        },
+        {
+          "id": "860",
+          "name": "publishItemCore — STORAGE_WRITE_FAILED returns STORAGE_WRITE_FAILED when storage.writeFile throws"
+        },
+        {
+          "id": "861",
+          "name": "publishItemCore — cleanup pass removes stale hashed files from prior publish that aren't in current output"
+        }
+      ]
+    },
+    "tests/admin-api-publish-categorization.test.ts": {
+      "tests": [
+        {
+          "id": "927",
+          "name": "publish route — toPublishItem categorization (covers publish.ts:85-97) pages/* paths surface as kind=page with the slug-only name"
+        },
+        {
+          "id": "928",
+          "name": "publish route — toPublishItem categorization (covers publish.ts:85-97) fragments/* paths surface as kind=fragment with the slug-only name"
+        },
+        {
+          "id": "932",
+          "name": "publish route — toPublishItem categorization (covers publish.ts:85-97) mixed publish set categorizes each path independently"
+        }
+      ]
+    },
+    "tests/admin-api-publish-audit.test.ts": {
+      "tests": [
+        {
+          "id": "1346",
+          "name": "Validation Cut 4 — POST /api/publish gate does NOT block when the validator produces only warns (non-strict target)"
+        }
+      ]
+    },
+    "tests/publish-renderers.test.ts": {
+      "tests": [
+        {
+          "id": "1352",
+          "name": "renderArchiveMarker — pure fn emits alias marker when aliasOf present"
+        },
+        {
+          "id": "1353",
+          "name": "renderArchiveMarker — pure fn emits gone marker when no aliasOf"
+        },
+        {
+          "id": "1354",
+          "name": "renderArchiveMarker — pure fn locale-suffixes index file"
+        },
+        {
+          "id": "1355",
+          "name": "renderArchiveMarker — pure fn marker is single-line + first-200-bytes-readable"
+        },
+        {
+          "id": "1356",
+          "name": "renderPageWithEsi — pure fn throws on archived page (caller must dispatch to renderArchiveMarker)"
+        },
+        {
+          "id": "1357",
+          "name": "renderPageWithEsi — pure fn throws on missing page"
+        },
+        {
+          "id": "1358",
+          "name": "renderPageWithEsi — pure fn returns ESI placeholders for @fragment refs in body"
+        },
+        {
+          "id": "1359",
+          "name": "renderPageWithEsi — pure fn produces hashed CSS file when components emit styles"
+        },
+        {
+          "id": "1360",
+          "name": "renderPageWithEsi — pure fn locale-suffixes index file when locale set"
+        },
+        {
+          "id": "1361",
+          "name": "renderPageWithEsi — pure fn renders the cache comment first per worker contract"
+        },
+        {
+          "id": "1362",
+          "name": "renderPageStatic — pure fn throws on archived page"
+        },
+        {
+          "id": "1363",
+          "name": "renderPageStatic — pure fn returns no separate hashed files (full-bake)"
+        },
+        {
+          "id": "1364",
+          "name": "renderPageStatic — pure fn emits well-formed HTML doctype"
+        },
+        {
+          "id": "1365",
+          "name": "renderFragmentRendered — pure fn throws on missing fragment"
+        },
+        {
+          "id": "1366",
+          "name": "renderFragmentRendered — pure fn emits hashed CSS file when fragment has styles"
+        },
+        {
+          "id": "1367",
+          "name": "renderFragmentRendered — pure fn wraps body in head section when CSS or JS present"
+        },
+        {
+          "id": "1368",
+          "name": "renderFragmentRendered — pure fn locale-suffixes index file when locale set"
+        }
+      ]
+    },
+    "tests/cross-foundation-hook-publish-payload.test.ts": {
+      "tests": [
+        {
+          "id": "1401",
+          "name": "Cross-foundation gap #7 — publish observes hook-modified manifest save → beforeSave hook mutates content → publish copies post-hook bytes to non-editable target"
+        },
+        {
+          "id": "1402",
+          "name": "Cross-foundation gap #7 — publish observes hook-modified manifest publish bypasses re-firing beforeSave (the hook ran at save time, not publish time)"
+        }
+      ]
+    },
+    "tests/publish-pages.test.ts": {
+      "tests": [
+        {
+          "id": "1521",
+          "name": "publishPage — wrapper publishes a starter page on esi target → page-rendered mode"
+        },
+        {
+          "id": "1522",
+          "name": "publishPage — wrapper publishes a starter page on static target → page-static mode"
+        },
+        {
+          "id": "1523",
+          "name": "publishPage — wrapper archived page on any target → archive-marker mode"
+        },
+        {
+          "id": "1524",
+          "name": "publishPage — wrapper preserves locale through to spine"
+        }
+      ]
+    },
+    "tests/publish-fragments.test.ts": {
+      "tests": [
+        {
+          "id": "1556",
+          "name": "publishFragment — wrapper publishes a starter fragment → fragment-rendered mode"
+        },
+        {
+          "id": "1557",
+          "name": "publishFragment — wrapper archived fragment → archive-marker mode regardless of target type"
+        },
+        {
+          "id": "1558",
+          "name": "publishFragment — wrapper preserves locale through to spine"
+        }
+      ]
+    },
+    "tests/publish-renderers.pbt.test.ts": {
+      "tests": [
+        {
+          "id": "1565",
+          "name": "renderArchiveMarker — properties always emits archived: true"
+        },
+        {
+          "id": "1566",
+          "name": "renderArchiveMarker — properties always emits zero hashed files (archive body is single line)"
+        },
+        {
+          "id": "1567",
+          "name": "renderArchiveMarker — properties marker fits in first 200 bytes (worker contract)"
+        },
+        {
+          "id": "1568",
+          "name": "renderArchiveMarker — properties alias-form always contains \"alias=\" + the target"
+        },
+        {
+          "id": "1569",
+          "name": "renderArchiveMarker — properties gone-form always contains \"gone\" when no aliasOf"
+        },
+        {
+          "id": "1570",
+          "name": "renderArchiveMarker — properties locale propagates to indexFile suffix verbatim (no normalization)"
+        },
+        {
+          "id": "1571",
+          "name": "renderArchiveMarker — properties absent locale → unsuffixed index.html"
+        }
+      ]
+    }
+  },
+  "projectRoot": "/home/runner/work/gazetta-studio/gazetta-studio/packages/gazetta",
+  "framework": {
+    "name": "StrykerJS",
+    "version": "9.6.1",
+    "branding": {
+      "homepageUrl": "https://stryker-mutator.io",
+      "imageUrl": "data:image/svg+xml;utf8,%3Csvg viewBox='0 0 1458 1458' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='2'%3E%3Cpath fill='none' d='M0 0h1458v1458H0z'/%3E%3CclipPath id='a'%3E%3Cpath d='M0 0h1458v1458H0z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23a)'%3E%3Cpath d='M1458 729c0 402.655-326.345 729-729 729S0 1131.655 0 729C0 326.445 326.345 0 729 0s729 326.345 729 729' fill='%23e74c3c' fill-rule='nonzero'/%3E%3Cpath d='M778.349 1456.15L576.6 1254.401l233-105 85-78.668v-64.332l-257-257-44-187-50-208 251.806-82.793L1076.6 389.401l380.14 379.15c-19.681 367.728-311.914 663.049-678.391 687.599z' fill-opacity='.3'/%3E%3Cpath d='M753.4 329.503c41.79 0 74.579 7.83 97.925 25.444 23.571 18.015 41.69 43.956 55.167 77.097l11.662 28.679 165.733-58.183-14.137-32.13c-26.688-60.655-64.896-108.61-114.191-144.011-49.329-35.423-117.458-54.302-204.859-54.302-50.78 0-95.646 7.376-134.767 21.542-40.093 14.671-74.09 34.79-102.239 60.259-28.84 26.207-50.646 57.06-65.496 92.701-14.718 35.052-22.101 72.538-22.101 112.401 0 72.536 20.667 133.294 61.165 182.704 38.624 47.255 98.346 88.037 179.861 121.291 42.257 17.475 78.715 33.125 109.227 46.994 27.193 12.361 49.294 26.124 66.157 41.751 15.309 14.186 26.497 30.584 33.63 49.258 7.721 20.214 11.16 45.69 11.16 76.402 0 28.021-4.251 51.787-13.591 71.219-8.832 18.374-20.171 33.178-34.523 44.219-14.787 11.374-31.193 19.591-49.393 24.466-19.68 5.359-39.14 7.993-58.69 7.993-29.359 0-54.387-3.407-75.182-10.747-20.112-7.013-37.144-16.144-51.259-27.486-13.618-11.009-24.971-23.766-33.744-38.279-9.64-15.8-17.272-31.924-23.032-48.408l-10.965-31.376-161.669 60.585 10.734 30.124c10.191 28.601 24.197 56.228 42.059 82.748 18.208 27.144 41.322 51.369 69.525 72.745 27.695 21.075 60.904 38.218 99.481 51.041 37.777 12.664 82.004 19.159 132.552 19.159 49.998 0 95.818-8.321 137.611-24.622 42.228-16.471 78.436-38.992 108.835-67.291 30.719-28.597 54.631-62.103 71.834-100.642 17.263-38.56 25.923-79.392 25.923-122.248 0-54.339-8.368-100.37-24.208-138.32-16.29-38.759-38.252-71.661-65.948-98.797-26.965-26.418-58.269-48.835-93.858-67.175-33.655-17.241-69.196-33.11-106.593-47.533-35.934-13.429-65.822-26.601-89.948-39.525-22.153-11.868-40.009-24.21-53.547-37.309-11.429-11.13-19.83-23.678-24.718-37.664-5.413-15.49-7.98-33.423-7.98-53.577 0-40.883 11.293-71.522 37.086-90.539 28.443-20.825 64.985-30.658 109.311-30.658z' fill='%23f1c40f' fill-rule='nonzero'/%3E%3Cpath d='M720 0h18v113h-18zM1458 738v-18h-113v18h113zM720 1345h18v113h-18zM113 738v-18H0v18h113z'/%3E%3C/g%3E%3C/svg%3E"
+    },
+    "dependencies": {
+      "@stryker-mutator/typescript-checker": "9.6.1",
+      "typescript": "6.0.3"
+    }
+  }
+}
