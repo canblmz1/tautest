@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
@@ -252,6 +252,42 @@ describe('runStryker leaves files to Stryker', () => {
   function tempProject(prefix: string): string {
     return mkdtempSync(path.join(tmpdir(), `tautest-stryker-${prefix}-`));
   }
+
+  function projectEngine(root: string, source: string): void {
+    const installed = path.join(root, 'node_modules', '@stryker-mutator', 'core');
+    mkdirSync(installed, { recursive: true });
+    writeFileSync(path.join(installed, 'package.json'), JSON.stringify({ name: '@stryker-mutator/core', type: 'module', exports: './index.mjs' }));
+    writeFileSync(path.join(installed, 'index.mjs'), source);
+  }
+
+  it.each(['absolute', 'relative'])('uses a project engine with an %s cwd when the CLI lives elsewhere', async (cwdForm) => {
+    const root = tempProject('project-engine');
+    projectEngine(root, `import {writeFileSync} from 'node:fs';
+      export class Stryker {
+        constructor(config) { this.config = config; }
+        async runMutationTest() { writeFileSync('project-engine.json', JSON.stringify(this.config)); }
+      }`);
+    const bundledCalls = strykerConfigs.length;
+    const config = { tempDirName: '.stryker-tmp', cleanTempDir: 'always' as const };
+
+    await runStryker({ cwd: cwdForm === 'relative' ? path.relative(process.cwd(), root) : root, config, jsonReportPath: path.join(root, 'm.json') });
+
+    expect(JSON.parse(readFileSync(path.join(root, 'project-engine.json'), 'utf8'))).toEqual(config);
+    expect(strykerConfigs).toHaveLength(bundledCalls);
+  });
+
+  it('reports a broken project engine without silently switching engines and restores cwd', async () => {
+    const root = tempProject('broken-project-engine');
+    projectEngine(root, "throw new Error('broken project engine');");
+    const bundledCalls = strykerConfigs.length;
+    const originalCwd = process.cwd();
+
+    await expect(runStryker({ cwd: root, config: {}, jsonReportPath: path.join(root, 'm.json') }))
+      .rejects.toMatchObject({ code: 'STRYKER_RUN_FAILED', message: expect.stringContaining('broken project engine') });
+
+    expect(strykerConfigs).toHaveLength(bundledCalls);
+    expect(process.cwd()).toBe(originalCwd);
+  });
 
   it('passes the config to Stryker unchanged', async () => {
     runMutationTest.mockResolvedValueOnce(undefined);
