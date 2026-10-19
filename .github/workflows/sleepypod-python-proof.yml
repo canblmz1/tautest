@@ -1,0 +1,65 @@
+name: Adoption proof - Python sandbox prerequisite
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/sleepypod-python-proof.yml
+      - scripts/adoption-proof/sleepypod-python/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sandbox-prerequisite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout frozen public fixture
+        uses: actions/checkout@v4
+        with:
+          repository: sleepypod/core
+          ref: d0f5c7690c37850886fdd4449319ff8dfee780c8
+          path: fixture-source
+          persist-credentials: false
+      - name: Prepare isolated fixture worktree
+        working-directory: fixture-source
+        run: |
+          git worktree list
+          printf '/.codex/worktrees/\n' >> .git/info/exclude
+          mkdir -p .codex/worktrees
+          git worktree add --detach .codex/worktrees/python-sandbox-proof HEAD
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: fixture-source/.node-version
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.6
+          package_json_file: fixture-source/.codex/worktrees/python-sandbox-proof/package.json
+          run_install: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: false
+      - name: Install frozen Node dependencies
+        working-directory: fixture-source/.codex/worktrees/python-sandbox-proof
+        run: pnpm install --frozen-lockfile
+      - name: Prepare checkout Python environment
+        working-directory: fixture-source/.codex/worktrees/python-sandbox-proof/modules/piezo-processor
+        run: uv sync --locked --no-install-project
+      - name: Compare normal suite and sandbox dry runs
+        run: node scripts/adoption-proof/sleepypod-python/prove.mjs fixture-source/.codex/worktrees/python-sandbox-proof
+      - name: Retain diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sleepypod-python-prerequisite
+          path: proof-out/sleepypod-python
+          if-no-files-found: warn
+          retention-days: 14
