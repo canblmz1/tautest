@@ -30,7 +30,9 @@ const normal=(label)=>{
   const json=path.join(out,label+'.tests.json');run(label,[vitest,'run','--maxWorkers=1','--reporter=json',`--outputFile=${json}`]);
   const r=JSON.parse(readFileSync(json,'utf8'));if(!r.numPassedTests||r.numFailedTests)throw new Error('Incomplete normal suite');return r.numPassedTests;
 };
-const config={...originalConfig,mutate:['src/handlers/command.ts'],incremental:false,concurrency:1,reporters:['json'],logLevel:'error'};
+// Let Stryker load its config once. Re-passing its thresholds.break=null
+// triggers upstream deepMerge(null, null) before the campaign can start.
+const config={configFile:'stryker.config.json',mutate:['src/handlers/command.ts'],incremental:false,concurrency:1,reporters:['json'],logLevel:'error'};
 const counts=report=>Object.values(report.files).flatMap(f=>f.mutants).reduce((all,m)=>{all.total++;all[m.status]=(all[m.status]||0)+1;return all;},{total:0});
 async function campaign(label){
   const json=path.join(out,label+'.mutation.json');await runStryker({cwd:root,config:{...config,jsonReporter:{fileName:json}},jsonReportPath:json});return JSON.parse(readFileSync(json,'utf8'));

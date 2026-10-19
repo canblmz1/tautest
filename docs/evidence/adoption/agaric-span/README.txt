@@ -21,7 +21,7 @@ This uses Vitest 5.0.3 with a minimal alias-only test config and applies the
 report's exact replacement by line AND column, restoring it in finally.
 It is not a full project check, a Stryker rerun or a Tautest verify result.
 Tautest execution support for Vitest 5 is not claimed. Report-only analyze
-was tested separately on the unchanged 96-record report using npm 2.1.2.
+was tested separately on the unchanged 96-record report using Tautest 2.1.2 from npm.
 The original 85 Killed, 6 Survived and 5 Timeout counts remain unchanged.
 Existing accepted equivalents are not reclassified by this experiment.
 All experiments were run by the tool maintainer, not an external adopter.
