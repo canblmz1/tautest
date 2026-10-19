@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-19T11:40:47.257Z",
+  "repo": "thalesraymond/sample-todo-apps",
+  "head": "7fd99fa4a6fe5b4471dc2d419b968fe90cda4a7c",
+  "tautest": "2.1.2",
+  "node": "v22.23.2",
+  "scope": "Isolated TodoTitle fixture copied from frozen checkout: original four unit tests and one new test. Original Vitest config/setup inherited; include narrowed to the two domain test files. Original Stryker options inherited with mutation narrowed to TodoTitle and cache disabled. Not a whole-app check or score.",
+  "normal": {
+    "before": 4,
+    "withCandidate": 5
+  },
+  "before": {
+    "total": 17,
+    "Killed": 16,
+    "Survived": 1
+  },
+  "after": {
+    "total": 17,
+    "Killed": 17
+  },
+  "target": {
+    "id": "8",
+    "location": {
+      "end": {
+        "column": 27,
+        "line": 8
+      },
+      "start": {
+        "column": 9,
+        "line": 8
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "value.length >= 255"
+  },
+  "verification": {
+    "status": "verified",
+    "testsCompleted": 4,
+    "killingTests": [
+      {
+        "file": "tests/unit/domain/tautest-title-boundary.test.ts",
+        "name": "accepts a title of exactly 255 characters"
+      }
+    ]
+  },
+  "originalHashes": {
+    "src/domain/todo-title.ts": "fe1c739dc6f0d3d4fa63f5100e78d4bf9a3e364a96a6f5e52238b9eafab3f6ea",
+    "tests/unit/domain/todo-title.test.ts": "91962cc71a22db66aaa154216c764dcc9377b0a9e708b9cbc1d9db5f0a6dc283",
+    "tests/setup.ts": "ccd4eac11c51cbcb1268c15b9fdcd4181d7c25d3b9c67d3b52d1760733f0866c",
+    "vitest.config.ts": "c041947597af889bee18f5fe478d31c3b8590e6723bc494bf3f119529e4396ea",
+    "tsconfig.json": "79a2fd6e17eab78d98e8dd8aa878e74e2977f77648998ca93cdf432262282d26",
+    "package.json": "3b529c9ccf2805ab7366074f64ba92b6621ac2b143627e4b5bddeaaf7428e181"
+  },
+  "sourceUnchanged": true,
+  "upstreamCheckoutUnchanged": true,
+  "externalAdoption": false
+}
