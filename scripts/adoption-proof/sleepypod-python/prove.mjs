@@ -16,7 +16,7 @@ writeFileSync(path.join(root,'vitest.tautest-python.config.mts'),`import base fr
 const config=`import base from './stryker.config.mjs';\nconst config={...base,mutate:['src/biometrics/backtest/raw-inspection-child.ts'],dryRunOnly:true,incremental:false,concurrency:1,logLevel:'info',reporters:['clear-text'],vitest:{...base.vitest,configFile:'vitest.tautest-python.config.mts',related:false}};\n`;
 writeFileSync(path.join(root,'stryker.tautest-python-before.config.mjs'),config+'export default config;\n');
 writeFileSync(path.join(root,'stryker.tautest-python-excluded.config.mjs'),config+"export default {...config,ignorePatterns:[...(config.ignorePatterns||[]),'**/.venv/**']};\n");
-writeFileSync(path.join(root,'stryker.tautest-python-after.config.mjs'),config+"export default {...config,ignorePatterns:[...(config.ignorePatterns||[]),'**/.venv/**'],buildCommand:'cd modules/piezo-processor && uv sync --locked --no-install-project'};\n");
+writeFileSync(path.join(root,'stryker.tautest-python-after.config.mjs'),config+"export default {...config,ignorePatterns:[...(config.ignorePatterns||[]),'**/.venv/**'],buildCommand:'uv sync --directory modules/piezo-processor --locked --no-install-project'};\n");
 const steps=[];
 function run(label,args,timeout=240000){
   const r=spawnSync(process.execPath,args,{cwd:root,encoding:'utf8',timeout,maxBuffer:16*1024*1024,env:{...process.env,NODE_ENV:'test'}});
