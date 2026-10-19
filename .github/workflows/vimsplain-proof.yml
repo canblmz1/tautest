@@ -1,0 +1,50 @@
+name: Adoption proof - ex-command regressions
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/vimsplain-proof.yml
+      - scripts/adoption-proof/vimsplain/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ex-command:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: oller/vimgym
+          ref: e65d98ca48f6432779b6bf2cb677d1a9116400d8
+          path: fixture-source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.2'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.6
+          package_json_file: fixture-source/package.json
+          run_install: false
+      - name: Install frozen project dependencies
+        working-directory: fixture-source
+        run: pnpm install --filter vimsplain --frozen-lockfile --ignore-scripts
+      - name: Install published CLI separately
+        run: npm install --prefix "$RUNNER_TEMP/tautest-cli" --ignore-scripts --no-audit --no-fund tautest@2.1.2
+      - name: Test and verify both ex-command regressions
+        run: node scripts/adoption-proof/vimsplain/prove.mjs fixture-source/packages/vimsplain "$RUNNER_TEMP/tautest-cli/node_modules/tautest/dist/index.js"
+      - name: Retain results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vimsplain-ex-command
+          path: proof-out/vimsplain
+          if-no-files-found: warn
+          retention-days: 14
