@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-10-19T11:04:35.074Z",
+  "repo": "jfolcini/agaric",
+  "head": "d52b57959a7ed7781b4f718884200ce1e4eac35f",
+  "sourcePath": "src/lib/search-query/tokenize.ts",
+  "sourceHash": "c5267fa41aa5f1044253fba9ac03299fe35b5287c207124ac35e99d26fb6d828",
+  "testHash": "6b1e97862f6fce01d45d7feb00051487d7db6041d39d8f37d31784dd3a31988a",
+  "sourceRestored": true,
+  "mutant": {
+    "id": "63",
+    "mutatorName": "ArrayDeclaration",
+    "replacement": "[]",
+    "original": "[start, i]",
+    "status": "Survived",
+    "location": {
+      "start": {
+        "line": 158,
+        "column": 39
+      },
+      "end": {
+        "line": 158,
+        "column": 49
+      }
+    }
+  },
+  "reportRun": "https://github.com/jfolcini/agaric/actions/runs/39183149461",
+  "reportSha256": "495a662ca2f4453804e45b2bcaa7214493cb5cb6eb6442598e92a45a989e1213",
+  "results": [
+    {
+      "label": "original-existing-tests",
+      "exitCode": 0,
+      "passed": 25,
+      "failed": 0,
+      "failedTests": []
+    },
+    {
+      "label": "reported-mutant-existing-tests",
+      "exitCode": 0,
+      "passed": 25,
+      "failed": 0,
+      "failedTests": []
+    },
+    {
+      "label": "reported-mutant-with-candidate",
+      "exitCode": 1,
+      "passed": 25,
+      "failed": 1,
+      "failedTests": [
+        "preserves the UTF-16 span of a word with an unclosed embedded quote"
+      ]
+    },
+    {
+      "label": "original-with-candidate",
+      "exitCode": 0,
+      "passed": 26,
+      "failed": 0,
+      "failedTests": []
+    }
+  ],
+  "scope": "Isolated pure tokenizer fixture with unchanged upstream tokenizer and test file, Vitest 5.0.3, minimal alias-only configuration. Applied the exact reported replacement by line AND column, ran tests, and restored source in finally. This is not a Stryker campaign, a Tautest verify result, a full project check, or external adoption.",
+  "externalAdoption": false
+}
