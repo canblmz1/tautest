@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-19T11:24:53.520Z",
+  "checkedAt": "2026-10-19T11:44:07.900Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
   },
   "observed": {
-    "approvedInvitationsPosted": 11,
+    "approvedInvitationsPosted": 12,
     "documentedRealUsers": 0,
     "externalRepliesToInvitations": 0,
     "actualUserPopulation": null,
@@ -15,7 +15,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
-      "verifiedAt": "2026-10-19T11:24:53.516Z",
+      "verifiedAt": "2026-10-19T11:44:07.900Z",
       "note": "Lagged rolling API window, not unique users. Core counts are not added."
     },
     "coreDownloads": {
@@ -24,7 +24,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/@tautest/core",
-      "verifiedAt": "2026-10-19T11:24:53.520Z"
+      "verifiedAt": "2026-10-19T11:44:07.898Z"
     }
   },
   "release": {
@@ -138,6 +138,16 @@
       "draft": ".tautest/rajbos-outreach.md",
       "proof": "https://github.com/canblmz1/tautest/tree/296f86b/docs/evidence/adoption/rajbos-report",
       "scope": "439247725-byte report rejected as expected; omitting only diagnostic statusReason strings yields 1020441 bytes. All other JSON events fingerprint-identical. Public compact copy imports in a clean directory with published 2.1.2: 4143 total, 1033 survivors, 868 groups. No engine/Node execution promised."
+    },
+    {
+      "repo": "thalesraymond/sample-todo-apps",
+      "issue": 9,
+      "status": "Twelfth qualified invitation posted once and read back. No external response or usage confirmed.",
+      "invitation": "https://github.com/thalesraymond/sample-todo-apps/issues/9#issuecomment-6266385671",
+      "postedAt": "2026-10-19T11:42:28Z",
+      "draft": ".tautest/sample-todo-outreach.md",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39246296963",
+      "scope": "Whole original report: 295 Killed, 94 Survived, 14 NoCoverage, 403 total in 102 expression groups. Isolated TodoTitle fixture: 4 to 5 passing tests, 16 Killed/1 Survived to 17/0, exact 255-character boundary verified by published 2.1.2. Original source/tests unchanged, not a whole-app check."
     }
   ],
   "engineeringResults": [
@@ -301,6 +311,36 @@
       "scope": "Full command.ts only, original whole package normal suite plus two new tests. Both exact targets verified; both recorded killers are the new whitespace test. No full-package mutation score.",
       "sourceUnchanged": true,
       "externalAdoption": false
+    },
+    {
+      "case": "Sample Todo exact title boundary",
+      "tautest": "2.1.2",
+      "proof": "https://github.com/canblmz1/tautest/actions/runs/39246296963",
+      "evidence": "docs/evidence/adoption/sample-todo/evidence.json",
+      "originalReport": {
+        "total": 403,
+        "Killed": 295,
+        "Survived": 94,
+        "NoCoverage": 14,
+        "expressionGroups": 102
+      },
+      "normalTests": [
+        4,
+        5
+      ],
+      "before": {
+        "total": 17,
+        "Killed": 16,
+        "Survived": 1
+      },
+      "after": {
+        "total": 17,
+        "Killed": 17,
+        "Survived": 0
+      },
+      "scope": "Isolated TodoTitle fixture with original unit test/config/setup. Exact >255 to >=255 target verified and killed by the new maximum-length test. Not a whole-app check or score.",
+      "sourceUnchanged": true,
+      "externalAdoption": false
     }
   ],
   "nextActions": [
@@ -353,6 +393,15 @@
       "draft": ".tautest/rajbos-outreach.md",
       "invitation": "https://github.com/rajbos/ai-engineering-fluency/issues/2341#issuecomment-6266049013",
       "postedAt": "2026-10-19T11:23:04Z",
+      "externalUse": false
+    },
+    {
+      "repo": "thalesraymond/sample-todo-apps",
+      "issue": 9,
+      "status": "Authorized, posted once and read back from GitHub.",
+      "draft": ".tautest/sample-todo-outreach.md",
+      "invitation": "https://github.com/thalesraymond/sample-todo-apps/issues/9#issuecomment-6266385671",
+      "postedAt": "2026-10-19T11:42:28Z",
       "externalUse": false
     }
   ],
@@ -418,7 +467,7 @@
     }
   ],
   "invitationResponseAudit": {
-    "checkedAt": "2026-10-19T11:24:02.910Z",
+    "checkedAt": "2026-10-19T11:32:32.986Z",
     "checkedProjects": 11,
     "verifiedToolResponses": 0,
     "verifiedExternalUsers": 0,
