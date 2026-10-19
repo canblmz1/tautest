@@ -26,17 +26,17 @@ function fixture() {
   return root;
 }
 function json(root: string, file: string) { return JSON.parse(readFileSync(path.join(root, file), 'utf8')); }
-function analyze(root: string) { return JSON.parse(runAnalyzeCommand(root, { from: 'mutation.json', json: true })); }
+async function analyze(root: string) { return JSON.parse(await runAnalyzeCommand(root, { from: 'mutation.json', json: true })); }
 
 describe('analyze and manual review', () => {
-  it('imports without a package, git or config execution, preserves input and all actionable findings', () => {
+  it('imports without a package, git or config execution, preserves input and all actionable findings', async () => {
     const root = fixture();
     const input = raw();
     input.files['src/discount.js'].mutants.push({ ...input.files['src/discount.js'].mutants[0], id: '8', status: 'NoCoverage' });
     writeFileSync(path.join(root, 'mutation.json'), JSON.stringify(input));
     writeFileSync(path.join(root, 'stryker.config.mjs'), 'throw new Error("CONFIG MUST NOT EXECUTE");');
     const before = readFileSync(path.join(root, 'mutation.json'), 'utf8');
-    const result = analyze(root);
+    const result = await analyze(root);
     expect(result.groups).toHaveLength(1);
     expect(result.groups[0].mutants).toHaveLength(2);
     expect(result.rawSummary).toMatchObject({ survived: 1, noCoverage: 1, mutationScore: 0 });
@@ -45,68 +45,68 @@ describe('analyze and manual review', () => {
     expect(existsSync(path.join(root, '.tautest/review/report.json'))).toBe(true);
   });
 
-  it('requires a recorded or explicit runner only for prompts and marks pending reports incomplete', () => {
+  it('requires a recorded or explicit runner only for prompts and marks pending reports incomplete', async () => {
     const root = fixture();
     const input = { files: raw('Pending').files };
     writeFileSync(path.join(root, 'mutation.json'), JSON.stringify(input));
-    expect(analyze(root).complete).toBe(false);
+    expect((await analyze(root)).complete).toBe(false);
     expect(json(root, '.tautest/review/report.json').summary.verdict).toBe('UNKNOWN');
     expect(readFileSync(path.join(root, '.tautest/review/fix-prompt.md'), 'utf8')).toContain('Runner not recorded');
   });
 
-  it('keeps raw scores and findings after review, expires decisions on test or report changes', () => {
+  it('keeps raw scores and findings after review, expires decisions on test or report changes', async () => {
     const root = fixture();
-    const first = analyze(root);
-    runReviewCommand(root, first.groups[0].id, { decision: 'accepted-risk', reason: 'Low impact internal path' });
-    expect(analyze(root).groups[0].review.decision).toBe('accepted-risk');
-    expect(analyze(root).rawSummary.mutationScore).toBe(0);
-    expect(analyze(root).groups[0].mutants).toHaveLength(1);
+    const first = await analyze(root);
+    await runReviewCommand(root, first.groups[0].id, { decision: 'accepted-risk', reason: 'Low impact internal path' });
+    expect((await analyze(root)).groups[0].review.decision).toBe('accepted-risk');
+    expect((await analyze(root)).rawSummary.mutationScore).toBe(0);
+    expect((await analyze(root)).groups[0].mutants).toHaveLength(1);
     writeFileSync(path.join(root, 'test/discount.test.js'), '// changed test\n');
-    expect(() => runReviewCommand(root, first.groups[0].id, { decision: 'equivalent', reason: 'stale' })).toThrow('context changed');
-    expect(analyze(root).groups[0]).toMatchObject({ review: null, staleReview: true });
-    runReviewCommand(root, first.groups[0].id, { decision: 'needs-test', reason: 'Add boundary test' });
+    await expect(runReviewCommand(root, first.groups[0].id, { decision: 'equivalent', reason: 'stale' })).rejects.toThrow('context changed');
+    expect((await analyze(root)).groups[0]).toMatchObject({ review: null, staleReview: true });
+    await runReviewCommand(root, first.groups[0].id, { decision: 'needs-test', reason: 'Add boundary test' });
     const updated = raw();
     updated.files['src/discount.js'].mutants[0].replacement = 'false';
     writeFileSync(path.join(root, 'mutation.json'), JSON.stringify(updated));
-    expect(analyze(root).groups[0]).toMatchObject({ review: null, staleReview: true });
+    expect((await analyze(root)).groups[0]).toMatchObject({ review: null, staleReview: true });
   });
 
-  it('does not reuse reviews with stale source or overwrite the imported report', () => {
+  it('does not reuse reviews with stale source or overwrite the imported report', async () => {
     const root = fixture();
     writeFileSync(path.join(root, 'src/discount.js'), 'changed');
-    const result = analyze(root);
+    const result = await analyze(root);
     expect(result.contextHash).toBeNull();
-    expect(() => runReviewCommand(root, result.groups[0].id, { decision: 'equivalent', reason: 'reason' })).toThrow('Local review context is unavailable or stale');
+    await expect(runReviewCommand(root, result.groups[0].id, { decision: 'equivalent', reason: 'reason' })).rejects.toThrow('Local review context is unavailable or stale');
     writeFileSync(path.join(root, 'report.json'), JSON.stringify(raw()));
-    expect(() => runAnalyzeCommand(root, { from: 'report.json', reportDir: '.' })).toThrow('input report');
+    await expect(runAnalyzeCommand(root, { from: 'report.json', reportDir: '.' })).rejects.toThrow('input report');
   });
 
-  it('explains why report-only analysis cannot record decisions until the matching source is available', () => {
+  it('explains why report-only analysis cannot record decisions until the matching source is available', async () => {
     const root = fixture();
     rmSync(path.join(root, 'src/discount.js'));
-    const imported = analyze(root);
+    const imported = await analyze(root);
     expect(imported).toMatchObject({ contextHash: null, complete: true });
     expect(imported.groups).toHaveLength(1);
-    expect(() => runReviewCommand(root, imported.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' })).toThrow('Use the matching project checkout');
+    await expect(runReviewCommand(root, imported.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' })).rejects.toThrow('Use the matching project checkout');
     expect(existsSync(path.join(root, '.tautest/review/decisions.json'))).toBe(false);
     expect(readFileSync(path.join(root, '.tautest/review/report.md'), 'utf8')).toContain('analysis is read-only');
 
     writeFileSync(path.join(root, 'src/discount.js'), source);
-    const local = analyze(root);
-    runReviewCommand(root, local.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' });
-    expect(analyze(root).groups[0].review.decision).toBe('needs-test');
-    expect(analyze(root).rawSummary).toEqual(imported.rawSummary);
+    const local = await analyze(root);
+    await runReviewCommand(root, local.groups[0].id, { decision: 'needs-test', reason: 'Boundary needed' });
+    expect((await analyze(root)).groups[0].review.decision).toBe('needs-test');
+    expect((await analyze(root)).rawSummary).toEqual(imported.rawSummary);
   });
 
-  it('protects hardlinked input and preserves an explicit prompt runner across reviews in the project root', () => {
+  it('protects hardlinked input and preserves an explicit prompt runner across reviews in the project root', async () => {
     const root = fixture();
     const input = { files: raw().files };
     writeFileSync(path.join(root, 'mutation.json'), JSON.stringify(input));
     linkSync(path.join(root, 'mutation.json'), path.join(root, 'report.json'));
-    expect(() => runAnalyzeCommand(root, { from: 'mutation.json', reportDir: '.' })).toThrow('input report');
+    await expect(runAnalyzeCommand(root, { from: 'mutation.json', reportDir: '.' })).rejects.toThrow('input report');
     rmSync(path.join(root, 'report.json'));
-    const result = JSON.parse(runAnalyzeCommand(root, { from: 'mutation.json', reportDir: '.', runner: 'jest', json: true }));
-    runReviewCommand(root, result.groups[0].id, { reportDir: '.', decision: 'needs-test', reason: 'Boundary needed' });
+    const result = JSON.parse(await runAnalyzeCommand(root, { from: 'mutation.json', reportDir: '.', runner: 'jest', json: true }));
+    await runReviewCommand(root, result.groups[0].id, { reportDir: '.', decision: 'needs-test', reason: 'Boundary needed' });
     expect(readFileSync(path.join(root, 'fix-prompt.md'), 'utf8')).toContain('existing jest test style');
   });
 });

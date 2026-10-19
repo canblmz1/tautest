@@ -149,6 +149,12 @@ importers:
       commander:
         specifier: ^14.0.2
         version: 14.0.3
+      stream-chain:
+        specifier: 4.2.5
+        version: 4.2.5
+      stream-json:
+        specifier: 3.7.0
+        version: 3.7.0
       zod:
         specifier: 3.24.4
         version: 3.24.4
@@ -3945,6 +3951,13 @@ packages:
 
   std-env@4.1.0:
     resolution: {integrity: sha512-Rq7ybcX2RuC55r9oaPVEW7/xu3tj8u4GeBYHBWCychFtzMIr86A7e3PPEBPT37sHStKX3+TiX/Fr/ACmJLVlLQ==}
+
+  stream-chain@4.2.5:
+    resolution: {integrity: sha512-Wtyq3bNE3ggLR0v2vftqvuhltym3WbZAkZpfIrkr5F/6vpeUmWmwTgXa16zD87gpahwJ/Qulq3zVfUlgIc0J2A==}
+    engines: {node: '>=22'}
+
+  stream-json@3.7.0:
+    resolution: {integrity: sha512-rCSBdcBP/bPk6T8QFcxAj1MSzAuc5i49cYW6IE7sYObNEPccBJIUiL6fU9c9BWt40aJK0siVynLX7lWaW8alXw==}
 
   streamx@2.25.0:
     resolution: {integrity: sha512-0nQuG6jf1w+wddNEEXCF4nTg3LtufWINB5eFEN+5TNZW7KWJp6x87+JFL43vaAUPyCfH1wID+mNVyW6OHtFamg==}
@@ -8642,6 +8655,12 @@ snapshots:
   stackback@0.0.2: {}
 
   std-env@4.1.0: {}
+
+  stream-chain@4.2.5: {}
+
+  stream-json@3.7.0:
+    dependencies:
+      stream-chain: 4.2.5
 
   streamx@2.25.0:
     dependencies:

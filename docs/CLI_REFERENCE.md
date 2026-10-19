@@ -11,7 +11,11 @@ tautest analyze --from mutation.json --runner vitest --json
 
 `--from` is required. `--report-dir` defaults to `.tautest/review`. `--runner vitest|jest` overrides the report's runner for the test-fix prompt; `--prompt-style` accepts the same styles as `run`. Without a supported recorded runner, analysis still works and the prompt explains how to choose one. This differs from `report --from`, which reads an already normalized Tautest report.
 
-Outputs: `report.md`, normalized schema-v1 `report.json`, expression groups in `review.json`, and `fix-prompt.md`. All Survived and NoCoverage findings remain in the report. Groups share a source expression; grouping does not prove behavioral equivalence. Unknown or pending states produce `complete: false` and an UNKNOWN verdict. Exit 0 means analysis succeeded, not that the project passed a new mutation gate. Malformed input exits 10; explicit zero-test survivors exit 12. Import size is limited to 128 MiB.
+Outputs: `report.md`, normalized schema-v1 `report.json`, expression groups in `review.json`, and `fix-prompt.md`. All Survived and NoCoverage findings remain in the report. Groups share a source expression; grouping does not prove behavioral equivalence. Unknown or pending states produce `complete: false` and an UNKNOWN verdict. Exit 0 means analysis succeeded, not that the project passed a new mutation gate. Malformed input exits 10; explicit zero-test survivors exit 12.
+
+JSON reports up to 1 GiB are accepted. Reports above 128 MiB are streamed, omitting only string-valued `files[...].mutants[...].statusReason` diagnostics before assembling the analysis. All other report fields are retained; the retained JSON must fit within 128 MiB. The original file stays unchanged and its SHA-256 identifies the input, including omitted diagnostics. `review.json` records the streamed input size, retained size and omitted string count under `input.importDetails`; the terminal and Markdown report also disclose omission. Consult the original report for diagnostic text. The same importer and limits apply to `verify` and `review`.
+
+The streaming path also rejects property names above 1 MiB and JSON nesting deeper than 1,024 levels before assembling the report.
 
 ## `tautest review`
 
