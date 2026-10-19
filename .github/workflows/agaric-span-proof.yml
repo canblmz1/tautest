@@ -1,0 +1,44 @@
+name: Adoption proof - tokenizer span assertion
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/agaric-span-proof.yml
+      - scripts/adoption-proof/agaric-span/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-replacement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.2'
+      - name: Download frozen pure-function fixture
+        run: node scripts/adoption-proof/agaric-span/prepare.mjs
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          package_json_file: .tautest/agaric-span-fixture/package.json
+          run_install: false
+      - name: Install isolated Vitest 5 runner
+        working-directory: .tautest/agaric-span-fixture
+        run: pnpm install --ignore-scripts
+      - name: Check survivor, falsify with candidate, restore source
+        run: node scripts/adoption-proof/agaric-span/prove.mjs
+      - name: Retain diagnostic results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agaric-span-assertion
+          path: proof-out/agaric-span
+          if-no-files-found: warn
+          retention-days: 14
