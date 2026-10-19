@@ -13,7 +13,7 @@ type Executor = (input: Parameters<typeof runEngineProcess>[0]) => Promise<Engin
 
 export async function runVerifyCommand(cwd: string, options: VerifyOptions, execute: Executor = runEngineProcess): Promise<{ exitCode: number; output: string }> {
   const root = path.resolve(cwd);
-  const input = readReviewInput(root, options.from);
+  const input = await readReviewInput(root, options.from);
   const matches = Object.entries(input.report.files).flatMap(([file, entry]) => entry.mutants
     .filter(m => m.id === options.mutant && (!options.file || file === options.file)).map(m => ({ file, source: entry.source, mutant: m })));
   if (matches.length !== 1) throw new CliError('Select exactly one mutant id. If ids repeat across files, also pass --file.', EXIT_CODES.configError);
@@ -49,7 +49,7 @@ export async function runVerifyCommand(cwd: string, options: VerifyOptions, exec
       assertFreshSource(root, target.file, target.source);
       if (reviewHash(readFileSync(testPath, 'utf8')) !== testHash) throw new Error('Candidate test changed during verification.');
       const completion = readJsonFile<{ initialTestRunPassed: boolean }>(path.join(out, 'completed.json'));
-      const verifiedReport = readReviewInput(root, path.join(out, 'mutation.json')).report;
+      const verifiedReport = (await readReviewInput(root, path.join(out, 'mutation.json'))).report;
       if (verifiedReport.files[target.file]?.source.replace(/\r\n/g, '\n') !== target.source.replace(/\r\n/g, '\n')) throw new Error('Verification report source differs from the original target.');
       const candidates = verifiedReport.files[target.file]?.mutants.filter(m => m.mutatorName === target.mutant.mutatorName && m.replacement === target.mutant.replacement && JSON.stringify(m.location) === JSON.stringify(target.mutant.location)) ?? [];
       if (candidates.length !== 1) { status = 'incomplete'; reason = 'The exact original mutant was not reproduced; no verification is claimed.'; }
@@ -68,7 +68,7 @@ export async function runVerifyCommand(cwd: string, options: VerifyOptions, exec
     } catch (error) { status = 'incomplete'; reason = error instanceof Error ? error.message : String(error); }
   }
   const evidence = { version: '1', status, reason, createdAt: new Date().toISOString(),
-    source: { report: input.path, sha256: input.hash, file: target.file, sourceSha256: reviewHash(target.source) },
+    source: { report: input.path, sha256: input.hash, importDetails: input.importDetails, file: target.file, sourceSha256: reviewHash(target.source) },
     target: { originalId: options.mutant, mutatorName: target.mutant.mutatorName, location: target.mutant.location, replacement: target.mutant.replacement },
     candidate: { file: testFile, sha256: testHash }, testsCompleted, killedBy, execution: result, budgetSeconds,
     paths: { directory: out, evidence: path.join(out, 'verification.json'), log: path.join(out, 'engine.log') } };

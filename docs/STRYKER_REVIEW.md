@@ -8,6 +8,8 @@ npx tautest analyze --from reports/mutation/mutation.json
 
 Open `.tautest/review/report.md` for all actionable findings and `.tautest/review/fix-prompt.md` for a test-writing checklist. `review.json` preserves each mutant's id, location, replacement, covering tests and expression group. No project config is evaluated and no tests run during analysis; a report can be analyzed outside its original project. No AI service is called.
 
+Large JSON reports use the same command. Above 128 MiB, Tautest streams the file and leaves mutant `statusReason` diagnostic strings in the original report instead of loading them into the analysis. It keeps sources, statuses, replacements and test attribution, records the original file's SHA-256, and discloses how many diagnostics were omitted. Input is limited to 1 GiB and retained JSON to 128 MiB. No Python or separate compaction step is needed.
+
 Choose a survivor with a real behavioral difference. Write the smallest test that passes on the original implementation and fails for that replacement. Then, from the package root, prove the target using its original id:
 
 ```bash

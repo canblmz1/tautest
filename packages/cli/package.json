@@ -55,6 +55,8 @@
   "dependencies": {
     "@tautest/core": "workspace:*",
     "commander": "^14.0.2",
+    "stream-chain": "4.2.5",
+    "stream-json": "3.7.0",
     "zod": "3.24.4"
   },
   "devDependencies": {

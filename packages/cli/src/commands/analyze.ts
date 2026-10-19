@@ -11,8 +11,8 @@ import { CliError } from '../lib/errors';
 import { EXIT_CODES } from '../lib/exit-codes';
 
 export interface AnalyzeOptions { from: string; reportDir?: string; runner?: TestRunner; json?: boolean; promptStyle?: PromptStyle }
-export function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): string {
-  const input = readReviewInput(cwd, options.from);
+export async function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): Promise<string> {
+  const input = await readReviewInput(cwd, options.from);
   const out = path.resolve(cwd, options.reportDir ?? '.tautest/review');
   const outputs = ['report.json', 'report.md', 'review.json', 'fix-prompt.md', 'decisions.json'];
   const inputStat = statSync(input.path);
@@ -28,7 +28,7 @@ export function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): string 
   const runner = runnerName === 'vitest' || runnerName === 'jest' ? runnerName : undefined;
   const promptStyle = options.promptStyle ?? 'human';
   const actionable = getActionableMutants(summary);
-  const contextHash = reviewContext(cwd, input.report, out, input.path);
+  const contextHash = reviewContext(cwd, input.report, out, input.path, input.hash);
   const notes = readNotes(path.join(out, 'decisions.json'));
   const groups = groupReviewMutants(actionable, contextHash, notes);
   const incomplete = summary.allMutants.some(m => !['Killed', 'Survived', 'NoCoverage', 'Timeout', 'RuntimeError', 'CompileError', 'Ignored'].includes(m.status));
@@ -41,14 +41,14 @@ export function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): string 
     'Refresh the full report with the existing Stryker command and analyze it again.'];
   const normalized = buildJsonReport({ summary, score, topMutants: actionable,
     scope: { runner, mutatedFiles: Object.keys(input.report.files), mutatePatterns: input.report.config?.mutate }, aiSignals: { commands, validationLoop, promptStyle } });
-  const review = { version: '1', input: { path: input.path, sha256: input.hash }, options: { runner, promptStyle }, contextHash, complete: !incomplete,
+  const review = { version: '1', input: { path: input.path, sha256: input.hash, importDetails: input.importDetails }, options: { runner, promptStyle }, contextHash, complete: !incomplete,
     rawSummary: normalized.summary, groups, note: 'Reviews are manual judgments. Raw Stryker statuses and score are unchanged. Groups share source expressions; they are not proven equivalent.' };
   writeJsonFile(path.join(out, 'report.json'), normalized);
   writeJsonFile(path.join(out, 'review.json'), review);
   const pending = groups.filter(g => !g.review || g.review.decision === 'needs-test');
   const markdown = buildMarkdownReport({ summary, score, topMutants: actionable, runner, mutatedFiles: Object.keys(input.report.files), title: 'Imported Stryker Report' });
   writeTextFile(path.join(out, 'report.md'), [
-    markdown, '## Review queue', '',
+    markdown, ...(input.importDetails ? ['## Large report import', '', `Streamed ${input.importDetails.inputBytes} input bytes; omitted ${input.importDetails.omittedStatusReasons} mutant statusReason diagnostic strings from the in-memory analysis. The original report is unchanged; its SHA-256 is ${input.hash}. Sources, replacements, statuses and test attribution are retained. Consult the original report for diagnostics.`, ''] : []), '## Review queue', '',
     'Imported report only; no tests or configuration were executed. The raw mutation score is not a new quality-gate result.',
     incomplete ? 'Incomplete: unexecuted or unknown mutant states are present.' : 'All recorded mutant states are terminal.',
     contextHash ? 'Review decisions expire when project files change.' : 'Local source context is unavailable or stale; analysis is read-only and review decisions cannot be recorded. Use the matching project checkout to record decisions within the documented snapshot limits.', '',
@@ -61,15 +61,15 @@ export function runAnalyzeCommand(cwd: string, options: AnalyzeOptions): string 
     writeTextFile(path.join(out, 'fix-prompt.md'), 'Runner not recorded. Re-run analyze with --runner vitest or --runner jest to generate a test-fix prompt.\n');
   }
   return options.json ? JSON.stringify({ status: 'analyzed', ...review, paths: { report: path.join(out, 'report.md'), json: path.join(out, 'report.json'), review: path.join(out, 'review.json'), prompt: path.join(out, 'fix-prompt.md') } }, null, 2) + '\n'
-    : `Imported Stryker report: ${summary.total} mutants, ${actionable.length} actionable, ${groups.length} expression groups, ${pending.length} awaiting tests/review.\nRaw score: ${summary.score === null ? 'unknown' : summary.score.toFixed(2) + '%'}${incomplete ? ' (incomplete report)' : ''}.\nReport: ${path.join(out, 'report.md')}\nReview: ${path.join(out, 'review.json')}\n`;
+    : `Imported Stryker report: ${summary.total} mutants, ${actionable.length} actionable, ${groups.length} expression groups, ${pending.length} awaiting tests/review.\n${input.importDetails ? `Large report: omitted ${input.importDetails.omittedStatusReasons} mutant statusReason diagnostic strings from analysis; original unchanged.\n` : ''}Raw score: ${summary.score === null ? 'unknown' : summary.score.toFixed(2) + '%'}${incomplete ? ' (incomplete report)' : ''}.\nReport: ${path.join(out, 'report.md')}\nReview: ${path.join(out, 'review.json')}\n`;
 }
 
-export function runReviewCommand(cwd: string, groupId: string, options: { reportDir?: string; decision: ReviewDecision; reason: string }): string {
+export async function runReviewCommand(cwd: string, groupId: string, options: { reportDir?: string; decision: ReviewDecision; reason: string }): Promise<string> {
   if (!['needs-test', 'equivalent', 'accepted-risk'].includes(options.decision) || !options.reason.trim()) throw new CliError('A review needs a decision and a non-empty reason.', EXIT_CODES.configError);
   const out = path.resolve(cwd, options.reportDir ?? '.tautest/review');
   const previous = readJsonFile<{ input: { path: string; sha256: string }; options?: { runner?: TestRunner; promptStyle?: PromptStyle }; contextHash: string | null; groups: Array<{ id: string }> }>(path.join(out, 'review.json'));
-  const current = readReviewInput(cwd, previous.input.path);
-  const contextHash = reviewContext(cwd, current.report, out, current.path);
+  const current = await readReviewInput(cwd, previous.input.path);
+  const contextHash = reviewContext(cwd, current.report, out, current.path, current.hash);
   if (!contextHash) throw new CliError('Local review context is unavailable or stale. Decisions require matching source files and a project snapshot within the documented limits. Use the matching project checkout and re-run analyze, or refresh the Stryker report if source changed. See docs/STRYKER_REVIEW.md.', EXIT_CODES.configError);
   if (contextHash !== previous.contextHash || current.hash !== previous.input.sha256) throw new CliError('Analysis context changed. Re-run analyze before recording a review.', EXIT_CODES.configError);
   if (!previous.groups.some(g => g.id === groupId)) throw new CliError('Unknown review group. Use the full group id from review.json.', EXIT_CODES.configError);
@@ -77,7 +77,7 @@ export function runReviewCommand(cwd: string, groupId: string, options: { report
   const notes = readNotes(notesPath).filter(n => n.groupId !== groupId);
   notes.push({ groupId, contextHash, decision: options.decision, reason: options.reason.trim(), reviewedAt: new Date().toISOString() });
   writeJsonFile(notesPath, notes);
-  runAnalyzeCommand(cwd, { from: current.path, reportDir: out, runner: previous.options?.runner, promptStyle: previous.options?.promptStyle });
+  await runAnalyzeCommand(cwd, { from: current.path, reportDir: out, runner: previous.options?.runner, promptStyle: previous.options?.promptStyle });
   return `Recorded manual ${options.decision} review. Raw Stryker statuses and score are unchanged.\n`;
 }
 
@@ -88,7 +88,7 @@ function readNotes(file: string): ReviewNote[] {
   return notes;
 }
 
-function reviewContext(root: string, report: StrykerMutationReport, out: string, input: string): string | null {
+function reviewContext(root: string, report: StrykerMutationReport, out: string, input: string, inputHash: string): string | null {
   try {
     root = path.resolve(root);
     for (const [file, value] of Object.entries(report.files)) assertFreshSource(root, file, value.source);
@@ -109,6 +109,6 @@ function reviewContext(root: string, report: StrykerMutationReport, out: string,
       }
     };
     walk(root);
-    return reviewHash(reviewHash(readFileSync(input, 'utf8')) + '\n' + entries.sort().join('\n'));
+    return reviewHash(inputHash + '\n' + entries.sort().join('\n'));
   } catch { return null; }
 }

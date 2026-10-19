@@ -1,15 +1,21 @@
 import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { validateStrykerReviewReport, reviewHash, type StrykerMutationReport } from '@tautest/core';
+import { validateStrykerReviewReport, reviewHash } from '@tautest/core';
 import { CliError } from './errors';
 import { EXIT_CODES } from './exit-codes';
+import { readLargeReviewReport, REVIEW_DATA_LIMIT, REVIEW_INPUT_LIMIT } from './large-review-input';
 
-export function readReviewInput(cwd: string, from: string): { path: string; hash: string; report: StrykerMutationReport } {
+export async function readReviewInput(cwd: string, from: string) {
   const file = path.resolve(cwd, from);
   try {
-    if (statSync(file).size > 128 * 1024 * 1024) throw new Error('Report exceeds the 128 MiB import limit.');
+    const size = statSync(file).size;
+    if (size > REVIEW_INPUT_LIMIT) throw new Error('Report exceeds the 1 GiB import limit.');
+    if (size > REVIEW_DATA_LIMIT) {
+      const { value, hash, importDetails } = await readLargeReviewReport(file);
+      return { path: file, hash, report: validateStrykerReviewReport(value), importDetails };
+    }
     const text = readFileSync(file, 'utf8');
-    return { path: file, hash: reviewHash(text), report: validateStrykerReviewReport(JSON.parse(text)) };
+    return { path: file, hash: reviewHash(text), report: validateStrykerReviewReport(JSON.parse(text)), importDetails: undefined };
   } catch (error) {
     // Keep engine-integrity errors distinct from malformed input.
     if (error instanceof Error && 'code' in error && error.code === 'STRYKER_ZERO_TESTS_EXECUTED') throw error;

@@ -205,14 +205,14 @@ export function buildProgram(): Command {
     .option('--runner <runner>', 'test style for prompts when not recorded in the report', parseRunner)
     .option('--report-dir <dir>', 'analysis output directory', '.tautest/review')
     .option('--json', 'print machine-readable analysis')
-    .action(async options => { await runAction(program, () => { writeStdout(runAnalyzeCommand(process.cwd(), options)); return EXIT_CODES.ok; }); });
+    .action(async options => { await runAction(program, async () => { writeStdout(await runAnalyzeCommand(process.cwd(), options)); return EXIT_CODES.ok; }); });
 
   program.command('review <groupId>')
     .description('record a manual expression review without changing the raw mutation score')
     .requiredOption('--decision <decision>', 'needs-test, equivalent, or accepted-risk')
     .requiredOption('--reason <text>', 'reason for the manual decision')
     .option('--report-dir <dir>', 'analysis output directory', '.tautest/review')
-    .action(async (groupId, options) => { await runAction(program, () => { writeStdout(runReviewCommand(process.cwd(), groupId, options)); return EXIT_CODES.ok; }); });
+    .action(async (groupId, options) => { await runAction(program, async () => { writeStdout(await runReviewCommand(process.cwd(), groupId, options)); return EXIT_CODES.ok; }); });
 
   program.command('verify')
     .description('verify that a selected test file kills an exact previously surviving mutant in a Stryker sandbox')
