@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-19T11:19:11Z",
+  "originalBytes": 439247725,
+  "originalSha256": "ef24536f77c4ae8edce49307bf81daf5852d11aa2fe3b79fa418f95d585e9638",
+  "compactBytes": 1020441,
+  "compactSha256": "e01042a6abb10f743d122d5e1e42a9ce627ed3d5af82c50119520c86369cced8",
+  "removedField": "files.*.mutants[].statusReason only",
+  "removedRecords": 3096,
+  "removedStringCharacters": 421283285,
+  "counts": {
+    "Survived": 1033,
+    "Killed": 3096,
+    "Timeout": 14
+  },
+  "allOtherJsonEventsIdentical": true,
+  "otherContentEventSha256": "aa87285cce03b2d5962db71c8d46b6e50eb8bbf1fd4c68e428cd65f4346edc83",
+  "originalUnchanged": true,
+  "externalAdoption": false
+}
