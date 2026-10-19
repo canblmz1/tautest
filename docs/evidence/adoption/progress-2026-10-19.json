@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-19T11:44:07.900Z",
+  "checkedAt": "2026-10-19T12:32:47.273Z",
   "objective": {
     "documentedRealUsers": 5,
     "monthlyDownloads": 200000
@@ -15,7 +15,7 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/tautest",
-      "verifiedAt": "2026-10-19T11:44:07.900Z",
+      "verifiedAt": "2026-10-19T12:32:47.273Z",
       "note": "Lagged rolling API window, not unique users. Core counts are not added."
     },
     "coreDownloads": {
@@ -24,16 +24,18 @@
       "start": "2026-09-17",
       "end": "2026-10-16",
       "source": "https://api.npmjs.org/downloads/point/last-month/@tautest/core",
-      "verifiedAt": "2026-10-19T11:44:07.898Z"
+      "verifiedAt": "2026-10-19T12:32:47.256Z"
     }
   },
   "release": {
-    "version": "2.1.2",
-    "cli": "published and public-registry smoke passed",
-    "core": "published and public-registry smoke passed",
-    "run": "https://github.com/canblmz1/tautest/actions/runs/39170171604",
-    "evidence": "docs/evidence/adoption/npm-2.1.2-release.json",
-    "previousVersion": "2.1.1"
+    "version": "2.1.3",
+    "cli": "published and clean public-registry smoke passed",
+    "core": "published and clean public-registry smoke passed",
+    "run": "https://github.com/canblmz1/tautest/actions/runs/39251368672",
+    "evidence": "docs/evidence/adoption/npm-2.1.3-release.json",
+    "sourcePr": "https://github.com/canblmz1/tautest/pull/45",
+    "versionPr": "https://github.com/canblmz1/tautest/pull/46",
+    "previousVersion": "2.1.2"
   },
   "onboarding": {
     "readmePr": "https://github.com/canblmz1/tautest/pull/39",
@@ -132,12 +134,15 @@
     {
       "repo": "rajbos/ai-engineering-fluency",
       "issue": 2341,
-      "status": "Eleventh invitation posted once under ongoing qualified outreach authorization, read back and verified. No external reply/use confirmed.",
+      "status": "Existing invitation updated after clean public-registry verification: native original-report import now works without Python compaction. No new invitation, external reply or independent use confirmed.",
       "invitation": "https://github.com/rajbos/ai-engineering-fluency/issues/2341#issuecomment-6266049013",
       "postedAt": "2026-10-19T11:23:04Z",
       "draft": ".tautest/rajbos-outreach.md",
       "proof": "https://github.com/canblmz1/tautest/tree/296f86b/docs/evidence/adoption/rajbos-report",
-      "scope": "439247725-byte report rejected as expected; omitting only diagnostic statusReason strings yields 1020441 bytes. All other JSON events fingerprint-identical. Public compact copy imports in a clean directory with published 2.1.2: 4143 total, 1033 survivors, 868 groups. No engine/Node execution promised."
+      "scope": "439247725-byte report rejected as expected; omitting only diagnostic statusReason strings yields 1020441 bytes. All other JSON events fingerprint-identical. Public compact copy imports in a clean directory with published 2.1.2: 4143 total, 1033 survivors, 868 groups. No engine/Node execution promised.",
+      "nativeImportRelease": "2.1.3",
+      "nativeImportEvidence": "docs/evidence/adoption/npm-2.1.3-release.json",
+      "invitationUpdatedAt": "2026-10-19T12:32:08Z"
     },
     {
       "repo": "thalesraymond/sample-todo-apps",
@@ -341,12 +346,52 @@
       "scope": "Isolated TodoTitle fixture with original unit test/config/setup. Exact >255 to >=255 target verified and killed by the new maximum-length test. Not a whole-app check or score.",
       "sourceUnchanged": true,
       "externalAdoption": false
+    },
+    {
+      "case": "Native large-report import",
+      "tautest": "2.1.3",
+      "sourcePr": "https://github.com/canblmz1/tautest/pull/45",
+      "versionPr": "https://github.com/canblmz1/tautest/pull/46",
+      "evidence": "docs/evidence/adoption/npm-2.1.3-release.json",
+      "inputBytes": 439247725,
+      "retainedBytes": 1020441,
+      "omittedStatusReasons": 3096,
+      "rawSummary": {
+        "verdict": "MIXED",
+        "mutationScore": 75.06637702148203,
+        "total": 4143,
+        "killed": 3096,
+        "survived": 1033,
+        "noCoverage": 0,
+        "timeout": 14,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "expressionGroups": 868,
+      "originalSha256": "ef24536f77c4ae8edce49307bf81daf5852d11aa2fe3b79fa418f95d585e9638",
+      "cliHeapLimitMiB": 128,
+      "semanticsMatchIndependentReference": true,
+      "originalUnchanged": true,
+      "projectEngineRegression": {
+        "status": "verified",
+        "testsCompleted": 4,
+        "killingTests": [
+          {
+            "file": "tests/unit/domain/tautest-title-boundary.test.ts",
+            "name": "accepts a title of exactly 255 characters"
+          }
+        ],
+        "sourceUnchanged": true,
+        "candidateRemoved": true
+      },
+      "externalAdoption": false
     }
   ],
   "nextActions": [
     "Respond to any human maintainer feedback and help them perform their own first Tautest run; retain a public or permissioned result before counting a user.",
     "Do not send another reminder to silent approved contacts. Do not merge external contributions on behalf of maintainers.",
-    "Qualify additional candidates by actual need and supported setup; send a single evidence-backed invitation under the ongoing authorization."
+    "Require recent repeated mutation-report use and a concrete unresolved triage/verification need before a new single technical invitation; a mutation keyword or bounty task alone is insufficient."
   ],
   "note": "All engineering results are experiments run by the Tautest maintainer. An invitation, a PR/check, our CI, a star, and npm downloads do not prove an external user. Target is not achieved; no token values were read.",
   "preparedOutreach": [
@@ -415,7 +460,13 @@
       "result": "Cannot import Stryker report: Report exceeds the 128 MiB import limit.",
       "workaround": "Omit ONLY diagnostic statusReason strings in a new copy. Verified all other JSON events fingerprint-identical; 1020441-byte public sample imports successfully in a fresh directory, 4143 total and 1033 survivors in 868 groups.",
       "evidence": "docs/evidence/adoption/rajbos-report/compaction.json",
-      "outreachSent": true
+      "outreachSent": true,
+      "resolution": {
+        "status": "Fixed in published 2.1.3; original raw report imports directly",
+        "evidence": "docs/evidence/adoption/npm-2.1.3-release.json",
+        "retainsOriginal": true,
+        "diagnosticOmissionDisclosed": true
+      }
     }
   ],
   "communicationAuthorization": {
@@ -467,8 +518,8 @@
     }
   ],
   "invitationResponseAudit": {
-    "checkedAt": "2026-10-19T11:32:32.986Z",
-    "checkedProjects": 11,
+    "checkedAt": "2026-10-19T12:23:24.636Z",
+    "checkedProjects": 12,
     "verifiedToolResponses": 0,
     "verifiedExternalUsers": 0,
     "unrelatedLaterComments": "One Stellar Wave application in the already-completed healthcare issue; no Tautest response or execution proof.",

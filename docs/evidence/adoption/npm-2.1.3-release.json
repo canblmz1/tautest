@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-19T12:32:05.587Z",
+  "sourcePr": "https://github.com/canblmz1/tautest/pull/45",
+  "sourceCommit": "d8c07640bca41e063d2adb852245aed23c1a7e0d",
+  "versionPr": "https://github.com/canblmz1/tautest/pull/46",
+  "releaseCommit": "db849e5286ae46ed814b24179e7d0ee54510a742",
+  "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39251368672",
+  "sourcePrChecks": 13,
+  "versionPrChecks": 13,
+  "coreTests": 233,
+  "cliTests": 69,
+  "node": "v22.23.2",
+  "registry": {
+    "states": [
+      {
+        "name": "tautest",
+        "status": 200,
+        "latest": "2.1.3",
+        "version": "2.1.3",
+        "publishedAt": "2026-10-19T12:26:27.859Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-zMoX7nhAmJcVJ1jLxvdz5Y/4BxAKeXRaWNZh4/TZvmukd7GP8cv4ksSZQbkdyoreKbd09juEdCBEb93V1p2QSw==",
+        "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.3.tgz"
+      },
+      {
+        "name": "@tautest/core",
+        "status": 200,
+        "latest": "2.1.3",
+        "version": "2.1.3",
+        "publishedAt": "2026-10-19T12:25:33.606Z",
+        "tarballStatus": 200,
+        "integrity": "sha512-ayWY5JBu2b447bwR5QxFC5wkWZKxiN7coGem2An1BTx8j1Ydr7KgSIp/SoEJUiv6GSSksPdkE1dGzYNi+BIhsg==",
+        "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.3.tgz"
+      }
+    ]
+  },
+  "smoke": {
+    "cliVersion": "2.1.3",
+    "coreVersion": "2.1.3",
+    "installedFrom": "public npm registry",
+    "engineAbsent": true,
+    "largeReport": {
+      "originalSha256": "ef24536f77c4ae8edce49307bf81daf5852d11aa2fe3b79fa418f95d585e9638",
+      "importDetails": {
+        "mode": "streamed",
+        "inputBytes": 439247725,
+        "retainedBytes": 1020441,
+        "omittedStatusReasons": 3096
+      },
+      "summary": {
+        "verdict": "MIXED",
+        "mutationScore": 75.06637702148203,
+        "total": 4143,
+        "killed": 3096,
+        "survived": 1033,
+        "noCoverage": 0,
+        "timeout": 14,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "groups": 868,
+      "heapLimitMiB": 128
+    },
+    "projectEngine": {
+      "status": "verified",
+      "testsCompleted": 4,
+      "killingTests": [
+        {
+          "file": "tests/unit/domain/tautest-title-boundary.test.ts",
+          "name": "accepts a title of exactly 255 characters"
+        }
+      ],
+      "sourceUnchanged": true,
+      "candidateRemoved": true
+    }
+  },
+  "externalAdoption": false
+}
