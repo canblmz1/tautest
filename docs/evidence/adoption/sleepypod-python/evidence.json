@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-19T11:00:47.814Z",
+  "repo": "sleepypod/core",
+  "head": "d0f5c7690c37850886fdd4449319ff8dfee780c8",
+  "node": "v24.21.0",
+  "normal": {
+    "passed": 18,
+    "failed": 0
+  },
+  "steps": [
+    {
+      "label": "normal",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout-env-only",
+      "exitCode": 1
+    },
+    {
+      "label": "before",
+      "exitCode": 1
+    },
+    {
+      "label": "after",
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": {
+    "src/biometrics/backtest/raw-inspection-child.ts": "4af5f697e51428c600a288a5a8bb645bec5cf2bfd6db6a3f1cdc2e9087848624",
+    "src/biometrics/backtest/tests/coordinator.test.ts": "40829bd81e6f7f9f9610ad94834dd3a3a65ceeb2f4f5277fa68e98586c688cbd",
+    "src/biometrics/profiles/tests/runtime-integration.test.ts": "e0a15bc47597b058bfb40e318e0b700c280beedaa63bc088bedda0fe2dcb0d2e"
+  },
+  "sourceUnchanged": true,
+  "scope": "Dry-run-only diagnostic, one instrumented source file and two integration test files. No mutant execution, full shard pass, hardware use or external adoption is claimed.",
+  "finding": "A checkout-only venv causes EISDIR while copying its directory symlink. Excluding it from the sandbox reproduces the original ENOENT. Exclusion plus uv sync in buildCommand prepares a sandbox-local locked environment before the dry run.",
+  "externalAdoption": false
+}

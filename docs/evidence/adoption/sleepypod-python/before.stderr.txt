@@ -1,0 +1,14 @@
+file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/process/3-dry-run-executor.js:65
+                    throw new ConfigError('There were failed tests in the initial test run.');
+                          ^
+
+ConfigError: There were failed tests in the initial test run.
+    at DryRunExecutor.validateResultCompleted (file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/process/3-dry-run-executor.js:65:27)
+    at DryRunExecutor.executeDryRun (file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/process/3-dry-run-executor.js:100:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async WorkItem.execute (file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/concurrent/pool.js:32:28)
+    at async file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/concurrent/pool.js:69:13 {
+  innerError: undefined
+}
+
+Node.js v24.21.0

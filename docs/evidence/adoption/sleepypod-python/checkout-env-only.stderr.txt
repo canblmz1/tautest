@@ -1,0 +1,16 @@
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+Error: EISDIR: illegal operation on a directory, copyfile '/home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/modules/piezo-processor/.venv/lib64' -> '/home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/.stryker-tmp/sandbox-ZuVtce/modules/piezo-processor/.venv/lib64'
+    at async Object.copyFile (node:internal/fs/promises:1327:10)
+    at async FileSystemAction.execute (file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/fs/file-system.js:16:28)
+    at async file:///home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/node_modules/.pnpm/@stryker-mutator+core@9.6.1_@types+node@25.9.9/node_modules/@stryker-mutator/core/dist/src/fs/file-system.js:33:9 {
+  errno: -21,
+  code: 'EISDIR',
+  syscall: 'copyfile',
+  path: '/home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/modules/piezo-processor/.venv/lib64',
+  dest: '/home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/.stryker-tmp/sandbox-ZuVtce/modules/piezo-processor/.venv/lib64'
+}
+
+Node.js v24.21.0

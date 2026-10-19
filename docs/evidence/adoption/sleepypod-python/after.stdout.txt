@@ -1,0 +1,8 @@
+[32m10:59:52 (3559) INFO ProjectReader[39m Found 1 of 1762 file(s) to be mutated.
+[32m10:59:52 (3559) INFO Instrumenter[39m Instrumented 1 source file(s) with 142 mutant(s)
+[32m10:59:54 (3559) INFO ConcurrencyTokenProvider[39m Creating 1 checker process(es) and 1 test runner process(es).
+[32m11:00:26 (3559) INFO Sandbox[39m Running build command "uv sync --directory modules/piezo-processor --locked --no-install-project" in "/home/runner/work/tautest/tautest/fixture-source/.codex/worktrees/python-sandbox-proof/.stryker-tmp/sandbox-AuLhgv".
+[32m11:00:28 (3559) INFO DryRunExecutor[39m Note: running the dry-run only. No mutations will be tested.
+[32m11:00:28 (3559) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m11:00:47 (3559) INFO DryRunExecutor[39m Initial test run succeeded. Ran 18 tests in 19 seconds (net 15692.874955999994 ms, overhead 3738.125044000006 ms).
+[32m11:00:47 (3559) INFO MutationTestExecutor[39m The dry-run has been completed successfully. No mutations have been executed.
