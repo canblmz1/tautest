@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-10-19T11:15:00.425Z",
+  "repo": "oller/vimgym",
+  "head": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "tautest": "2.1.2",
+  "node": "v22.23.2",
+  "scope": "Full command.ts only, original package suite plus two new ex-command tests. Not a full-package mutation score.",
+  "normal": {
+    "before": 372,
+    "withCandidate": 374
+  },
+  "before": {
+    "total": 52,
+    "Killed": 42,
+    "CompileError": 6,
+    "Survived": 4
+  },
+  "after": {
+    "total": 52,
+    "Killed": 44,
+    "CompileError": 6,
+    "Survived": 2
+  },
+  "verification": [
+    {
+      "target": {
+        "originalId": "15",
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd"
+      },
+      "status": "verified",
+      "testsCompleted": 14,
+      "killingTests": [
+        {
+          "file": "tests/tautest-ex-command.test.ts",
+          "name": "recognizes a write command with surrounding whitespace"
+        }
+      ]
+    },
+    {
+      "target": {
+        "originalId": "44",
+        "location": {
+          "end": {
+            "column": 75,
+            "line": 53
+          },
+          "start": {
+            "column": 25,
+            "line": 53
+          }
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "context.remaining"
+      },
+      "status": "verified",
+      "testsCompleted": 1,
+      "killingTests": [
+        {
+          "file": "tests/tautest-ex-command.test.ts",
+          "name": "recognizes a write command with surrounding whitespace"
+        }
+      ]
+    }
+  ],
+  "originalHashes": {
+    "package.json": "014408b4dd5b1b539f618ca79a3f8353b70734a850c71684ea02a30189ef5187",
+    "src/handlers/command.ts": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+    "src/handlers/insert.ts": "da1c0d36b6d66cfc7d5fc89f23712c2b1a95e03dc792f655961958713353b959",
+    "src/handlers/normal.ts": "3f8396095c141a1cb63a8772b56cfce8b5bb249565803ec9ca7cef9302110bb9",
+    "src/handlers/search.ts": "2da4c2ae5242e35ab6167e51d3abfbecbd772dc5faac15b589b4dbd57b8da761",
+    "src/handlers/visual.ts": "49df51fc01fcf3cdf81adb7d0ecf40e896594c059db6d26b63098643ffe7d934",
+    "src/index.ts": "69d7f556562de48c15e44ad373d3986f7a69de0a7a42fe72c5a1e23a533728ce",
+    "src/vimsplain.ts": "2214ad1d3b5a082cdf4e8372eaa70614533ad11110ada92e74d8ae68a2ed1236",
+    "src/vimsplain.types.ts": "de83965755338b0b986e7a8d6c444f55be472ad4ab682b1559fcd81f5df4468e",
+    "stryker.config.json": "4e907f7c66d2e366571659fdd454edffaa2321f500f320c928ac6e2b7b1ce0a7",
+    "tests/coverage.test.ts": "9dbc4a00f08b08425b06d557c5aa6b7df1c7b944773576131928a64c986dbc28",
+    "tests/fuzz.test.ts": "710b6e60be7dd1386916021df08f57cd9a8eaf0150cb86cd9fd6cb20c4d8d314",
+    "tests/integration.test.ts": "1d40c4a60d323315a46aa53776be8d12831b69e83e9c13ff051e9eeeda13d145",
+    "tests/vimsplain.test.ts": "a63855b7841bb86458d66a5bcea0fa2769954da674247e2fb38970278dbae7ac",
+    "tsconfig.json": "6a57c007ebb5ee3bd0da4ad037c6e828a19c5e6e9e74b5e2888355bd745403d6",
+    "vitest.config.ts": "cb2adcdadb082ec851d1be88cb74918dd1458d0167fdb66a5398cc85e4cc1d95"
+  },
+  "sourceUnchanged": true,
+  "configUnchanged": true,
+  "originalTestsUnchanged": true,
+  "externalAdoption": false
+}
