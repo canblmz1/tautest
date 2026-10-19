@@ -1,0 +1,50 @@
+name: Adoption proof - exact title length boundary
+
+on:
+  push:
+    branches: [evidence/triad-address]
+    paths:
+      - .github/workflows/sample-todo-proof.yml
+      - scripts/adoption-proof/sample-todo/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  title-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: thalesraymond/sample-todo-apps
+          ref: 7fd99fa4a6fe5b4471dc2d419b968fe90cda4a7c
+          path: fixture-source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.2'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.2
+          package_json_file: fixture-source/typescript/package.json
+          run_install: false
+      - name: Install locked project dependencies
+        working-directory: fixture-source/typescript
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install published CLI separately
+        run: npm install --prefix "$RUNNER_TEMP/tautest-cli" --ignore-scripts --no-audit --no-fund tautest@2.1.2
+      - name: Prove exact title boundary in isolated fixture
+        run: node scripts/adoption-proof/sample-todo/prove.mjs fixture-source "$RUNNER_TEMP/tautest-cli/node_modules/tautest/dist/index.js"
+      - name: Retain diagnostic proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-todo-title-boundary
+          path: proof-out/sample-todo
+          if-no-files-found: warn
+          retention-days: 14
