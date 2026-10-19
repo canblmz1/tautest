@@ -15,7 +15,8 @@ const include=files.filter(file=>file.endsWith('.test.ts'));
 writeFileSync(path.join(root,'vitest.tautest-python.config.mts'),`import base from './vitest.config.mts';\nexport default {...base,test:{...base.test,include:${JSON.stringify(include)},maxWorkers:1,fileParallelism:false}};\n`);
 const config=`import base from './stryker.config.mjs';\nconst config={...base,mutate:['src/biometrics/backtest/raw-inspection-child.ts'],dryRunOnly:true,incremental:false,concurrency:1,logLevel:'info',reporters:['clear-text'],vitest:{...base.vitest,configFile:'vitest.tautest-python.config.mts',related:false}};\n`;
 writeFileSync(path.join(root,'stryker.tautest-python-before.config.mjs'),config+'export default config;\n');
-writeFileSync(path.join(root,'stryker.tautest-python-after.config.mjs'),config+"export default {...config,buildCommand:'cd modules/piezo-processor && uv sync --locked --no-install-project'};\n");
+writeFileSync(path.join(root,'stryker.tautest-python-excluded.config.mjs'),config+"export default {...config,ignorePatterns:[...(config.ignorePatterns||[]),'**/.venv/**']};\n");
+writeFileSync(path.join(root,'stryker.tautest-python-after.config.mjs'),config+"export default {...config,ignorePatterns:[...(config.ignorePatterns||[]),'**/.venv/**'],buildCommand:'cd modules/piezo-processor && uv sync --locked --no-install-project'};\n");
 const steps=[];
 function run(label,args,timeout=240000){
   const r=spawnSync(process.execPath,args,{cwd:root,encoding:'utf8',timeout,maxBuffer:16*1024*1024,env:{...process.env,NODE_ENV:'test'}});
@@ -31,12 +32,15 @@ const normal=run('normal',['node_modules/vitest/vitest.mjs','run','--config','vi
 if(normal.status!==0)throw new Error('Unmutated integration baseline failed; no sandbox-fix claim');
 const tests=JSON.parse(readFileSync(suite,'utf8'));
 if(!tests.numPassedTests||tests.numFailedTests)throw new Error('Normal test results incomplete');
-const before=run('before',['node_modules/@stryker-mutator/core/bin/stryker.js','run','stryker.tautest-python-before.config.mjs']);
+const checkoutOnly=run('checkout-env-only',['node_modules/@stryker-mutator/core/bin/stryker.js','run','stryker.tautest-python-before.config.mjs']);
+const checkoutLog=(checkoutOnly.stdout||'')+(checkoutOnly.stderr||'');
+if(checkoutOnly.status===0||!checkoutLog.includes('EISDIR')||!checkoutLog.includes('.venv/lib64'))throw new Error('Checkout-only environment copy failure not reproduced');
+const before=run('before',['node_modules/@stryker-mutator/core/bin/stryker.js','run','stryker.tautest-python-excluded.config.mjs']);
 const beforeLog=(before.stdout||'')+(before.stderr||'');
 if(before.status===0||!beforeLog.includes('ENOENT')||!beforeLog.includes('.venv/bin/python'))throw new Error('Original missing-interpreter failure not reproduced');
 const after=run('after',['node_modules/@stryker-mutator/core/bin/stryker.js','run','stryker.tautest-python-after.config.mjs']);
 if(after.status!==0)throw new Error('Sandbox-local environment preparation did not resolve the scoped dry run');
 for(const file of files)if(hash(file)!==original[file])throw new Error('Tracked fixture source changed');
-const evidence={checkedAt:new Date().toISOString(),repo:'sleepypod/core',head,node:process.version,normal:{passed:tests.numPassedTests,failed:tests.numFailedTests},steps,sourceHashes:original,sourceUnchanged:true,scope:'Dry-run-only diagnostic, one instrumented source file and two integration test files. No mutant execution, full shard pass, hardware use or external adoption is claimed.',finding:'The checkout venv exists and normal tests pass; the original sandbox lacks it. Running uv sync in the Stryker buildCommand prepares the sandbox-local locked environment before the dry run.',externalAdoption:false};
+const evidence={checkedAt:new Date().toISOString(),repo:'sleepypod/core',head,node:process.version,normal:{passed:tests.numPassedTests,failed:tests.numFailedTests},steps,sourceHashes:original,sourceUnchanged:true,scope:'Dry-run-only diagnostic, one instrumented source file and two integration test files. No mutant execution, full shard pass, hardware use or external adoption is claimed.',finding:'A checkout-only venv causes EISDIR while copying its directory symlink. Excluding it from the sandbox reproduces the original ENOENT. Exclusion plus uv sync in buildCommand prepares a sandbox-local locked environment before the dry run.',externalAdoption:false};
 writeFileSync(path.join(out,'evidence.json'),JSON.stringify(evidence,null,2)+'\n');
 console.log(JSON.stringify(evidence));
