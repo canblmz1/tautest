@@ -16,9 +16,9 @@ export function buildMutationInsight(mutant: SurvivingMutant): MutationInsight {
   if (mutant.status === 'NoCoverage') {
     return {
       category: 'coverage',
-      missingBehavior: `The code path around ${mutant.filePath}:${mutant.line} is not executed by the current test suite.`,
-      whyThisMatters: 'This production branch was not executed by the current test suite, so behavior can change without any failing test.',
-      suggestedTestIdea: `Add a focused test that calls the code path around ${mutant.filePath}:${mutant.line} and asserts the observable result.`
+      missingBehavior: `Stryker recorded no test coverage for this mutant around ${mutant.filePath}:${mutant.line} in this run.`,
+      whyThisMatters: 'NoCoverage does not by itself prove a missing test. Test selection, configuration or coverage attribution may explain the result.',
+      suggestedTestIdea: `Before adding tests, verify test selection, configuration and coverage attribution. If a missing test is confirmed, add a focused test around ${mutant.filePath}:${mutant.line} that asserts the observable result.`
     };
   }
 

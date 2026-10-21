@@ -152,6 +152,37 @@ describe('score module', () => {
 });
 
 describe('report builders', () => {
+  it('preserves raw NoCoverage findings and score while requiring coverage diagnosis before adding tests', () => {
+    const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+    const score = getMutationVerdict(summary);
+    const topMutants = getActionableMutants(summary);
+    const rawMutant = summary.allMutants.find((mutant) => mutant.id === '2')!;
+    const report = buildJsonReport({ summary, score, topMutants, threshold: 60 });
+    const mutant = report.surviving.find((entry) => entry.id === '2')!;
+
+    expect(report.summary).toMatchObject({ mutationScore: 50, threshold: 60, verdict: 'WEAK', total: 4, killed: 1, survived: 1, noCoverage: 1, timeout: 1 });
+    expect(mutant).toMatchObject(rawMutant);
+    expect(mutant.status).toBe('NoCoverage');
+    expect(mutant.location).toEqual({ start: { line: 3, column: 5 }, end: { line: 3, column: 27 } });
+    expect(mutant.insight).toEqual({
+      category: 'coverage',
+      missingBehavior: 'Stryker recorded no test coverage for this mutant around src/discount.ts:3 in this run.',
+      whyThisMatters: 'NoCoverage does not by itself prove a missing test. Test selection, configuration or coverage attribution may explain the result.',
+      suggestedTestIdea: 'Before adding tests, verify test selection, configuration and coverage attribution. If a missing test is confirmed, add a focused test around src/discount.ts:3 that asserts the observable result.'
+    });
+    expect(report.aiSignals.validationLoop[0]).toContain('verify test selection, configuration and coverage attribution');
+    expect(report.aiSignals.validationLoop[0]).toContain('stop before adding tests');
+    for (const output of [
+      buildMarkdownReport({ summary, score, topMutants }),
+      buildHtmlReport(report),
+      buildTerminalSummary(summary, score, { topMutants })
+    ]) {
+      expect(output).toContain('Stryker recorded no test coverage');
+      expect(output).not.toContain('not executed by the current test suite');
+    }
+    expect(validateReportSchema(report)).toEqual([]);
+  });
+
   it('builds markdown, json, and terminal reports', () => {
     const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
     const score = getMutationVerdict(summary);
@@ -404,6 +435,29 @@ describe('report builders', () => {
 });
 
 describe('prompt builder', () => {
+  it.each([undefined, ['Run the existing Stryker command and analyze the refreshed report.']])(
+    'diagnoses NoCoverage before requesting a test patch, including custom validation loops (%s)',
+    (validationLoop) => {
+      const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
+      const mutants = getActionableMutants(summary);
+      const prompt = buildFixPrompt({ mutants, testRunner: 'vitest', validationLoop });
+      const report = buildJsonReport({ summary, score: getMutationVerdict(summary), topMutants: mutants, aiSignals: { validationLoop } });
+      const objective = prompt.split('## Objective')[1]!.split('## Hard Rules')[0]!;
+      const loop = prompt.split('## Validation Loop')[1]!.split('## Commands')[0]!;
+
+      expect(objective).toContain('Review the listed mutants before deciding whether a test change is needed.');
+      expect(objective).toContain('For NoCoverage, verify test selection, configuration and coverage attribution first.');
+      expect(loop).toContain('1. For NoCoverage, first verify test selection, configuration and coverage attribution.');
+      expect(loop).toContain('stop before adding tests');
+      expect(loop).toContain('2. Only after confirming a missing test, add or strengthen the smallest test that observes the behavioral difference.');
+      expect(report.aiSignals.validationLoop[0]).toBe(loop.trim().split('\n')[0]!.slice(3));
+      expect(prompt).toContain('- Status: NoCoverage');
+      expect(prompt).toContain('Before adding tests, verify test selection, configuration and coverage attribution.');
+      expect(prompt).not.toContain('not executed by the current test suite');
+      expect(prompt).not.toContain('listed surviving or uncovered mutants are killed');
+    }
+  );
+
   it('builds a test-only AI prompt from surviving mutants', () => {
     const summary = parseStrykerMutationReport(JSON.parse(readFileSync(fixturePath, 'utf8')));
 
@@ -469,7 +523,7 @@ describe('prompt builder', () => {
     expect(prompts.find((item) => item.fileName === 'boundary-condition.json')?.prompt).toContain('exact value 65');
     expect(prompts.find((item) => item.fileName === 'boolean-condition.json')?.prompt).toContain('truth-table');
     expect(prompts.find((item) => item.fileName === 'arithmetic-operator.json')?.prompt).toContain('exact expected numeric result');
-    expect(prompts.find((item) => item.fileName === 'no-coverage.json')?.prompt).toContain('not executed by the current test suite');
+    expect(prompts.find((item) => item.fileName === 'no-coverage.json')?.prompt).toContain('Stryker recorded no test coverage');
     // `subtotal >= 100` forced to `false` is a branch mutant, not a boundary shift.
     expect(prompts.find((item) => item.fileName === 'conditional-expression.json')?.prompt).toContain('One branch direction may be forced');
     expect(prompts.find((item) => item.fileName === 'conditional-expression.json')?.prompt).not.toContain('exact boundary value');

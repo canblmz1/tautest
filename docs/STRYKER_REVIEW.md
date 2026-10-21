@@ -10,6 +10,8 @@ Open `.tautest/review/report.md` for all actionable findings and `.tautest/revie
 
 Large JSON reports use the same command. Above 128 MiB, Tautest streams the file and leaves mutant `statusReason` diagnostic strings in the original report instead of loading them into the analysis. It keeps sources, statuses, replacements and test attribution, records the original file's SHA-256, and discloses how many diagnostics were omitted. Input is limited to 1 GiB and retained JSON to 128 MiB. No Python or separate compaction step is needed.
 
+`NoCoverage` means Stryker recorded no test coverage for that mutant in that run. It does not by itself prove a missing test. Before adding tests, verify that the relevant test files and projects were selected, inspect the effective runner configuration and coverage attribution, and check that tests loaded the instrumented source rather than a separate build output. If these checks are unresolved, report the uncertainty before editing tests. Add a focused test only when a real behavioral gap is confirmed. Raw statuses and the mutation score remain unchanged.
+
 Choose a survivor with a real behavioral difference. Write the smallest test that passes on the original implementation and fails for that replacement. Then, from the package root, prove the target using its original id:
 
 ```bash

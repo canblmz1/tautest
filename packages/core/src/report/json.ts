@@ -32,6 +32,9 @@ export const PROMPT_VALIDATION_LOOP = [
   'If the score does not improve or the mutant still survives, reread the prompt and adjust the test instead of changing production code.'
 ];
 
+export const NO_COVERAGE_REVIEW_STEP =
+  'For NoCoverage, first verify test selection, configuration and coverage attribution. If any is unresolved, report the uncertainty and stop before adding tests.';
+
 export function buildJsonReport(input: {
   summary: MutationSummary;
   score: ScoreResult;
@@ -91,7 +94,9 @@ export function buildJsonReport(input: {
       promptStyle: input.aiSignals?.promptStyle ?? 'agent',
       author: input.aiSignals?.author,
       hardRules,
-      validationLoop,
+      validationLoop: input.topMutants.some((mutant) => mutant.status === 'NoCoverage')
+        ? [NO_COVERAGE_REVIEW_STEP, ...validationLoop]
+        : validationLoop,
       commands: input.aiSignals?.commands ?? []
     },
     surviving: enrichMutants(input.topMutants),
