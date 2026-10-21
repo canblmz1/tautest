@@ -99,6 +99,8 @@ tautest doctor --json
 
 Checks include Node (22 or newer), Git, shallow clone status, package.json, runner detection, Stryker dependencies, whether the installed Vitest and Stryker Vitest runner can run tests together, runner config, monorepo signals, existing Stryker config, `.tautest/` gitignore, and package manager.
 
+An explicit `testRunner` in Tautest config takes precedence over automatic detection. The Stryker dependency check requires the selected runner's package: a Jest runner cannot satisfy a Vitest selection, or vice versa. Missing dependencies remain warnings, so they do not change the exit code to an error. Vitest compatibility is also a warning when either installed version is unavailable; the existing incompatible Vitest 5 combination remains an error. Dependency declarations and these version checks do not prove that mutation tests will execute successfully.
+
 ## `tautest run`
 
 Runs mutation testing for changed source lines.

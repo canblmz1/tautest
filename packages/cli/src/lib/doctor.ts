@@ -32,7 +32,15 @@ export async function runDoctor(cwd: string): Promise<DoctorReport> {
   const project = safeDetectProject(cwd);
   const config = await safeLoadTautestConfig(project);
   const packageManager = project.packageJson ? detectPackageManager(project.rootDir, project.packageJson) : null;
-  const testRunner = project.packageJson ? detectTestRunner(project) : null;
+  let testRunner = project.packageJson ? detectTestRunner(project) : null;
+  if (config && config.testRunner !== 'auto') {
+    testRunner = {
+      runner: config.testRunner,
+      candidates: testRunner?.candidates ?? [],
+      configFile: config.testRunner === 'vitest' ? project.vitestConfigFiles[0] : project.jestConfigFiles[0],
+      reason: 'Selected by testRunner in tautest config.'
+    };
+  }
   const checks: DoctorCheck[] = [
     checkNodeVersion(),
     checkGitAvailable(cwd),
@@ -40,7 +48,7 @@ export async function runDoctor(cwd: string): Promise<DoctorReport> {
     checkShallowClone(cwd),
     checkPackageJson(project),
     checkTestRunner(testRunner),
-    checkStrykerDependencies(project),
+    checkStrykerDependencies(project, testRunner),
     checkVitestStrykerRunner(project, testRunner),
     checkRunnerConfig(project, testRunner, config),
     checkJestCompatibility(project, testRunner, config),
@@ -193,24 +201,29 @@ function checkTestRunner(testRunner: TestRunnerDetection | null): DoctorCheck {
   };
 }
 
-function checkStrykerDependencies(project: ProjectInfo): DoctorCheck {
+function checkStrykerDependencies(project: ProjectInfo, testRunner: TestRunnerDetection | null): DoctorCheck {
   const deps = {
     ...project.packageJson?.dependencies,
     ...project.packageJson?.devDependencies,
     ...project.packageJson?.peerDependencies
   };
   const hasCore = Boolean(deps['@stryker-mutator/core']);
-  const hasRunner = Boolean(deps['@stryker-mutator/vitest-runner'] || deps['@stryker-mutator/jest-runner']);
+  const runnerPackage = testRunner?.runner ? `@stryker-mutator/${testRunner.runner}-runner` : undefined;
+  const hasRunner = runnerPackage ? Boolean(deps[runnerPackage]) : Boolean(deps['@stryker-mutator/vitest-runner'] || deps['@stryker-mutator/jest-runner']);
 
   if (hasCore && hasRunner) {
     return { name: 'Stryker dependencies', status: 'ok', message: 'Stryker core and runner dependency found.' };
   }
 
+  const missing = [
+    ...(!hasCore ? ['@stryker-mutator/core'] : []),
+    ...(!hasRunner ? [runnerPackage ?? 'a Stryker test runner'] : [])
+  ];
   return {
     name: 'Stryker dependencies',
     status: 'warning',
-    message: 'Missing Stryker core or runner dependency.',
-    suggestion: 'Run `tautest init` to add the required devDependencies.'
+    message: `Missing required Stryker dependencies: ${missing.join(', ')}.`,
+    suggestion: `Run \`tautest init${testRunner?.runner ? ` --runner ${testRunner.runner}` : ''}\` to add the required devDependencies.`
   };
 }
 
@@ -228,7 +241,12 @@ function checkVitestStrykerRunner(project: ProjectInfo, testRunner: TestRunnerDe
   const runner = installedVersion(project.rootDir, '@stryker-mutator/vitest-runner');
 
   if (!vitest || !runner) {
-    return { name, status: 'ok', message: 'Vitest or the Stryker Vitest runner is not installed yet.' };
+    const missing = [...(!vitest ? ['vitest'] : []), ...(!runner ? ['@stryker-mutator/vitest-runner'] : [])];
+    return {
+      name, status: 'warning',
+      message: `Cannot check Vitest/Stryker compatibility; not installed: ${missing.join(', ')}.`,
+      suggestion: 'Install the missing packages; `tautest init --runner vitest` adds the Stryker runner.'
+    };
   }
 
   if (compareVersions(vitest, '5.0.0') >= 0 && compareVersions(runner, '10.0.0') <= 0) {
