@@ -26,6 +26,8 @@ npx tautest init --yes --runner vitest --no-install
 npx tautest run --base origin/main
 ```
 
+`tautest init` preserves existing Stryker dependencies. When only the runner is missing, it uses the core's exact, caret or tilde version declaration instead of selecting a different Stryker major. Custom core references (for example workspace paths, aliases or open-ended ranges) require you to install a matching runner manually first; init restores its file changes when it cannot safely choose one.
+
 Tautest is not a mutation engine. It uses StrykerJS and adds changed-line scoping, readable reports, AI test-fix prompts, and GitHub PR workflow support.
 
 Docs: https://github.com/canblmz1/tautest#readme

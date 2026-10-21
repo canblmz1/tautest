@@ -4,13 +4,17 @@ import type { PackageJson, PackageManager, TestRunner } from '@tautest/core';
 export function addStrykerDevDependencies(packageJsonPath: string, runner: TestRunner): { changed: boolean; added: string[] } {
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as PackageJson;
   const original = JSON.stringify(packageJson, null, 2);
-  const dependencies = strykerDependenciesForRunner(runner);
+  const coreVersion = packageJson.devDependencies?.['@stryker-mutator/core'] ?? packageJson.dependencies?.['@stryker-mutator/core'];
+  const dependencies = strykerDependenciesForRunner(runner, coreVersion ?? '^10.0.0');
   packageJson.devDependencies = packageJson.devDependencies ?? {};
 
   const added: string[] = [];
 
   for (const [name, version] of Object.entries(dependencies)) {
     if (!packageJson.devDependencies[name] && !packageJson.dependencies?.[name]) {
+      if (coreVersion && !/^[~^]?\d+\.\d+\.\d+$/.test(coreVersion)) {
+        throw new Error(`Cannot choose a matching Stryker runner for core spec "${coreVersion}". Install ${name} manually, then run tautest init again.`);
+      }
       packageJson.devDependencies[name] = version;
       added.push(name);
     }
@@ -42,17 +46,17 @@ export function installCommandForPackageManager(packageManager: PackageManager):
   return { command: commandName('npm'), args: ['install'] };
 }
 
-function strykerDependenciesForRunner(runner: TestRunner): Record<string, string> {
+function strykerDependenciesForRunner(runner: TestRunner, version: string): Record<string, string> {
   if (runner === 'jest') {
     return {
-      '@stryker-mutator/core': '^10.0.0',
-      '@stryker-mutator/jest-runner': '^10.0.0'
+      '@stryker-mutator/core': version,
+      '@stryker-mutator/jest-runner': version
     };
   }
 
   return {
-    '@stryker-mutator/core': '^10.0.0',
-    '@stryker-mutator/vitest-runner': '^10.0.0'
+    '@stryker-mutator/core': version,
+    '@stryker-mutator/vitest-runner': version
   };
 }
 

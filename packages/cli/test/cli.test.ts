@@ -244,6 +244,52 @@ describe('init command', () => {
     const written = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
     expect(written.devDependencies).toMatchObject({ '@stryker-mutator/core': '^10.0.0', [runnerPlugin]: '^10.0.0' });
   });
+
+  it.each([
+    ['vitest', 'devDependencies', '9.6.1'],
+    ['vitest', 'devDependencies', '^9.6.1'],
+    ['vitest', 'dependencies', '~9.6.1'],
+    ['jest', 'devDependencies', '^9.6.1'],
+    ['vitest', 'devDependencies', '10.0.0']
+  ] as const)('matches the missing %s runner to core in %s at %s', async (runner, section, version) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-init-existing-core-'));
+    const manifestPath = path.join(root, 'package.json');
+    writeFileSync(manifestPath, JSON.stringify({ name: 'fixture', [section]: { '@stryker-mutator/core': version } }));
+
+    const result = await runInit(root, { noInstall: true, runner, pm: 'pnpm' });
+
+    const written = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    expect(written[section]['@stryker-mutator/core']).toBe(version);
+    expect(written.devDependencies[`@stryker-mutator/${runner}-runner`]).toBe(version);
+    expect(result.addedDependencies).toEqual([`@stryker-mutator/${runner}-runner`]);
+    expect(result.installed).toBe(false);
+  });
+
+  it('preserves an existing runner instead of overwriting its declaration', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-init-keep-runner-'));
+    const manifestPath = path.join(root, 'package.json');
+    const devDependencies = { '@stryker-mutator/core': '^9.6.1', '@stryker-mutator/vitest-runner': '9.6.1' };
+    writeFileSync(manifestPath, JSON.stringify({ name: 'fixture', devDependencies }));
+
+    const result = await runInit(root, { noInstall: true, runner: 'vitest' });
+
+    expect(JSON.parse(readFileSync(manifestPath, 'utf8')).devDependencies).toEqual(devDependencies);
+    expect(result.addedDependencies).toEqual([]);
+  });
+
+  it.each(['workspace:*', 'npm:@stryker-mutator/core@9.6.1', '>=9.6.1'])('leaves files intact when core spec %s needs manual runner selection', async (version) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'tautest-cli-init-custom-core-'));
+    const manifestPath = path.join(root, 'package.json');
+    const original = JSON.stringify({ name: 'fixture', devDependencies: { '@stryker-mutator/core': version } });
+    writeFileSync(manifestPath, original);
+    writeFileSync(path.join(root, '.gitignore'), 'existing/\n');
+
+    await expect(runInit(root, { noInstall: true, runner: 'vitest' })).rejects.toThrow('Install @stryker-mutator/vitest-runner manually');
+
+    expect(readFileSync(manifestPath, 'utf8')).toBe(original);
+    expect(readFileSync(path.join(root, '.gitignore'), 'utf8')).toBe('existing/\n');
+    expect(existsSync(path.join(root, 'tautest.config.ts'))).toBe(false);
+  });
 });
 
 describe('prompt and report commands', () => {
