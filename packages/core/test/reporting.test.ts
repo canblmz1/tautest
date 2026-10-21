@@ -57,6 +57,85 @@ describe('Stryker report parser', () => {
 
     expect(extractOriginal('  if (age >= 65) {\n}', location)).toBe('age >= 65');
   });
+
+  it.each([
+    ['LF', '\n'],
+    ['CRLF', '\r\n']
+  ])('excludes code after a multiline exclusive end with %s line endings', (_name, newline) => {
+    const source = `export function price(value) {${newline}  return value + 1;${newline}} const sentinel = 123;${newline}`;
+    const location: MutationLocation = {
+      start: { line: 1, column: 30 },
+      end: { line: 3, column: 2 }
+    };
+
+    expect(extractOriginal(source, location)).toBe('{\n  return value + 1;\n}');
+  });
+
+  it('takes no characters from the last line when a multiline end column is one', () => {
+    const source = 'export function price(value) {\n  return value + 1;\n} const sentinel = 123;\n';
+    const location: MutationLocation = {
+      start: { line: 1, column: 30 },
+      end: { line: 3, column: 1 }
+    };
+
+    expect(extractOriginal(source, location)).toBe('{\n  return value + 1;');
+  });
+
+  it('retains single-line trimming and the empty-span fallback', () => {
+    expect(extractOriginal('  value + 1  ;', {
+      start: { line: 1, column: 1 },
+      end: { line: 1, column: 13 }
+    })).toBe('value + 1');
+    expect(extractOriginal('  value + 1;', {
+      start: { line: 1, column: 3 },
+      end: { line: 1, column: 3 }
+    })).toBe('value + 1;');
+  });
+
+  it('parses a multiline original without including following code or changing mutant metadata', () => {
+    const location: MutationLocation = {
+      start: { line: 1, column: 30 },
+      end: { line: 3, column: 2 }
+    };
+    const summary = parseStrykerMutationReport({
+      files: {
+        'src/price.js': {
+          source: 'export function price(value) {\n  return value + 1;\n} const sentinel = 123;\n',
+          mutants: [{
+            id: 'block-1',
+            status: 'Survived',
+            mutatorName: 'BlockStatement',
+            replacement: '{}',
+            location,
+            coveredBy: ['test-1'],
+            killedBy: [],
+            testsCompleted: 1
+          }]
+        }
+      },
+      testFiles: {
+        'test/price.test.js': { tests: [{ id: 'test-1', name: 'price adds one' }] }
+      }
+    });
+
+    expect(summary.allMutants).toHaveLength(1);
+    expect(summary.allMutants[0]).toEqual({
+      id: 'block-1',
+      filePath: 'src/price.js',
+      line: 1,
+      mutatorName: 'BlockStatement',
+      original: '{\n  return value + 1;\n}',
+      replacement: '{}',
+      status: 'Survived',
+      description: undefined,
+      location,
+      coveredBy: ['test-1'],
+      killedBy: [],
+      coveringTests: [{ id: 'test-1', name: 'price adds one', filePath: 'test/price.test.js' }]
+    });
+    expect(summary.survivingMutants).toEqual(summary.allMutants);
+    expect(summary).toMatchObject({ score: 0, total: 1, survived: 1, killed: 0, noCoverage: 0, timeout: 0 });
+  });
 });
 
 describe('score module', () => {
