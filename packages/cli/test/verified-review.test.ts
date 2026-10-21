@@ -41,8 +41,18 @@ describe('analyze and manual review', () => {
     expect(result.groups[0].mutants).toHaveLength(2);
     expect(result.rawSummary).toMatchObject({ survived: 1, noCoverage: 1, mutationScore: 0 });
     expect(readFileSync(path.join(root, 'mutation.json'), 'utf8')).toBe(before);
-    expect(readFileSync(path.join(root, '.tautest/review/fix-prompt.md'), 'utf8')).toContain('age > 65');
+    const prompt = readFileSync(path.join(root, '.tautest/review/fix-prompt.md'), 'utf8');
+    expect(prompt).toContain('age > 65');
+    expect(prompt).toContain('1. For NoCoverage, first verify test selection, configuration and coverage attribution.');
+    expect(prompt).toContain('stop before adding tests');
+    expect(prompt).toContain('Only after confirming a missing test');
+    expect(prompt).not.toContain('not executed by the current test suite');
     expect(existsSync(path.join(root, '.tautest/review/report.json'))).toBe(true);
+    const report = json(root, '.tautest/review/report.json');
+    expect(report.surviving.find((mutant: { id: string }) => mutant.id === '8')).toMatchObject({
+      id: '8', status: 'NoCoverage', location, mutatorName: 'EqualityOperator', replacement: 'age > 65', coveringTests: []
+    });
+    expect(report.aiSignals.validationLoop[0]).toContain('verify test selection, configuration and coverage attribution');
   });
 
   it('requires a recorded or explicit runner only for prompts and marks pending reports incomplete', async () => {

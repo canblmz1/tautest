@@ -1,6 +1,6 @@
 import type { PromptStyle, ReportMutant, SurvivingMutant } from '../types';
 import { selectTopMutants } from '../score/score';
-import { PROMPT_HARD_RULES, PROMPT_VALIDATION_LOOP } from '../report/json';
+import { NO_COVERAGE_REVIEW_STEP, PROMPT_HARD_RULES, PROMPT_VALIDATION_LOOP } from '../report/json';
 import { enrichMutant } from '../report/insights';
 
 export function buildFixPrompt(input: {
@@ -15,6 +15,14 @@ export function buildFixPrompt(input: {
   const enrichedMutants = topMutants.map(enrichMutant);
   const commands = input.commands ?? ['pnpm test'];
   const style = input.style ?? 'agent';
+  const hasNoCoverage = topMutants.some((mutant) => mutant.status === 'NoCoverage');
+  const validationSteps = [
+    ...(hasNoCoverage ? [NO_COVERAGE_REVIEW_STEP] : []),
+    hasNoCoverage
+      ? 'Only after confirming a missing test, add or strengthen the smallest test that observes the behavioral difference.'
+      : 'Add or strengthen the smallest test that observes the behavioral difference.',
+    ...(input.validationLoop ?? PROMPT_VALIDATION_LOOP)
+  ];
 
   return `# Tautest Test-Fix Prompt
 
@@ -22,7 +30,9 @@ ${styleIntro(style)}
 
 ## Objective
 
-Strengthen the test suite so the listed surviving or uncovered mutants are killed. Make the smallest test-only change that proves the intended behavior.
+${hasNoCoverage
+    ? 'Review the listed mutants before deciding whether a test change is needed. For NoCoverage, verify test selection, configuration and coverage attribution first. Only for a confirmed behavioral gap, make the smallest test-only change that proves the intended behavior.'
+    : 'Strengthen the test suite so the listed surviving or uncovered mutants are killed. Make the smallest test-only change that proves the intended behavior.'}
 
 ## Hard Rules
 
@@ -30,14 +40,13 @@ ${PROMPT_HARD_RULES.map((rule) => `- ${rule}`).join('\n')}
 - Keep the fix small and aligned with the existing ${input.testRunner} test style.
 - Prefer focused boundary, branch, and behavior assertions over snapshots or broad smoke tests.
 
-## Mutants To Kill
+## Mutants To ${hasNoCoverage ? 'Review' : 'Kill'}
 
 ${enrichedMutants.length > 0 ? enrichedMutants.map(formatMutant).join('\n\n') : 'No surviving mutants were provided.'}
 
 ## Validation Loop
 
-1. Add or strengthen the smallest test that observes the behavioral difference.
-${(input.validationLoop ?? PROMPT_VALIDATION_LOOP).map((step, index) => `${index + 2}. ${step}`).join('\n')}
+${validationSteps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
 
 ## Commands
 
