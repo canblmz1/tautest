@@ -32,7 +32,7 @@ jobs:
       - name: Create compact handoff
         run: |
           node "$PILOT/collect-public.mjs" pilot-output handoff/observed
-          cp "$PILOT/README.txt" "$PILOT/package.json" "$PILOT/package-lock.json" "$PILOT/pilot.mjs" "$PILOT/collect-public.mjs" "$PILOT/ex-command-whitespace.test.ts" "$PILOT/candidate.patch" "$PILOT/invitation-draft.txt" "$PILOT/PROJECT-LICENSE" handoff/
+          cp "$PILOT/README.txt" "$PILOT/package.json" "$PILOT/package-lock.json" "$PILOT/pilot.mjs" "$PILOT/collect-public.mjs" "$PILOT/ex-command-whitespace.test.ts" "$PILOT/candidate.patch" "$PILOT/invitation-draft.txt" "$PILOT/PROJECT-LICENSE" "$PILOT/candidates.json" "$PILOT/reviewer-note.txt" handoff/
       - name: Record result
         run: |
           node --input-type=module <<'NODE' >> "$GITHUB_STEP_SUMMARY"
