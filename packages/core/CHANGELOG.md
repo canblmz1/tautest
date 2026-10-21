@@ -1,5 +1,21 @@
 # @tautest/core
 
+## 2.1.4
+
+### Patch Changes
+
+- 8797fc0: Explain NoCoverage as missing coverage recorded by Stryker for the current run, rather than proof that the test suite never executed the code. Reports and test-fix prompts now ask users to check test selection, configuration and coverage attribution before adding tests. Raw mutant statuses, scores and quality-gate behavior are unchanged.
+- 4c60a83: Keep newly added Stryker runners on the existing core version during `tautest init`, preserving exact, caret and tilde version declarations from either dependencies section. Projects without Stryker still receive version 10. Existing declarations are not overwritten.
+
+  When a missing runner cannot be selected safely from a custom core declaration (such as a workspace reference, alias or open-ended range), init stops without retaining file changes and asks for manual runner installation.
+
+- 1bd247f: Keep review warnings neutral when no mutation threshold was evaluated, including imported `analyze` reports, instead of claiming "Threshold passed" or new patch coverage. Mirror the guidance in the GitHub Action. Explicit thresholds, including zero, retain their existing behavior; scores, mutant states, verdicts, JSON contracts and exit codes are unchanged.
+- 07947b8: Respect the exclusive end column on its own line when extracting multiline mutant originals. Reports and test-fix prompts no longer include code after the mutant's source span. Single-line extraction and trimming are unchanged.
+
+  Review groups whose original text is corrected receive new group IDs. Existing manual decisions are not transferred to those groups; review them again after reimporting the report.
+
+- 2cc36ca: Clean up the verify worker's process group on POSIX SIGINT/SIGTERM before preserving signal termination. Windows signal handlers attempt bounded process-tree cleanup with taskkill; native console cancellation remains unverified. Cancelled verification cannot return a successful verification result or be reported as budget exhaustion. Normal completion and budget enforcement are preserved.
+
 ## 2.1.3
 
 ### Patch Changes
