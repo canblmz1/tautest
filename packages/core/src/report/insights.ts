@@ -91,9 +91,9 @@ export function describeGateAdvisory(input: { score: number | null; threshold?: 
     return null;
   }
 
-  const thresholdPassed = input.threshold === undefined || input.score >= input.threshold;
+  const thresholdPassed = input.threshold !== undefined && input.score >= input.threshold;
 
-  if (!thresholdPassed) {
+  if (input.threshold !== undefined && !thresholdPassed) {
     return null;
   }
 
@@ -102,9 +102,13 @@ export function describeGateAdvisory(input: { score: number | null; threshold?: 
     input.noCoverage > 0 ? `${input.noCoverage} uncovered mutant${input.noCoverage === 1 ? '' : 's'}` : null
   ].filter((part): part is string => part !== null);
   const verb = actionable === 1 ? 'needs' : 'need';
+  const review = `${parts.join(' and ')} still ${verb} review`;
+  const advisory = input.threshold === undefined
+    ? `No threshold was evaluated; ${review}. `
+    : `Threshold passed; ${review} before treating this patch as fully covered. `;
 
   return (
-    `Threshold passed; ${parts.join(' and ')} still ${verb} review before treating this patch as fully covered. ` +
+    advisory +
     'A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change.'
   );
 }
