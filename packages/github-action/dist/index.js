@@ -102046,8 +102046,8 @@ function describeGateAdvisory(input) {
   if (actionable === 0 || score === null) {
     return null;
   }
-  const thresholdPassed = input.threshold === void 0 || score >= input.threshold;
-  if (!thresholdPassed) {
+  const thresholdPassed = input.threshold !== void 0 && score >= input.threshold;
+  if (input.threshold !== void 0 && !thresholdPassed) {
     return null;
   }
   const parts = [
@@ -102055,7 +102055,9 @@ function describeGateAdvisory(input) {
     input.noCoverage > 0 ? `${input.noCoverage} uncovered mutant${input.noCoverage === 1 ? "" : "s"}` : null
   ].filter((part) => part !== null);
   const verb = actionable === 1 ? "needs" : "need";
-  return `Threshold passed; ${parts.join(" and ")} still ${verb} review before treating this patch as fully covered. A survivor is not automatically a missing test \u2014 it can be an equivalent mutant with no observable behavior change.`;
+  const review = `${parts.join(" and ")} still ${verb} review`;
+  const advisory = input.threshold === void 0 ? `No threshold was evaluated; ${review}. ` : `Threshold passed; ${review} before treating this patch as fully covered. `;
+  return advisory + "A survivor is not automatically a missing test \u2014 it can be an equivalent mutant with no observable behavior change.";
 }
 
 // src/pr-comment.ts

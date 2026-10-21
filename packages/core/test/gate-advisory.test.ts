@@ -75,12 +75,38 @@ describe('describeGateAdvisory', () => {
     expect(describeGateAdvisory({ score: 40, threshold: 60, survived: 3, noCoverage: 0 })).toBeNull();
   });
 
-  it('treats an unset threshold as always active for the advisory', () => {
-    expect(describeGateAdvisory({ score: 87.5, threshold: undefined, survived: 1, noCoverage: 0 })).toContain('Threshold passed');
+  it.each([0, 87.5])('keeps a neutral review advisory without an evaluated threshold at score %s', (score) => {
+    const advisory = describeGateAdvisory({ score, survived: 1, noCoverage: 0 });
+
+    expect(advisory).toContain('No threshold was evaluated; 1 surviving mutant still needs review.');
+    expect(advisory).toContain('not automatically a missing test');
+    expect(advisory).not.toMatch(/Threshold passed|this patch|fully covered/);
   });
 });
 
 describe('gate advisory surfaces in reports', () => {
+  it.each([0, 87.5])('keeps Markdown and terminal neutral without a threshold at score %s', (value) => {
+    const summary = value === 0
+      ? { ...oneSurvivorEightMutants(), score: 0, total: 1, killed: 0 }
+      : oneSurvivorEightMutants();
+    const score = getMutationVerdict(summary);
+
+    for (const output of [buildMarkdownReport({ summary, score }), buildTerminalSummary(summary, score)]) {
+      expect(output).toContain('No threshold was evaluated; 1 surviving mutant still needs review.');
+      expect(output).not.toMatch(/Threshold passed|this patch|fully covered/);
+    }
+  });
+
+  it('preserves a passed explicit zero threshold in Markdown and terminal', () => {
+    const summary = { ...oneSurvivorEightMutants(), score: 0, total: 1, killed: 0 };
+    const score = getMutationVerdict(summary);
+
+    for (const output of [buildMarkdownReport({ summary, score, threshold: 0 }), buildTerminalSummary(summary, score, { threshold: 0 })]) {
+      expect(output).toContain('Threshold passed; 1 surviving mutant still needs review');
+      expect(output).not.toContain('No threshold was evaluated');
+    }
+  });
+
   it('appears in the terminal summary for a passing threshold with a real survivor', () => {
     const summary = oneSurvivorEightMutants();
     const score = getMutationVerdict(summary);

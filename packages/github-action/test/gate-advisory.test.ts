@@ -32,6 +32,38 @@ describe('describeGateAdvisory (github-action)', () => {
   it('says nothing when the score is null, even with survivors and no threshold set', () => {
     expect(describeGateAdvisory({ score: null, threshold: undefined, survived: 1, noCoverage: 0 })).toBeNull();
   });
+
+  it('also treats an absent Action score as unknown', () => {
+    expect(describeGateAdvisory({ score: undefined, survived: 1, noCoverage: 0 })).toBeNull();
+  });
+});
+
+describe('unevaluated threshold in Action outputs', () => {
+  it.each([0, 87.5])('keeps comment and step summary neutral without a threshold at score %s', (score) => {
+    const summary = { verdict: score === 0 ? 'WEAK' : 'STRONG', mutationScore: score, killed: score === 0 ? 0 : 7, survived: 1, noCoverage: 0 };
+    const outputs = [
+      buildPrComment({ ...summary, score, topMutants: [] }),
+      buildStepSummary({ status: 'review', report: { summary, surviving: [] } })
+    ];
+
+    for (const output of outputs) {
+      expect(output).toContain('No threshold was evaluated; 1 surviving mutant still needs review.');
+      expect(output).not.toMatch(/Threshold passed|this patch as fully covered/);
+    }
+  });
+
+  it('preserves an explicitly passed zero threshold in comment and step summary', () => {
+    const summary = { verdict: 'WEAK', mutationScore: 0, killed: 0, survived: 1, noCoverage: 0 };
+    const outputs = [
+      buildPrComment({ ...summary, score: 0, threshold: 0, topMutants: [] }),
+      buildStepSummary({ status: 'passed', threshold: 0, report: { summary, surviving: [] } })
+    ];
+
+    for (const output of outputs) {
+      expect(output).toContain('Threshold passed; 1 surviving mutant still needs review');
+      expect(output).not.toContain('No threshold was evaluated');
+    }
+  });
 });
 
 describe('PR comment gate advisory', () => {

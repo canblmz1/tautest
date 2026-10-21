@@ -98,6 +98,25 @@ describe('analyze and manual review', () => {
     expect((await analyze(root)).rawSummary).toEqual(imported.rawSummary);
   });
 
+  it('warns about an imported zero-score survivor without claiming an evaluated gate or patch quality', async () => {
+    const root = fixture();
+    const inputBefore = readFileSync(path.join(root, 'mutation.json'));
+    const result = await analyze(root);
+    const report = json(root, '.tautest/review/report.json');
+    const markdown = readFileSync(path.join(root, '.tautest/review/report.md'), 'utf8');
+
+    expect(result.rawSummary).toMatchObject({ mutationScore: 0, total: 1, killed: 0, survived: 1, noCoverage: 0 });
+    expect(report.summary).toMatchObject({ verdict: 'WEAK', mutationScore: 0, survived: 1 });
+    expect(report.summary).not.toHaveProperty('threshold');
+    expect(result.groups[0].mutants[0]).toMatchObject({ id: '7', status: 'Survived', mutatorName: 'EqualityOperator', replacement: 'age > 65', location });
+    expect(readFileSync(path.join(root, 'mutation.json'))).toEqual(inputBefore);
+    expect(markdown).toContain('Imported Stryker Report');
+    expect(markdown).toContain('The raw mutation score is not a new quality-gate result.');
+    expect(markdown).toContain('> No threshold was evaluated; 1 surviving mutant still needs review.');
+    expect(markdown).toContain('not automatically a missing test');
+    expect(markdown).not.toMatch(/Threshold passed|this patch|fully covered/);
+  });
+
   it('protects hardlinked input and preserves an explicit prompt runner across reviews in the project root', async () => {
     const root = fixture();
     const input = { files: raw().files };
