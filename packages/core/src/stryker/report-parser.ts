@@ -87,7 +87,7 @@ export function extractOriginal(source: string, location: MutationLocation): str
   const startLine = location.start.line;
   const endLine = location.end.line;
   const startColumn = Math.max(0, location.start.column - 1);
-  const endColumn = Math.max(startColumn, location.end.column - 1);
+  const endColumn = Math.max(startLine === endLine ? startColumn : 0, location.end.column - 1);
   const firstLine = sourceLines[startLine - 1] ?? '';
 
   if (startLine === endLine) {
