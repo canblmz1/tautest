@@ -1,0 +1,49 @@
+﻿Independent review - Vimgym whitespace pilot
+Reviewed on 2026-10-21; read-only implementation/experiment review by a separate agent.
+The reviewer did not rerun the package tests or mutation engine. Results below were
+checked against the saved normal-test JSON, raw Stryker reports, verification files,
+source/test/config files, portable evidence and runnable scripts.
+
+Conclusion: no blocking experiment, identity-matching or scope finding remains,
+provided README describes the start as inclusive and the end as exclusive. That
+wording correction was requested before handoff. CI status is reported separately
+by the implementing agent; this note does not claim a successful CI run.
+
+Checked evidence:
+- Current Vimgym dashboard issue 35 lists the line-22 MethodExpression survivor;
+  the two open project PRs concern Actions/dependency updates. This is an existing
+  finding, not a new discovery. Ledgr PR 123 is already merged and is not reused.
+- Original Vitest JSON: 372 passed, 0 failed across four package test files.
+  With the single public-explanation assertion: 373 passed, 0 failed.
+- Before and both verification raw reports contain exactly one target, matched by
+  file, source hash, position 22:19 to 22:29, MethodExpression and replacement cmd.
+  Source-byte hash and explicit LF-normalized hash are distinguished.
+- Before: Survived with 13 completed covering tests. Both subsequent reports:
+  Killed with the behavioral assertion reason that the generic ex-command text
+  differed from write file. No compile/setup/timeout/crash is counted as a kill.
+- killedBy points to the candidate file and test name in each raw report. The
+  candidate test ID changes from 372 to 0 between verifications; matching does
+  not rely on numeric ID stability. Test-order-dependent testsCompleted differs.
+- Removing cmd.trim() changes the public explainSequence(': w [Enter]') output.
+  The source deliberately normalizes before known-command lookup. The candidate
+  asserts the public explanation, not an internal call; this is not equivalent.
+- The real historical diff excludes line 22. Tautest's dry-run ranges and the
+  separate raw git-hunk comparison are kept apart from this imported old survivor.
+  No mutation campaign ran over the other selected source lines/files.
+- Stryker produces and executes the mutant. The demonstrated Tautest contribution
+  is report interpretation and exact-candidate verification. No speedup, whole-
+  repository score, independent adoption or repeat-use success is inferred.
+- pilot.mjs guards the pinned SHA, versions, clean tracked tree, new output path
+  and absent candidate; restores config/removes its temporary test; verifies source
+  bytes are unchanged. Engine controls and verify's break:null to 0 change are
+  documented. The disposable clone is required.
+- Public compact reports preserve target statuses/attribution. Full reports remain
+  in local/workflow artifacts. The test patch, tool lock and recipe are small.
+  The workflow has read-only repository permissions and no release/deploy action.
+- README identifies package-only scope, disabled install scripts, the Windows
+  Supabase warning, generic imported threshold wording, and unconfirmed adoption.
+  The invitation remains an unsent draft and does not repeat outreach automatically.
+
+Limitations: no independent maintainer execution or acceptance was observed. This
+review supports the bounded whitespace pilot, not the root app, repository-wide
+mutation quality, changed-line engine performance or a new Tautest product fix.

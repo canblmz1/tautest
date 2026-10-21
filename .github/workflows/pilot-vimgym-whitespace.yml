@@ -1,0 +1,56 @@
+name: Vimgym whitespace pilot
+
+on:
+  push:
+    branches: [pilot/vimgym-whitespace]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PILOT: docs/evidence/adoption/vimsplain/pilot-2026-10-21
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Clone frozen project
+        run: |
+          git clone https://github.com/oller/vimgym.git project
+          git -C project checkout --detach e65d98ca48f6432779b6bf2cb677d1a9116400d8
+      - name: Install project and published pilot tool
+        run: |
+          npx --yes pnpm@10.34.6 --dir project --filter vimsplain install --frozen-lockfile --ignore-scripts
+          npm --prefix "$PILOT" ci --ignore-scripts --no-audit --no-fund
+      - name: Reproduce one survivor and two exact-target verifications
+        run: node "$PILOT/pilot.mjs" project pilot-output
+      - name: Create compact handoff
+        run: |
+          node "$PILOT/collect-public.mjs" pilot-output handoff/observed
+          cp "$PILOT/README.txt" "$PILOT/package.json" "$PILOT/package-lock.json" "$PILOT/pilot.mjs" "$PILOT/collect-public.mjs" "$PILOT/ex-command-whitespace.test.ts" "$PILOT/candidate.patch" "$PILOT/invitation-draft.txt" "$PILOT/PROJECT-LICENSE" handoff/
+      - name: Record result
+        run: |
+          node --input-type=module <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          import {readFileSync} from 'node:fs';
+          const e=JSON.parse(readFileSync('handoff/observed/evidence.json','utf8'));
+          console.log('## Single-project pilot (our reproduction, not independent adoption)');
+          console.log(`Project: ${e.head}; Node: ${e.node}; Tautest: ${e.tautest}`);
+          console.log(`Original suite: ${e.baseline.passed}; with one candidate: ${e.candidate.totalTests}`);
+          console.log(`Target: ${e.fingerprint.file}:${e.fingerprint.start.line}, ${e.fingerprint.mutatorName} -> ${e.fingerprint.replacement}`);
+          console.log(`Before: ${e.before.status}; verify: ${e.verifications.map(v=>v.mutant.status).join(', ')}`);
+          console.log('The source hash/location/mutator/replacement and candidate killedBy are checked in pilot.mjs.');
+          console.log('The whitespace target is outside the recent real diff; analyze/verify are the demonstrated product contribution.');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vimgym-whitespace-pilot
+          path: |
+            handoff/
+            pilot-output/
+          retention-days: 30

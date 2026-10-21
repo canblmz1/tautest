@@ -1,0 +1,137 @@
+{
+  "scope": "Only the existing five candidates; no new discovery scan",
+  "queriedAt": "2026-10-21T16:32:32.790Z",
+  "records": [
+    {
+      "repo": "Thang4869/TriAD-Backend",
+      "head": "8021a1a6a412a448e1b4170802e4f2e0a4cdb47b",
+      "lastCommit": "2026-10-21T04:41:12Z",
+      "queriedAt": "2026-10-21T16:32:31.285Z",
+      "issue": "https://github.com/Thang4869/TriAD-Backend/issues/145",
+      "state": "open",
+      "title": "test(quality): add mutation testing for domain and core services",
+      "selected": false,
+      "reason": "Open mutation-testing need and prior Address proof; deferred because the project still needs a separate engine/tool setup. Vimgym already has a locked working engine and a current exact dashboard survivor.",
+      "manifest": {
+        "source": "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/8021a1a6a412a448e1b4170802e4f2e0a4cdb47b/package.json",
+        "status": 200,
+        "node": null,
+        "packageManager": null,
+        "vitest": "^4.1.11"
+      },
+      "independentTrialConfirmed": false,
+      "userValidatedBenefitConfirmed": false,
+      "repeatUseConfirmed": false
+    },
+    {
+      "repo": "oller/vimgym",
+      "head": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+      "lastCommit": "2026-10-13T20:24:16Z",
+      "queriedAt": "2026-10-21T16:32:31.693Z",
+      "issue": "https://github.com/oller/vimgym/issues/35",
+      "state": "open",
+      "title": "Stryker Mutation Testing Dashboard: vimsplain",
+      "selected": true,
+      "reason": "Selected. Current open dashboard names the trim survivor; source and tests unchanged since prior proof, existing Stryker/Vitest lock, fresh baseline and exact-candidate reproduction completed.",
+      "manifest": {
+        "source": "https://raw.githubusercontent.com/oller/vimgym/e65d98ca48f6432779b6bf2cb677d1a9116400d8/package.json",
+        "status": 200,
+        "node": null,
+        "packageManager": "pnpm@10.34.6",
+        "vitest": "^4.1.11"
+      },
+      "independentTrialConfirmed": false,
+      "userValidatedBenefitConfirmed": false,
+      "repeatUseConfirmed": false
+    },
+    {
+      "repo": "sleepypod/core",
+      "head": "8a385aa33bc2ec4c0f539ff048a56d53773b5066",
+      "lastCommit": "2026-10-21T01:01:20Z",
+      "queriedAt": "2026-10-21T16:32:32.046Z",
+      "issue": "https://github.com/sleepypod/core/issues/591",
+      "state": "open",
+      "title": "Mutation testing: weekly baseline",
+      "selected": false,
+      "reason": "Deferred. Current dashboard includes documented equivalent/previously claimed survivors; prior Python/sandbox preparation and broad shard setup make it a weaker first runnable pilot. No new engine trial here.",
+      "manifest": {
+        "source": "https://raw.githubusercontent.com/sleepypod/core/8a385aa33bc2ec4c0f539ff048a56d53773b5066/package.json",
+        "status": 200,
+        "node": null,
+        "packageManager": "pnpm@10.34.6",
+        "vitest": "^4.0.18"
+      },
+      "independentTrialConfirmed": false,
+      "userValidatedBenefitConfirmed": false,
+      "repeatUseConfirmed": false
+    },
+    {
+      "repo": "Nodal-stellar/Nodal-AI",
+      "head": "e771576ba93f43d70d967030e8fdbabac4cfec5a",
+      "lastCommit": "2026-10-21T12:04:26Z",
+      "queriedAt": "2026-10-21T16:32:32.379Z",
+      "issue": "https://github.com/Nodal-stellar/Nodal-AI/issues/831",
+      "state": "open",
+      "title": "Mutation testing: expand Stryker scope to spending tracker and x402 tool",
+      "selected": false,
+      "reason": "Deferred. Head advanced; open spending/x402 scope request remains, but no current isolated passing behavior/engine proof was established in this task.",
+      "manifest": {
+        "source": "https://raw.githubusercontent.com/Nodal-stellar/Nodal-AI/e771576ba93f43d70d967030e8fdbabac4cfec5a/package.json",
+        "status": 200,
+        "node": ">=22.0.0",
+        "packageManager": null,
+        "vitest": "3.2.7"
+      },
+      "independentTrialConfirmed": false,
+      "userValidatedBenefitConfirmed": false,
+      "repeatUseConfirmed": false
+    },
+    {
+      "repo": "KenTaniguchi-R/ledgr",
+      "head": "6dc7a788633ac9ccad11f3b41c0a2a0b94a84711",
+      "lastCommit": "2026-10-11T05:23:59Z",
+      "queriedAt": "2026-10-21T16:32:32.790Z",
+      "issue": "https://github.com/KenTaniguchi-R/ledgr/issues/103",
+      "state": "open",
+      "title": "mutation (diff) gate is unpassable for DB-heavy files: whole-file scoping + #100's no-coverage shift",
+      "selected": false,
+      "reason": "Deferred. Current need is scope/test-selection/DB attribution; PR123 already fixed the price-clause gap and is not a new finding. Existing invitation was not resent.",
+      "manifest": {
+        "source": "https://raw.githubusercontent.com/KenTaniguchi-R/ledgr/6dc7a788633ac9ccad11f3b41c0a2a0b94a84711/package.json",
+        "status": 200,
+        "node": null,
+        "packageManager": null,
+        "vitest": "^4.1.11"
+      },
+      "independentTrialConfirmed": false,
+      "userValidatedBenefitConfirmed": false,
+      "repeatUseConfirmed": false
+    }
+  ],
+  "engineering": [
+    {
+      "pr": "https://github.com/canblmz1/tautest/pull/47",
+      "state": "open",
+      "head": "20e9cb3614dc98dae41abe09adba11c1f8b138bc",
+      "successfulChecks": 13
+    },
+    {
+      "pr": "https://github.com/canblmz1/tautest/pull/48",
+      "state": "open",
+      "head": "a91e0fe73056c90ced12cad130fe8e7b0e2ddce6",
+      "successfulChecks": 13
+    },
+    {
+      "pr": "https://github.com/canblmz1/tautest/pull/49",
+      "state": "open",
+      "head": "88004c9c1652f5b6eb823a53824acd240ee43303",
+      "successfulChecks": 13
+    }
+  ],
+  "ledgr123": {
+    "url": "https://github.com/KenTaniguchi-R/ledgr/pull/123",
+    "mergedAt": "2026-08-31T23:45:53Z",
+    "notNewDiscovery": true
+  },
+  "adoption": "These are our observations/reproductions, not independent use. Actual independent usage is unknown."
+}

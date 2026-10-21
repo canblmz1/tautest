@@ -1,0 +1,274 @@
+{
+  "observedAt": "2026-10-21T16:26:35.707Z",
+  "repo": "https://github.com/oller/vimgym",
+  "issue": "https://github.com/oller/vimgym/issues/35",
+  "head": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "base": "2aca9c37c6a6cc9997af16c1cd48ac365f5f8307",
+  "node": "v22.23.2",
+  "packageManager": "pnpm@10.34.6",
+  "tautest": "2.1.3",
+  "installed": {
+    "vitest": "4.1.11",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@stryker-mutator/typescript-checker": "10.0.0"
+  },
+  "lockfileSha256": "955c90b4aa5764e82f4eb288f7cd05cdf5bd6a2f523382f21d2bb72509c0e99c",
+  "toolLockfileSha256": "ac5587f27021716ec2fb21ca06cbb44d15fa1505195685e80d01664f14a0aa3a",
+  "sourceBytesSha256": "17caf72c019750e629048a8eb39de5e24b43455da17c55771ba891c3dae5cc7e",
+  "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+  "sourceUnchanged": true,
+  "baseline": {
+    "passed": 372,
+    "files": [
+      {
+        "file": "tests/coverage.test.ts",
+        "count": 151
+      },
+      {
+        "file": "tests/fuzz.test.ts",
+        "count": 3
+      },
+      {
+        "file": "tests/integration.test.ts",
+        "count": 5
+      },
+      {
+        "file": "tests/vimsplain.test.ts",
+        "count": 213
+      }
+    ]
+  },
+  "candidate": {
+    "file": "tests/tautest-ex-command-whitespace.test.ts",
+    "sha256": "c084b7955293e13a99f5e127551a9883226bf4c2be2ccc789f5e1ece09da4c12",
+    "passedOriginal": true,
+    "totalTests": 373
+  },
+  "fingerprint": {
+    "file": "src/handlers/command.ts",
+    "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+    "start": {
+      "line": 22,
+      "column": 19
+    },
+    "end": {
+      "line": 22,
+      "column": 29
+    },
+    "mutatorName": "MethodExpression",
+    "replacement": "cmd"
+  },
+  "before": {
+    "id": "0",
+    "mutatorName": "MethodExpression",
+    "replacement": "cmd",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 13,
+    "coveredBy": [
+      "180",
+      "181",
+      "182",
+      "183",
+      "184",
+      "185",
+      "186",
+      "203",
+      "204",
+      "205",
+      "206",
+      "218",
+      "219"
+    ],
+    "location": {
+      "end": {
+        "column": 29,
+        "line": 22
+      },
+      "start": {
+        "column": 19,
+        "line": 22
+      }
+    }
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "status": "verified",
+      "fingerprint": {
+        "file": "src/handlers/command.ts",
+        "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+        "start": {
+          "line": 22,
+          "column": 19
+        },
+        "end": {
+          "line": 22,
+          "column": 29
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd"
+      },
+      "mutant": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd",
+        "statusReason": "expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 13,
+        "killedBy": [
+          "372"
+        ],
+        "coveredBy": [
+          "6",
+          "183",
+          "184",
+          "185",
+          "186",
+          "187",
+          "188",
+          "189",
+          "206",
+          "207",
+          "208",
+          "209",
+          "372"
+        ],
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/tautest-ex-command-whitespace.test.ts",
+          "id": "372",
+          "name": "explains a whitespace-padded ex write command as write file"
+        }
+      ]
+    },
+    {
+      "label": "verify-repeat",
+      "status": "verified",
+      "fingerprint": {
+        "file": "src/handlers/command.ts",
+        "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+        "start": {
+          "line": 22,
+          "column": 19
+        },
+        "end": {
+          "line": 22,
+          "column": 29
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd"
+      },
+      "mutant": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd",
+        "statusReason": "expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 14,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "6",
+          "7",
+          "335",
+          "336",
+          "337",
+          "338",
+          "339",
+          "340",
+          "341",
+          "358",
+          "359",
+          "360",
+          "361"
+        ],
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/tautest-ex-command-whitespace.test.ts",
+          "id": "0",
+          "name": "explains a whitespace-padded ex write command as write file"
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "label": "published-version",
+      "exitCode": 0,
+      "elapsedMs": 470
+    },
+    {
+      "label": "baseline",
+      "exitCode": 0,
+      "elapsedMs": 7924
+    },
+    {
+      "label": "real-diff-plan",
+      "exitCode": 0,
+      "elapsedMs": 2254
+    },
+    {
+      "label": "before",
+      "exitCode": 0,
+      "elapsedMs": 55167
+    },
+    {
+      "label": "analyze",
+      "exitCode": 0,
+      "elapsedMs": 519
+    },
+    {
+      "label": "with-candidate",
+      "exitCode": 0,
+      "elapsedMs": 9848
+    },
+    {
+      "label": "verify",
+      "exitCode": 0,
+      "elapsedMs": 38058
+    },
+    {
+      "label": "verify-repeat",
+      "exitCode": 0,
+      "elapsedMs": 35159
+    }
+  ],
+  "limits": [
+    "Existing dashboard survivor, not a new discovery.",
+    "Trim22 is outside the real recent source diff.",
+    "Stryker generates mutants; Tautest contribution is report explanation and exact-candidate verification.",
+    "Temporary single-worker/MethodExpression-only Stryker config; original restored afterwards.",
+    "No full-repo mutation score, speedup or independent use claim."
+  ],
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false
+}

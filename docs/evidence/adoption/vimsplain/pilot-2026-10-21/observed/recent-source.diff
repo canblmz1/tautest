@@ -1,0 +1,272 @@
+diff --git a/src/handlers/command.ts b/src/handlers/command.ts
+index d446de6..652cbb0 100644
+--- a/src/handlers/command.ts
++++ b/src/handlers/command.ts
+@@ -32,0 +33,12 @@ export function handleCommandMode(context: ParsingContext): void {
++  // Check for [Esc] to cancel ex command
++  if (context.remaining.startsWith(SPECIAL_KEYS.ESCAPE)) {
++    context.commands.push({
++      matched: SPECIAL_KEYS.ESCAPE,
++      explanation: "cancel command",
++    });
++    context.activeMode = "Normal";
++    context.exBuffer = "";
++    context.remaining = context.remaining.slice(SPECIAL_KEYS.ESCAPE.length);
++    return;
++  }
++
+@@ -44,0 +57,7 @@ export function handleCommandMode(context: ParsingContext): void {
++  // Check for [Backspace] in ex command mode
++  if (context.remaining.startsWith(SPECIAL_KEYS.BACKSPACE)) {
++    context.exBuffer = context.exBuffer.slice(0, -1);
++    context.remaining = context.remaining.slice(SPECIAL_KEYS.BACKSPACE.length);
++    return;
++  }
++
+diff --git a/src/handlers/normal.ts b/src/handlers/normal.ts
+index fa660b3..3f25c72 100644
+--- a/src/handlers/normal.ts
++++ b/src/handlers/normal.ts
+@@ -25,0 +26 @@ export const INSERT_MODE_TRIGGERS = new Set([
++// Stryker disable BooleanLiteral, Regex
+@@ -130,0 +132,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)cw/,
++    description: "change $1 words forward",
++    isMotion: false,
++  },
+@@ -135,0 +142,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)cb/,
++    description: "change $1 words backward",
++    isMotion: false,
++  },
+@@ -140,0 +152,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)ce/,
++    description: "change to end of $1 words",
++    isMotion: false,
++  },
+@@ -154,0 +171,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)cc/,
++    description: "change $1 lines",
++    isMotion: false,
++  },
+@@ -155,0 +177,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)C/,
++    description: "change $1 lines to end of line",
++    isMotion: false,
++  },
+@@ -156,0 +183,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)S/,
++    description: "substitute $1 lines",
++    isMotion: false,
++  },
+@@ -157,0 +189,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)s/,
++    description: "substitute $1 characters and enter insert mode",
++    isMotion: false,
++  },
+@@ -186,0 +223,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)ciw/,
++    description: "change $1 inner words",
++    isMotion: false,
++  },
+@@ -187,0 +229,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)caw/,
++    description: "change $1 words (with space)",
++    isMotion: false,
++  },
+@@ -210,0 +257,4 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  { pattern: /^cis/, description: "change inside sentence", isMotion: false },
++  { pattern: /^cas/, description: "change around sentence", isMotion: false },
++  { pattern: /^cip/, description: "change inside paragraph", isMotion: false },
++  { pattern: /^cap/, description: "change around paragraph", isMotion: false },
+@@ -211,0 +262,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)diw/,
++    description: "delete $1 inner words",
++    isMotion: false,
++  },
+@@ -212,0 +268,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)daw/,
++    description: "delete $1 words (with space)",
++    isMotion: false,
++  },
+@@ -235,0 +296,4 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  { pattern: /^dis/, description: "delete inside sentence", isMotion: false },
++  { pattern: /^das/, description: "delete around sentence", isMotion: false },
++  { pattern: /^dip/, description: "delete inside paragraph", isMotion: false },
++  { pattern: /^dap/, description: "delete around paragraph", isMotion: false },
+@@ -236,0 +301,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)yiw/,
++    description: "yank $1 inner words",
++    isMotion: false,
++  },
+@@ -237,0 +307,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)yaw/,
++    description: "yank $1 words (with space)",
++    isMotion: false,
++  },
+@@ -246,0 +321,4 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  { pattern: /^yis/, description: "yank inside sentence", isMotion: false },
++  { pattern: /^yas/, description: "yank around sentence", isMotion: false },
++  { pattern: /^yip/, description: "yank inside paragraph", isMotion: false },
++  { pattern: /^yap/, description: "yank around paragraph", isMotion: false },
+@@ -248,0 +327,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)viw/,
++    description: "select $1 inner words",
++    isMotion: false,
++  },
+@@ -249,0 +333,5 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  {
++    pattern: /^(\d+)vaw/,
++    description: "select $1 words (with space)",
++    isMotion: false,
++  },
+@@ -272,0 +361,4 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  { pattern: /^vis/, description: "select inside sentence", isMotion: false },
++  { pattern: /^vas/, description: "select around sentence", isMotion: false },
++  { pattern: /^vip/, description: "select inside paragraph", isMotion: false },
++  { pattern: /^vap/, description: "select around paragraph", isMotion: false },
+@@ -372,0 +465,57 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++  // Scrolling / paging motions
++  {
++    pattern: /^(\d+)\[C-d\]/,
++    description: "scroll down $1 lines",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-d\]/,
++    description: "scroll down (half page)",
++    isMotion: true,
++  },
++  {
++    pattern: /^(\d+)\[C-u\]/,
++    description: "scroll up $1 lines",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-u\]/,
++    description: "scroll up (half page)",
++    isMotion: true,
++  },
++  {
++    pattern: /^(\d+)\[C-f\]/,
++    description: "scroll forward $1 pages",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-f\]/,
++    description: "scroll forward (full page)",
++    isMotion: true,
++  },
++  {
++    pattern: /^(\d+)\[C-b\]/,
++    description: "scroll backward $1 pages",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-b\]/,
++    description: "scroll backward (full page)",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-e\]/,
++    description: "scroll window down one line",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-y\]/,
++    description: "scroll window up one line",
++    isMotion: true,
++  },
++  {
++    pattern: /^\[C-c\]/,
++    description: "cancel / return to normal mode",
++    isMotion: false,
++  },
++
+@@ -601,0 +751 @@ export const NORMAL_COMMANDS: CommandDefinition[] = [
++// Stryker restore BooleanLiteral, Regex
+@@ -699,2 +849,2 @@ export function handleNormalMode(context: ParsingContext): void {
+-    matched.startsWith("c") || // cw, ciw, ct, etc.
+-    matched === "s"
++    /^(?:\d+)?c/i.test(matched) ||
++    /^(?:\d+)?s$/i.test(matched)
+diff --git a/src/handlers/search.ts b/src/handlers/search.ts
+index 952f797..f67c77a 100644
+--- a/src/handlers/search.ts
++++ b/src/handlers/search.ts
+@@ -4,0 +5,12 @@ export function handleSearchMode(context: ParsingContext): void {
++  // Check for [Esc] to cancel search
++  if (context.remaining.startsWith(SPECIAL_KEYS.ESCAPE)) {
++    context.commands.push({
++      matched: SPECIAL_KEYS.ESCAPE,
++      explanation: "cancel search",
++    });
++    context.activeMode = "Normal";
++    context.searchBuffer = "";
++    context.remaining = context.remaining.slice(SPECIAL_KEYS.ESCAPE.length);
++    return;
++  }
++
+diff --git a/src/handlers/visual.ts b/src/handlers/visual.ts
+index df9faee..e201b56 100644
+--- a/src/handlers/visual.ts
++++ b/src/handlers/visual.ts
+@@ -61,0 +62,19 @@ export function handleVisualMode(context: ParsingContext): void {
++  // Visual block multi-line insert/append
++  if (
++    context.activeMode === "VisualBlock" &&
++    (context.remaining[0] === "I" || context.remaining[0] === "A")
++  ) {
++    const op = context.remaining[0] as string;
++    context.commands.push({
++      matched: op,
++      explanation:
++        op === "I"
++          ? "insert before block selection on each line"
++          : "append after block selection on each line",
++    });
++    context.activeMode = "Insert";
++    context.insertBuffer = "";
++    context.remaining = context.remaining.slice(1);
++    return;
++  }
++
+diff --git a/src/vimsplain.types.ts b/src/vimsplain.types.ts
+index 1e249cc..3299abc 100644
+--- a/src/vimsplain.types.ts
++++ b/src/vimsplain.types.ts
+@@ -66,0 +67,8 @@ export const SPECIAL_KEYS = {
++  CTRL_D: "[C-d]",
++  CTRL_U: "[C-u]",
++  CTRL_F: "[C-f]",
++  CTRL_B: "[C-b]",
++  CTRL_V: "[C-v]",
++  CTRL_C: "[C-c]",
++  CTRL_E: "[C-e]",
++  CTRL_Y: "[C-y]",
+@@ -72,0 +81,11 @@ export const MODIFIER_KEY_MAP = {
++  "ctrl+w": SPECIAL_KEYS.CTRL_W,
++  "ctrl+o": SPECIAL_KEYS.CTRL_O,
++  "ctrl+i": SPECIAL_KEYS.CTRL_I,
++  "ctrl+d": SPECIAL_KEYS.CTRL_D,
++  "ctrl+u": SPECIAL_KEYS.CTRL_U,
++  "ctrl+f": SPECIAL_KEYS.CTRL_F,
++  "ctrl+b": SPECIAL_KEYS.CTRL_B,
++  "ctrl+v": SPECIAL_KEYS.CTRL_V,
++  "ctrl+c": SPECIAL_KEYS.CTRL_C,
++  "ctrl+e": SPECIAL_KEYS.CTRL_E,
++  "ctrl+y": SPECIAL_KEYS.CTRL_Y,

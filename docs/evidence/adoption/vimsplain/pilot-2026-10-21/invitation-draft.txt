@@ -1,0 +1,18 @@
+DRAFT ONLY — not sent; do not repeat the existing issue35 invitation automatically.
+Target: https://github.com/oller/vimgym/issues/35
+
+I maintain Tautest. Your current dashboard still lists command.ts line 22's trim removal
+as a survivor. I refreshed our earlier example on unchanged main e65d98c using the
+published 2.1.3 CLI: the existing 372 tests pass, that exact mutant survives 13 tests, and
+one new public-API assertion makes ': w [Enter]' retain the "write file" explanation.
+The test passes on the original source; two verify runs attribute its behavioral
+kill to that test, matching source hash/location/mutator/replacement even as IDs vary.
+
+The small runnable pilot and test patch are here:
+https://github.com/canblmz1/tautest/tree/pilot/vimgym-whitespace/docs/evidence/adoption/vimsplain/pilot-2026-10-21
+
+Stryker produces the mutant; Tautest's demonstrated contribution is report triage
+and exact-candidate verification. This old survivor is outside the recent source
+diff, and the pilot makes no package-wide score or performance claim. Would you
+run the pinned recipe and share whether the review/verification helps, or the first
+command that fails? These results are our reproduction, not evidence of your adoption.
