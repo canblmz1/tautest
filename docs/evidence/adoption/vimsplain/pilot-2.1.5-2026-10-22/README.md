@@ -86,6 +86,8 @@ The original baselines took49.842s and11.274s on this one Windows host; the firs
 
 ## Evidence retained here versus locally
 
+[Recorded byte hashes](recorded-byte-hashes.json) compare the original compact JSON files and pinned tool lock with their public Git blobs: all four are byte-identical. A Windows checkout may materialize CRLF instead of the Git blob's LF; compare downloaded Git bytes when checking capture hashes. Full raw reports remain separate from the compact subsets. Package-tarball integrity and installed-code byte comparisons use original binary buffers, independently of checkout text normalization.
+
 Included: helpers, candidate/patch/license, pinned tools manifest/lock, `registry-identity.json`, scope/setup checks and compact `observed/` evidence. The three `*.target.json` files preserve original target source and every target-mutant identity/status/location field, plus attribution-relevant test IDs/names. Unmutated source files, unrelated tests, test source contents, branding and engine configuration were omitted from these portable subsets. They are **not full raw reports**; original full-report hashes are recorded in `observed/evidence.json`.
 
 Full raw reports, complete normal test JSON/lists, stdout/stderr, verify request/engine logs and sandbox execution outputs remain in the author's local experiment directory `C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/results-215` and `baseline.json*`; they were available to the independent reviewer. They are deliberately omitted from this compact repository handoff. No node_modules, disposable clone or historical failed run is included.

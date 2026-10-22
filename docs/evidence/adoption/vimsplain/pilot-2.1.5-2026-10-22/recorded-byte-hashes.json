@@ -1,0 +1,41 @@
+{
+  "note": "Original experiment files and corresponding Git blobs are byte-identical; a Windows checkout can materialize CRLF instead of LF. This file covers the three reports and pinned tool lock, not its own bytes.",
+  "files": [
+    {
+      "file": "observed/before.target.json",
+      "capturedSha256": "d346ed1fbe9c1342888307f99659916d2c6b95fa6b90f62878ff2e44ed784a6c",
+      "gitBlobSha256": "d346ed1fbe9c1342888307f99659916d2c6b95fa6b90f62878ff2e44ed784a6c",
+      "captureCRLFCount": 0,
+      "byteEqual": true,
+      "equalAfterCRLFToLF": true,
+      "jsonDataEqual": true
+    },
+    {
+      "file": "observed/verify.target.json",
+      "capturedSha256": "39f6cdbf9b6f4421742f431c4deb0429e72c7b66b42b870e2a6159901f41d5f7",
+      "gitBlobSha256": "39f6cdbf9b6f4421742f431c4deb0429e72c7b66b42b870e2a6159901f41d5f7",
+      "captureCRLFCount": 0,
+      "byteEqual": true,
+      "equalAfterCRLFToLF": true,
+      "jsonDataEqual": true
+    },
+    {
+      "file": "observed/verify-repeat.target.json",
+      "capturedSha256": "c6b2b8c9a20e56d9c3d28fefa618a8ca6f59ee87bab88ed74771e86e892d9ec1",
+      "gitBlobSha256": "c6b2b8c9a20e56d9c3d28fefa618a8ca6f59ee87bab88ed74771e86e892d9ec1",
+      "captureCRLFCount": 0,
+      "byteEqual": true,
+      "equalAfterCRLFToLF": true,
+      "jsonDataEqual": true
+    },
+    {
+      "file": "tools/pnpm-lock.yaml",
+      "capturedSha256": "04c38bf9e768bc73fabd3a4a80e4e521796a3effe4dbfd5e00e726e525235667",
+      "gitBlobSha256": "04c38bf9e768bc73fabd3a4a80e4e521796a3effe4dbfd5e00e726e525235667",
+      "captureCRLFCount": 0,
+      "byteEqual": true,
+      "equalAfterCRLFToLF": true,
+      "jsonDataEqual": null
+    }
+  ]
+}

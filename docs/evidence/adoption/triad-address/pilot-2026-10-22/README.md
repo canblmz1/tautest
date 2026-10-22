@@ -93,6 +93,8 @@ No independent trial, user-validated benefit or reuse is confirmed. Adoption cou
 
 ## Compact repository handoff
 
+[Recorded byte hashes](recorded-byte-hashes.json) compare the original experiment files directly with the public Git blobs. All three reports and the pinned tool lock are byte-identical. A Windows checkout may materialize CRLF instead of the Git blob's LF; compare downloaded Git bytes when checking the recorded capture hashes. The manifest records both hashes and JSON equality so checkout line endings are not mistaken for changed statuses, source text or target identities.
+
 This directory preserves the successful current2.1.4 pilot, three small full raw reports, original/candidate/manual test JSON, exact target/assertion checks, configuration, cleanup, helpers and dependency lock. Independent review is in `reviewer-note.md`. `invitation-draft.txt` is a conditional internal reply draft, not an instruction to repeat the existing invitation.
 
 Excluded: node_modules, the disposable project, installer/stdout/stderr/engine logs, sandbox request directories, the failed initial scope-guard attempt and the extra baseline-portability rerun files. They remain locally retained under `C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad` and the sibling disposable clone; they are not present here. Earlier sections mentioning those diagnostic logs describe the author's original run. The supplied compact raw/test evidence is reviewable without those files; the portable commands generate fresh complete output for the maintainer.
