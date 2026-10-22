@@ -7,6 +7,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+import { createHash } from 'node:crypto';
 import { decide, registryState } from './release-decision.mjs';
 
 const execFileAsync = promisify(execFile);
@@ -62,7 +63,11 @@ async function startRegistry(routes) {
     const step = route === undefined ? { status: 404, body: { error: 'not found' } } : Array.isArray(route) ? route[Math.min(count, route.length - 1)] : route;
     setTimeout(() => {
       response.writeHead(step.status, { 'content-type': 'application/json' });
-      response.end(step.body === undefined ? '' : typeof step.body === 'string' ? step.body : JSON.stringify(step.body));
+      const send = () => response.end(step.body === undefined ? '' : typeof step.body === 'string' ? step.body : JSON.stringify(step.body));
+      if (step.bodyDelayMs) {
+        response.flushHeaders();
+        setTimeout(send, step.bodyDelayMs);
+      } else send();
     }, step.delayMs ?? 0);
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -75,6 +80,66 @@ async function startRegistry(routes) {
 
 const published = (name, version) => ({ status: 200, body: { name, version } });
 const summary = (registry) => registry.requests.map(({ method, url }) => `${method} ${url}`);
+
+test('registryState: published verification rejects metadata when its tarball is still 404', async () => {
+  const routes = { '/tautest/2.1.5': published('tautest', '2.1.5') };
+  const registry = await startRegistry(routes);
+  routes['/tautest/2.1.5'].body.dist = { tarball: `${registry.url}/package.tgz`, integrity: 'sha512-unused' };
+  try {
+    const result = await registryState(registry.url, 'tautest', '2.1.5', { ...fast, attempts: 1, verifyTarball: true });
+    assert.equal(result.state, 'error');
+    assert.match(result.detail, /tarball.*404/i);
+  } finally { await registry.close(); }
+});
+
+test('registryState: published verification checks downloaded bytes against metadata integrity', async () => {
+  const routes = { '/tautest/2.1.5': published('tautest', '2.1.5'), '/package.tgz': { status: 200, body: 'damaged bytes' } };
+  const registry = await startRegistry(routes);
+  routes['/tautest/2.1.5'].body.dist = { tarball: `${registry.url}/package.tgz`,
+    integrity: `sha512-${createHash('sha512').update('expected bytes').digest('base64')}` };
+  try {
+    const result = await registryState(registry.url, 'tautest', '2.1.5', { ...fast, attempts: 1, verifyTarball: true });
+    assert.equal(result.state, 'error');
+    assert.match(result.detail, /integrity/i);
+  } finally { await registry.close(); }
+});
+
+test('registryState: published verification retries a missing tarball, then accepts matching bytes', async () => {
+  const bytes = 'expected package bytes';
+  const routes = { '/tautest/2.1.5': published('tautest', '2.1.5'),
+    '/package.tgz': [{ status: 404 }, { status: 200, body: bytes }] };
+  const registry = await startRegistry(routes);
+  routes['/tautest/2.1.5'].body.dist = { tarball: `${registry.url}/package.tgz`,
+    integrity: `sha512-${createHash('sha512').update(bytes).digest('base64')}` };
+  try {
+    const result = await registryState(registry.url, 'tautest', '2.1.5', { ...fast, attempts: 2, verifyTarball: true });
+    assert.deepEqual(result, { state: 'exists' });
+    assert.equal(registry.requests.filter(request => request.url === '/package.tgz').length, 2);
+  } finally { await registry.close(); }
+});
+
+test('registryState: published verification requires distribution metadata', async () => {
+  const registry = await startRegistry({ '/tautest/2.1.5': published('tautest', '2.1.5') });
+  try {
+    const result = await registryState(registry.url, 'tautest', '2.1.5', { ...fast, attempts: 1, verifyTarball: true });
+    assert.equal(result.state, 'error');
+    assert.match(result.detail, /distribution/i);
+  } finally { await registry.close(); }
+});
+
+test('registryState: published verification times out while reading a tarball body after 200 headers', async () => {
+  const routes = { '/tautest/2.1.5': published('tautest', '2.1.5'),
+    '/package.tgz': { status: 200, body: 'bytes', bodyDelayMs: 400 } };
+  const registry = await startRegistry(routes);
+  routes['/tautest/2.1.5'].body.dist = { tarball: `${registry.url}/package.tgz`, integrity: 'sha512-unused' };
+  const started = Date.now();
+  try {
+    const result = await registryState(registry.url, 'tautest', '2.1.5', { ...fast, timeoutMs: 50, attempts: 1, verifyTarball: true });
+    assert.equal(result.state, 'error');
+    assert.match(result.detail, /abort|timeout/i);
+    assert(Date.now() - started < 1000);
+  } finally { await registry.close(); }
+});
 
 test('registryState: 200 naming the version is published, 404 is not, and only GETs are sent', async () => {
   const registry = await startRegistry({ '/tautest/2.0.5': published('tautest', '2.0.5'), '/@tautest%2Fcore/2.0.5': published('@tautest/core', '2.0.5') });
@@ -179,10 +244,10 @@ function workspace({ cli = '2.0.5', core = '2.0.5', changesets = [], changesetDi
   return root;
 }
 
-async function runScript(root, registry) {
+async function runScript(root, registry, extraArgs = []) {
   const outputFile = path.join(root, 'github-output.txt');
   writeFileSync(outputFile, '');
-  const args = [script, `--root=${root}`, `--registry=${registry.url}`, '--retry-delay-ms=0', '--timeout-ms=2000', '--attempts=2'];
+  const args = [script, `--root=${root}`, `--registry=${registry.url}`, '--retry-delay-ms=0', '--timeout-ms=2000', '--attempts=2', ...extraArgs];
   try {
     const { stdout, stderr } = await execFileAsync(process.execPath, args, { env: { ...process.env, GITHUB_OUTPUT: outputFile } });
     return { code: 0, stdout, stderr, output: readFileSync(outputFile, 'utf8') };
@@ -192,6 +257,47 @@ async function runScript(root, registry) {
 }
 
 const bothPublished = { '/tautest/2.0.5': published('tautest', '2.0.5'), '/@tautest%2Fcore/2.0.5': published('@tautest/core', '2.0.5') };
+
+test('published verification CLI fails when both versions are missing instead of requesting publication', async () => {
+  const root = workspace();
+  const registry = await startRegistry({});
+  try {
+    const result = await runScript(root, registry, ['--verify-published=true']);
+    assert.equal(result.code, 1);
+    assert.match(result.stderr, /not downloadable/);
+    assert.match(result.output, /action=error/);
+    assert.doesNotMatch(result.output, /action=changesets/);
+    assert.match(result.output, /pending_changesets=0/);
+  } finally { await registry.close(); rmSync(root, { recursive: true, force: true }); }
+});
+
+test('published verification CLI rejects misaligned workspace versions', async () => {
+  const root = workspace({ cli: '2.0.5', core: '2.0.6' });
+  const registry = await startRegistry({});
+  try {
+    const result = await runScript(root, registry, ['--verify-published=true']);
+    assert.equal(result.code, 1);
+    assert.match(result.stderr, /version-aligned/);
+  } finally { await registry.close(); rmSync(root, { recursive: true, force: true }); }
+});
+
+test('published verification CLI succeeds only after downloading both integrity-matched tarballs', async () => {
+  const root = workspace();
+  const routes = { '/tautest/2.0.5': published('tautest', '2.0.5'),
+    '/@tautest%2Fcore/2.0.5': published('@tautest/core', '2.0.5'),
+    '/package.tgz': { status: 200, body: 'verified package bytes' } };
+  const registry = await startRegistry(routes);
+  for (const route of ['/tautest/2.0.5', '/@tautest%2Fcore/2.0.5']) {
+    routes[route].body.dist = { tarball: `${registry.url}/package.tgz`,
+      integrity: `sha512-${createHash('sha512').update('verified package bytes').digest('base64')}` };
+  }
+  try {
+    const result = await runScript(root, registry, ['--verify-published=true']);
+    assert.equal(result.code, 0);
+    assert.match(result.stdout, /tarball integrity were verified/);
+    assert.equal(registry.requests.filter(request => request.url === '/package.tgz').length, 2);
+  } finally { await registry.close(); rmSync(root, { recursive: true, force: true }); }
+});
 const scenarios = [
   { name: 'no changeset and both versions on npm: Changesets is skipped and the job succeeds', routes: bothPublished, code: 0, action: 'skip', stdout: /::notice.*skip: no pending changesets/ },
   { name: 'a changeset and both versions on npm: the version-PR path is kept', routes: bothPublished, workspace: { changesets: ['fix.md'] }, code: 0, action: 'changesets', stdout: /1 pending changeset/ },

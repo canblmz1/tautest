@@ -118,3 +118,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # A successful publisher exit or registry metadata alone does not prove that
+      # users can download both packages. Keep this check on the skip path too,
+      # but not while Changesets is preparing an unpublished version PR.
+      - name: Verify published package downloads
+        if: steps.decide.outputs.pending_changesets == '0'
+        timeout-minutes: 8
+        run: node scripts/release-decision.mjs --verify-published=true --attempts=12 --retry-delay-ms=1000

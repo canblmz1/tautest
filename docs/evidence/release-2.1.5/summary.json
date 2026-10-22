@@ -1,0 +1,358 @@
+{
+  "recordedAt": "2026-10-22T20:06:50.805Z",
+  "independentAdoption": false,
+  "authorization": "User explicitly approved publishing tautest and @tautest/core 2.1.5 before merging the version PR.",
+  "codeFix": {
+    "pullRequest": "https://github.com/canblmz1/tautest/pull/55",
+    "mergeCommit": "b66fbd0ded72530572c256f6f62743bc2b8f228e",
+    "headChecks": "13/13 success"
+  },
+  "release": {
+    "pullRequest": "https://github.com/canblmz1/tautest/pull/54",
+    "reviewedHead": "aaf3450d806c4191381427587a2e061a0ccd702e",
+    "mergeCommit": "1ed141795ef28cc9b1e20cbbd2c165152f92e799",
+    "mergedAt": "2026-10-22T19:45:16Z",
+    "headChecks": "13/13 success",
+    "workflow": "https://github.com/canblmz1/tautest/actions/runs/39842845088",
+    "publisherReportedSuccessAt": "2026-10-22T19:46:18.939Z",
+    "publisherWorkflowConclusion": "success"
+  },
+  "visibility": {
+    "unavailableSnapshot": [
+      {
+        "source": "https://registry.npmjs.org/@tautest/core/2.1.5?probe=1792698787339",
+        "checkedAt": "2026-10-22T19:53:09.067Z",
+        "status": 200,
+        "headers": {
+          "cf-cache-status": "DYNAMIC",
+          "date": "Thu, 22 Oct 2026 19:53:09 GMT"
+        },
+        "name": "@tautest/core",
+        "version": "2.1.5",
+        "versionPresent": false
+      },
+      {
+        "source": "https://registry.npmjs.org/@tautest%2fcore/2.1.5?probe=1792698787402",
+        "checkedAt": "2026-10-22T19:53:09.063Z",
+        "status": 200,
+        "headers": {
+          "cf-cache-status": "DYNAMIC",
+          "date": "Thu, 22 Oct 2026 19:53:09 GMT"
+        },
+        "name": "@tautest/core",
+        "version": "2.1.5",
+        "versionPresent": false
+      },
+      {
+        "source": "https://registry.npmjs.org/@tautest%2fcore?probe=1792698787404",
+        "checkedAt": "2026-10-22T19:53:09.323Z",
+        "status": 200,
+        "headers": {
+          "cache-control": "public, max-age=300",
+          "cf-cache-status": "MISS",
+          "date": "Thu, 22 Oct 2026 19:53:09 GMT",
+          "etag": "W/\"f1090383a97d1dfc47ac92a08408b808\""
+        },
+        "name": "@tautest/core",
+        "latest": "2.1.5",
+        "versionPresent": true
+      },
+      {
+        "source": "https://registry.npmjs.org/@tautest/core/-/core-2.1.5.tgz?probe=1792698787406",
+        "checkedAt": "2026-10-22T19:53:08.831Z",
+        "status": 404,
+        "headers": {
+          "date": "Thu, 22 Oct 2026 19:53:08 GMT"
+        }
+      }
+    ],
+    "metadata": {
+      "checkedAt": "2026-10-22T19:51:08.123Z",
+      "results": [
+        {
+          "name": "tautest",
+          "source": "https://registry.npmjs.org/tautest/2.1.5?check=1792698668125",
+          "checkedAt": "2026-10-22T19:51:08.123Z",
+          "httpStatus": 200,
+          "confirmed": true,
+          "reportedName": "tautest",
+          "version": "2.1.5",
+          "integrity": "sha512-no4Jj/UDAtp4CW7Vqoovdh/hmZGmdNPAq6kOvWSCqGTZ7g9BlUkNWp2xOuoWIIrQ+tdI8Plq1/zvga7GqGHLLw==",
+          "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.5.tgz",
+          "error": null
+        },
+        {
+          "name": "@tautest/core",
+          "source": "https://registry.npmjs.org/%40tautest%2Fcore/2.1.5?check=1792698668263",
+          "checkedAt": "2026-10-22T19:51:08.123Z",
+          "httpStatus": 200,
+          "confirmed": true,
+          "reportedName": "@tautest/core",
+          "version": "2.1.5",
+          "integrity": "sha512-v8jaAOR21e8DVVDO1oYUUOaeYbGhs3g6pcHUymkwVFNyASMh45jaYMM3RI9j8zaY1jGE98GTk64hEuaYUTxjNQ==",
+          "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.5.tgz",
+          "error": null
+        }
+      ]
+    },
+    "matchingTarballsVerifiedBy": {
+      "command": "node scripts/release-decision.mjs --verify-published=true --attempts=1",
+      "exitCode": 0,
+      "logWrittenAt": "2026-10-22T19:56:52.166Z"
+    },
+    "reasonForDelay": "unknown; metadata visibility and tarball availability differed; no repeat publish was attempted"
+  },
+  "emptyCacheInstall": {
+    "node": "v22.23.2",
+    "platform": "win32",
+    "npm": "10.9.8",
+    "command": "npm install --prefix <new directory> --cache <new empty cache> --userconfig <empty user config> --registry https://registry.npmjs.org --ignore-scripts --no-audit --no-fund --save-exact tautest@2.1.5",
+    "exitCode": 0,
+    "packagesAdded": 17,
+    "cli": "2.1.5",
+    "core": "2.1.5",
+    "overrides": null,
+    "lockfileSha256": "715f0a24d698577398384d59904b3ed3e885f66cdfe9b330cb6332cb5e9a99b9",
+    "note": "New local npm cache, public registry, no local package or core-version fallback; this is not a network performance benchmark."
+  },
+  "realPublishedControl": {
+    "node": "v22.23.2",
+    "pnpm": "10.33.1",
+    "vitest": "4.1.8",
+    "strykerCore": "10.0.0",
+    "strykerRunner": "10.0.0",
+    "sourceSha256": "714fe3391d77101911ba1112482e750c17928d1473d958ec91c0c49f0ff9bab8",
+    "sourceUnchanged": true,
+    "existingTestsPassedTwice": [
+      2,
+      2
+    ],
+    "changedLineScope": [
+      "src/eligibility.ts:2-2"
+    ],
+    "before": {
+      "status": "Survived",
+      "testsCompleted": 2,
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 2
+        },
+        "start": {
+          "column": 10,
+          "line": 2
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "age > 18",
+      "coveringTests": [
+        {
+          "file": "test/eligibility.test.ts",
+          "id": "0",
+          "name": "accepts an adult"
+        },
+        {
+          "file": "test/eligibility.test.ts",
+          "id": "1",
+          "name": "rejects an underage applicant"
+        }
+      ]
+    },
+    "candidateOriginalPassed": 3,
+    "verify": {
+      "cliExitCode": 0,
+      "status": "verified",
+      "testsCompleted": 3,
+      "target": {
+        "originalId": "2",
+        "mutatorName": "EqualityOperator",
+        "location": {
+          "start": {
+            "line": 2,
+            "column": 10
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        },
+        "replacement": "age > 18"
+      },
+      "freshTarget": {
+        "id": "2",
+        "mutatorName": "EqualityOperator",
+        "replacement": "age > 18",
+        "statusReason": "expected false to be true // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 3,
+        "killedBy": [
+          "2"
+        ],
+        "coveredBy": [
+          "0",
+          "1",
+          "2"
+        ],
+        "location": {
+          "end": {
+            "column": 19,
+            "line": 2
+          },
+          "start": {
+            "column": 10,
+            "line": 2
+          }
+        }
+      },
+      "killingTests": [
+        {
+          "file": "test/boundary.test.ts",
+          "id": "2",
+          "name": "accepts the minimum eligible age of 18"
+        }
+      ],
+      "completedAt": "2026-10-22T19:59:22.034Z"
+    },
+    "manualReplacement": {
+      "exitCode": 1,
+      "failure": "expected false to be true",
+      "originalRestoredTestsPassed": 3
+    },
+    "publishedLockfileSha256": "7e5b1eebd9361e919d54c1dcebad4c1645aa862f4b5850d4ad7b276d6ae51dfe",
+    "steps": [
+      {
+        "name": "pnpm-version",
+        "durationMs": 925,
+        "exitCode": 0
+      },
+      {
+        "name": "install",
+        "durationMs": 36621,
+        "exitCode": 0
+      },
+      {
+        "name": "versions",
+        "durationMs": 1821,
+        "exitCode": 0
+      },
+      {
+        "name": "cli-version",
+        "durationMs": 3089,
+        "exitCode": 0
+      },
+      {
+        "name": "baseline-one",
+        "durationMs": 4032,
+        "exitCode": 0
+      },
+      {
+        "name": "baseline-two",
+        "durationMs": 3597,
+        "exitCode": 0
+      },
+      {
+        "name": "git-init",
+        "durationMs": 419,
+        "exitCode": 0
+      },
+      {
+        "name": "git-add-base",
+        "durationMs": 424,
+        "exitCode": 0
+      },
+      {
+        "name": "git-commit-base",
+        "durationMs": 504,
+        "exitCode": 0
+      },
+      {
+        "name": "git-base-sha",
+        "durationMs": 598,
+        "exitCode": 0
+      },
+      {
+        "name": "git-branch",
+        "durationMs": 495,
+        "exitCode": 0
+      },
+      {
+        "name": "init",
+        "durationMs": 1386,
+        "exitCode": 0
+      },
+      {
+        "name": "git-add-change",
+        "durationMs": 385,
+        "exitCode": 0
+      },
+      {
+        "name": "git-commit-change",
+        "durationMs": 425,
+        "exitCode": 0
+      },
+      {
+        "name": "git-head-sha",
+        "durationMs": 348,
+        "exitCode": 0
+      },
+      {
+        "name": "diff",
+        "durationMs": 357,
+        "exitCode": 0
+      },
+      {
+        "name": "doctor",
+        "durationMs": 1483,
+        "exitCode": 0
+      },
+      {
+        "name": "dry-run",
+        "durationMs": 1244,
+        "exitCode": 0
+      },
+      {
+        "name": "mutation",
+        "durationMs": 10333,
+        "exitCode": 0
+      },
+      {
+        "name": "unchanged-normal-suite",
+        "durationMs": 2649,
+        "exitCode": 0
+      },
+      {
+        "name": "analyze",
+        "durationMs": 1768,
+        "exitCode": 0
+      },
+      {
+        "name": "candidate-normal-suite",
+        "durationMs": 2201,
+        "exitCode": 0
+      },
+      {
+        "name": "verify-published",
+        "durationMs": 14424,
+        "exitCode": 0
+      },
+      {
+        "name": "exact-replacement-assertion",
+        "durationMs": 2335,
+        "exitCode": 1
+      },
+      {
+        "name": "restored-original-suite",
+        "durationMs": 2452,
+        "exitCode": 0
+      },
+      {
+        "name": "final-status",
+        "durationMs": 624,
+        "exitCode": 0
+      }
+    ],
+    "note": "Maintainer toy control, reused pnpm store. Separate from the empty npm-cache installation and from real-project adoption."
+  },
+  "outcome": "Both exact package downloads and a fresh-cache installation are confirmed; published verify succeeds. No independent user adoption is established."
+}
