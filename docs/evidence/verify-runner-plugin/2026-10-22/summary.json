@@ -1,0 +1,336 @@
+{
+  "recordedAt": "2026-10-22T19:22:35.286Z",
+  "kind": "maintainer-owned-control-not-independent-adoption",
+  "sourceBase": "45087b7d547127f6d48ac6509921d078cd4d34c6",
+  "environment": {
+    "platform": "Windows",
+    "node": "22.23.2",
+    "pnpm": "10.33.1",
+    "vitest": "4.1.8",
+    "strykerCore": "10.0.0",
+    "strykerVitestRunner": "10.0.0",
+    "tautestCore": "2.1.4",
+    "installation": "New project directory; existing pnpm package store reused, not cold-cache installation."
+  },
+  "scope": {
+    "realDiff": "src/eligibility.ts line 2",
+    "mutatePatterns": [
+      "src/eligibility.ts:2-2"
+    ],
+    "moduleLoaded": "../src/eligibility",
+    "buildOutputUsed": false,
+    "runConcurrency": 1,
+    "verifyConcurrency": "Stryker default; verify does not read tautest.config.ts"
+  },
+  "published": {
+    "version": "2.1.4",
+    "registry": {
+      "queriedAt": "2026-10-22T19:15:54.784Z",
+      "source": "https://registry.npmjs.org/tautest/latest",
+      "name": "tautest",
+      "version": "2.1.4",
+      "testedVersion": "2.1.4",
+      "testedVersionSelection": "latest observed on 2026-10-22; deliberately pinned",
+      "latestIntegrity": "sha512-xTOZMiAMLwZ5mi7/cJeqe6BqHPqvigKBkH4Tx/fvr6+cQGZJVoAsiARr3nxUD23OD6AUVxYd0rNz6FUPzPzl8Q=="
+    },
+    "baselineRuns": [
+      {
+        "testsPassed": 2
+      },
+      {
+        "testsPassed": 2
+      }
+    ],
+    "originalLockfileSha256": "20c2f54083d6bb952a228a5675a091aae05e186c842998816e86b56a9f966ad5",
+    "originalLockfileSha256Note": "Exact v3 published-only lockfile recovered from its committed Git main blob, before candidate installation.",
+    "score": {
+      "verdict": "MIXED",
+      "mutationScore": 75,
+      "threshold": 60,
+      "total": 4,
+      "killed": 3,
+      "survived": 1,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 0
+    },
+    "target": {
+      "sourceSha256": "714fe3391d77101911ba1112482e750c17928d1473d958ec91c0c49f0ff9bab8",
+      "file": "src/eligibility.ts",
+      "id": "2",
+      "mutatorName": "EqualityOperator",
+      "replacement": "age > 18",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 2,
+      "coveredBy": [
+        "0",
+        "1"
+      ],
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 2
+        },
+        "start": {
+          "column": 10,
+          "line": 2
+        }
+      },
+      "coveringTests": [
+        {
+          "file": "test/eligibility.test.ts",
+          "id": "0",
+          "name": "accepts an adult"
+        },
+        {
+          "file": "test/eligibility.test.ts",
+          "id": "1",
+          "name": "rejects an underage applicant"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    "rawReportSha256": "59acb80b425e179993000be7f5a9e2e53fe346a6a4ab3ec291ee29402868f3ca",
+    "verification": {
+      "cliExit": 12,
+      "status": "error",
+      "workerExit": 1,
+      "budgetExceeded": false,
+      "engineError": "Cannot find TestRunner plugin \"vitest\". In fact, no TestRunner plugins were loaded."
+    }
+  },
+  "finalCandidate": {
+    "published": false,
+    "packageVersionUnchanged": "2.1.4",
+    "workerSourceSha256": "7c5892cbbde027a2f7d27a7a6031e5fffb41119ae83f0a3179bf054c819064e5",
+    "exitCode": 0,
+    "durationMs": 29050,
+    "tarballSha256": "d17b2436f67b35bc4507bb0242fab9254bb9f91d65e3d820566c5c80f6ca3e80",
+    "testedAt": "2026-10-22T19:20:10.9827038Z",
+    "status": "verified",
+    "sourceSha256": "714fe3391d77101911ba1112482e750c17928d1473d958ec91c0c49f0ff9bab8",
+    "originalReportSha256": "59acb80b425e179993000be7f5a9e2e53fe346a6a4ab3ec291ee29402868f3ca",
+    "target": {
+      "originalId": "2",
+      "mutatorName": "EqualityOperator",
+      "location": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      },
+      "replacement": "age > 18"
+    },
+    "freshTarget": {
+      "id": "2",
+      "mutatorName": "EqualityOperator",
+      "replacement": "age > 18",
+      "statusReason": "expected false to be true // Object.is equality",
+      "status": "Killed",
+      "static": false,
+      "testsCompleted": 3,
+      "killedBy": [
+        "0"
+      ],
+      "coveredBy": [
+        "0",
+        "1",
+        "2"
+      ],
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 2
+        },
+        "start": {
+          "column": 10,
+          "line": 2
+        }
+      }
+    },
+    "killingTests": [
+      {
+        "file": "test/boundary.test.ts",
+        "id": "0",
+        "name": "accepts the minimum eligible age of 18"
+      }
+    ],
+    "rawReportSha256": "06caabce4381f01aefad69fdb61b63bb4580cb8eab8dea5b38ad3e10e37eb82e",
+    "configuredPlugins": [
+      "@stryker-mutator/*"
+    ],
+    "appendedPlugins": [
+      "@stryker-mutator/vitest-runner"
+    ],
+    "originalWithCandidateTestsPassed": 3,
+    "exactReplacementFailure": "expected false to be true",
+    "exactReplacementFailingTest": "accepts the minimum eligible age of 18",
+    "sourceUnchanged": true
+  },
+  "timings": {
+    "note": "One local control, pnpm store reused; no comparison or general speed claim. v3 uses the initial candidate; finalCandidate metadata separately times the final pack.",
+    "steps": [
+      {
+        "name": "pnpm-version",
+        "durationMs": 1635,
+        "exitCode": 0
+      },
+      {
+        "name": "install",
+        "durationMs": 49945,
+        "exitCode": 0
+      },
+      {
+        "name": "versions",
+        "durationMs": 2442,
+        "exitCode": 0
+      },
+      {
+        "name": "cli-version",
+        "durationMs": 3227,
+        "exitCode": 0
+      },
+      {
+        "name": "baseline-one",
+        "durationMs": 5989,
+        "exitCode": 0
+      },
+      {
+        "name": "baseline-two",
+        "durationMs": 5287,
+        "exitCode": 0
+      },
+      {
+        "name": "git-init",
+        "durationMs": 906,
+        "exitCode": 0
+      },
+      {
+        "name": "git-add-base",
+        "durationMs": 1024,
+        "exitCode": 0
+      },
+      {
+        "name": "git-commit-base",
+        "durationMs": 1126,
+        "exitCode": 0
+      },
+      {
+        "name": "git-base-sha",
+        "durationMs": 903,
+        "exitCode": 0
+      },
+      {
+        "name": "git-branch",
+        "durationMs": 926,
+        "exitCode": 0
+      },
+      {
+        "name": "init",
+        "durationMs": 3168,
+        "exitCode": 0
+      },
+      {
+        "name": "git-add-change",
+        "durationMs": 750,
+        "exitCode": 0
+      },
+      {
+        "name": "git-commit-change",
+        "durationMs": 786,
+        "exitCode": 0
+      },
+      {
+        "name": "git-head-sha",
+        "durationMs": 821,
+        "exitCode": 0
+      },
+      {
+        "name": "diff",
+        "durationMs": 597,
+        "exitCode": 0
+      },
+      {
+        "name": "doctor",
+        "durationMs": 2151,
+        "exitCode": 0
+      },
+      {
+        "name": "dry-run",
+        "durationMs": 1975,
+        "exitCode": 0
+      },
+      {
+        "name": "mutation",
+        "durationMs": 13287,
+        "exitCode": 0
+      },
+      {
+        "name": "unchanged-normal-suite",
+        "durationMs": 2098,
+        "exitCode": 0
+      },
+      {
+        "name": "analyze",
+        "durationMs": 1343,
+        "exitCode": 0
+      },
+      {
+        "name": "candidate-normal-suite",
+        "durationMs": 2019,
+        "exitCode": 0
+      },
+      {
+        "name": "verify-published",
+        "durationMs": 7117,
+        "exitCode": 12
+      },
+      {
+        "name": "install-candidate",
+        "durationMs": 4103,
+        "exitCode": 0
+      },
+      {
+        "name": "verify-candidate",
+        "durationMs": 14114,
+        "exitCode": 0
+      },
+      {
+        "name": "exact-replacement-assertion",
+        "durationMs": 2236,
+        "exitCode": 1
+      },
+      {
+        "name": "restored-original-suite",
+        "durationMs": 2795,
+        "exitCode": 0
+      },
+      {
+        "name": "final-status",
+        "durationMs": 612,
+        "exitCode": 0
+      }
+    ]
+  },
+  "validation": {
+    "initialRegression": "5 assertion failures, 3 passes before the fix; additional compatibility cases added during review",
+    "finalTargeted": "29 passed: 11 worker configuration tests and 18 existing review/verification tests",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "workspaceTests": "430 passed, including 108 CLI tests",
+    "scriptTests": "81 passed / 2 failed; both reproduced on unmodified main under Windows",
+    "baselineFailures": [
+      "rejects file mode changes and symlink replacements: missing expected exception",
+      "production replay: EPERM creating directory symlink"
+    ],
+    "platformLimit": "Real control executed on Windows / Node 22 only. No Linux, Node 24 or real Jest execution claimed."
+  }
+}
