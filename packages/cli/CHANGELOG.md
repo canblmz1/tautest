@@ -1,5 +1,15 @@
 # tautest
 
+## 2.1.5
+
+### Patch Changes
+
+- b66fbd0: Load the selected Vitest or Jest Stryker runner explicitly during verification when no plugin list is configured. This prevents pnpm installations from failing to find an installed runner through Stryker's default plugin discovery, while preserving explicit plugin configuration and verification checks.
+- 45087b7: Make doctor check the Stryker runner for the selected test runner, respecting an explicit testRunner configuration. Missing matching dependencies and unavailable Vitest compatibility checks produce warnings instead of misleading OK checks; existing warning exit behavior and the Vitest 5 error guard are preserved.
+- Updated dependencies [b66fbd0]
+- Updated dependencies [45087b7]
+  - @tautest/core@2.1.5
+
 ## 2.1.4
 
 ### Patch Changes
