@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-22T19:31:31.391Z",
+  "definition": "Only independent maintainer-owned execution/confirmation counts. Our pilots and CI do not count.",
+  "milestones": {
+    "firstTrialsBy": "2026-11-05",
+    "firstTrialTarget": 2,
+    "firstBenefitTarget": 1,
+    "decisionBy": "2026-11-21",
+    "benefitTarget": 2,
+    "repeatProjectTarget": 1
+  },
+  "counts": {
+    "confirmedIndependentTrials": 0,
+    "confirmedBenefits": 0,
+    "confirmedTestImprovements": 0,
+    "confirmedRepeatProjects": 0,
+    "actualGlobalUsers": null,
+    "actualGlobalUsersStatus": "unknown"
+  },
+  "downloads": {
+    "name": "last30",
+    "source": "https://api.npmjs.org/downloads/point/2026-09-22:2026-10-21/tautest",
+    "queriedAt": "2026-10-22T18:41:24.035Z",
+    "downloads": 1558,
+    "start": "2026-09-22",
+    "end": "2026-10-21",
+    "package": "tautest",
+    "note": "Main package only; downloads are not users. Frozen measurement, not a newly queried value."
+  },
+  "projects": [
+    {
+      "repo": "oller/vimgym",
+      "issue": "https://github.com/oller/vimgym/issues/35",
+      "queriedAt": "2026-10-22T19:07:47.9400549Z",
+      "currentMain": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+      "technicalProofSource": "https://github.com/canblmz1/tautest/tree/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21",
+      "technicalProofProjectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+      "kind": "maintainer-owned-technical-proof",
+      "lastInvitation": {
+        "url": "https://github.com/oller/vimgym/issues/35#issuecomment-6265939618",
+        "date": "2026-10-19T11:16:38Z"
+      },
+      "laterOtherRepliesFound": 0,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "currentVersionEngineRerun": false,
+      "limitation": "Line22 is old baseline debt outside actual recent-diff selection; not a changed-line discovery or reuse proof.",
+      "nextAction": "Validate the current published verify path before offering a refreshed trial; accept results through the existing invitation.",
+      "currentPublishedReportImport": {
+        "version": "2.1.4",
+        "checkedAt": "2026-10-22T19:29:01.367Z",
+        "exitCode": 0,
+        "inputSource": "https://raw.githubusercontent.com/canblmz1/tautest/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/observed/before.target.json",
+        "inputSha256": "a5d02422da7df7bc96dbfeebfa1b4285947c02c4000dadc2ab03e5c1da23e012",
+        "inputUnchanged": true,
+        "groups": 1,
+        "dataPreserved": true,
+        "engineExecuted": false,
+        "evidence": "current-report-review-2026-10-22.json"
+      }
+    },
+    {
+      "repo": "Thang4869/TriAD-Backend",
+      "issue": "https://github.com/Thang4869/TriAD-Backend/issues/145",
+      "queriedAt": "2026-10-22T19:07:47.9400549Z",
+      "currentMain": "902dec9b1178e84dc927499705b75f083a95dd90",
+      "technicalProofSource": "https://github.com/canblmz1/tautest/tree/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address",
+      "technicalProofProjectSha": "7e41358c9936186d5469437584845335ec255ad1",
+      "kind": "maintainer-owned-technical-proof",
+      "lastInvitation": {
+        "url": "https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597",
+        "date": "2026-10-18T19:07:42Z"
+      },
+      "laterOtherRepliesFound": 0,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "currentVersionEngineRerun": false,
+      "limitation": "No current-main normal-suite/engine execution in this refresh; source equality alone does not establish environment or test compatibility.",
+      "nextAction": "Validate current unit test configuration at the new source SHA before refreshing the historical proof guard.",
+      "currentPublishedReportImport": {
+        "version": "2.1.4",
+        "checkedAt": "2026-10-22T19:29:02.180Z",
+        "exitCode": 0,
+        "inputSource": "https://raw.githubusercontent.com/canblmz1/tautest/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/before.mutation.json",
+        "inputSha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+        "inputUnchanged": true,
+        "groups": 3,
+        "dataPreserved": true,
+        "engineExecuted": false,
+        "evidence": "current-report-review-2026-10-22.json"
+      }
+    }
+  ],
+  "maintainerControls": [
+    {
+      "date": "2026-10-22",
+      "independentAdoption": false,
+      "stagePassed": "published install -> init -> doctor -> run -> analyze",
+      "firstBlockedStage": "published verify: installed Vitest runner not discovered with pnpm",
+      "remedy": "Narrow, unpublished appendPlugins fix in separate branch fix/verify-runner-plugin-discovery",
+      "evidence": "https://github.com/canblmz1/tautest/blob/5eb249be04221e1a838b78853bc426eae661b136/docs/evidence/verify-runner-plugin/2026-10-22/summary.json",
+      "pullRequest": "https://github.com/canblmz1/tautest/pull/55",
+      "codeCommit": "5eb249be04221e1a838b78853bc426eae661b136",
+      "ci": {
+        "checkedAt": "2026-10-22T19:27:45.753Z",
+        "passed": 13,
+        "total": 13,
+        "source": "https://github.com/canblmz1/tautest/pull/55/checks",
+        "publicationStatus": "unmerged, unpublished"
+      },
+      "timing": {
+        "firstGeneratedReportSinceInstallStartMs": 95339,
+        "meaning": "Automated toy control; includes install and intervening preparation, excludes human review; reused pnpm store. Not maintainer first meaningful result time."
+      }
+    }
+  ],
+  "scope": "Vimgym and TriAD refreshed this checkpoint. Other three candidates retain the 2026-10-22 18:41 UTC assessment and are not reclassified.",
+  "publication": "No release, merge, deploy or new external invitation in this checkpoint."
+}

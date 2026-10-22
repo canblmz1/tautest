@@ -1,0 +1,305 @@
+{
+    "queriedAt":  "2026-10-22T19:07:47.9400549Z",
+    "scope":  "Existing Vimgym and TriAD only; read-only public status/source/asset refresh; no engine rerun, outreach, install, release or merge.",
+    "records":  [
+                    {
+                        "repo":  "oller/vimgym",
+                        "issue":  "https://github.com/oller/vimgym/issues/35",
+                        "issueState":  "open",
+                        "issueUpdatedAt":  "2026-10-19T11:16:38Z",
+                        "currentMain":  "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+                        "evidenceProjectSha":  "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+                        "evidenceCommit":  "fd1b777868e945070df0ed7fc6bbcd27bc1f9521",
+                        "evidenceDirectory":  "https://github.com/canblmz1/tautest/tree/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21",
+                        "availablePublicAssets":  [
+                                                      {
+                                                          "name":  "PROJECT-LICENSE",
+                                                          "type":  "file",
+                                                          "bytes":  500,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/PROJECT-LICENSE"
+                                                      },
+                                                      {
+                                                          "name":  "README.txt",
+                                                          "type":  "file",
+                                                          "bytes":  8957,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/README.txt"
+                                                      },
+                                                      {
+                                                          "name":  "candidate.patch",
+                                                          "type":  "file",
+                                                          "bytes":  546,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/candidate.patch"
+                                                      },
+                                                      {
+                                                          "name":  "candidates.json",
+                                                          "type":  "file",
+                                                          "bytes":  5913,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/candidates.json"
+                                                      },
+                                                      {
+                                                          "name":  "collect-public.mjs",
+                                                          "type":  "file",
+                                                          "bytes":  4878,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/collect-public.mjs"
+                                                      },
+                                                      {
+                                                          "name":  "ex-command-whitespace.test.ts",
+                                                          "type":  "file",
+                                                          "bytes":  278,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/ex-command-whitespace.test.ts"
+                                                      },
+                                                      {
+                                                          "name":  "invitation-draft.txt",
+                                                          "type":  "file",
+                                                          "bytes":  1235,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/invitation-draft.txt"
+                                                      },
+                                                      {
+                                                          "name":  "observed",
+                                                          "type":  "dir",
+                                                          "bytes":  0,
+                                                          "url":  "https://github.com/canblmz1/tautest/tree/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/observed"
+                                                      },
+                                                      {
+                                                          "name":  "package-lock.json",
+                                                          "type":  "file",
+                                                          "bytes":  8158,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/package-lock.json"
+                                                      },
+                                                      {
+                                                          "name":  "package.json",
+                                                          "type":  "file",
+                                                          "bytes":  166,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/package.json"
+                                                      },
+                                                      {
+                                                          "name":  "pilot.mjs",
+                                                          "type":  "file",
+                                                          "bytes":  10910,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/pilot.mjs"
+                                                      },
+                                                      {
+                                                          "name":  "reviewer-note.txt",
+                                                          "type":  "file",
+                                                          "bytes":  3545,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/reviewer-note.txt"
+                                                      }
+                                                  ],
+                        "ourCommentCount":  1,
+                        "lastInvitation":  {
+                                               "url":  "https://github.com/oller/vimgym/issues/35#issuecomment-6265939618",
+                                               "date":  "2026-10-19T11:16:38Z"
+                                           },
+                        "laterOtherComments":  [
+
+                                               ],
+                        "adoption":  {
+                                         "note":  "Our own pilot and CI runs do not count.",
+                                         "confirmedTestImprovement":  0,
+                                         "confirmedBenefit":  0,
+                                         "confirmedIndependentTrial":  0,
+                                         "confirmedRepeatUse":  0,
+                                         "actualIndependentUsage":  "unknown"
+                                     },
+                        "source":  {
+                                       "ref":  "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+                                       "path":  "packages/vimsplain/src/handlers/command.ts",
+                                       "blob":  "652cbb07a96219a243b5dbb6cdad1455ef25d1c6",
+                                       "bytes":  2097,
+                                       "sha256":  "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+                                       "url":  "https://github.com/oller/vimgym/blob/e65d98ca48f6432779b6bf2cb677d1a9116400d8/packages/vimsplain/src/handlers/command.ts",
+                                       "download":  "https://raw.githubusercontent.com/oller/vimgym/e65d98ca48f6432779b6bf2cb677d1a9116400d8/packages/vimsplain/src/handlers/command.ts"
+                                   },
+                        "lock":  {
+                                     "ref":  "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+                                     "path":  "pnpm-lock.yaml",
+                                     "blob":  "b9d622b0fc8339d7afcd5c776024d54799d17438",
+                                     "bytes":  239688,
+                                     "sha256":  "b387b8028c5148234a2b776610d996f6bb2a270bc2d723d2659986189576dc04",
+                                     "url":  "https://github.com/oller/vimgym/blob/e65d98ca48f6432779b6bf2cb677d1a9116400d8/pnpm-lock.yaml",
+                                     "download":  "https://raw.githubusercontent.com/oller/vimgym/e65d98ca48f6432779b6bf2cb677d1a9116400d8/pnpm-lock.yaml"
+                                 },
+                        "portability":  "Full fresh engine pilot available; current main equals pinned project revision; Node22/npm + pnpm10.34.6; published tautest2.1.3",
+                        "limitation":  "Line22 is old baseline debt outside actual recent-diff selection; not a changed-line discovery or reuse proof.",
+                        "openPullRequests":  [
+                                                 {
+                                                     "number":  43,
+                                                     "url":  "https://github.com/oller/vimgym/pull/43",
+                                                     "title":  "build(deps): bump the actions group with 6 updates"
+                                                 },
+                                                 {
+                                                     "number":  44,
+                                                     "url":  "https://github.com/oller/vimgym/pull/44",
+                                                     "title":  "build(deps): bump the npm-dependencies group with 45 updates"
+                                                 }
+                                             ],
+                        "lockLineEndingComparison":  {
+                                                         "recordedWindowsSha256":  "955c90b4aa5764e82f4eb288f7cd05cdf5bd6a2f523382f21d2bb72509c0e99c",
+                                                         "matchesAfterLineEndingConversion":  true,
+                                                         "sameBlobConvertedToCRLFsha256":  "955c90b4aa5764e82f4eb288f7cd05cdf5bd6a2f523382f21d2bb72509c0e99c",
+                                                         "note":  "Raw byte hash difference is LF/CRLF, not dependency drift.",
+                                                         "githubLFsha256":  "b387b8028c5148234a2b776610d996f6bb2a270bc2d723d2659986189576dc04"
+                                                     }
+                    },
+                    {
+                        "repo":  "Thang4869/TriAD-Backend",
+                        "issue":  "https://github.com/Thang4869/TriAD-Backend/issues/145",
+                        "issueState":  "open",
+                        "issueUpdatedAt":  "2026-10-18T19:07:42Z",
+                        "currentMain":  "902dec9b1178e84dc927499705b75f083a95dd90",
+                        "evidenceProjectSha":  "7e41358c9936186d5469437584845335ec255ad1",
+                        "evidenceCommit":  "ef34753bfdb85973eec73c2a9b9f6b0df8229d04",
+                        "evidenceDirectory":  "https://github.com/canblmz1/tautest/tree/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address",
+                        "availablePublicAssets":  [
+                                                      {
+                                                          "name":  "PROJECT-LICENSE",
+                                                          "type":  "file",
+                                                          "bytes":  1066,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/PROJECT-LICENSE"
+                                                      },
+                                                      {
+                                                          "name":  "README.txt",
+                                                          "type":  "file",
+                                                          "bytes":  2604,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/README.txt"
+                                                      },
+                                                      {
+                                                          "name":  "address.test.ts",
+                                                          "type":  "file",
+                                                          "bytes":  472,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/address.test.ts"
+                                                      },
+                                                      {
+                                                          "name":  "after.mutation.json",
+                                                          "type":  "file",
+                                                          "bytes":  17536,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/after.mutation.json"
+                                                      },
+                                                      {
+                                                          "name":  "before.mutation.json",
+                                                          "type":  "file",
+                                                          "bytes":  15774,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/before.mutation.json"
+                                                      },
+                                                      {
+                                                          "name":  "evidence.json",
+                                                          "type":  "file",
+                                                          "bytes":  3350,
+                                                          "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/evidence.json"
+                                                      }
+                                                  ],
+                        "ourCommentCount":  2,
+                        "lastInvitation":  {
+                                               "url":  "https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597",
+                                               "date":  "2026-10-18T19:07:42Z"
+                                           },
+                        "laterOtherComments":  [
+
+                                               ],
+                        "adoption":  {
+                                         "note":  "Our own pilot and CI runs do not count.",
+                                         "confirmedTestImprovement":  0,
+                                         "confirmedBenefit":  0,
+                                         "confirmedIndependentTrial":  0,
+                                         "confirmedRepeatUse":  0,
+                                         "actualIndependentUsage":  "unknown"
+                                     },
+                        "currentSource":  {
+                                              "ref":  "902dec9b1178e84dc927499705b75f083a95dd90",
+                                              "path":  "src/shared/value-objects/address.ts",
+                                              "blob":  "f85e7e9209a680fd69313a864a6a101c49884be8",
+                                              "bytes":  394,
+                                              "sha256":  "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+                                              "url":  "https://github.com/Thang4869/TriAD-Backend/blob/902dec9b1178e84dc927499705b75f083a95dd90/src/shared/value-objects/address.ts",
+                                              "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/902dec9b1178e84dc927499705b75f083a95dd90/src/shared/value-objects/address.ts"
+                                          },
+                        "pinnedSource":  {
+                                             "ref":  "7e41358c9936186d5469437584845335ec255ad1",
+                                             "path":  "src/shared/value-objects/address.ts",
+                                             "blob":  "f85e7e9209a680fd69313a864a6a101c49884be8",
+                                             "bytes":  394,
+                                             "sha256":  "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+                                             "url":  "https://github.com/Thang4869/TriAD-Backend/blob/7e41358c9936186d5469437584845335ec255ad1/src/shared/value-objects/address.ts",
+                                             "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/7e41358c9936186d5469437584845335ec255ad1/src/shared/value-objects/address.ts"
+                                         },
+                        "currentTests":  {
+                                             "ref":  "902dec9b1178e84dc927499705b75f083a95dd90",
+                                             "path":  "tests/unit/shared/value-objects.test.ts",
+                                             "blob":  "6362ad423dd1470851e9855d4317881ba32c09f5",
+                                             "bytes":  1760,
+                                             "sha256":  "129cccdadd0692503c3f3031a041a956dcdb8954d38006345e3ddab09189c371",
+                                             "url":  "https://github.com/Thang4869/TriAD-Backend/blob/902dec9b1178e84dc927499705b75f083a95dd90/tests/unit/shared/value-objects.test.ts",
+                                             "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/902dec9b1178e84dc927499705b75f083a95dd90/tests/unit/shared/value-objects.test.ts"
+                                         },
+                        "pinnedTests":  {
+                                            "ref":  "7e41358c9936186d5469437584845335ec255ad1",
+                                            "path":  "tests/unit/shared/value-objects.test.ts",
+                                            "blob":  "6362ad423dd1470851e9855d4317881ba32c09f5",
+                                            "bytes":  1760,
+                                            "sha256":  "129cccdadd0692503c3f3031a041a956dcdb8954d38006345e3ddab09189c371",
+                                            "url":  "https://github.com/Thang4869/TriAD-Backend/blob/7e41358c9936186d5469437584845335ec255ad1/tests/unit/shared/value-objects.test.ts",
+                                            "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/7e41358c9936186d5469437584845335ec255ad1/tests/unit/shared/value-objects.test.ts"
+                                        },
+                        "currentLock":  {
+                                            "ref":  "902dec9b1178e84dc927499705b75f083a95dd90",
+                                            "path":  "package-lock.json",
+                                            "blob":  "d74cb8369528da54f5f72a10aed45177cd671f33",
+                                            "bytes":  443231,
+                                            "sha256":  "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+                                            "url":  "https://github.com/Thang4869/TriAD-Backend/blob/902dec9b1178e84dc927499705b75f083a95dd90/package-lock.json",
+                                            "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/902dec9b1178e84dc927499705b75f083a95dd90/package-lock.json"
+                                        },
+                        "pinnedLock":  {
+                                           "ref":  "7e41358c9936186d5469437584845335ec255ad1",
+                                           "path":  "package-lock.json",
+                                           "blob":  "d74cb8369528da54f5f72a10aed45177cd671f33",
+                                           "bytes":  443231,
+                                           "sha256":  "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+                                           "url":  "https://github.com/Thang4869/TriAD-Backend/blob/7e41358c9936186d5469437584845335ec255ad1/package-lock.json",
+                                           "download":  "https://raw.githubusercontent.com/Thang4869/TriAD-Backend/7e41358c9936186d5469437584845335ec255ad1/package-lock.json"
+                                       },
+                        "toolAssets":  [
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/PROJECT-LICENSE",
+                                               "name":  "PROJECT-LICENSE",
+                                               "bytes":  1066
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/README.txt",
+                                               "name":  "README.txt",
+                                               "bytes":  1868
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/address.test.ts",
+                                               "name":  "address.test.ts",
+                                               "bytes":  472
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/package.json",
+                                               "name":  "package.json",
+                                               "bytes":  236
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/pnpm-lock.yaml",
+                                               "name":  "pnpm-lock.yaml",
+                                               "bytes":  76356
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/pnpm-workspace.yaml",
+                                               "name":  "pnpm-workspace.yaml",
+                                               "bytes":  16
+                                           },
+                                           {
+                                               "url":  "https://github.com/canblmz1/tautest/blob/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/scripts/adoption-proof/triad/prove-address.mjs",
+                                               "name":  "prove-address.mjs",
+                                               "bytes":  6163
+                                           }
+                                       ],
+                        "portability":  "Offline analyze available; full engine script requires exact old7e41358c revision and disposable checkout; tool pnpm-lock pinned.",
+                        "limitation":  "No current-main normal-suite/engine execution in this refresh; source equality alone does not establish environment or test compatibility.",
+                        "openPullRequests":  [
+
+                                             ]
+                    }
+                ]
+}
