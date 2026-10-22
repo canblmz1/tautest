@@ -1,0 +1,117 @@
+{
+  "candidate-on-original.tests.json": {
+    "success": true,
+    "numTotalTests": 373,
+    "numPassedTests": 373,
+    "numFailedTests": 0,
+    "files": [
+      {
+        "file": "tests/coverage.test.ts",
+        "passed": 151,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/fuzz.test.ts",
+        "passed": 3,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/integration.test.ts",
+        "passed": 5,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/tautest-ex-command-whitespace.test.ts",
+        "passed": 1,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/vimsplain.test.ts",
+        "passed": 213,
+        "failed": 0,
+        "failures": []
+      }
+    ]
+  },
+  "manual-mutant-existing.tests.json": {
+    "success": true,
+    "numTotalTests": 372,
+    "numPassedTests": 372,
+    "numFailedTests": 0,
+    "files": [
+      {
+        "file": "tests/coverage.test.ts",
+        "passed": 151,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/fuzz.test.ts",
+        "passed": 3,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/integration.test.ts",
+        "passed": 5,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/vimsplain.test.ts",
+        "passed": 213,
+        "failed": 0,
+        "failures": []
+      }
+    ]
+  },
+  "manual-mutant-candidate.tests.json": {
+    "success": false,
+    "numTotalTests": 373,
+    "numPassedTests": 372,
+    "numFailedTests": 1,
+    "files": [
+      {
+        "file": "tests/coverage.test.ts",
+        "passed": 151,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/fuzz.test.ts",
+        "passed": 3,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/integration.test.ts",
+        "passed": 5,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "file": "tests/tautest-ex-command-whitespace.test.ts",
+        "passed": 0,
+        "failed": 1,
+        "failures": [
+          {
+            "name": "explains a whitespace-padded ex write command as write file",
+            "messages": [
+              "AssertionError: expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts:6:43\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "tests/vimsplain.test.ts",
+        "passed": 213,
+        "failed": 0,
+        "failures": []
+      }
+    ]
+  }
+}

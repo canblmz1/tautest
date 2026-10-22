@@ -1,0 +1,54 @@
+{
+  "queriedAt": "2026-10-22T20:14:16.276Z",
+  "node": "v22.23.2",
+  "records": [
+    {
+      "name": "tautest",
+      "version": "2.1.5",
+      "queriedAt": "2026-10-22T20:14:15.162Z",
+      "metadataURL": "https://registry.npmjs.org/tautest/2.1.5",
+      "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.5.tgz",
+      "httpStatus": 200,
+      "tgzBytes": 32564,
+      "tgzSha256": "aa2d5c107914abbeb5c23b80746cd1684c35bbb70e8fa19abe1bf590f2e25a43",
+      "integrity": "sha512-no4Jj/UDAtp4CW7Vqoovdh/hmZGmdNPAq6kOvWSCqGTZ7g9BlUkNWp2xOuoWIIrQ+tdI8Plq1/zvga7GqGHLLw==",
+      "files": [
+        {
+          "tarEntry": "package/dist/index.js",
+          "installedFile": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\.pnpm\\tautest@2.1.5_@stryker-muta_f55545582ced113158ab9595d22ca039\\node_modules\\tautest\\dist\\index.js",
+          "installedCodeSha256": "88ded9fcdfb96831ac7c4a315e2583b0185a1b37c31d9117943717ad1a0850b2",
+          "freshPublishedEntrySha256": "88ded9fcdfb96831ac7c4a315e2583b0185a1b37c31d9117943717ad1a0850b2",
+          "installedBytesEqualFreshRegistry": true
+        },
+        {
+          "tarEntry": "package/dist/stryker-worker.js",
+          "installedFile": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\.pnpm\\tautest@2.1.5_@stryker-muta_f55545582ced113158ab9595d22ca039\\node_modules\\tautest\\dist\\stryker-worker.js",
+          "installedCodeSha256": "71ba49748c63818e786ea08f8a122976ea365d9093f70eac17347ffafca06cbe",
+          "freshPublishedEntrySha256": "71ba49748c63818e786ea08f8a122976ea365d9093f70eac17347ffafca06cbe",
+          "installedBytesEqualFreshRegistry": true
+        }
+      ]
+    },
+    {
+      "name": "@tautest/core",
+      "version": "2.1.5",
+      "queriedAt": "2026-10-22T20:14:15.609Z",
+      "metadataURL": "https://registry.npmjs.org/%40tautest%2Fcore/2.1.5",
+      "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.5.tgz",
+      "httpStatus": 200,
+      "tgzBytes": 44433,
+      "tgzSha256": "1e1ded95789ed9f4d5a09db03b1c945a014a30e982d231f0501d916a80d4367e",
+      "integrity": "sha512-v8jaAOR21e8DVVDO1oYUUOaeYbGhs3g6pcHUymkwVFNyASMh45jaYMM3RI9j8zaY1jGE98GTk64hEuaYUTxjNQ==",
+      "files": [
+        {
+          "tarEntry": "package/dist/index.js",
+          "installedFile": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\.pnpm\\@tautest+core@2.1.5_@stryke_9a8e1b6b55c24b102a712d71282be994\\node_modules\\@tautest\\core\\dist\\index.js",
+          "installedCodeSha256": "4664fc8c448d8ba3b41eb998646f2ac7a53ec5df2c41ba911fe11ed43e9cd716",
+          "freshPublishedEntrySha256": "4664fc8c448d8ba3b41eb998646f2ac7a53ec5df2c41ba911fe11ed43e9cd716",
+          "installedBytesEqualFreshRegistry": true
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh public registry tarballs compared byte-for-byte to actual CLI entry, separate Stryker worker, and resolved core entry. No engine rerun or package replacement."
+}

@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-10-22T19:52:29.707Z",
+  "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90",
+  "node": "v22.23.2",
+  "npm": "10.9.8",
+  "finalToolPnpm": "10.33.1",
+  "projectInstall": {
+    "command": "npm ci --ignore-scripts --no-audit --no-fund",
+    "cwd": "../triad-project",
+    "exitCode": 0,
+    "packageCount": 861,
+    "logs": [
+      "../triad-project-install.stdout.log",
+      "../triad-project-install.stderr.log"
+    ],
+    "notes": "Lifecycle scripts disabled. No project dependency upgrades or manifests changed. Selected pure unit tests need no Prisma generation, DB or Redis."
+  },
+  "toolInstall": {
+    "isolated": true,
+    "packageManager": "pnpm@10.33.1",
+    "finalCommand": "CI=true pnpm install --frozen-lockfile --ignore-scripts",
+    "finalExitCode": 0,
+    "manifestSha256": "80ee1ff8085b6c7380233f98646b37685d9fe52f0d2c504b506bb2b6842880be",
+    "lockSha256": "404495ed207be098fa8fb06e7b21f462bc6bdefda41eca1168d3b7290c0d5652",
+    "initialAttempt": {
+      "command": "npm install --ignore-scripts --no-audit --no-fund",
+      "exitCode": 1,
+      "error": "npm10.9.8 Arborist TypeError reading edgesOut during peer graph construction. Not a test/mutant result."
+    },
+    "intermediateAttempt": {
+      "packageManager": "pnpm9.15.9",
+      "exitCode": 0,
+      "note": "Unscoped pnpm default differed from root. ExplicitpackageManager10.33.1 then enforced; finalfrozenreinstall successful without lock/dependency upgrade."
+    },
+    "nonTtyAttempt": {
+      "exitCode": 1,
+      "error": "ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY",
+      "resolution": "Set CI=true only for isolated tool reinstall; no user project node_modules was purged."
+    }
+  },
+  "upstreamInstructions": {
+    "agentsFound": false,
+    "contributingRead": true,
+    "ciNode": 22,
+    "upstreamBranchPolicy": "shared commit-DDMMYYYY branch and DraftPR until CI; no external contribution is being submitted"
+  },
+  "scope": "Current-source two-baseline and narrow Address pilot. Our own experiment; independent adoption remains unconfirmed."
+}

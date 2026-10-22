@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-22T20:15:03.134Z",
+  "command": {
+    "file": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/tools/node_modules/tautest/dist/index.js",
+      "analyze",
+      "--from",
+      "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/observed/before.target.json",
+      "--runner",
+      "vitest",
+      "--report-dir",
+      "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/portable-report-smoke",
+      "--json"
+    ],
+    "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215"
+  },
+  "exitCode": 0,
+  "elapsedMs": 910,
+  "rawSummary": {
+    "verdict": "WEAK",
+    "mutationScore": 0,
+    "total": 1,
+    "killed": 0,
+    "survived": 1,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "groups": 1,
+  "note": "Additional report-only smoke on compact retained subset; no test or engine execution."
+}

@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-22T19:59:07.102Z",
+  "status": "controlled-pilot-verified",
+  "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90",
+  "toolVersions": {
+    "tautest": "2.1.4",
+    "@tautest/core": "2.1.4",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "vitest": "4.1.11",
+    "typescript": "5.9.3"
+  },
+  "baselineOriginalTwice": [
+    3,
+    3
+  ],
+  "engineSelectionBaseline": {
+    "passed": 3,
+    "failed": 0,
+    "files": [
+      "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/tests/unit/shared/value-objects.test.ts"
+    ]
+  },
+  "selectedMutants": 3,
+  "rawRecords": 8,
+  "ignoredRecords": 5,
+  "rawStatusesBefore": {
+    "Killed": 2,
+    "Survived": 1,
+    "Ignored": 5
+  },
+  "targetBefore": "Survived",
+  "candidateOriginalPass": 5,
+  "manualMutantExistingPass": 3,
+  "manualMutantCandidate": {
+    "passed": 4,
+    "failed": 1,
+    "kind": "behavior AssertionError"
+  },
+  "verify": [
+    {
+      "status": "verified",
+      "targetStatus": "Killed",
+      "testName": "Address normalized length boundary accepts exactly 500 characters after trimming",
+      "testId": "3"
+    },
+    {
+      "status": "verified",
+      "targetStatus": "Killed",
+      "testName": "Address normalized length boundary accepts exactly 500 characters after trimming",
+      "testId": "0"
+    }
+  ],
+  "cleanup": {
+    "protectedFilesUnchanged": {
+      "package.json": true,
+      "package-lock.json": true,
+      "vitest.workspace.mts": true,
+      "vitest.unit.config.mts": true,
+      "tests/setup-env.ts": true,
+      "tests/unit/shared/value-objects.test.ts": true,
+      "src/shared/value-objects/address.ts": true
+    },
+    "trackedStatus": "",
+    "candidateRemoved": true,
+    "configRemoved": true,
+    "unitRemoved": true
+  },
+  "patchCheck": "git apply --check passed",
+  "syntaxChecks": [
+    "prove-current-address.mjs",
+    "baseline-current.mjs"
+  ],
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false,
+  "independentReview": {
+    "agent": "/root/engineering_decision",
+    "result": "no-blocking-findings",
+    "scope": "Artifact/source review and independent disk hash/report checks; harness/tests not rerun by reviewer.",
+    "note": "reviewer-note.md"
+  }
+}

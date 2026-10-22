@@ -1,0 +1,730 @@
+{
+  "observedAt": "2026-10-22T20:10:49.619Z",
+  "project": "oller/vimgym",
+  "issue": "https://github.com/oller/vimgym/issues/35",
+  "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "projectPackageManager": "pnpm@10.34.6",
+  "toolPackageManager": "pnpm@10.33.1",
+  "cliVersion": "2.1.5",
+  "coreVersion": "2.1.5",
+  "cliSha256": "88ded9fcdfb96831ac7c4a315e2583b0185a1b37c31d9117943717ad1a0850b2",
+  "installed": {
+    "vitest": "4.1.11",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@stryker-mutator/typescript-checker": "10.0.0",
+    "typescript": "5.9.3"
+  },
+  "projectLockSha256": "955c90b4aa5764e82f4eb288f7cd05cdf5bd6a2f523382f21d2bb72509c0e99c",
+  "toolLockSha256": "04c38bf9e768bc73fabd3a4a80e4e521796a3effe4dbfd5e00e726e525235667",
+  "baseline": [
+    {
+      "label": "baseline-1",
+      "startedAt": "2026-10-22T20:05:20.156Z",
+      "elapsedMs": 49842,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\baseline.json.baseline-1.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "passed": 372,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "tests/coverage.test.ts",
+          "count": 151
+        },
+        {
+          "file": "tests/fuzz.test.ts",
+          "count": 3
+        },
+        {
+          "file": "tests/integration.test.ts",
+          "count": 5
+        },
+        {
+          "file": "tests/vimsplain.test.ts",
+          "count": 213
+        }
+      ]
+    },
+    {
+      "label": "baseline-2",
+      "startedAt": "2026-10-22T20:06:10.009Z",
+      "elapsedMs": 11274,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\baseline.json.baseline-2.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "passed": 372,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "tests/coverage.test.ts",
+          "count": 151
+        },
+        {
+          "file": "tests/fuzz.test.ts",
+          "count": 3
+        },
+        {
+          "file": "tests/integration.test.ts",
+          "count": 5
+        },
+        {
+          "file": "tests/vimsplain.test.ts",
+          "count": 213
+        }
+      ]
+    }
+  ],
+  "fingerprint": {
+    "file": "src/handlers/command.ts",
+    "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+    "location": {
+      "end": {
+        "column": 29,
+        "line": 22
+      },
+      "start": {
+        "column": 19,
+        "line": 22
+      }
+    },
+    "mutatorName": "MethodExpression",
+    "replacement": "cmd"
+  },
+  "before": {
+    "id": "0",
+    "mutatorName": "MethodExpression",
+    "replacement": "cmd",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 13,
+    "coveredBy": [
+      "5",
+      "6",
+      "183",
+      "184",
+      "185",
+      "186",
+      "187",
+      "188",
+      "189",
+      "206",
+      "207",
+      "208",
+      "209"
+    ],
+    "location": {
+      "end": {
+        "column": 29,
+        "line": 22
+      },
+      "start": {
+        "column": 19,
+        "line": 22
+      }
+    }
+  },
+  "coveredBy": [
+    {
+      "file": "tests/fuzz.test.ts",
+      "id": "5",
+      "name": "vimsplain fuzzing never crashes on arbitrary strings"
+    },
+    {
+      "file": "tests/fuzz.test.ts",
+      "id": "6",
+      "name": "vimsplain fuzzing never returns undefined explanations"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "183",
+      "name": "vimsplain expanded command coverage ex commands explains :w (write file)"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "184",
+      "name": "vimsplain expanded command coverage ex commands explains :q (quit)"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "185",
+      "name": "vimsplain expanded command coverage ex commands explains :wq (write and quit)"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "186",
+      "name": "vimsplain expanded command coverage ex commands explains :q! (force quit)"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "187",
+      "name": "vimsplain expanded command coverage ex commands explains :noh (clear search highlights)"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "188",
+      "name": "vimsplain expanded command coverage ex commands flushes ex buffer without trailing Enter"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "189",
+      "name": "vimsplain expanded command coverage ex commands handles unknown ex command with generic fallback"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "206",
+      "name": "vimsplain expanded command coverage search and command mode cancellation and editing resets exBuffer on Esc cancellation so subsequent ex commands start fresh"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "207",
+      "name": "vimsplain expanded command coverage search and command mode cancellation and editing handles [Backspace] with subsequent characters in ex command mode"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "208",
+      "name": "vimsplain expanded command coverage search and command mode cancellation and editing handles [Backspace] in ex command mode"
+    },
+    {
+      "file": "tests/vimsplain.test.ts",
+      "id": "209",
+      "name": "vimsplain expanded command coverage search and command mode cancellation and editing explains additional ex commands"
+    }
+  ],
+  "review": {
+    "status": "analyzed",
+    "rawSummary": {
+      "verdict": "WEAK",
+      "mutationScore": 0,
+      "total": 1,
+      "killed": 0,
+      "survived": 1,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 0
+    },
+    "groups": 1
+  },
+  "candidate": {
+    "file": "tests/tautest-ex-command-whitespace.test.ts",
+    "sha256": "c084b7955293e13a99f5e127551a9883226bf4c2be2ccc789f5e1ece09da4c12",
+    "originalPassed": 373,
+    "existingOnManualMutantPassed": 372,
+    "withCandidateOnManualMutant": {
+      "passed": 372,
+      "failed": 1,
+      "failures": [
+        {
+          "file": "tests/tautest-ex-command-whitespace.test.ts",
+          "ancestorTitles": [],
+          "fullName": "explains a whitespace-padded ex write command as write file",
+          "status": "failed",
+          "title": "explains a whitespace-padded ex write command as write file",
+          "duration": 16.66070000000002,
+          "failureMessages": [
+            "AssertionError: expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts:6:43\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+          ],
+          "meta": {},
+          "tags": []
+        }
+      ]
+    }
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "status": "verified",
+      "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+      "target": {
+        "originalId": "0",
+        "mutatorName": "MethodExpression",
+        "location": {
+          "start": {
+            "line": 22,
+            "column": 19
+          },
+          "end": {
+            "line": 22,
+            "column": 29
+          }
+        },
+        "replacement": "cmd"
+      },
+      "execution": {
+        "exitCode": 0,
+        "budgetExceeded": false
+      },
+      "source": {
+        "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json",
+        "sha256": "6b00247b7c17d7b213ae8f1df320bba58eb4b00b73b1d2fe85a4354744245724",
+        "file": "src/handlers/command.ts",
+        "sourceSha256": "17caf72c019750e629048a8eb39de5e24b43455da17c55771ba891c3dae5cc7e"
+      },
+      "candidate": {
+        "file": "tests/tautest-ex-command-whitespace.test.ts",
+        "sha256": "c084b7955293e13a99f5e127551a9883226bf4c2be2ccc789f5e1ece09da4c12"
+      },
+      "fingerprint": {
+        "file": "src/handlers/command.ts",
+        "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd"
+      },
+      "mutant": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd",
+        "statusReason": "expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 13,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "181",
+          "182",
+          "183",
+          "184",
+          "185",
+          "186",
+          "187",
+          "204",
+          "205",
+          "206",
+          "207",
+          "219"
+        ],
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/tautest-ex-command-whitespace.test.ts",
+          "id": "0",
+          "name": "explains a whitespace-padded ex write command as write file"
+        }
+      ]
+    },
+    {
+      "label": "verify-repeat",
+      "status": "verified",
+      "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+      "target": {
+        "originalId": "0",
+        "mutatorName": "MethodExpression",
+        "location": {
+          "start": {
+            "line": 22,
+            "column": 19
+          },
+          "end": {
+            "line": 22,
+            "column": 29
+          }
+        },
+        "replacement": "cmd"
+      },
+      "execution": {
+        "exitCode": 0,
+        "budgetExceeded": false
+      },
+      "source": {
+        "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json",
+        "sha256": "6b00247b7c17d7b213ae8f1df320bba58eb4b00b73b1d2fe85a4354744245724",
+        "file": "src/handlers/command.ts",
+        "sourceSha256": "17caf72c019750e629048a8eb39de5e24b43455da17c55771ba891c3dae5cc7e"
+      },
+      "candidate": {
+        "file": "tests/tautest-ex-command-whitespace.test.ts",
+        "sha256": "c084b7955293e13a99f5e127551a9883226bf4c2be2ccc789f5e1ece09da4c12"
+      },
+      "fingerprint": {
+        "file": "src/handlers/command.ts",
+        "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        },
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd"
+      },
+      "mutant": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "cmd",
+        "statusReason": "expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 14,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "157",
+          "158",
+          "335",
+          "336",
+          "337",
+          "338",
+          "339",
+          "340",
+          "341",
+          "358",
+          "359",
+          "360",
+          "361"
+        ],
+        "location": {
+          "end": {
+            "column": 29,
+            "line": 22
+          },
+          "start": {
+            "column": 19,
+            "line": 22
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/tautest-ex-command-whitespace.test.ts",
+          "id": "0",
+          "name": "explains a whitespace-padded ex write command as write file"
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "label": "published-version",
+      "startedAt": "2026-10-22T20:08:14.807Z",
+      "elapsedMs": 397,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "--version"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "direct-before",
+      "startedAt": "2026-10-22T20:08:15.212Z",
+      "elapsedMs": 48938,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\prove-whitespace-215.mjs",
+          "--engine",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\direct-request.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "analyze",
+      "startedAt": "2026-10-22T20:09:04.166Z",
+      "elapsedMs": 1436,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "analyze",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\review",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "candidate-on-original",
+      "startedAt": "2026-10-22T20:09:05.826Z",
+      "elapsedMs": 11756,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\candidate-on-original.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-existing",
+      "startedAt": "2026-10-22T20:09:17.594Z",
+      "elapsedMs": 9013,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\manual-mutant-existing.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-candidate",
+      "startedAt": "2026-10-22T20:09:26.611Z",
+      "elapsedMs": 7110,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\manual-mutant-candidate.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 1,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify",
+      "startedAt": "2026-10-22T20:09:33.728Z",
+      "elapsedMs": 26795,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json",
+          "--file",
+          "src/handlers/command.ts",
+          "--mutant",
+          "0",
+          "--test",
+          "tests/tautest-ex-command-whitespace.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\verify",
+          "--budget",
+          "180",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify-repeat",
+      "startedAt": "2026-10-22T20:10:00.535Z",
+      "elapsedMs": 42224,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json",
+          "--file",
+          "src/handlers/command.ts",
+          "--mutant",
+          "0",
+          "--test",
+          "tests/tautest-ex-command-whitespace.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\verify-repeat",
+          "--budget",
+          "180",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    }
+  ],
+  "packageMetadata": {
+    "tautest": {
+      "url": "https://registry.npmjs.org/tautest/2.1.5",
+      "queriedAt": "2026-10-22T20:10:49.061Z",
+      "version": "2.1.5",
+      "dist": {
+        "shasum": "840b4a321c16bb832cc54aa12a0e69c88050212a",
+        "tarball": "https://registry.npmjs.org/tautest/-/tautest-2.1.5.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-no4Jj/UDAtp4CW7Vqoovdh/hmZGmdNPAq6kOvWSCqGTZ7g9BlUkNWp2xOuoWIIrQ+tdI8Plq1/zvga7GqGHLLw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCcjoqu84meotnj6oe6TbJOoEUxQnpbVqPg0/loaA3cZgIhANxw1qoWJ76EVk/AOYoSkuoZR4Mr5CQgNNF08zm5+apS",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDbvA03kP/o4ceSc+Hf3Gfy9JZOVlgjllf6QDoCRgA22wIhAPNzWWPgl1FvFssA5C/7+SxS8fr1EIkUd87Cv60bc0BJ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 128082
+      },
+      "integrityMatchesToolLock": true
+    },
+    "@tautest/core": {
+      "url": "https://registry.npmjs.org/%40tautest%2Fcore/2.1.5",
+      "queriedAt": "2026-10-22T20:10:49.619Z",
+      "version": "2.1.5",
+      "dist": {
+        "shasum": "0338bfa68ade18479b3cd1db80c9be1ed0191a39",
+        "tarball": "https://registry.npmjs.org/@tautest/core/-/core-2.1.5.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-v8jaAOR21e8DVVDO1oYUUOaeYbGhs3g6pcHUymkwVFNyASMh45jaYMM3RI9j8zaY1jGE98GTk64hEuaYUTxjNQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIG13+9GrYb/3eVOYdjlEUoRQXu73ltuB4t4d0mHuHA+dAiEAmPZnKt1WemBunozQpXuB3FCD0AmGvS6y6+fMLKbBlKM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQDEzDoEKS2ejV0DyATPhCIZsTkb/tUSkGcJq/F1rHbC3AIgZJd3mNH/2yqDcWH6Y/SXHMB6+y4oBe5nknPMVR1+j0o=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 181580
+      },
+      "integrityMatchesToolLock": true
+    }
+  },
+  "engineResolution": {
+    "projectEngine": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\node_modules\\.pnpm\\@stryker-mutator+core@10.0.0_@types+node@24.10.9\\node_modules\\@stryker-mutator\\core\\dist\\src\\index.js",
+    "projectRunner": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\node_modules\\.pnpm\\@stryker-mutator+vitest-run_be5e1543cd9616d2724ff123675c69c8\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js",
+    "projectChecker": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\node_modules\\.pnpm\\@stryker-mutator+typescript_81824eae6c846957b21a5df81b7cdb80\\node_modules\\@stryker-mutator\\typescript-checker\\dist\\src\\index.js",
+    "configFile": "stryker.config.json",
+    "vitestConfig": "vitest.config.ts",
+    "related": "project default (not overridden)",
+    "globalSetup": null,
+    "buildCommand": null,
+    "importedSource": "../src/index.js -> src/handlers/command.ts",
+    "usesDist": false
+  },
+  "portableReports": [
+    {
+      "original": "before.raw.json",
+      "originalBytes": 166883,
+      "originalSha256": "6b00247b7c17d7b213ae8f1df320bba58eb4b00b73b1d2fe85a4354744245724",
+      "retained": "before.target.json",
+      "retainedSha256": "d346ed1fbe9c1342888307f99659916d2c6b95fa6b90f62878ff2e44ed784a6c",
+      "note": "Original target source and all target-file mutant fields/IDs/statuses/locations retained. Attribution-relevant test IDs/names retained. Unmutated files, unrelated tests, test source contents, branding and engine config omitted. Not a complete raw report."
+    },
+    {
+      "original": "verify.raw.json",
+      "originalBytes": 184611,
+      "originalSha256": "8604d81f363a871c9989015c89635faf252d8b5a1537931359b74c935760cd4e",
+      "retained": "verify.target.json",
+      "retainedSha256": "39f6cdbf9b6f4421742f431c4deb0429e72c7b66b42b870e2a6159901f41d5f7",
+      "note": "Original target source and all target-file mutant fields/IDs/statuses/locations retained. Attribution-relevant test IDs/names retained. Unmutated files, unrelated tests, test source contents, branding and engine config omitted. Not a complete raw report."
+    },
+    {
+      "original": "verify-repeat.raw.json",
+      "originalBytes": 184637,
+      "originalSha256": "b13b94017777fd44ce61f37e3fc95c3dd7608d08505182eff6e3c1b97802a883",
+      "retained": "verify-repeat.target.json",
+      "retainedSha256": "c6b2b8c9a20e56d9c3d28fefa618a8ca6f59ee87bab88ed74771e86e892d9ec1",
+      "note": "Original target source and all target-file mutant fields/IDs/statuses/locations retained. Attribution-relevant test IDs/names retained. Unmutated files, unrelated tests, test source contents, branding and engine config omitted. Not a complete raw report."
+    }
+  ],
+  "limits": [
+    "Published CLI/core2.1.5 and project Stryker10; historical2.1.3 assets unchanged.",
+    "Existing baseline report debt, not a new finding on an active source-changing PR.",
+    "One selected MethodExpression on line22; not a repository score or quality gate.",
+    "No root app, Supabase, general monorepo, dependency-upgrade or performance claim.",
+    "verify-repeat is our technical repeatability, not user reuse."
+  ],
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false
+}

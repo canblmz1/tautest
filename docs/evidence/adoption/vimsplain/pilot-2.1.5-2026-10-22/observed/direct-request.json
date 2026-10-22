@@ -1,0 +1,15 @@
+{
+  "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\project\\packages\\vimsplain",
+  "config": {
+    "configFile": "stryker.config.json",
+    "mutate": [
+      "src/handlers/command.ts:22-22"
+    ],
+    "reporters": [
+      "json"
+    ],
+    "jsonReporter": {
+      "fileName": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\vimgym-215\\results-215\\before.raw.json"
+    }
+  }
+}

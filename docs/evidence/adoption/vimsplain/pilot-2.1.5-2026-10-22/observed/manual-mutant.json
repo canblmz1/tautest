@@ -1,0 +1,35 @@
+{
+  "fingerprint": {
+    "file": "src/handlers/command.ts",
+    "sourceSha256LF": "35fbbe1d2eac420e77d4634aa83f959770d88c4283a63c16a305db5117a2d3f5",
+    "location": {
+      "end": {
+        "column": 29,
+        "line": 22
+      },
+      "start": {
+        "column": 19,
+        "line": 22
+      }
+    },
+    "mutatorName": "MethodExpression",
+    "replacement": "cmd"
+  },
+  "originalExpression": "cmd.trim()",
+  "mutatedSourceSha256": "68385315fb494fc8e9899e6bec05ebd230de54e546aaacb95ee0a1a6a70abef3",
+  "failures": [
+    {
+      "file": "tests/tautest-ex-command-whitespace.test.ts",
+      "ancestorTitles": [],
+      "fullName": "explains a whitespace-padded ex write command as write file",
+      "status": "failed",
+      "title": "explains a whitespace-padded ex write command as write file",
+      "duration": 16.66070000000002,
+      "failureMessages": [
+        "AssertionError: expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts:6:43\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project/node_modules/.pnpm/@vitest+runner@4.1.11/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ],
+      "meta": {},
+      "tags": []
+    }
+  ]
+}

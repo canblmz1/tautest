@@ -1,0 +1,37 @@
+{
+  "fingerprint": {
+    "file": "src/shared/value-objects/address.ts",
+    "sourceSha256LF": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+    "location": {
+      "end": {
+        "column": 59,
+        "line": 6
+      },
+      "start": {
+        "column": 36,
+        "line": 6
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "normalized.length >= 500"
+  },
+  "originalExpression": "normalized.length > 500",
+  "mutatedSourceSha256": "f89894dbc08daac4dbf37332b3b6a0a2b3bead21fdd5a40f4037050fbe111507",
+  "failures": [
+    {
+      "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+      "ancestorTitles": [
+        "Address normalized length boundary"
+      ],
+      "fullName": "Address normalized length boundary accepts exactly 500 characters after trimming",
+      "status": "failed",
+      "title": "accepts exactly 500 characters after trimming",
+      "duration": 19.71259999999984,
+      "failureMessages": [
+        "AssertionError: expected [Function] to not throw an error but 'Error: Invalid address' was thrown\n    at Proxy.<anonymous> (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/expect/dist/index.js:1552:16)\n    at Proxy.<anonymous> (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/chai/index.js:1737:25)\n    at C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/tests/unit/shared/value-objects/tautest-address-boundary.test.ts:6:61\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+      ],
+      "meta": {},
+      "tags": []
+    }
+  ]
+}
