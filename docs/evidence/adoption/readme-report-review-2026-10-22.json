@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-22T19:42:44.415Z",
+  "source": "https://raw.githubusercontent.com/canblmz1/tautest/fbb723e511f8b0a90e273c1d5408528209d1692f/docs/evidence/adoption/staruml-port/before.mutation.json",
+  "inputSha256": "3d94aa5422797f7c16522850110544f8cfcdb1a29c08582ff144765e1ed132ad",
+  "inputUnchanged": true,
+  "node": "v22.23.2",
+  "platform": "win32",
+  "cli": "2.1.4",
+  "exitCode": 0,
+  "elapsedMs": 367,
+  "command": "node <installed registry tautest@2.1.4/dist/index.js> analyze --from before.mutation.json --runner vitest --json",
+  "summary": {
+    "verdict": "WEAK",
+    "mutationScore": 0,
+    "total": 1,
+    "killed": 0,
+    "survived": 1,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "target": {
+    "file": "src/staruml-client.ts",
+    "line": 38,
+    "replacement": "options.extPort && DEFAULT_EXT_PORT",
+    "status": "Survived",
+    "coveringTests": 14
+  },
+  "noThresholdEvaluated": true,
+  "independentAdoption": false,
+  "note": "Existing installed CLI; no npx fetch, project tests or mutation engine run; elapsed time excludes download/install."
+}

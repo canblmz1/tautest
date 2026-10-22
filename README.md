@@ -19,7 +19,7 @@ The demo is a test suite that passes while Tautest finds a surviving mutant; a b
 Download this [sample Stryker report](https://raw.githubusercontent.com/canblmz1/tautest/fbb723e511f8b0a90e273c1d5408528209d1692f/docs/evidence/adoption/staruml-port/before.mutation.json) as `before.mutation.json`. With Node 22 or 24, run this from the folder containing the download:
 
 ```bash
-npx --yes tautest@2.1.0 analyze --from before.mutation.json --runner vitest
+npx --yes tautest@2.1.4 analyze --from before.mutation.json --runner vitest
 ```
 
 Open `.tautest/review/report.md`. It shows a survivor at `src/staruml-client.ts:38`: replacing `options.extPort ?? DEFAULT_EXT_PORT` with `options.extPort && DEFAULT_EXT_PORT` passes all 14 existing client tests. The report includes the original expression, replacement and covering test names. This path needs no project checkout, Stryker installation or test run.
@@ -109,8 +109,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # tautest@2.0.5. Pin the commit of the release you install; the old `v1` tag is the 1.x action.
-      - uses: canblmz1/tautest/packages/github-action@df9d2e1bf5c02970149d97ed11e6d6fa4b152208
+      # Source shipped with tautest@2.1.4. The old `v1` tag is the 1.x action.
+      - uses: canblmz1/tautest/packages/github-action@b3e3e03d42dec5d7b34671633be6a42b4f13864e
         with:
           fail-on-threshold: false
 ```

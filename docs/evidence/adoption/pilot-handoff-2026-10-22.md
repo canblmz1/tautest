@@ -1,6 +1,6 @@
 # R02/R03: existing pilot handoff refresh
 
-Checked 2026-10-22 (UTC); exact query time, public asset metadata and SHA-256 values are in `pilot-refresh.json`. This refresh used GitHub API reads and local evidence reads. It did not install packages, rerun tests/mutants, send an invitation, or establish independent adoption.
+Checked 2026-10-22 (UTC); exact query time, public asset metadata and SHA-256 values are in [pilot-refresh-2026-10-22.json](pilot-refresh-2026-10-22.json). This refresh used GitHub API reads and local evidence reads. It did not install packages, rerun tests/mutants, send an invitation, or establish independent adoption.
 
 ## Current status
 
@@ -24,7 +24,7 @@ On 2026-10-22, Windows / Node 22.23.2, the separately installed registry CLI at 
 | Vimgym before.target.json | 1 Survived, score 0 | 1 | 339 ms |
 | TriAD before.mutation.json | 13 Killed / 3 Survived / 1 NoCoverage, score 76.47058823529412 | 3 | 384 ms |
 
-The TriAD NoCoverage explanation asks to verify test selection, configuration and attribution before adding tests. Invocation times exclude downloads/install and are not a speed comparison or maintainer time-to-value measurement. Full command arrays, package integrity, CLI/lock/input hashes, output and limitations: [`current-report-review/evidence.json`](current-report-review/evidence.json). This was our report-only check, not independent adoption or a fresh engine run.
+The TriAD NoCoverage explanation asks to verify test selection, configuration and attribution before adding tests. Invocation times exclude downloads/install and are not a speed comparison or maintainer time-to-value measurement. Package integrity, CLI/input hashes, the command template, observed summaries and limitations are in [current-report-review-2026-10-22.json](current-report-review-2026-10-22.json). Full local command arrays and raw output remain in the local evidence directory; they are not part of that public summary. This was our report-only check, not independent adoption or a fresh engine run.
 
 For a current report-only first look in a new directory, use the existing immutable URLs with published **2.1.4**:
 
@@ -41,7 +41,7 @@ Use `curl.exe` in Windows PowerShell. The executed commands used the already-ins
 
 Recorded result, not newly rerun: Windows / Node 22.23.2; project pnpm 10.34.6, Vitest 4.1.11, Stryker core/runner/checker 10.0.0; published Tautest 2.1.3. Original suite 372 passed; candidate suite 373 passed. `cmd.trim()` -> `cmd` at `src/handlers/command.ts:22:19-22:29` survived 13 executed tests; the new public-behavior assertion killed the identical source/location/mutator/replacement target in two verify runs. The failing assertion expected `write file` rather than the generic command explanation.
 
-The current source's GitHub LF hash matches the recorded normalized source hash. The lockfile's GitHub LF hash (`b387b802...`) differs from the recorded Windows raw hash (`955c90b4...`); explicitly converting the same GitHub blob to CRLF produces exactly the recorded hash. This is a verified line-ending difference, not evidence of dependency drift. Full hashes are in `pilot-refresh.json`.
+The current source's GitHub LF hash matches the recorded normalized source hash. The lockfile's GitHub LF hash (`b387b802...`) differs from the recorded Windows raw hash (`955c90b4...`); explicitly converting the same GitHub blob to CRLF produces exactly the recorded hash. This is a verified line-ending difference, not evidence of dependency drift. Full hashes are in [pilot-refresh-2026-10-22.json](pilot-refresh-2026-10-22.json).
 
 ### Smallest report-only inspection
 
