@@ -1,0 +1,98 @@
+{
+  "queriedAt": "2026-10-22T19:29:02.568Z",
+  "kind": "maintainer-owned-report-import-not-adoption",
+  "platform": "win32",
+  "node": "v22.23.2",
+  "tautest": "2.1.4",
+  "core": "2.1.4",
+  "cliSha256": "9f30c6b90fbb00f44d46e132d449783b4e93700373a1c5d47686dc9034332fcf",
+  "registryPackageIntegrity": "sha512-xTOZMiAMLwZ5mi7/cJeqe6BqHPqvigKBkH4Tx/fvr6+cQGZJVoAsiARr3nxUD23OD6AUVxYd0rNz6FUPzPzl8Q==",
+  "scope": "Downloaded immutable reports; already-installed registry2.1.4 CLI. No tests, Stryker engine, project config execution or outreach.",
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false,
+  "records": [
+    {
+      "id": "vimgym",
+      "inputSource": "https://raw.githubusercontent.com/canblmz1/tautest/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21/observed/before.target.json",
+      "fetchedAt": "2026-10-22T19:29:00.356Z",
+      "startedAt": "2026-10-22T19:29:01.367Z",
+      "elapsedMs": 339,
+      "inputSha256": "a5d02422da7df7bc96dbfeebfa1b4285947c02c4000dadc2ab03e5c1da23e012",
+      "inputBytes": 8422,
+      "inputUnchanged": true,
+      "exitCode": 0,
+      "command": "node <installed registry tautest@2.1.4/dist/index.js> analyze --from <downloaded input> --runner vitest --report-dir <new output directory> --json",
+      "rawStatusCounts": {
+        "Survived": 1
+      },
+      "normalizedSummary": {
+        "verdict": "WEAK",
+        "mutationScore": 0,
+        "total": 1,
+        "killed": 0,
+        "survived": 1,
+        "noCoverage": 0,
+        "timeout": 0,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "groupCount": 1,
+      "advisory": {
+        "noThresholdEvaluated": true,
+        "incorrectPassed": false,
+        "lines": [
+          "> No threshold was evaluated; 1 surviving mutant still needs review. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+        ]
+      },
+      "dataPreserved": true,
+      "reportOnlyNotice": true
+    },
+    {
+      "id": "triad",
+      "inputSource": "https://raw.githubusercontent.com/canblmz1/tautest/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address/before.mutation.json",
+      "fetchedAt": "2026-10-22T19:29:01.713Z",
+      "startedAt": "2026-10-22T19:29:02.180Z",
+      "elapsedMs": 384,
+      "inputSha256": "b7e81462c2de681582974112d05847ef57acab82a6236ea5815c1061bc99cb37",
+      "inputBytes": 15774,
+      "inputUnchanged": true,
+      "exitCode": 0,
+      "command": "node <installed registry tautest@2.1.4/dist/index.js> analyze --from <downloaded input> --runner vitest --report-dir <new output directory> --json",
+      "rawStatusCounts": {
+        "NoCoverage": 1,
+        "Killed": 13,
+        "Survived": 3
+      },
+      "normalizedSummary": {
+        "verdict": "MIXED",
+        "mutationScore": 76.47058823529412,
+        "total": 17,
+        "killed": 13,
+        "survived": 3,
+        "noCoverage": 1,
+        "timeout": 0,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "groupCount": 3,
+      "advisory": {
+        "noThresholdEvaluated": true,
+        "incorrectPassed": false,
+        "lines": [
+          "> No threshold was evaluated; 3 surviving mutants and 1 uncovered mutant still need review. A survivor is not automatically a missing test — it can be an equivalent mutant with no observable behavior change."
+        ]
+      },
+      "dataPreserved": true,
+      "reportOnlyNotice": true
+    }
+  ],
+  "limits": [
+    "Windows/Node22 report-only import using a previously installed published2.1.4 CLI.",
+    "339ms/384ms are only these warm CLI invocations; exclude download, install and any project tests. No speedup or user time-to-value claim.",
+    "Historical immutable source reports, not a current changed-code quality-gate result.",
+    "No independent maintainer trial, benefit validation or repeat use."
+  ]
+}
