@@ -1,0 +1,10 @@
+DRAFT ONLY — do not send or repeat the invitation already posted at
+https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597
+Use only as a scoped reply if the maintainer responds or requests a current-SHA pilot.
+
+I refreshed the earlier Address boundary example on current 902dec9. The original three selected unit tests pass twice; changing >500 to >=500 still passes them. The two proposed 500/501 boundary cases pass on the original source and the 500-character acceptance assertion fails for that exact replacement. Published Tautest/core 2.1.4 verifies the same source/location/replacement target twice; this is not a claim about a new 2.1.5 TriAD engine trial.
+
+The pinned test-only patch, isolated setup and recorded test names are here:
+https://github.com/canblmz1/tautest/tree/docs/validation-ledger-maintenance/docs/evidence/adoption/triad-address/pilot-2026-10-22
+
+This is a small value-object starting point for #145, not a full service baseline or a proposed blocking threshold. If you choose to run it on your own disposable checkout, the first result/setup error and whether the exact-target context helped would be useful. Your own run and benefit judgment remain unconfirmed; my pilot is not adoption.

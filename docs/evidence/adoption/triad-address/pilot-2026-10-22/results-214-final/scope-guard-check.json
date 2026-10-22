@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-22T19:56:19.322Z",
+  "records": [
+    {
+      "file": "before.raw.json",
+      "raw": 8,
+      "selected": 3,
+      "ignored": 5,
+      "statuses": {
+        "Ignored": 5,
+        "Killed": 2,
+        "Survived": 1
+      }
+    },
+    {
+      "file": "verify.raw.json",
+      "raw": 8,
+      "selected": 3,
+      "ignored": 5,
+      "statuses": {
+        "Ignored": 5,
+        "Killed": 3
+      }
+    },
+    {
+      "file": "verify-repeat.raw.json",
+      "raw": 8,
+      "selected": 3,
+      "ignored": 5,
+      "statuses": {
+        "Ignored": 5,
+        "Killed": 3
+      }
+    }
+  ],
+  "note": "Final helper line6 guard independently evaluated on the retained raw reports after the engine run; statuses unchanged."
+}

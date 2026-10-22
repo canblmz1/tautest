@@ -1,0 +1,9 @@
+Inspected source: https://github.com/oller/vimgym
+Revision: e65d98ca48f6432779b6bf2cb677d1a9116400d8
+Package: vimsplain, maintained by the Vimgym contributors.
+
+packages/vimsplain/package.json declares "license": "MIT".
+packages/vimsplain/README.md ends with "## License" / "MIT".
+No separate LICENSE file was present in the inspected source tree.
+The small report subsets reproduce command.ts with this provenance; no copyright
+notice absent from the inspected package has been invented or removed.

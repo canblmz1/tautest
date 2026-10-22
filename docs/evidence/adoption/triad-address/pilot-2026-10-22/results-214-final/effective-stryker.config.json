@@ -1,0 +1,48 @@
+{
+  "testRunner": "vitest",
+  "plugins": [
+    "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\.pnpm\\@stryker-mutator+vitest-run_78bb992b6269292a2cc908b054dca187\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+  ],
+  "mutate": [
+    "src/shared/value-objects/address.ts:6-6"
+  ],
+  "vitest": {
+    "configFile": "vitest.triad-pilot.config.mts",
+    "related": false
+  },
+  "reporters": [
+    "json"
+  ],
+  "coverageAnalysis": "perTest",
+  "concurrency": 1,
+  "incremental": false,
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  },
+  "logLevel": "error",
+  "inPlace": false,
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": "always",
+  "mutator": {
+    "excludedMutations": [
+      "ArithmeticOperator",
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "BlockStatement",
+      "BooleanLiteral",
+      "ConditionalExpression",
+      "CallExpression",
+      "LogicalOperator",
+      "MethodExpression",
+      "ObjectLiteral",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator",
+      "Regex",
+      "OptionalChaining",
+      "AssignmentOperator"
+    ]
+  }
+}

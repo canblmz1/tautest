@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-22T19:31:31.391Z",
+  "recordedAt": "2026-10-22T20:19:49.096Z",
   "definition": "Only independent maintainer-owned execution/confirmation counts. Our pilots and CI do not count.",
   "milestones": {
     "firstTrialsBy": "2026-11-05",
@@ -32,7 +32,7 @@
     {
       "repo": "oller/vimgym",
       "issue": "https://github.com/oller/vimgym/issues/35",
-      "queriedAt": "2026-10-22T19:07:47.9400549Z",
+      "queriedAt": "2026-10-22T20:13:51.095Z",
       "currentMain": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
       "technicalProofSource": "https://github.com/canblmz1/tautest/tree/fd1b777868e945070df0ed7fc6bbcd27bc1f9521/docs/evidence/adoption/vimsplain/pilot-2026-10-21",
       "technicalProofProjectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
@@ -50,9 +50,8 @@
       "actualIndependentUsageStatus": "unknown",
       "maintainerFirstMeaningfulResultMs": null,
       "reasonForNoReply": null,
-      "currentVersionEngineRerun": false,
       "limitation": "Line22 is old baseline debt outside actual recent-diff selection; not a changed-line discovery or reuse proof.",
-      "nextAction": "Validate the current published verify path before offering a refreshed trial; accept results through the existing invitation.",
+      "nextAction": "Accept the maintainer-owned run or first failure through the existing invitation; do not resend. Current published verification is now proven separately.",
       "currentPublishedReportImport": {
         "version": "2.1.4",
         "checkedAt": "2026-10-22T19:29:01.367Z",
@@ -64,12 +63,23 @@
         "dataPreserved": true,
         "engineExecuted": false,
         "evidence": "current-report-review-2026-10-22.json"
-      }
+      },
+      "issueState": "OPEN",
+      "issueUpdatedAt": "2026-10-19T11:16:38Z",
+      "laterOtherReplies": [],
+      "currentEnginePilot": {
+        "tautest": "2.1.5",
+        "evidence": "vimsplain/pilot-2.1.5-2026-10-22/README.md",
+        "independentAdoption": false,
+        "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8"
+      },
+      "currentSourceEngineRerun": true,
+      "currentPublishedVersionEngineRerun": true
     },
     {
       "repo": "Thang4869/TriAD-Backend",
       "issue": "https://github.com/Thang4869/TriAD-Backend/issues/145",
-      "queriedAt": "2026-10-22T19:07:47.9400549Z",
+      "queriedAt": "2026-10-22T20:13:57.138Z",
       "currentMain": "902dec9b1178e84dc927499705b75f083a95dd90",
       "technicalProofSource": "https://github.com/canblmz1/tautest/tree/ef34753bfdb85973eec73c2a9b9f6b0df8229d04/docs/evidence/adoption/triad-address",
       "technicalProofProjectSha": "7e41358c9936186d5469437584845335ec255ad1",
@@ -87,9 +97,8 @@
       "actualIndependentUsageStatus": "unknown",
       "maintainerFirstMeaningfulResultMs": null,
       "reasonForNoReply": null,
-      "currentVersionEngineRerun": false,
-      "limitation": "No current-main normal-suite/engine execution in this refresh; source equality alone does not establish environment or test compatibility.",
-      "nextAction": "Validate current unit test configuration at the new source SHA before refreshing the historical proof guard.",
+      "limitation": "Selected pure unit tests only; isolated co-installed engine, not the project-native engine or a validation of the 2.1.5 plugin fix. No integration/full-service or new-PR claim.",
+      "nextAction": "Accept the maintainer-owned run or first failure through the existing invitation; portable current-source pilot is ready. Do not resend.",
       "currentPublishedReportImport": {
         "version": "2.1.4",
         "checkedAt": "2026-10-22T19:29:02.180Z",
@@ -101,7 +110,90 @@
         "dataPreserved": true,
         "engineExecuted": false,
         "evidence": "current-report-review-2026-10-22.json"
-      }
+      },
+      "issueState": "OPEN",
+      "issueUpdatedAt": "2026-10-18T19:07:42Z",
+      "laterOtherReplies": [],
+      "currentEnginePilot": {
+        "tautest": "2.1.4",
+        "evidence": "triad-address/pilot-2026-10-22/README.md",
+        "independentAdoption": false,
+        "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90"
+      },
+      "currentSourceEngineRerun": true,
+      "currentPublishedVersionEngineRerun": false
+    },
+    {
+      "repo": "sleepypod/core",
+      "issue": "https://github.com/sleepypod/core/issues/591",
+      "kind": "candidate-only",
+      "lastInvitation": {
+        "url": "https://github.com/sleepypod/core/issues/591#issuecomment-6265495693",
+        "date": "2026-10-19T10:50:50Z"
+      },
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "queriedAt": "2026-10-22T20:13:59.058Z",
+      "issueState": "OPEN",
+      "issueUpdatedAt": "2026-10-19T11:01:52Z",
+      "laterOtherRepliesFound": 0,
+      "laterOtherReplies": [],
+      "limitation": "Historical independent Stryker mutation work predates our invitation and is not Tautest adoption. No maintainer response after our invitation.",
+      "nextAction": "Use the existing invitation for a maintainer response; do not repeat it or run broad service mutation scans."
+    },
+    {
+      "repo": "Nodal-stellar/Nodal-AI",
+      "issue": "https://github.com/Nodal-stellar/Nodal-AI/issues/831",
+      "kind": "candidate-only",
+      "lastInvitation": {
+        "url": "https://github.com/Nodal-stellar/Nodal-AI/issues/831#issuecomment-6211343207",
+        "date": "2026-10-16T08:26:11Z"
+      },
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "queriedAt": "2026-10-22T20:14:01.537Z",
+      "issueState": "OPEN",
+      "issueUpdatedAt": "2026-10-16T08:26:11Z",
+      "laterOtherRepliesFound": 0,
+      "laterOtherReplies": [],
+      "limitation": "Normal-suite readiness and independent product trial remain unconfirmed in this continuation.",
+      "nextAction": "Require a passing normal selected-suite baseline before any mutant claim; no repeated invitation."
+    },
+    {
+      "repo": "KenTaniguchi-R/ledgr",
+      "issue": "https://github.com/KenTaniguchi-R/ledgr/issues/103",
+      "kind": "candidate-only",
+      "lastInvitation": {
+        "url": "https://github.com/KenTaniguchi-R/ledgr/issues/103#issuecomment-6312612883",
+        "date": "2026-10-21T09:26:01Z"
+      },
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "queriedAt": "2026-10-22T20:14:08.610Z",
+      "issueState": "OPEN",
+      "issueUpdatedAt": "2026-10-21T09:26:01Z",
+      "laterOtherRepliesFound": 0,
+      "laterOtherReplies": [],
+      "limitation": "Our published proof was planning only. The test gap fixed in PR123 is not a new discovery; integration-test exclusion remains a separate configuration concern.",
+      "nextAction": "Use the existing planning invitation; accept a maintainer-selected small change before running a fresh engine experiment."
     }
   ],
   "maintainerControls": [
@@ -124,9 +216,69 @@
       "timing": {
         "firstGeneratedReportSinceInstallStartMs": 95339,
         "meaning": "Automated toy control; includes install and intervening preparation, excludes human review; reused pnpm store. Not maintainer first meaningful result time."
+      },
+      "historicalCheckpoint": true,
+      "currentRemedyStatus": {
+        "pullRequest": 55,
+        "mergedAs": "b66fbd0ded72530572c256f6f62743bc2b8f228e",
+        "publishedIn": "2.1.5"
       }
+    },
+    {
+      "date": "2026-10-22",
+      "independentAdoption": false,
+      "version": "2.1.5",
+      "stagePassed": "empty-cache npm install; separate pnpm init -> doctor -> diff-selected run -> analyze -> exact-candidate verify",
+      "evidence": "https://github.com/canblmz1/tautest/blob/50bb8f3590fb812bbb853f25eed588c6bc6c3151/docs/evidence/release-2.1.5/summary.json",
+      "limitation": "Windows Node22 control; full pnpm flow reused its store; no independent trial, speed or full-project score claim."
     }
   ],
-  "scope": "Vimgym and TriAD refreshed this checkpoint. Other three candidates retain the 2026-10-22 18:41 UTC assessment and are not reclassified.",
-  "publication": "No release, merge, deploy or new external invitation in this checkpoint."
+  "scope": "All five existing candidates reread; no new broad candidate search or external invitation. Current-source engine pilots are our technical controls only.",
+  "publication": {
+    "version": "2.1.5",
+    "userExplicitlyApproved": true,
+    "pullRequest": 54,
+    "reviewedHead": "aaf3450d806c4191381427587a2e061a0ccd702e",
+    "checksAtReviewedHead": {
+      "passed": 13,
+      "total": 13
+    },
+    "mergedAs": "1ed141795ef28cc9b1e20cbbd2c165152f92e799",
+    "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39842845088",
+    "status": "published; both tarballs integrity-checked; cold install succeeded",
+    "initialAvailabilityFailure": "Core metadata/tarball visibility differed; cold install initially failed; underlying cause unknown; no republish attempted",
+    "futurePublicationAuthorized": false
+  },
+  "initialCheckpoint": {
+    "recordedAt": "2026-10-22T19:31:31.391Z",
+    "immutableLedger": "https://github.com/canblmz1/tautest/blob/51e3288ce8b70666b08de71894cbacc09b286bcd/docs/evidence/adoption/validation-ledger.json",
+    "note": "Earlier publication/CI states remain historical; current states follow below."
+  },
+  "maintenance": [
+    {
+      "pullRequest": 57,
+      "head": "50bb8f3590fb812bbb853f25eed588c6bc6c3151",
+      "mergedAs": "808122a14ed8c9ddceef779e3814c88e062d0eb8",
+      "mergedAt": "2026-10-22T20:14:28Z",
+      "checks": {
+        "passed": 5,
+        "total": 5
+      },
+      "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39847115716",
+      "purpose": "Read-only published tarball integrity verification; cannot publish or change score/statuses.",
+      "versionPreparation": {
+        "initialFailure": "Actions bot not permitted to create a PR; version branch had already been pushed",
+        "workaround": "Maintainer account opened draft PR58 from the prepared branch; failed job rerun; no permissions changed",
+        "draft": "https://github.com/canblmz1/tautest/pull/58",
+        "version": "2.1.6",
+        "publicationApproved": false
+      },
+      "mainReleaseResult": "success after rerun; post-check correctly skipped version preparation",
+      "liveStrictVerification": {
+        "versions": "2.1.5 / 2.1.5",
+        "result": "exit0; downloaded both public tarballs and verified integrity",
+        "readOnly": true
+      }
+    }
+  ]
 }

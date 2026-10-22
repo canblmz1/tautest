@@ -1,0 +1,25 @@
+diff --git a/packages/vimsplain/src/handlers/command.ts b/packages/vimsplain/src/handlers/command.ts
+index d446de6..652cbb0 100644
+--- a/packages/vimsplain/src/handlers/command.ts
++++ b/packages/vimsplain/src/handlers/command.ts
+@@ -32,0 +33,12 @@ export function handleCommandMode(context: ParsingContext): void {
++  // Check for [Esc] to cancel ex command
++  if (context.remaining.startsWith(SPECIAL_KEYS.ESCAPE)) {
++    context.commands.push({
++      matched: SPECIAL_KEYS.ESCAPE,
++      explanation: "cancel command",
++    });
++    context.activeMode = "Normal";
++    context.exBuffer = "";
++    context.remaining = context.remaining.slice(SPECIAL_KEYS.ESCAPE.length);
++    return;
++  }
++
+@@ -44,0 +57,7 @@ export function handleCommandMode(context: ParsingContext): void {
++  // Check for [Backspace] in ex command mode
++  if (context.remaining.startsWith(SPECIAL_KEYS.BACKSPACE)) {
++    context.exBuffer = context.exBuffer.slice(0, -1);
++    context.remaining = context.remaining.slice(SPECIAL_KEYS.BACKSPACE.length);
++    return;
++  }
++

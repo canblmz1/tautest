@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-22T20:17:48.063Z",
+  "status": "controlled-pilot-verified",
+  "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "cli": "2.1.5",
+  "core": "2.1.5",
+  "platform": "win32",
+  "node": "v22.23.2",
+  "baseline": [
+    372,
+    372
+  ],
+  "candidateOnOriginal": 373,
+  "manualMutant": {
+    "existingPassed": 372,
+    "newPassed": 372,
+    "newFailed": 1,
+    "reason": "Expected behavior assertion"
+  },
+  "targetBefore": "Survived",
+  "targetAfter": [
+    "Killed",
+    "Killed"
+  ],
+  "verifications": [
+    "verified",
+    "verified"
+  ],
+  "protectedFiles": 25,
+  "allUnchanged": true,
+  "trackedClean": true,
+  "registryCodeIdentity": "registry-identity.json",
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false
+}

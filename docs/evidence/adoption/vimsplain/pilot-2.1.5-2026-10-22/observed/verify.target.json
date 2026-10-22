@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "1.0",
+  "framework": {
+    "name": "StrykerJS",
+    "version": "10.0.0",
+    "dependencies": {
+      "@stryker-mutator/typescript-checker": "10.0.0",
+      "typescript": "5.9.3"
+    }
+  },
+  "files": {
+    "src/handlers/command.ts": {
+      "language": "typescript",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "MethodExpression",
+          "replacement": "cmd",
+          "statusReason": "expected 'run ex command \\' w \\'' to be 'write file' // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 13,
+          "killedBy": [
+            "0"
+          ],
+          "coveredBy": [
+            "0",
+            "181",
+            "182",
+            "183",
+            "184",
+            "185",
+            "186",
+            "187",
+            "204",
+            "205",
+            "206",
+            "207",
+            "219"
+          ],
+          "location": {
+            "end": {
+              "column": 29,
+              "line": 22
+            },
+            "start": {
+              "column": 19,
+              "line": 22
+            }
+          }
+        }
+      ],
+      "source": "import type { ParsingContext } from \"../vimsplain.types.js\";\r\nimport { SPECIAL_KEYS } from \"../vimsplain.types.js\";\r\n\r\n/** Known ex commands and their explanations */\r\nconst EX_COMMANDS: Record<string, string> = {\r\n  w: \"write file\",\r\n  q: \"quit\",\r\n  wq: \"write and quit\",\r\n  \"q!\": \"force quit (discard changes)\",\r\n  \"wq!\": \"force write and quit\",\r\n  x: \"write and quit\",\r\n  e: \"edit file\",\r\n  noh: \"clear search highlights\",\r\n  nohl: \"clear search highlights\",\r\n  \"set nu\": \"show line numbers\",\r\n  \"set nonu\": \"hide line numbers\",\r\n  \"set rnu\": \"show relative line numbers\",\r\n  \"set nornu\": \"hide relative line numbers\",\r\n};\r\n\r\nexport function explainExCommand(cmd: string): string {\r\n  const trimmed = cmd.trim();\r\n  if (trimmed in EX_COMMANDS) {\r\n    return EX_COMMANDS[trimmed] as string;\r\n  }\r\n  if (/^s\\//.test(trimmed)) {\r\n    return \"substitute\";\r\n  }\r\n  return `run ex command '${trimmed}'`;\r\n}\r\n\r\nexport function handleCommandMode(context: ParsingContext): void {\r\n  // Check for [Esc] to cancel ex command\r\n  if (context.remaining.startsWith(SPECIAL_KEYS.ESCAPE)) {\r\n    context.commands.push({\r\n      matched: SPECIAL_KEYS.ESCAPE,\r\n      explanation: \"cancel command\",\r\n    });\r\n    context.activeMode = \"Normal\";\r\n    context.exBuffer = \"\";\r\n    context.remaining = context.remaining.slice(SPECIAL_KEYS.ESCAPE.length);\r\n    return;\r\n  }\r\n\r\n  // Check for [Enter] to complete ex command\r\n  if (context.remaining.startsWith(SPECIAL_KEYS.ENTER)) {\r\n    const explanation = explainExCommand(context.exBuffer);\r\n    context.commands.push({\r\n      matched: `:${context.exBuffer}`,\r\n      explanation,\r\n    });\r\n    context.activeMode = \"Normal\";\r\n    context.remaining = context.remaining.slice(SPECIAL_KEYS.ENTER.length);\r\n    return;\r\n  }\r\n\r\n  // Check for [Backspace] in ex command mode\r\n  if (context.remaining.startsWith(SPECIAL_KEYS.BACKSPACE)) {\r\n    context.exBuffer = context.exBuffer.slice(0, -1);\r\n    context.remaining = context.remaining.slice(SPECIAL_KEYS.BACKSPACE.length);\r\n    return;\r\n  }\r\n\r\n  // In ex mode, accumulate command characters\r\n  context.exBuffer += context.remaining[0];\r\n  context.remaining = context.remaining.slice(1);\r\n}\r\n"
+    }
+  },
+  "testFiles": {
+    "tests/tautest-ex-command-whitespace.test.ts": {
+      "tests": [
+        {
+          "id": "0",
+          "name": "explains a whitespace-padded ex write command as write file"
+        }
+      ]
+    },
+    "tests/vimsplain.test.ts": {
+      "tests": [
+        {
+          "id": "181",
+          "name": "vimsplain expanded command coverage ex commands explains :w (write file)"
+        },
+        {
+          "id": "182",
+          "name": "vimsplain expanded command coverage ex commands explains :q (quit)"
+        },
+        {
+          "id": "183",
+          "name": "vimsplain expanded command coverage ex commands explains :wq (write and quit)"
+        },
+        {
+          "id": "184",
+          "name": "vimsplain expanded command coverage ex commands explains :q! (force quit)"
+        },
+        {
+          "id": "185",
+          "name": "vimsplain expanded command coverage ex commands explains :noh (clear search highlights)"
+        },
+        {
+          "id": "186",
+          "name": "vimsplain expanded command coverage ex commands flushes ex buffer without trailing Enter"
+        },
+        {
+          "id": "187",
+          "name": "vimsplain expanded command coverage ex commands handles unknown ex command with generic fallback"
+        },
+        {
+          "id": "204",
+          "name": "vimsplain expanded command coverage search and command mode cancellation and editing resets exBuffer on Esc cancellation so subsequent ex commands start fresh"
+        },
+        {
+          "id": "205",
+          "name": "vimsplain expanded command coverage search and command mode cancellation and editing handles [Backspace] with subsequent characters in ex command mode"
+        },
+        {
+          "id": "206",
+          "name": "vimsplain expanded command coverage search and command mode cancellation and editing handles [Backspace] in ex command mode"
+        },
+        {
+          "id": "207",
+          "name": "vimsplain expanded command coverage search and command mode cancellation and editing explains additional ex commands"
+        }
+      ]
+    },
+    "tests/fuzz.test.ts": {
+      "tests": [
+        {
+          "id": "219",
+          "name": "vimsplain fuzzing never crashes on arbitrary strings"
+        }
+      ]
+    }
+  },
+  "config": {
+    "testRunner": "vitest",
+    "mutate": [
+      "src/handlers/command.ts:22-22"
+    ]
+  }
+}

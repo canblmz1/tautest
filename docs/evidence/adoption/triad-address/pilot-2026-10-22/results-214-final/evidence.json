@@ -1,0 +1,845 @@
+{
+  "observedAt": "2026-10-22T19:55:28.856Z",
+  "project": "Thang4869/TriAD-Backend",
+  "issue": "https://github.com/Thang4869/TriAD-Backend/issues/145",
+  "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "versions": {
+    "tautest": "2.1.4",
+    "@tautest/core": "2.1.4",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "vitest": "4.1.11",
+    "typescript": "5.9.3"
+  },
+  "sourceFile": "src/shared/value-objects/address.ts",
+  "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+  "sourceSha256LF": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+  "projectLockSha256": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+  "toolLockSha256": "404495ed207be098fa8fb06e7b21f462bc6bdefda41eca1168d3b7290c0d5652",
+  "baseline": {
+    "node": "v22.23.2",
+    "platform": "win32",
+    "project": "Thang4869/TriAD-Backend",
+    "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90",
+    "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+    "lockSha256": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+    "files": {
+      "package.json": "9acbfda048a4ba6bd2252d76f0d62a57e003ec114a79c41f0d65261b09f0464a",
+      "package-lock.json": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+      "vitest.workspace.mts": "1d1370e8c775ae94c8ed0e5ba0565a0df34736b10526cea8cd702c6ab1323eea",
+      "vitest.unit.config.mts": "71ccf996f805e21c792cd9e7e22f0218e1b7d5cb853f600a84621e7da507625b",
+      "tests/setup-env.ts": "21c3f5f7214e5a0ad44fa499e90d0ae1571b7944c8508ce15284ab7975721d8a",
+      "tests/unit/shared/value-objects.test.ts": "129cccdadd0692503c3f3031a041a956dcdb8954d38006345e3ddab09189c371",
+      "src/shared/value-objects/address.ts": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+    },
+    "records": [
+      {
+        "label": "baseline-1",
+        "startedAt": "2026-10-22T19:45:48.312Z",
+        "elapsedMs": 1706,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "--config",
+            "vitest.workspace.mts",
+            "--project",
+            "unit",
+            "tests/unit/shared/value-objects.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad/baseline-1.tests.json"
+          ],
+          "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project"
+        },
+        "exitCode": 0,
+        "error": null,
+        "passed": 3,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "tests/unit/shared/value-objects.test.ts",
+            "tests": [
+              {
+                "name": "value objects normalizes and validates contact and order identity values",
+                "status": "passed"
+              },
+              {
+                "name": "value objects rejects invalid identity values",
+                "status": "passed"
+              },
+              {
+                "name": "value objects preserves Money and Rating invariants",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "startedAt": "2026-10-22T19:45:50.020Z",
+        "elapsedMs": 1569,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "--config",
+            "vitest.workspace.mts",
+            "--project",
+            "unit",
+            "tests/unit/shared/value-objects.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad/baseline-2.tests.json"
+          ],
+          "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project"
+        },
+        "exitCode": 0,
+        "error": null,
+        "passed": 3,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "tests/unit/shared/value-objects.test.ts",
+            "tests": [
+              {
+                "name": "value objects normalizes and validates contact and order identity values",
+                "status": "passed"
+              },
+              {
+                "name": "value objects rejects invalid identity values",
+                "status": "passed"
+              },
+              {
+                "name": "value objects preserves Money and Rating invariants",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "effectiveConfig": {
+    "testRunner": "vitest",
+    "plugins": [
+      "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\.pnpm\\@stryker-mutator+vitest-run_78bb992b6269292a2cc908b054dca187\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+    ],
+    "mutate": [
+      "src/shared/value-objects/address.ts:6-6"
+    ],
+    "vitest": {
+      "configFile": "vitest.triad-pilot.config.mts",
+      "related": false
+    },
+    "reporters": [
+      "json"
+    ],
+    "coverageAnalysis": "perTest",
+    "concurrency": 1,
+    "incremental": false,
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    },
+    "logLevel": "error",
+    "inPlace": false,
+    "tempDirName": ".stryker-tmp",
+    "cleanTempDir": "always",
+    "mutator": {
+      "excludedMutations": [
+        "ArithmeticOperator",
+        "ArrayDeclaration",
+        "ArrowFunction",
+        "BlockStatement",
+        "BooleanLiteral",
+        "ConditionalExpression",
+        "CallExpression",
+        "LogicalOperator",
+        "MethodExpression",
+        "ObjectLiteral",
+        "StringLiteral",
+        "UnaryOperator",
+        "UpdateOperator",
+        "Regex",
+        "OptionalChaining",
+        "AssignmentOperator"
+      ]
+    }
+  },
+  "engineResolution": {
+    "projectEnginePresent": false,
+    "isolatedEngine": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\.pnpm\\@stryker-mutator+core@10.0.0\\node_modules\\@stryker-mutator\\core\\dist\\src\\index.js",
+    "runnerPlugin": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\.pnpm\\@stryker-mutator+vitest-run_78bb992b6269292a2cc908b054dca187\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js",
+    "projectVitest": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+    "originalAlias": "@shared/* -> src/shared/*",
+    "globalSetup": null,
+    "buildCommand": null,
+    "related": false
+  },
+  "fingerprint": {
+    "file": "src/shared/value-objects/address.ts",
+    "sourceSha256LF": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+    "location": {
+      "end": {
+        "column": 59,
+        "line": 6
+      },
+      "start": {
+        "column": 36,
+        "line": 6
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "normalized.length >= 500"
+  },
+  "before": {
+    "id": "6",
+    "mutatorName": "EqualityOperator",
+    "replacement": "normalized.length >= 500",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 1,
+    "coveredBy": [
+      "0"
+    ],
+    "location": {
+      "end": {
+        "column": 59,
+        "line": 6
+      },
+      "start": {
+        "column": 36,
+        "line": 6
+      }
+    }
+  },
+  "beforeOtherMutants": [
+    {
+      "id": "0",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+      "status": "Ignored",
+      "static": false,
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 6
+        },
+        "start": {
+          "column": 9,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "1",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+      "status": "Ignored",
+      "static": false,
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 6
+        },
+        "start": {
+          "column": 9,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "2",
+      "mutatorName": "LogicalOperator",
+      "replacement": "normalized.length === 0 && normalized.length > 500",
+      "statusReason": "Ignored because of excluded mutation \"LogicalOperator\"",
+      "status": "Ignored",
+      "static": false,
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 6
+        },
+        "start": {
+          "column": 9,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "3",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+      "status": "Ignored",
+      "static": false,
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 6
+        },
+        "start": {
+          "column": 9,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "5",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+      "status": "Ignored",
+      "static": false,
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 6
+        },
+        "start": {
+          "column": 36,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "4",
+      "mutatorName": "EqualityOperator",
+      "replacement": "normalized.length !== 0",
+      "statusReason": "Invalid address",
+      "status": "Killed",
+      "static": false,
+      "testsCompleted": 1,
+      "killedBy": [
+        "0"
+      ],
+      "coveredBy": [
+        "0",
+        "1"
+      ],
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 6
+        },
+        "start": {
+          "column": 9,
+          "line": 6
+        }
+      }
+    },
+    {
+      "id": "7",
+      "mutatorName": "EqualityOperator",
+      "replacement": "normalized.length <= 500",
+      "statusReason": "Invalid address",
+      "status": "Killed",
+      "static": false,
+      "testsCompleted": 1,
+      "killedBy": [
+        "0"
+      ],
+      "coveredBy": [
+        "0"
+      ],
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 6
+        },
+        "start": {
+          "column": 36,
+          "line": 6
+        }
+      }
+    }
+  ],
+  "coveredBy": [
+    {
+      "file": "tests/unit/shared/value-objects.test.ts",
+      "id": "0",
+      "name": "value objects normalizes and validates contact and order identity values"
+    }
+  ],
+  "review": {
+    "status": "analyzed",
+    "rawSummary": {
+      "verdict": "MIXED",
+      "mutationScore": 66.66666666666666,
+      "total": 8,
+      "killed": 2,
+      "survived": 1,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 5
+    },
+    "groups": 1
+  },
+  "candidate": {
+    "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+    "sha256": "a4979aa12d2eb9a70778f58103bb8068ff15bc6c9c0233a6ebb37d5d6c633c97",
+    "passedOriginal": true,
+    "passedOriginalCount": 5,
+    "failedManualMutant": true
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "evidence": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-22T19:55:05.089Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+          "sha256": "8389cfad6a743243d6294a4671c7cfc4f6563273ad339d565d068af50854501f",
+          "file": "src/shared/value-objects/address.ts",
+          "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+        },
+        "target": {
+          "originalId": "6",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 59
+            }
+          },
+          "replacement": "normalized.length >= 500"
+        },
+        "candidate": {
+          "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "sha256": "a4979aa12d2eb9a70778f58103bb8068ff15bc6c9c0233a6ebb37d5d6c633c97"
+        },
+        "testsCompleted": 2,
+        "killedBy": [
+          "3"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify\\run-1F9v7I",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify\\run-1F9v7I\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify\\run-1F9v7I\\engine.log"
+        }
+      },
+      "rawReport": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify.raw.json",
+      "fingerprint": {
+        "file": "src/shared/value-objects/address.ts",
+        "sourceSha256LF": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+        "location": {
+          "end": {
+            "column": 59,
+            "line": 6
+          },
+          "start": {
+            "column": 36,
+            "line": 6
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "normalized.length >= 500"
+      },
+      "mutant": {
+        "id": "6",
+        "mutatorName": "EqualityOperator",
+        "replacement": "normalized.length >= 500",
+        "statusReason": "expected [Function] to not throw an error but 'Error: Invalid address' was thrown",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 2,
+        "killedBy": [
+          "3"
+        ],
+        "coveredBy": [
+          "0",
+          "3",
+          "4"
+        ],
+        "location": {
+          "end": {
+            "column": 59,
+            "line": 6
+          },
+          "start": {
+            "column": 36,
+            "line": 6
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "id": "3",
+          "name": "Address normalized length boundary accepts exactly 500 characters after trimming"
+        }
+      ]
+    },
+    {
+      "label": "verify-repeat",
+      "evidence": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-22T19:55:28.819Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+          "sha256": "8389cfad6a743243d6294a4671c7cfc4f6563273ad339d565d068af50854501f",
+          "file": "src/shared/value-objects/address.ts",
+          "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+        },
+        "target": {
+          "originalId": "6",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 59
+            }
+          },
+          "replacement": "normalized.length >= 500"
+        },
+        "candidate": {
+          "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "sha256": "a4979aa12d2eb9a70778f58103bb8068ff15bc6c9c0233a6ebb37d5d6c633c97"
+        },
+        "testsCompleted": 2,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat\\run-EZC6Z2",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat\\run-EZC6Z2\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat\\run-EZC6Z2\\engine.log"
+        }
+      },
+      "rawReport": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat.raw.json",
+      "fingerprint": {
+        "file": "src/shared/value-objects/address.ts",
+        "sourceSha256LF": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+        "location": {
+          "end": {
+            "column": 59,
+            "line": 6
+          },
+          "start": {
+            "column": 36,
+            "line": 6
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "normalized.length >= 500"
+      },
+      "mutant": {
+        "id": "6",
+        "mutatorName": "EqualityOperator",
+        "replacement": "normalized.length >= 500",
+        "statusReason": "expected [Function] to not throw an error but 'Error: Invalid address' was thrown",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 2,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "1",
+          "2"
+        ],
+        "location": {
+          "end": {
+            "column": 59,
+            "line": 6
+          },
+          "start": {
+            "column": 36,
+            "line": 6
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "id": "0",
+          "name": "Address normalized length boundary accepts exactly 500 characters after trimming"
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "label": "published-version",
+      "startedAt": "2026-10-22T19:53:36.207Z",
+      "elapsedMs": 1001,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+          "--version"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "engine-selection-baseline",
+      "startedAt": "2026-10-22T19:53:37.228Z",
+      "elapsedMs": 2898,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.triad-pilot.config.mts",
+          "--maxWorkers=1",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\engine-selection-baseline.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "direct-before",
+      "startedAt": "2026-10-22T19:53:40.132Z",
+      "elapsedMs": 55319,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\prove-current-address.mjs",
+          "--engine",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\direct-request.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "analyze",
+      "startedAt": "2026-10-22T19:54:35.455Z",
+      "elapsedMs": 2365,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+          "analyze",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\review",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "candidate-on-original",
+      "startedAt": "2026-10-22T19:54:37.826Z",
+      "elapsedMs": 2884,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.workspace.mts",
+          "--project",
+          "unit",
+          "tests/unit/shared/value-objects.test.ts",
+          "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\candidate-on-original.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-existing",
+      "startedAt": "2026-10-22T19:54:40.715Z",
+      "elapsedMs": 2300,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.workspace.mts",
+          "--project",
+          "unit",
+          "tests/unit/shared/value-objects.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\manual-mutant-existing.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-candidate",
+      "startedAt": "2026-10-22T19:54:43.017Z",
+      "elapsedMs": 2824,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.workspace.mts",
+          "--project",
+          "unit",
+          "tests/unit/shared/value-objects.test.ts",
+          "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\manual-mutant-candidate.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 1,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify",
+      "startedAt": "2026-10-22T19:54:45.886Z",
+      "elapsedMs": 19228,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+          "--file",
+          "src/shared/value-objects/address.ts",
+          "--mutant",
+          "6",
+          "--test",
+          "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify",
+          "--budget",
+          "120",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify-repeat",
+      "startedAt": "2026-10-22T19:55:05.121Z",
+      "elapsedMs": 23733,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+          "--file",
+          "src/shared/value-objects/address.ts",
+          "--mutant",
+          "6",
+          "--test",
+          "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat",
+          "--budget",
+          "120",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    }
+  ],
+  "protectedHashes": {
+    "package.json": "9acbfda048a4ba6bd2252d76f0d62a57e003ec114a79c41f0d65261b09f0464a",
+    "package-lock.json": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+    "vitest.workspace.mts": "1d1370e8c775ae94c8ed0e5ba0565a0df34736b10526cea8cd702c6ab1323eea",
+    "vitest.unit.config.mts": "71ccf996f805e21c792cd9e7e22f0218e1b7d5cb853f600a84621e7da507625b",
+    "tests/setup-env.ts": "21c3f5f7214e5a0ad44fa499e90d0ae1571b7944c8508ce15284ab7975721d8a",
+    "tests/unit/shared/value-objects.test.ts": "129cccdadd0692503c3f3031a041a956dcdb8954d38006345e3ddab09189c371",
+    "src/shared/value-objects/address.ts": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+  },
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false,
+  "limits": [
+    "Our own current-SHA controlled pilot, not independent adoption.",
+    "Existing previously demonstrated boundary gap, not a new discovery.",
+    "Three selected EqualityOperator mutants on one line plus five raw Ignored records from explicitly excluded mutators; not repository score or current PR quality gate.",
+    "No integration/PostgreSQL/Redis/runtime-app claim.",
+    "Normal source baseline was run twice; verify-repeat here is technical repeatability, not user reuse.",
+    "No runtime speedup comparison."
+  ]
+}

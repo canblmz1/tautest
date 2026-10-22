@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-22T20:11:20.876Z",
+  "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "comparisonBase": "2aca9c37c6a6cc9997af16c1cd48ac365f5f8307",
+  "file": "packages/vimsplain/src/handlers/command.ts",
+  "command": {
+    "file": "git",
+    "args": [
+      "diff",
+      "--unified=0",
+      "2aca9c37c6a6cc9997af16c1cd48ac365f5f8307",
+      "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+      "--",
+      "packages/vimsplain/src/handlers/command.ts"
+    ],
+    "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/project"
+  },
+  "hunks": [
+    {
+      "start": 33,
+      "count": 12
+    },
+    {
+      "start": 57,
+      "count": 7
+    }
+  ],
+  "targetLine": 22,
+  "targetInDiff": false,
+  "note": "Read-only historical-comparison context. No current open PR or newly selected changed-code finding is claimed."
+}

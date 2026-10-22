@@ -1,0 +1,31 @@
+{
+  "protectedFilesUnchanged": {
+    "packages/vimsplain/CHANGELOG.md": true,
+    "packages/vimsplain/README.md": true,
+    "packages/vimsplain/package.json": true,
+    "packages/vimsplain/scripts/gen-commands-table.ts": true,
+    "packages/vimsplain/src/handlers/command.ts": true,
+    "packages/vimsplain/src/handlers/insert.ts": true,
+    "packages/vimsplain/src/handlers/normal.ts": true,
+    "packages/vimsplain/src/handlers/search.ts": true,
+    "packages/vimsplain/src/handlers/visual.ts": true,
+    "packages/vimsplain/src/index.ts": true,
+    "packages/vimsplain/src/vimsplain.ts": true,
+    "packages/vimsplain/src/vimsplain.types.ts": true,
+    "packages/vimsplain/stryker.config.json": true,
+    "packages/vimsplain/tests/coverage.test.ts": true,
+    "packages/vimsplain/tests/fuzz.test.ts": true,
+    "packages/vimsplain/tests/integration.test.ts": true,
+    "packages/vimsplain/tests/vimsplain.test.ts": true,
+    "packages/vimsplain/tsconfig.json": true,
+    "packages/vimsplain/tsdown.config.ts": true,
+    "packages/vimsplain/vitest.config.ts": true,
+    "package.json": true,
+    "pnpm-lock.yaml": true,
+    "pnpm-workspace.yaml": true,
+    "vitest.config.ts": true,
+    "AGENTS.md": true
+  },
+  "trackedStatus": "",
+  "candidateRemoved": true
+}

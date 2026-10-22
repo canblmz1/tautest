@@ -1,0 +1,227 @@
+[
+  {
+    "label": "published-version",
+    "startedAt": "2026-10-22T19:53:36.207Z",
+    "elapsedMs": 1001,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+        "--version"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "engine-selection-baseline",
+    "startedAt": "2026-10-22T19:53:37.228Z",
+    "elapsedMs": 2898,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.triad-pilot.config.mts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\engine-selection-baseline.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "direct-before",
+    "startedAt": "2026-10-22T19:53:40.132Z",
+    "elapsedMs": 55319,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\prove-current-address.mjs",
+        "--engine",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\direct-request.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "analyze",
+    "startedAt": "2026-10-22T19:54:35.455Z",
+    "elapsedMs": 2365,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+        "analyze",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\review",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "candidate-on-original",
+    "startedAt": "2026-10-22T19:54:37.826Z",
+    "elapsedMs": 2884,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.workspace.mts",
+        "--project",
+        "unit",
+        "tests/unit/shared/value-objects.test.ts",
+        "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\candidate-on-original.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-mutant-existing",
+    "startedAt": "2026-10-22T19:54:40.715Z",
+    "elapsedMs": 2300,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.workspace.mts",
+        "--project",
+        "unit",
+        "tests/unit/shared/value-objects.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\manual-mutant-existing.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-mutant-candidate",
+    "startedAt": "2026-10-22T19:54:43.017Z",
+    "elapsedMs": 2824,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.workspace.mts",
+        "--project",
+        "unit",
+        "tests/unit/shared/value-objects.test.ts",
+        "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\manual-mutant-candidate.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 1,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify",
+    "startedAt": "2026-10-22T19:54:45.886Z",
+    "elapsedMs": 19228,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+        "--file",
+        "src/shared/value-objects/address.ts",
+        "--mutant",
+        "6",
+        "--test",
+        "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify-repeat",
+    "startedAt": "2026-10-22T19:55:05.121Z",
+    "elapsedMs": 23733,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\before.raw.json",
+        "--file",
+        "src/shared/value-objects/address.ts",
+        "--mutant",
+        "6",
+        "--test",
+        "tests/unit/shared/value-objects/tautest-address-boundary.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad\\results-214-final\\verify-repeat",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  }
+]

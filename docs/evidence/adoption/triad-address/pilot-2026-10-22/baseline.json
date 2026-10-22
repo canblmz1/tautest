@@ -1,0 +1,109 @@
+{
+  "node": "v22.23.2",
+  "platform": "win32",
+  "project": "Thang4869/TriAD-Backend",
+  "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90",
+  "sourceSha256": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9",
+  "lockSha256": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+  "files": {
+    "package.json": "9acbfda048a4ba6bd2252d76f0d62a57e003ec114a79c41f0d65261b09f0464a",
+    "package-lock.json": "8c1e960d43b3864bc16cf4e2b482863383af066a8efd94b56d9c054c614958f9",
+    "vitest.workspace.mts": "1d1370e8c775ae94c8ed0e5ba0565a0df34736b10526cea8cd702c6ab1323eea",
+    "vitest.unit.config.mts": "71ccf996f805e21c792cd9e7e22f0218e1b7d5cb853f600a84621e7da507625b",
+    "tests/setup-env.ts": "21c3f5f7214e5a0ad44fa499e90d0ae1571b7944c8508ce15284ab7975721d8a",
+    "tests/unit/shared/value-objects.test.ts": "129cccdadd0692503c3f3031a041a956dcdb8954d38006345e3ddab09189c371",
+    "src/shared/value-objects/address.ts": "a8148a5f847f43af2a0f9c65d6139fd9735a802d423ceba3ac4a211c2b1101e9"
+  },
+  "records": [
+    {
+      "label": "baseline-1",
+      "startedAt": "2026-10-22T19:45:48.312Z",
+      "elapsedMs": 1706,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.workspace.mts",
+          "--project",
+          "unit",
+          "tests/unit/shared/value-objects.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad/baseline-1.tests.json"
+        ],
+        "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project"
+      },
+      "exitCode": 0,
+      "error": null,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "tests/unit/shared/value-objects.test.ts",
+          "tests": [
+            {
+              "name": "value objects normalizes and validates contact and order identity values",
+              "status": "passed"
+            },
+            {
+              "name": "value objects rejects invalid identity values",
+              "status": "passed"
+            },
+            {
+              "name": "value objects preserves Money and Rating invariants",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "baseline-2",
+      "startedAt": "2026-10-22T19:45:50.020Z",
+      "elapsedMs": 1569,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\triad-project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.workspace.mts",
+          "--project",
+          "unit",
+          "tests/unit/shared/value-objects.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad/baseline-2.tests.json"
+        ],
+        "cwd": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/triad-project"
+      },
+      "exitCode": 0,
+      "error": null,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "tests/unit/shared/value-objects.test.ts",
+          "tests": [
+            {
+              "name": "value objects normalizes and validates contact and order identity values",
+              "status": "passed"
+            },
+            {
+              "name": "value objects rejects invalid identity values",
+              "status": "passed"
+            },
+            {
+              "name": "value objects preserves Money and Rating invariants",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

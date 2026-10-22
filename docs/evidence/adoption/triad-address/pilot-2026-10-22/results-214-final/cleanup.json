@@ -1,0 +1,15 @@
+{
+  "protectedFilesUnchanged": {
+    "package.json": true,
+    "package-lock.json": true,
+    "vitest.workspace.mts": true,
+    "vitest.unit.config.mts": true,
+    "tests/setup-env.ts": true,
+    "tests/unit/shared/value-objects.test.ts": true,
+    "src/shared/value-objects/address.ts": true
+  },
+  "trackedStatus": "",
+  "candidateRemoved": true,
+  "configRemoved": true,
+  "unitRemoved": true
+}

@@ -1,0 +1,12 @@
+diff --git a/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts b/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/vimsplain/tests/tautest-ex-command-whitespace.test.ts
+@@ -0,0 +1,7 @@
++import { expect, it } from "vitest";
++import { explainSequence } from "../src/index.js";
++
++it("explains a whitespace-padded ex write command as write file", () => {
++  const result = explainSequence(": w [Enter]");
++  expect(result.commands[0]?.explanation).toBe("write file");
++});

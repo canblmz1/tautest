@@ -1,0 +1,18 @@
+{
+    "version":  "0.0.0",
+    "name":  "tautest-vimgym-published215-proof-tools",
+    "packageManager":  "pnpm@10.33.1",
+    "type":  "module",
+    "engines":  {
+                    "node":  "\u003e=22 \u003c23"
+                },
+    "dependencies":  {
+                         "typescript":  "5.9.3",
+                         "@stryker-mutator/vitest-runner":  "10.0.0",
+                         "vitest":  "4.1.11",
+                         "tautest":  "2.1.5",
+                         "@tautest/core":  "2.1.5",
+                         "@stryker-mutator/core":  "10.0.0"
+                     },
+    "private":  true
+}

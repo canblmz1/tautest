@@ -4,6 +4,8 @@ Checked 2026-10-22 (UTC); exact query time, public asset metadata and SHA-256 va
 
 ## Current status
 
+Later on 22 October, the explicitly approved 2.1.5 release and current-source engine refreshes completed. Use the [running progress](validation-progress.md), [TriAD 2.1.4 handoff](triad-address/pilot-2026-10-22/README.md) and [Vimgym 2.1.5 handoff](vimsplain/pilot-2.1.5-2026-10-22/README.md) for those new executions. The report-only 2.1.4 and historical engine recipes below describe earlier, separately pinned evidence; their versions and original SHA guards are intentionally unchanged.
+
 | Project | Current main | Last invitation | Other replies after invitation |
 | --- | --- | --- | --- |
 | [Vimgym #35](https://github.com/oller/vimgym/issues/35) | `e65d98ca48f6432779b6bf2cb677d1a9116400d8` | [2026-10-19](https://github.com/oller/vimgym/issues/35#issuecomment-6265939618) | None found |

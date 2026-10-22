@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-22T20:17:48.061Z",
+  "node": "v22.23.2",
+  "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8",
+  "projectInstall": {
+    "packageManager": "pnpm@10.34.6",
+    "command": "pnpm --filter vimsplain install --frozen-lockfile --ignore-scripts",
+    "exitCode": 0,
+    "workspacePackages": 599,
+    "warning": "Supabase.EXE bin absent because lifecycle scripts disabled; not required for selected vimsplain package. Root app/Supabase functionality not verified."
+  },
+  "toolInstall": {
+    "packageManager": "pnpm@10.33.1",
+    "command": "pnpm install --ignore-scripts --no-frozen-lockfile",
+    "exitCode": 0,
+    "toolsManifest": "tools/package.json",
+    "toolsLock": "tools/pnpm-lock.yaml",
+    "cli": "2.1.5",
+    "core": "2.1.5",
+    "note": "Fresh isolated tools directory, existing pnpm cache reused. Fresh tarball-vs-executed-code comparisons recorded separately."
+  },
+  "projectDependenciesUnchanged": true,
+  "originalFileHashChecks": 25,
+  "upstreamInstructions": {
+    "agentsRead": true,
+    "testingAndTypeScriptConventionsRead": true,
+    "changesetAndPrRequiredForActualUpstreamPackageChange": true
+  },
+  "scope": "Single supported package cwd; no app setup, dependency upgrade, external outreach or adoption claim."
+}

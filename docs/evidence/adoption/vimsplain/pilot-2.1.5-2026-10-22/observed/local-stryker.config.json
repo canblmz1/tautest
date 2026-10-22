@@ -1,0 +1,67 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "mutate": [
+    "src/**/*.ts",
+    "!src/**/*.types.ts",
+    "!src/index.ts"
+  ],
+  "plugins": [
+    "@stryker-mutator/vitest-runner",
+    "@stryker-mutator/typescript-checker"
+  ],
+  "testRunner": "vitest",
+  "checkers": [
+    "typescript"
+  ],
+  "tsconfigFile": "tsconfig.json",
+  "vitest": {
+    "configFile": "vitest.config.ts"
+  },
+  "reporters": [
+    "clear-text",
+    "html",
+    "json"
+  ],
+  "clearTextReporter": {
+    "reportTests": false,
+    "reportMutants": false,
+    "logTests": false
+  },
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
+  },
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": null
+  },
+  "incremental": false,
+  "incrementalFile": "reports/stryker-incremental.json",
+  "cleanTempDir": "always",
+  "concurrency": 1,
+  "coverageAnalysis": "perTest",
+  "logLevel": "error",
+  "mutator": {
+    "excludedMutations": [
+      "ArithmeticOperator",
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "BlockStatement",
+      "BooleanLiteral",
+      "ConditionalExpression",
+      "CallExpression",
+      "EqualityOperator",
+      "LogicalOperator",
+      "ObjectLiteral",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator",
+      "Regex",
+      "OptionalChaining",
+      "AssignmentOperator"
+    ]
+  }
+}

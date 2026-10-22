@@ -1,0 +1,10 @@
+DRAFT ONLY — do not send or repeat the invitation already posted at
+https://github.com/oller/vimgym/issues/35#issuecomment-6265939618
+Use only as a scoped reply if the maintainer responds or requests an updated pilot.
+
+I refreshed the previously demonstrated cmd.trim() survivor against the same current e65d98c revision using the now-published Tautest/core 2.1.5. Your original 372 tests still pass; the exact replacement also passes those tests, while one additional public-output assertion catches it. The same target verifies as Killed in two fresh runs, with source/config/lock restored afterwards.
+
+The runnable handoff is here:
+https://github.com/canblmz1/tautest/tree/docs/validation-ledger-maintenance/docs/evidence/adoption/vimsplain/pilot-2.1.5-2026-10-22
+
+This remains old baseline debt, outside the historical changed-line scope, rather than a new discovery. The smallest optional trial is the supplied report-only analyze command; no CI gate or engine installation in your project is needed for that step. If you choose to try it, your first result or setup error would establish whether the context/verification helps your own triage. My runs are not independent adoption.
