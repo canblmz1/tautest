@@ -24,6 +24,12 @@ async function main(): Promise<void> {
   // The engine's initial dry run must pass before it can produce a completed result.
   const config: RunStrykerOptions['config'] = {
     ...local, testRunner: runner,
+    // Stryker's default plugin glob scans beside its own installation. With pnpm,
+    // the project's runner can be installed in a different virtual-store directory.
+    // Append the runner without disabling default discovery of other plugins.
+    ...(local.plugins === undefined && (runner === 'vitest' || runner === 'jest')
+      && (local.appendPlugins === undefined || Array.isArray(local.appendPlugins))
+      ? { appendPlugins: [...new Set([...(local.appendPlugins as string[] | undefined ?? []), `@stryker-mutator/${runner}-runner`])] } : {}),
     mutate: [`${request.sourceFile}:${request.startLine}-${request.endLine}`],
     reporters: ['json'], jsonReporter: { fileName: path.join(request.output, 'mutation.json') },
     thresholds: { high: 80, low: 60, break: 0 },
