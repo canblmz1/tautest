@@ -13,10 +13,12 @@
 //   only one version on npm, misaligned versions, an unreadable workspace, or a registry answer other
 //   than 200 (published) or 404 (not published)               -> exit 1
 //
-// The registry is only ever read: one GET of /<package>/<version> per package. Nothing here can publish.
+// The registry is only ever read. Default mode queries metadata; --verify-published=true
+// additionally downloads both tarballs and verifies integrity. Neither mode can publish.
 import { appendFileSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
 
 export const PACKAGES = [
   { name: 'tautest', dir: 'packages/cli' },
@@ -64,12 +66,12 @@ export function decide({ versions, pendingChangesets, registry }) {
 // published and only a 404 counts as not published; anything else (other statuses, a wrong body, a
 // network failure, a timeout) is an error, retried a few times because registries have bad minutes.
 export async function registryState(registry, name, version, options = {}) {
-  const { fetchImpl = fetch, timeoutMs = 15_000, attempts = 3, retryDelayMs = 1_000, sleep = defaultSleep } = options;
+  const { fetchImpl = fetch, timeoutMs = 15_000, attempts = 3, retryDelayMs = 1_000, sleep = defaultSleep, verifyTarball = false } = options;
   const url = `${registry.replace(/\/+$/, '')}/${name.replace('/', '%2F')}/${encodeURIComponent(version)}`;
 
   let outcome = { state: 'error', detail: 'no request was made' };
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    outcome = await queryOnce(url, name, version, fetchImpl, timeoutMs);
+    outcome = await queryOnce(url, name, version, fetchImpl, timeoutMs, verifyTarball);
     if (outcome.state !== 'error') {
       return outcome;
     }
@@ -80,19 +82,34 @@ export async function registryState(registry, name, version, options = {}) {
   return { state: 'error', detail: `${outcome.detail} after ${attempts} attempt(s)` };
 }
 
-async function queryOnce(url, name, version, fetchImpl, timeoutMs) {
+async function queryOnce(url, name, version, fetchImpl, timeoutMs, verifyTarball) {
   try {
     const response = await fetchImpl(url, { method: 'GET', headers: { accept: 'application/json' }, signal: AbortSignal.timeout(timeoutMs) });
     if (response.status === 404) {
-      return { state: 'missing' };
+      return verifyTarball ? { state: 'error', detail: 'published metadata is still HTTP 404' } : { state: 'missing' };
     }
     if (response.status !== 200) {
       return { state: 'error', detail: `HTTP ${response.status}` };
     }
     const body = await response.json();
-    return body?.name === name && body?.version === version
-      ? { state: 'exists' }
-      : { state: 'error', detail: `HTTP 200 without ${name}@${version} in the body` };
+    if (body?.name !== name || body?.version !== version) {
+      return { state: 'error', detail: `HTTP 200 without ${name}@${version} in the body` };
+    }
+    if (verifyTarball) {
+      if (typeof body.dist?.tarball !== 'string' || typeof body.dist?.integrity !== 'string') {
+        return { state: 'error', detail: 'missing distribution URL or integrity' };
+      }
+      const tarball = await fetchImpl(body.dist.tarball, { signal: AbortSignal.timeout(timeoutMs) });
+      if (tarball.status !== 200) {
+        await tarball.body?.cancel();
+        return { state: 'error', detail: `tarball HTTP ${tarball.status}` };
+      }
+      const actual = `sha512-${createHash('sha512').update(Buffer.from(await tarball.arrayBuffer())).digest('base64')}`;
+      if (!body.dist.integrity.split(/\s+/).includes(actual)) {
+        return { state: 'error', detail: 'tarball integrity does not match distribution metadata' };
+      }
+    }
+    return { state: 'exists' };
   } catch (error) {
     return { state: 'error', detail: error instanceof Error ? error.message : String(error) };
   }
@@ -115,23 +132,37 @@ export function readWorkspace(root) {
   return { versions, pendingChangesets };
 }
 
-export async function run({ root = process.cwd(), registry = DEFAULT_REGISTRY, outputFile, log = console.log, ...queryOptions } = {}) {
+export async function run({ root = process.cwd(), registry = DEFAULT_REGISTRY, outputFile, log = console.log, requirePublished = false, ...queryOptions } = {}) {
   let result;
+  let pendingChangesetCount;
   try {
     const { versions, pendingChangesets } = readWorkspace(root);
-    const states = await Promise.all(PACKAGES.map(({ name }) => registryState(registry, name, versions[name], queryOptions)));
+    pendingChangesetCount = pendingChangesets.length;
+    const states = await Promise.all(PACKAGES.map(({ name }) => registryState(registry, name, versions[name], {
+      ...queryOptions, verifyTarball: requirePublished || queryOptions.verifyTarball
+    })));
     const registryStates = Object.fromEntries(PACKAGES.map(({ name }, index) => [name, states[index]]));
     for (const { name } of PACKAGES) {
       log(`${name}@${versions[name]}: ${describe(registryStates[name])}`);
     }
     log(`pending changesets: ${pendingChangesets.length === 0 ? 'none' : pendingChangesets.join(', ')}`);
-    result = decide({ versions, pendingChangesets, registry: registryStates });
+    if (requirePublished && new Set(Object.values(versions)).size !== 1) {
+      result = { action: 'error', reason: 'tautest and @tautest/core must stay version-aligned.' };
+    } else if (requirePublished) {
+      const unavailable = PACKAGES.filter(({ name }) => registryStates[name].state !== 'exists');
+      result = unavailable.length
+        ? { action: 'error', reason: `published packages are not downloadable: ${unavailable.map(({ name }) => `${name}: ${describe(registryStates[name])}`).join('; ')}` }
+        : { action: 'skip', reason: 'Both exact published versions and their tarball integrity were verified.' };
+    } else {
+      result = decide({ versions, pendingChangesets, registry: registryStates });
+    }
   } catch (error) {
     result = { action: 'error', reason: `cannot inspect the workspace: ${error instanceof Error ? error.message : String(error)}` };
   }
 
   if (outputFile) {
     appendFileSync(outputFile, `action=${result.action}\nreason=${result.reason.replace(/\s+/g, ' ')}\n`);
+    appendFileSync(outputFile, `pending_changesets=${pendingChangesetCount ?? 'unknown'}\n`);
   }
   return result;
 }
@@ -169,6 +200,8 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
     root: path.resolve(args.root ?? '.'),
     registry: args.registry ?? process.env.NPM_REGISTRY ?? DEFAULT_REGISTRY,
     outputFile: process.env.GITHUB_OUTPUT,
+    requirePublished: args['verify-published'] === 'true',
+    verifyTarball: args['verify-published'] === 'true',
     timeoutMs: numberOption(args['timeout-ms'], 15_000),
     attempts: numberOption(args.attempts, 3),
     retryDelayMs: numberOption(args['retry-delay-ms'], 1_000)
