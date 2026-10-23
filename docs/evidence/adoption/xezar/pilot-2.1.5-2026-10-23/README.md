@@ -71,6 +71,10 @@ The first local attempt stopped after a real assertion failure because a diagnos
 
 Only the selected unit tests and bounded mutant experiment were run. No full unit/MCP suite, lint/typecheck gate, app build, browser, real agent CLI, Linux or macOS result is claimed. The outside-team PR restriction in CONTRIBUTING.md remains: no upstream PR or comment was sent by this pilot.
 
-## One invitation draft, not sent
+## Draft prepared before outreach
 
 Your #338 already identifies the `everyCall` guard; this is not a new finding, and the deleted-adapter cleanup and existing survivor tracking are outside this example. On pinned `00b37e6`, I reproduced one boundary replacement using your locked Stryker 9.6.1/Vitest 4.1.11: the existing four selected tests permit `performing.length >= 0`, while one public-reference assertion catches the false "required on every call" answer for a refusal-only listing. Published Tautest 2.1.5 imports that report and verifies the exact target against the proposed test. The small handoff includes commands, patch and fingerprints; no project dependency/CI change or external PR is needed. Would you try the report view and share whether its context helps triage this one survivor? A first output or setup error is useful feedback too.
+
+## Outreach status
+
+One [technical invitation](https://github.com/qodeca/xezar/issues/338#issuecomment-6360124044) was posted on 23 October after independent review and immutable proof-link checks. No outside-team PR was opened. Sending is not acceptance, execution, confirmed benefit or reuse; these remain unconfirmed at this checkpoint.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-23T07:30:20.530Z",
+  "recordedAt": "2026-10-23T07:49:09.993Z",
   "definition": "Only independent maintainer-owned execution/confirmation counts. Our pilots and CI do not count.",
   "milestones": {
     "firstTrialsBy": "2026-11-05",
@@ -307,6 +307,35 @@
       "maintainerFirstMeaningfulResultMs": null,
       "limitation": "Independent source research is organic interest. Our fixture imports are not their adapter execution; integration is planned, not delivered.",
       "nextAction": "Help with the first concrete parser/import result or error in the existing thread; no repeated invitation or assumption of an accepted trial."
+    },
+    {
+      "repo": "qodeca/xezar",
+      "issue": "https://github.com/qodeca/xezar/issues/338",
+      "kind": "tautest-authored-technical-proof",
+      "technicalProofProjectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+      "technicalProofSource": "https://github.com/canblmz1/tautest/tree/c00d20dfe937d97117ce5f3c05b0992302e1b3f4/docs/evidence/adoption/xezar/pilot-2.1.5-2026-10-23",
+      "currentEnginePilot": {
+        "tautest": "2.1.5",
+        "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+        "evidence": "xezar/pilot-2.1.5-2026-10-23/README.md",
+        "independentAdoption": false
+      },
+      "lastInvitation": {
+        "url": "https://github.com/qodeca/xezar/issues/338#issuecomment-6360124044",
+        "date": "2026-10-23T07:47:51Z"
+      },
+      "confirmedTrialAcceptance": false,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "limitation": "Owner already identified the everyCall gap. One behavior and three active mutants only; original and experimental scores are not the nightly MCP gate. Interrupted verification not counted. Windows-only control.",
+      "contributionPolicy": "Outside-team PRs declined; supplied one relevant issue comment only, no external code PR.",
+      "nextAction": "Help with a concrete maintainer-owned report/import/test result or first failure in the existing thread; do not repeat the invitation or count our patch as adoption."
     }
   ],
   "maintainerControls": [
@@ -448,5 +477,18 @@
       "package": "tautest",
       "note": "Main tautest only. Download requests are not unique users or active projects."
     }
-  ]
+  ],
+  "latestOutreachCheckpoint": {
+    "recordedAt": "2026-10-23T07:49:09.993Z",
+    "projectInvitations": [
+      "https://github.com/toxroxmysox/Waypoint/issues/551#issuecomment-6359463334",
+      "https://github.com/agrorithms/destiny-public/issues/181#issuecomment-6359464469",
+      "https://github.com/TzolkinB/skills/issues/259#issuecomment-6359803414",
+      "https://github.com/qodeca/xezar/issues/338#issuecomment-6360124044"
+    ],
+    "confirmedAcceptances": 0,
+    "confirmedIndependentTrials": 0,
+    "organicSourceReviewProjects": 1,
+    "note": "Independent T2 source review is interest, not execution/benefit. Our four handoffs are not independent use."
+  }
 }
