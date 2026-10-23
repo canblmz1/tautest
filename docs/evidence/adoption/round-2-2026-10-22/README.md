@@ -38,3 +38,7 @@ Two separate agents built the experiments and reviewed each other's raw evidence
 ## Invitations posted
 
 One initial invitation was sent to [Waypoint #551](https://github.com/toxroxmysox/Waypoint/issues/551#issuecomment-6359463334) and one to [Destiny #181](https://github.com/agrorithms/destiny-public/issues/181#issuecomment-6359464469) on 23 October. Their immutable proof commit is `80ccfb72befc0ac7aea8fcab1901049caa418c99`; all linked proof pages returned HTTP 200 and raw review samples matched local bytes before sending. [Exact bodies and timestamps](new-invitations-posted.json) were read back after posting. No acceptance or independent run is implied. Further communication in those threads should answer an actual maintainer response, not repeat the invitation.
+
+## Download observation
+
+The [new dated npm measurement](downloads-2026-10-23.json), queried 23 October at 07:07:48 UTC, reports **1,558** main-package downloads for 23 September?22 October inclusive. It is separate from the frozen earlier window in the ledger. Download requests are not unique users, active projects or proof that an invitation worked. The 200,000 rolling-30-day target is not achieved.
