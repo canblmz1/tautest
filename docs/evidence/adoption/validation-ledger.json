@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-23T07:08:08.817Z",
+  "recordedAt": "2026-10-23T07:30:20.530Z",
   "definition": "Only independent maintainer-owned execution/confirmation counts. Our pilots and CI do not count.",
   "milestones": {
     "firstTrialsBy": "2026-11-05",
@@ -280,6 +280,33 @@
       "reasonForNoReply": null,
       "limitation": "Blank-ID gap already identified by owner; existing mutate:diff pipeline is not our contribution. Two active mutants; our Windows-only proof.",
       "nextAction": "Respond to the maintainer result or first failure in this thread. Do not repeat the invitation; count report-only import separately from project-engine use."
+    },
+    {
+      "repo": "TzolkinB/skills",
+      "issue": "https://github.com/TzolkinB/skills/issues/259",
+      "kind": "report-integration-candidate",
+      "queriedAt": "2026-10-23T07:19:35.6186678Z",
+      "observedMain": "6661eb4cac5b33a47ec6951ecf6921f39ff8f0e6",
+      "independentSourceResearch": {
+        "confirmed": true,
+        "evidence": "https://github.com/TzolkinB/skills/issues/249#issuecomment-6352162555",
+        "scope": "Clone/read only; maintainer explicitly states no execution. This is not a project-owned run or adoption."
+      },
+      "lastInvitation": {
+        "url": "https://github.com/TzolkinB/skills/issues/259#issuecomment-6359803414",
+        "date": "2026-10-23T07:27:43Z"
+      },
+      "technicalFixture": "https://github.com/canblmz1/tautest/tree/009f36caa7c47d3d73500d6cb51eee4e437834b4/docs/evidence/adoption/report-consumer/fixture-2.1.5-2026-10-23",
+      "confirmedTrialAcceptance": false,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "limitation": "Independent source research is organic interest. Our fixture imports are not their adapter execution; integration is planned, not delivered.",
+      "nextAction": "Help with the first concrete parser/import result or error in the existing thread; no repeated invitation or assumption of an accepted trial."
     }
   ],
   "maintainerControls": [
@@ -319,7 +346,7 @@
       "limitation": "Windows Node22 control; full pnpm flow reused its store; no independent trial, speed or full-project score claim."
     }
   ],
-  "scope": "Second bounded round explicitly brought forward by the user: existing invitations reread, two edited in place, two evidence-based first invitations posted. Our technical pilots are not independent adoption.",
+  "scope": "Existing threads plus bounded project pilots and one organic report-integration inquiry. Source research, report-only imports, own-project engine runs and later-change reuse are distinct; our work does not increase independent adoption counters.",
   "publication": {
     "version": "2.1.5",
     "userExplicitlyApproved": true,
@@ -364,6 +391,29 @@
         "versions": "2.1.5 / 2.1.5",
         "result": "exit0; downloaded both public tarballs and verified integrity",
         "readOnly": true
+      }
+    },
+    {
+      "pullRequest": 59,
+      "head": "8ef81ca8e78b3b218421b2b529bef6c215726d0e",
+      "mergedAs": "336bf0eb1181dcc409ce155ef5d85ee433a74c4c",
+      "mergedAt": "2026-10-23T07:12:26Z",
+      "checks": {
+        "passed": 5,
+        "total": 5
+      },
+      "releaseRun": "https://github.com/canblmz1/tautest/actions/runs/39916274231",
+      "mainReleaseResult": "success; version preparation only, no 2.1.6 publication",
+      "purpose": "Two reviewed project pilots, smaller existing handoffs and accurately counted outreach evidence.",
+      "versionPreparation": {
+        "draft": "https://github.com/canblmz1/tautest/pull/58",
+        "reviewedHead": "3b834976f68534f83ce51a74b29ca2d14660c6e0",
+        "checks": {
+          "passed": 13,
+          "total": 13
+        },
+        "publicationApproved": false,
+        "note": "Historical checkpoint. Draft remains unmerged; later bot refreshes need their own SHA checks."
       }
     }
   ],

@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-23T07:27:43.841Z",
+  "repo": "TzolkinB/skills",
+  "issue": 259,
+  "id": 6359803414,
+  "url": "https://github.com/TzolkinB/skills/issues/259#issuecomment-6359803414",
+  "createdAt": "2026-10-23T07:27:43Z",
+  "body": "I work on Tautest. For #259, I prepared a small [actual 2.1.5 report-consumer fixture](https://github.com/canblmz1/tautest/tree/009f36caa7c47d3d73500d6cb51eee4e437834b4/docs/evidence/adoption/report-consumer/fixture-2.1.5-2026-10-23): our toy raw Stryker report, generated normalized report, review context and two exercised imports. Source/test material is ours under the included MIT notice; this is our control, not an independent trial.\n\nThe formats differ: raw Stryker `files[*].mutants` + `testFiles` retains killing-test attribution; Tautest `report.json` schema `1` contains aggregate summary and actionable context, while `review.json` records the input SHA-256. `analyze --json` stdout is a separate envelope. The bundle links the schema and preserves all four raw mutants (3 Killed / 1 Survived / 75%).\n\nFor your freshness question: both imports kept the same input hash/results but changed `createdAt`; no tests ran. That timestamp is import/report-generation time, and the unsigned hash is byte identity, not authenticated execution or current-commit proof. Import success/score is not a new gate. Your consumer would still need its own trusted execution/commit association or an explicit untrusted/stale outcome.\n\nWould this be useful as a fixture for your adapter? If you try the import or parse either output, the first result/error here would help check the integration boundary. No new project dependency or CI gate is needed for the report-only example.\n",
+  "proofSha": "009f36caa7c47d3d73500d6cb51eee4e437834b4",
+  "classification": "Independent source research exists; this is first technical integration invitation, not confirmed acceptance/execution/benefit.",
+  "independentAcceptance": false,
+  "independentTrial": false
+}
