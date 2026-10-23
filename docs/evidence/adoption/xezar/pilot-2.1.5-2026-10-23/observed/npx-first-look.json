@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-23T07:37:31.103Z",
+  "executedReportCreatedAt": "2026-10-23T07:35:15.116Z",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "command": "npx --yes tautest@2.1.5 analyze --from before.review-sample.json --runner vitest",
+  "commandMeaning": "Portable equivalent; actual absolute paths/output-directory flag recorded below.",
+  "actualInvocation": {
+    "file": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npx-cli.js",
+      "--yes",
+      "tautest@2.1.5",
+      "analyze",
+      "--from",
+      "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\public-pilot/observed/before.review-sample.json",
+      "--runner",
+      "vitest",
+      "--report-dir",
+      "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\sample-control/review",
+      "--json"
+    ],
+    "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\sample-control"
+  },
+  "exitCode": 0,
+  "status": "analyzed",
+  "cache": "Previously populated dedicated public-registry cache",
+  "inputSha256": "36fd1baaba4a275c450162c0df8dc5e9acc260f33f6d01169468be89079532a5",
+  "inputUnchanged": true,
+  "summary": {
+    "verdict": "WEAK",
+    "mutationScore": 33.33333333333333,
+    "total": 9,
+    "killed": 1,
+    "survived": 2,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 6
+  },
+  "importOnly": true,
+  "independentAdoption": false,
+  "validationHitch": "After the successful import, a local comparison to literal100/3 stopped on floating-point rounding. Direct comparison to the original generated summary confirmed all fields exactly equal; no score/report bytes or expectations were altered.",
+  "resolvedNpxCachePackages": [
+    {
+      "tautest": "2.1.5",
+      "core": "2.1.5"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "fingerprint": {
+    "file": "packages/xezar/src/mcp/api-reference.ts",
+    "sourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+    "location": {
+      "end": {
+        "column": 73,
+        "line": 109
+      },
+      "start": {
+        "column": 52,
+        "line": 109
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "performing.length >= 0"
+  },
+  "failure": {
+    "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+    "ancestorTitles": [],
+    "fullName": "does not describe a guard as required on every call when every action is refusal-only",
+    "status": "failed",
+    "title": "does not describe a guard as required on every call when every action is refusal-only",
+    "duration": 19.516399999999976,
+    "failureMessages": [
+      "AssertionError: expected true to be false // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/tautest-refusal-only.test.ts:20:42\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "meta": {},
+    "tags": []
+  }
+}

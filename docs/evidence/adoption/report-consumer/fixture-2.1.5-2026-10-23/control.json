@@ -1,0 +1,114 @@
+{
+  "recordedAt": "2026-10-23T07:19:44.556Z",
+  "independentAdoption": false,
+  "packageVersions": {
+    "tautest": "2.1.5",
+    "core": "2.1.5"
+  },
+  "input": {
+    "path": "mutation.json",
+    "sha256": "1bde54beb1ccbf71fd4cd395c59bde8e7bcfe8a9a1f52fe94e4c12c2e92e7a9f",
+    "origin": "Own published-release toy control, engine executed on 2026-10-22",
+    "engineEvidence": "https://github.com/canblmz1/tautest/blob/336bf0eb1181dcc409ce155ef5d85ee433a74c4c/docs/evidence/release-2.1.5/summary.json",
+    "toyBase": "8b98f5b158a68e2aff8cd6652fdfdd9514f0450a",
+    "toyHead": "7fee0e8eabda742d0f79c3f1276c81322c94d9b8",
+    "note": "Local disposable toy git commits; not public upstream commits or authenticated provenance."
+  },
+  "runs": [
+    {
+      "executedAt": "2026-10-23T07:19:41.911Z",
+      "run": 1,
+      "node": "v22.23.2",
+      "platform": "win32",
+      "command": "npx --yes tautest@2.1.5 analyze --from mutation.json --runner vitest --json",
+      "exitCode": 0,
+      "inputSha256": "1bde54beb1ccbf71fd4cd395c59bde8e7bcfe8a9a1f52fe94e4c12c2e92e7a9f",
+      "inputUnchanged": true,
+      "normalizedSchemaValid": true,
+      "summary": {
+        "verdict": "MIXED",
+        "mutationScore": 75,
+        "total": 4,
+        "killed": 3,
+        "survived": 1,
+        "noCoverage": 0,
+        "timeout": 0,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "createdAt": "2026-10-23T07:19:41.673Z",
+      "contextHash": null,
+      "engineExecuted": false,
+      "actualInvocation": {
+        "executable": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:/nvm4w/nodejs/node_modules/npm/bin/npx-cli.js",
+          "--yes",
+          "tautest@2.1.5",
+          "analyze",
+          "--from",
+          "C:/dev/tautest-adoption-second-round/docs/evidence/adoption/report-consumer/fixture-2.1.5-2026-10-23/mutation.json",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/consumer-control-1/review",
+          "--json"
+        ],
+        "cwd": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/consumer-control-1"
+      },
+      "commandMeaning": "Portable equivalent; actual absolute paths and output-directory flag are recorded in actualInvocation."
+    },
+    {
+      "executedAt": "2026-10-23T07:19:44.556Z",
+      "run": 2,
+      "node": "v22.23.2",
+      "platform": "win32",
+      "command": "npx --yes tautest@2.1.5 analyze --from mutation.json --runner vitest --json",
+      "exitCode": 0,
+      "inputSha256": "1bde54beb1ccbf71fd4cd395c59bde8e7bcfe8a9a1f52fe94e4c12c2e92e7a9f",
+      "inputUnchanged": true,
+      "normalizedSchemaValid": true,
+      "summary": {
+        "verdict": "MIXED",
+        "mutationScore": 75,
+        "total": 4,
+        "killed": 3,
+        "survived": 1,
+        "noCoverage": 0,
+        "timeout": 0,
+        "runtimeError": 0,
+        "compileError": 0,
+        "ignored": 0
+      },
+      "createdAt": "2026-10-23T07:19:44.417Z",
+      "contextHash": null,
+      "engineExecuted": false,
+      "actualInvocation": {
+        "executable": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:/nvm4w/nodejs/node_modules/npm/bin/npx-cli.js",
+          "--yes",
+          "tautest@2.1.5",
+          "analyze",
+          "--from",
+          "C:/dev/tautest-adoption-second-round/docs/evidence/adoption/report-consumer/fixture-2.1.5-2026-10-23/mutation.json",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/consumer-control-2/review",
+          "--json"
+        ],
+        "cwd": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/consumer-control-2"
+      },
+      "commandMeaning": "Portable equivalent; actual absolute paths and output-directory flag are recorded in actualInvocation."
+    }
+  ],
+  "observation": "Reanalysis changes createdAt while raw input hash and recorded results remain unchanged. No tests/engine/configuration ran. The report is unsigned and not freshness/authenticity proof.",
+  "resolvedNpxCachePackages": [
+    {
+      "tautest": "2.1.5",
+      "core": "2.1.5"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-23T07:47:52.202Z",
+  "repo": "qodeca/xezar",
+  "issue": 338,
+  "url": "https://github.com/qodeca/xezar/issues/338#issuecomment-6360124044",
+  "id": 6360124044,
+  "createdAt": "2026-10-23T07:47:51Z",
+  "body": "Your #338 already identifies the `everyCall` guard; this is not a new finding or a replacement for the survivor tracking. On pinned `00b37e6`, using your locked Stryker 9.6.1/Vitest 4.1.11, the four selected tests permit `performing.length >= 0`. One public-reference assertion passes original code and catches the wrong \"required on every call\" answer for a refusal-only listing. Published Tautest 2.1.5 verifies that exact target twice, with the same named candidate test as killer.\n\nI work on Tautest; Stryker generates and executes the mutants. Here is a [report preview](https://github.com/canblmz1/tautest/blob/c00d20dfe937d97117ce5f3c05b0992302e1b3f4/docs/evidence/adoption/xezar/pilot-2.1.5-2026-10-23/review-preview.md) and [the small patch, pinned commands and fingerprints](https://github.com/canblmz1/tautest/tree/c00d20dfe937d97117ce5f3c05b0992302e1b3f4/docs/evidence/adoption/xezar/pilot-2.1.5-2026-10-23). Both original boundary survivors are shown in the before report; this target check is not a full MCP score or a claim to resolve all of #338. No external PR was opened.\n\nWould you try the README's report-only first look and share whether the context helps triage this one survivor, or the first setup error? It needs no project installation or CI change; the full test/verify recipe is separate.\n",
+  "proofSha": "c00d20dfe937d97117ce5f3c05b0992302e1b3f4",
+  "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+  "independentAcceptance": false,
+  "independentTrial": false
+}

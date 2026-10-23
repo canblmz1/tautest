@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-23T07:19:35.6186678Z",
+  "repo": "TzolkinB/skills",
+  "observedMain": "6661eb4cac5b33a47ec6951ecf6921f39ff8f0e6",
+  "targetIssue": "https://github.com/TzolkinB/skills/issues/259",
+  "independentSourceResearchEvidence": "https://github.com/TzolkinB/skills/issues/249#issuecomment-6352162555",
+  "classification": "independent T2 source research only; optional T3 not performed",
+  "unmetNeed": "Import raw Stryker or Tautest report as advisory evidence while treating stale or hand-edited unsigned reports as lower trust; no execution inside gate.",
+  "acceptanceConfirmed": false,
+  "independentRunConfirmed": false,
+  "benefitConfirmed": false,
+  "repeatUseConfirmed": false,
+  "policies": {
+    "contributing": "Welcomes concrete professional feedback; do not write feedback before it occurs.",
+    "cleanRoom": "Own words/code, cite inspiration, preserve MIT attribution/notices for copied material; no AGPL/Elastic code copying."
+  }
+}

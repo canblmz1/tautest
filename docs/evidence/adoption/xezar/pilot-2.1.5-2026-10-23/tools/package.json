@@ -1,0 +1,7 @@
+{
+  "name": "tautest-xezar-report-verification-pilot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {"tautest": "2.1.5", "@tautest/core": "2.1.5"}
+}

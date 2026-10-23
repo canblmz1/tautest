@@ -71,6 +71,10 @@ The `observed/*.excerpt.json` files are source-redacted raw report excerpts, not
 - Existing Tautest output paths in evidence are this machine's paths. Maintainers regenerate reports using the commands above; `prove.mjs` resolves all new paths from its own location.
 - The candidate is a proposed test, not a patch sent upstream. No external comment or PR was sent by this experiment.
 
-## Project-specific invitation draft — not sent
+## Draft prepared before outreach
 
 Your #181 already identifies the blank-ID filter; I am not claiming a new finding. I tried a tiny, disposable control at `61954b0`: existing 31 roster tests allow the `id.length >= 0` mutant, while one `sessionIdentity` output assertion catches it. Published Tautest 2.1.5 imports the Stryker report and verifies that exact source/position/replacement against the candidate. The attached reproducible bundle preserves your setupFiles and doesn't change your main checkout or replace your `mutate:diff` pipeline. Would you be willing to run this one-target trial and tell us whether importing the report and verifying the candidate saves any review friction? No need to add it as a dependency or adopt a new CI gate.
+
+## Outreach status
+
+One [technical invitation](https://github.com/agrorithms/destiny-public/issues/181#issuecomment-6359464469) was posted on 23 October after this experiment was prepared. This records sending only; acceptance, independent execution, confirmed benefit and reuse remain unconfirmed. The earlier draft and experiment are historical preparation, not a second invitation.

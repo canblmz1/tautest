@@ -1,0 +1,217 @@
+[
+  {
+    "label": "published-version",
+    "startedAt": "2026-10-23T07:28:36.456Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "--version"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "engine-selection-baseline",
+    "startedAt": "2026-10-23T07:28:41.167Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "test",
+        "--",
+        "--config",
+        "packages/xezar/vitest.tautest-pilot.config.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\engine-selection-baseline.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "direct-before",
+    "startedAt": "2026-10-23T07:28:51.554Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\prove.mjs",
+        "--engine",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\direct-request.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "analyze",
+    "startedAt": "2026-10-23T07:29:35.575Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "analyze",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\before.raw.json",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\review",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "candidate-original",
+    "startedAt": "2026-10-23T07:29:36.939Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "test",
+        "--",
+        "--project",
+        "server",
+        "packages/xezar/src/mcp/api-reference.test.ts",
+        "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\candidate-original.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-existing",
+    "startedAt": "2026-10-23T07:29:49.222Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "test",
+        "--",
+        "--project",
+        "server",
+        "packages/xezar/src/mcp/api-reference.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\manual-existing.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-candidate",
+    "startedAt": "2026-10-23T07:29:59.094Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "test",
+        "--",
+        "--project",
+        "server",
+        "packages/xezar/src/mcp/api-reference.test.ts",
+        "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\manual-candidate.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 1,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify",
+    "startedAt": "2026-10-23T07:30:09.928Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\before.raw.json",
+        "--file",
+        "packages/xezar/src/mcp/api-reference.ts",
+        "--mutant",
+        "5",
+        "--test",
+        "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify-repeat",
+    "startedAt": "2026-10-23T07:30:39.932Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\before.raw.json",
+        "--file",
+        "packages/xezar/src/mcp/api-reference.ts",
+        "--mutant",
+        "5",
+        "--test",
+        "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify-repeat",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  }
+]

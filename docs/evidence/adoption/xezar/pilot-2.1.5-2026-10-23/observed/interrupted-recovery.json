@@ -1,0 +1,63 @@
+{
+  "recordedAt": "2026-10-23T07:28:29.132Z",
+  "reason": "Daemon interruption left helper-owned temporary files and unfinished first verification. No unfinished verification counted.",
+  "protectedFiles": [
+    {
+      "file": "package.json",
+      "expected": "0203512df64b526ba8e40ca9afeee2d41fbac40ea3e7407519896113faf91984",
+      "actual": "0203512df64b526ba8e40ca9afeee2d41fbac40ea3e7407519896113faf91984"
+    },
+    {
+      "file": "package-lock.json",
+      "expected": "0cf50c9ea1d38766194c99a03dcd16401d9c2398ca103ffc495c67393d07c535",
+      "actual": "0cf50c9ea1d38766194c99a03dcd16401d9c2398ca103ffc495c67393d07c535"
+    },
+    {
+      "file": "vitest.config.ts",
+      "expected": "da63316c9964ac6c0d4e6d85e864143565237927b4afe1380d60de3dedaa86b0",
+      "actual": "da63316c9964ac6c0d4e6d85e864143565237927b4afe1380d60de3dedaa86b0"
+    },
+    {
+      "file": "packages/xezar/vitest.config.ts",
+      "expected": "a454ca941667855bf7aba8dee29798ae5ba4ee26b9406fb6a5429db314b12b61",
+      "actual": "a454ca941667855bf7aba8dee29798ae5ba4ee26b9406fb6a5429db314b12b61"
+    },
+    {
+      "file": "packages/xezar/vitest.mutation.config.ts",
+      "expected": "c5a848779909045ee520e87c46e6aa2e3144928d93d81dcde3080ca0bc2e584b",
+      "actual": "c5a848779909045ee520e87c46e6aa2e3144928d93d81dcde3080ca0bc2e584b"
+    },
+    {
+      "file": "packages/xezar/vitest.setup.ts",
+      "expected": "5beb86065674986399939e8f6c325fad43becca7174fe5c96d9efeb71d3580f2",
+      "actual": "5beb86065674986399939e8f6c325fad43becca7174fe5c96d9efeb71d3580f2"
+    },
+    {
+      "file": "scripts/test-local-state.mjs",
+      "expected": "17f579a6af50c3fea57684358c1cc79338419692b8eec5390462660671cb010f",
+      "actual": "17f579a6af50c3fea57684358c1cc79338419692b8eec5390462660671cb010f"
+    },
+    {
+      "file": "packages/xezar/stryker.config.mjs",
+      "expected": "08c9b1f8f3ef20ba420d7fb384a7613daa0c6d55a783f9605d9436391de0a4f9",
+      "actual": "08c9b1f8f3ef20ba420d7fb384a7613daa0c6d55a783f9605d9436391de0a4f9"
+    },
+    {
+      "file": "packages/xezar/src/mcp/api-reference.ts",
+      "expected": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+      "actual": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb"
+    },
+    {
+      "file": "packages/xezar/src/mcp/api-reference.test.ts",
+      "expected": "d74e0ccb45d5c46fc42cd7b3ed7dd057a7d5a2eb4821f10c292f8b081b3a6ad1",
+      "actual": "d74e0ccb45d5c46fc42cd7b3ed7dd057a7d5a2eb4821f10c292f8b081b3a6ad1"
+    }
+  ],
+  "archivedOnly": [
+    "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+    "packages/xezar/vitest.tautest-pilot.config.ts",
+    "stryker.config.json",
+    ".stryker-tmp"
+  ],
+  "trackedStatus": ""
+}

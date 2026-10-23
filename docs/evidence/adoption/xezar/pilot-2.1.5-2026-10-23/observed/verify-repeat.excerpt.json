@@ -1,0 +1,233 @@
+{
+  "kind": "source-redacted Stryker review excerpt",
+  "notExecutableInput": true,
+  "fullRawSha256": "2c7d67354a0bd8f009ec39d3ebc89be537ff0a4512b09fc235644681990212be",
+  "framework": {
+    "name": "StrykerJS",
+    "version": "9.6.1"
+  },
+  "rawSchemaVersion": "1.0",
+  "files": {
+    "packages/xezar/src/mcp/api-reference.ts": {
+      "language": "typescript",
+      "sourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "Ignored because of excluded mutation \"ObjectLiteral\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 130,
+              "line": 109
+            },
+            "start": {
+              "column": 12,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "1",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 116,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "2",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 116,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "3",
+          "mutatorName": "LogicalOperator",
+          "replacement": "performing.length > 0 || requiredBy.length === performing.length",
+          "statusReason": "Ignored because of excluded mutation \"LogicalOperator\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 116,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "4",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 73,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "7",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 116,
+              "line": 109
+            },
+            "start": {
+              "column": 77,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "5",
+          "mutatorName": "EqualityOperator",
+          "replacement": "performing.length >= 0",
+          "statusReason": "expected true to be false // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 5,
+          "killedBy": [
+            "4"
+          ],
+          "coveredBy": [
+            "3",
+            "4"
+          ],
+          "location": {
+            "end": {
+              "column": 73,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "6",
+          "mutatorName": "EqualityOperator",
+          "replacement": "performing.length <= 0",
+          "statusReason": "expected true to be false // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 1,
+          "killedBy": [
+            "4"
+          ],
+          "coveredBy": [
+            "3",
+            "4"
+          ],
+          "location": {
+            "end": {
+              "column": 73,
+              "line": 109
+            },
+            "start": {
+              "column": 52,
+              "line": 109
+            }
+          }
+        },
+        {
+          "id": "8",
+          "mutatorName": "EqualityOperator",
+          "replacement": "requiredBy.length !== performing.length",
+          "statusReason": "expected [ { tool: 'leader_events', …(3) } ] to deeply equal [ { tool: 'leader_events', …(3) } ]",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 4,
+          "killedBy": [
+            "3"
+          ],
+          "coveredBy": [
+            "3"
+          ],
+          "location": {
+            "end": {
+              "column": 116,
+              "line": 109
+            },
+            "start": {
+              "column": 77,
+              "line": 109
+            }
+          }
+        }
+      ]
+    }
+  },
+  "testFiles": {
+    "packages/xezar/src/mcp/api-reference.test.ts": {
+      "tests": [
+        {
+          "id": "0",
+          "name": "buildMcpApiReference — the listings the live registry does not produce (#352) derives everyCall by probing a guard-carrying tool that has no action discriminator"
+        },
+        {
+          "id": "1",
+          "name": "buildMcpApiReference — the listings the live registry does not produce (#352) reads what a listing declares, not what the tool behind it enforces"
+        },
+        {
+          "id": "2",
+          "name": "buildMcpApiReference — the listings the live registry does not produce (#352) shows a refused argument only while the live listing still describes it"
+        },
+        {
+          "id": "3",
+          "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else"
+        }
+      ]
+    },
+    "packages/xezar/src/mcp/tautest-refusal-only.test.ts": {
+      "tests": [
+        {
+          "id": "4",
+          "name": "does not describe a guard as required on every call when every action is refusal-only"
+        }
+      ]
+    }
+  }
+}
