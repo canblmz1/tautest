@@ -1,0 +1,120 @@
+{
+  "version": "1",
+  "schemaVersion": "1",
+  "createdAt": "2026-10-23T07:19:41.673Z",
+  "summary": {
+    "verdict": "MIXED",
+    "mutationScore": 75,
+    "total": 4,
+    "killed": 3,
+    "survived": 1,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "scope": {
+    "runner": "vitest",
+    "mutatePatterns": [
+      "src/eligibility.ts:2-2"
+    ],
+    "mutatedFiles": [
+      "src/eligibility.ts"
+    ]
+  },
+  "diagnostics": {
+    "strykerConfig": []
+  },
+  "aiSignals": {
+    "promptStyle": "human",
+    "hardRules": [
+      "Do not change production code.",
+      "Only edit or add test files.",
+      "Every new test must pass against the original production code.",
+      "Every new test must fail against the listed mutant behavior.",
+      "Do not weaken existing assertions.",
+      "Do not delete, skip, or mark existing tests as todo.",
+      "Do not write filler tests such as expect(true).toBe(true).",
+      "Do not add new dependencies.",
+      "If you find a real production bug, stop and report it instead of silently rewriting implementation."
+    ],
+    "validationLoop": [
+      "Run the normal test suite against the original production code.",
+      "Use tautest verify --from <original-report> --mutant <id> --test <candidate-file> to verify each target; add --file if ids repeat.",
+      "Require a verified result: the initial suite passed and an executed test in the selected file killed the exact mutant.",
+      "If the target survives, the run fails or the budget expires, do not claim a verified fix.",
+      "Refresh the full report with the existing Stryker command and analyze it again."
+    ],
+    "commands": [
+      "# Run your existing test command.",
+      "# Use tautest verify with the original report, mutant id and candidate test file.",
+      "# Run your existing Stryker command to refresh the full report."
+    ]
+  },
+  "surviving": [
+    {
+      "id": "2",
+      "filePath": "src/eligibility.ts",
+      "line": 2,
+      "mutatorName": "EqualityOperator",
+      "original": "age >= 18",
+      "replacement": "age > 18",
+      "status": "Survived",
+      "location": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      },
+      "coveredBy": [
+        "0",
+        "1"
+      ],
+      "coveringTests": [
+        {
+          "id": "0",
+          "name": "accepts an adult",
+          "filePath": "test/eligibility.test.ts"
+        },
+        {
+          "id": "1",
+          "name": "rejects an underage applicant",
+          "filePath": "test/eligibility.test.ts"
+        }
+      ],
+      "insight": {
+        "category": "boundary",
+        "missingBehavior": "The exact boundary value 18 may not be protected by a test that distinguishes the original expression from the mutant. Confirm the two sides actually produce different results before treating this as a gap.",
+        "whyThisMatters": "A comparison boundary can move by one value while existing tests still pass, but some boundary shifts (for example a redundant guard) never change the observable result and are equivalent mutants rather than gaps.",
+        "suggestedTestIdea": "If 18 and its neighbor produce different observable results, add a boundary test for the exact value 18. If they behave the same either way, this is likely an equivalent mutant; consider a documented Stryker ignore instead of writing a test."
+      }
+    }
+  ],
+  "stryker": {
+    "schemaVersion": "1.0",
+    "projectRoot": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\published-2.1.5\\project",
+    "frameworkName": "StrykerJS",
+    "frameworkVersion": "10.0.0",
+    "thresholds": {
+      "break": 0,
+      "high": 0,
+      "low": 0
+    },
+    "config": {
+      "testRunner": "vitest",
+      "packageManager": "pnpm",
+      "coverageAnalysis": "perTest",
+      "mutate": [
+        "src/eligibility.ts:2-2"
+      ],
+      "reporters": [
+        "json"
+      ]
+    }
+  }
+}

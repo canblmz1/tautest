@@ -1,0 +1,74 @@
+{
+  "version": "1",
+  "input": {
+    "path": "C:\\dev\\tautest-adoption-second-round\\docs\\evidence\\adoption\\report-consumer\\fixture-2.1.5-2026-10-23\\mutation.json",
+    "sha256": "1bde54beb1ccbf71fd4cd395c59bde8e7bcfe8a9a1f52fe94e4c12c2e92e7a9f"
+  },
+  "options": {
+    "runner": "vitest",
+    "promptStyle": "human"
+  },
+  "contextHash": null,
+  "complete": true,
+  "rawSummary": {
+    "verdict": "MIXED",
+    "mutationScore": 75,
+    "total": 4,
+    "killed": 3,
+    "survived": 1,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 0
+  },
+  "groups": [
+    {
+      "id": "74fc6500404fb6c0628b719e5620b729d1a51460bbdde51e2687d2ef0e1a2a31",
+      "filePath": "src/eligibility.ts",
+      "line": 2,
+      "endLine": 2,
+      "original": "age >= 18",
+      "mutants": [
+        {
+          "id": "2",
+          "filePath": "src/eligibility.ts",
+          "line": 2,
+          "mutatorName": "EqualityOperator",
+          "original": "age >= 18",
+          "replacement": "age > 18",
+          "status": "Survived",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          },
+          "coveredBy": [
+            "0",
+            "1"
+          ],
+          "coveringTests": [
+            {
+              "id": "0",
+              "name": "accepts an adult",
+              "filePath": "test/eligibility.test.ts"
+            },
+            {
+              "id": "1",
+              "name": "rejects an underage applicant",
+              "filePath": "test/eligibility.test.ts"
+            }
+          ]
+        }
+      ],
+      "review": null,
+      "staleReview": false
+    }
+  ],
+  "note": "Reviews are manual judgments. Raw Stryker statuses and score are unchanged. Groups share source expressions; they are not proven equivalent."
+}
