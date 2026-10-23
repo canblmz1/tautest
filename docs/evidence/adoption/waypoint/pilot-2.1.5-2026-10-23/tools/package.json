@@ -1,0 +1,19 @@
+{
+    "version":  "0.0.0",
+    "name":  "tautest-waypoint-native-vitest-proof",
+    "packageManager":  "pnpm@10.33.1",
+    "type":  "module",
+    "engines":  {
+                    "node":  "\u003e=22 \u003c23"
+                },
+    "dependencies":  {
+                         "typescript":  "link:../project/node_modules/typescript",
+                         "@stryker-mutator/vitest-runner":  "10.0.0",
+                         "vitest":  "link:../project/node_modules/vitest",
+                         "vite":  "link:../project/node_modules/vite",
+                         "tautest":  "2.1.5",
+                         "@tautest/core":  "2.1.5",
+                         "@stryker-mutator/core":  "10.0.0"
+                     },
+    "private":  true
+}

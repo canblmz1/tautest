@@ -1,0 +1,992 @@
+{
+  "observedAt": "2026-10-23T06:44:10.647Z",
+  "project": "agrorithms/destiny-public",
+  "projectSha": "61954b029e818f4e534268f48e0a772495303598",
+  "issue": "https://github.com/agrorithms/destiny-public/issues/181",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "versions": {
+    "vitest": "4.1.10",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@stryker-mutator/typescript-checker": "10.0.0",
+    "typescript": "5.9.3",
+    "tautest": "2.1.5",
+    "core": "2.1.5"
+  },
+  "baseline": {
+    "kind": "maintainer-control-not-independent-adoption",
+    "projectSha": "61954b029e818f4e534268f48e0a772495303598",
+    "node": "v22.23.2",
+    "platform": "win32",
+    "versions": {
+      "vitest": "4.1.10",
+      "@stryker-mutator/core": "10.0.0",
+      "@stryker-mutator/vitest-runner": "10.0.0",
+      "@stryker-mutator/typescript-checker": "10.0.0",
+      "typescript": "5.9.3"
+    },
+    "hashes": {
+      "package.json": "f81d1171b2b8aec4cc59dc8012e2770e5e72151491a969ee66ef2be91a8d4da4",
+      "package-lock.json": "34c5355690d380466682931607a13da5c97f6c89a7f83bdd7b930ae6551b246a",
+      "vitest.config.ts": "e7af19e8f7c07db8f9207adfe42eaa0ea1b3677ad249e5fffa8374a9c2b64977",
+      "stryker.config.mjs": "8d5e5c0037dfd3b000f1e4c81cdf4771de94eeb5aaec6b35b406ee6e3688e02b",
+      "tsconfig.stryker.json": "e5e1ff5298f2a7d559869b6cdd96f9bbe47d7b076ef6b098ca5744d4153b1da7",
+      "tests/setup/test-db-path.ts": "96d441aecfe426679b23a28c43398c72ccf8516b6020b490e5a6d5bb9eb8b7e6",
+      "tests/setup/no-network.ts": "dcdfc559a89d28c8faebaf74a9bd5e843506203319158ac39f2a646d7a633f0b",
+      "src/lib/active-session/roster.ts": "95d7af08c6854ee37c8324ce3e5fc0f447def61987a19114656ad969ffb0336f",
+      "src/lib/active-session/roster.test.ts": "7e1c0461ce5bf7041ea424d7528408618edeb9666e9e7b29f1c77df36cf92799"
+    },
+    "records": [
+      {
+        "label": "baseline-1",
+        "startedAt": "2026-10-23T06:38:06.557Z",
+        "elapsedMs": 27504,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "src/lib/active-session/roster.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\baseline-1.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+        },
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "passed": 31,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "src/lib/active-session/roster.test.ts",
+            "tests": [
+              {
+                "name": "findFireteamLeader picks the member whose status has the PartyLeader bit among combined statuses",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader treats 9 and 15 as leaders and 3 and 7 as not",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader does not take a status above 8 without the PartyLeader bit as a leader",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader finds no leader when nobody in the Roster is flagged",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle titles the row after the Fireteam Leader, not the tracked player",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle falls back to the tracked player when no Roster member is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle shows \"Unknown player\" with the ID kept when the leader's name is a raw membership ID",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle shows \"Unknown player\" when the tracked player it falls back to has no name either",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches the same members in the same raid, in any order",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches a Roster that grew between polls",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches a Roster that shrank between polls",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches when the tracked player changed but the Roster did not",
+                "status": "passed"
+              },
+              {
+                "name": "session identity does not match the same members in a different raid",
+                "status": "passed"
+              },
+              {
+                "name": "session identity does not match unrelated or partly overlapping Rosters in the same raid",
+                "status": "passed"
+              },
+              {
+                "name": "session identity follows an open fireteam across polls as its Roster changes",
+                "status": "passed"
+              },
+              {
+                "name": "session identity forgets an open fireteam that is no longer on the page",
+                "status": "passed"
+              },
+              {
+                "name": "session identity toggles one fireteam open and shut, leaving other open fireteams alone",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the Fireteam Leader, who titles the row",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the tracked player when nobody is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the titled member when the title reads \"Unknown player\"",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers lists a member the Roster repeats only once",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand names the Fireteam Leader when the leader's full Name#Code is known",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand falls back to the first member with a full Name#Code when the leader has no code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand finds no target when no member has a full Name#Code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand passes over bare names and raw IDs on the way to the first full Name#Code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand names the first member with a full Name#Code when nobody is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts each Roster size from 1 to 6 under its own chip",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts a Roster larger than 6 under chip 6",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts a Roster count below 1 under chip 1",
+                "status": "passed"
+              },
+              {
+                "name": "isFullRoster reads a Roster of 6 or more as full and one of 5 as not",
+                "status": "passed"
+              },
+              {
+                "name": "isFullRoster agrees with chip 6 for every player count",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "startedAt": "2026-10-23T06:38:34.070Z",
+        "elapsedMs": 2000,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "src/lib/active-session/roster.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\baseline-2.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+        },
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "passed": 31,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "src/lib/active-session/roster.test.ts",
+            "tests": [
+              {
+                "name": "findFireteamLeader picks the member whose status has the PartyLeader bit among combined statuses",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader treats 9 and 15 as leaders and 3 and 7 as not",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader does not take a status above 8 without the PartyLeader bit as a leader",
+                "status": "passed"
+              },
+              {
+                "name": "findFireteamLeader finds no leader when nobody in the Roster is flagged",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle titles the row after the Fireteam Leader, not the tracked player",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle falls back to the tracked player when no Roster member is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle shows \"Unknown player\" with the ID kept when the leader's name is a raw membership ID",
+                "status": "passed"
+              },
+              {
+                "name": "fireteamTitle shows \"Unknown player\" when the tracked player it falls back to has no name either",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches the same members in the same raid, in any order",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches a Roster that grew between polls",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches a Roster that shrank between polls",
+                "status": "passed"
+              },
+              {
+                "name": "session identity matches when the tracked player changed but the Roster did not",
+                "status": "passed"
+              },
+              {
+                "name": "session identity does not match the same members in a different raid",
+                "status": "passed"
+              },
+              {
+                "name": "session identity does not match unrelated or partly overlapping Rosters in the same raid",
+                "status": "passed"
+              },
+              {
+                "name": "session identity follows an open fireteam across polls as its Roster changes",
+                "status": "passed"
+              },
+              {
+                "name": "session identity forgets an open fireteam that is no longer on the page",
+                "status": "passed"
+              },
+              {
+                "name": "session identity toggles one fireteam open and shut, leaving other open fireteams alone",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the Fireteam Leader, who titles the row",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the tracked player when nobody is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers leaves out the titled member when the title reads \"Unknown player\"",
+                "status": "passed"
+              },
+              {
+                "name": "otherRosterMembers lists a member the Roster repeats only once",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand names the Fireteam Leader when the leader's full Name#Code is known",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand falls back to the first member with a full Name#Code when the leader has no code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand finds no target when no member has a full Name#Code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand passes over bare names and raw IDs on the way to the first full Name#Code",
+                "status": "passed"
+              },
+              {
+                "name": "joinCommand names the first member with a full Name#Code when nobody is flagged as leader",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts each Roster size from 1 to 6 under its own chip",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts a Roster larger than 6 under chip 6",
+                "status": "passed"
+              },
+              {
+                "name": "rosterSizeChip puts a Roster count below 1 under chip 1",
+                "status": "passed"
+              },
+              {
+                "name": "isFullRoster reads a Roster of 6 or more as full and one of 5 as not",
+                "status": "passed"
+              },
+              {
+                "name": "isFullRoster agrees with chip 6 for every player count",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "protectedHashes": {
+    "package.json": "f81d1171b2b8aec4cc59dc8012e2770e5e72151491a969ee66ef2be91a8d4da4",
+    "package-lock.json": "34c5355690d380466682931607a13da5c97f6c89a7f83bdd7b930ae6551b246a",
+    "vitest.config.ts": "e7af19e8f7c07db8f9207adfe42eaa0ea1b3677ad249e5fffa8374a9c2b64977",
+    "stryker.config.mjs": "8d5e5c0037dfd3b000f1e4c81cdf4771de94eeb5aaec6b35b406ee6e3688e02b",
+    "tsconfig.stryker.json": "e5e1ff5298f2a7d559869b6cdd96f9bbe47d7b076ef6b098ca5744d4153b1da7",
+    "tests/setup/test-db-path.ts": "96d441aecfe426679b23a28c43398c72ccf8516b6020b490e5a6d5bb9eb8b7e6",
+    "tests/setup/no-network.ts": "dcdfc559a89d28c8faebaf74a9bd5e843506203319158ac39f2a646d7a633f0b",
+    "src/lib/active-session/roster.ts": "95d7af08c6854ee37c8324ce3e5fc0f447def61987a19114656ad969ffb0336f",
+    "src/lib/active-session/roster.test.ts": "7e1c0461ce5bf7041ea424d7528408618edeb9666e9e7b29f1c77df36cf92799"
+  },
+  "fingerprint": {
+    "file": "src/lib/active-session/roster.ts",
+    "sourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+    "location": {
+      "end": {
+        "column": 93,
+        "line": 153
+      },
+      "start": {
+        "column": 80,
+        "line": 153
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "id.length >= 0"
+  },
+  "before": {
+    "id": "10",
+    "mutatorName": "EqualityOperator",
+    "replacement": "id.length >= 0",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 9,
+    "coveredBy": [
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16"
+    ],
+    "location": {
+      "end": {
+        "column": 93,
+        "line": 153
+      },
+      "start": {
+        "column": 80,
+        "line": 153
+      }
+    }
+  },
+  "coveringTests": [
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "8",
+      "name": "session identity matches the same members in the same raid, in any order"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "9",
+      "name": "session identity matches a Roster that grew between polls"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "10",
+      "name": "session identity matches a Roster that shrank between polls"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "11",
+      "name": "session identity matches when the tracked player changed but the Roster did not"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "12",
+      "name": "session identity does not match the same members in a different raid"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "13",
+      "name": "session identity does not match unrelated or partly overlapping Rosters in the same raid"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "14",
+      "name": "session identity follows an open fireteam across polls as its Roster changes"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "15",
+      "name": "session identity forgets an open fireteam that is no longer on the page"
+    },
+    {
+      "file": "src/lib/active-session/roster.test.ts",
+      "id": "16",
+      "name": "session identity toggles one fireteam open and shut, leaving other open fireteams alone"
+    }
+  ],
+  "review": {
+    "status": "analyzed",
+    "rawSummary": {
+      "verdict": "WEAK",
+      "mutationScore": 50,
+      "total": 12,
+      "killed": 1,
+      "survived": 1,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 10
+    },
+    "groups": 1
+  },
+  "candidate": {
+    "file": "src/lib/active-session/tautest-blank-id.test.ts",
+    "sha256": "23547df106e1a31a8faa6c70c8033940e62c8f861931f7028526602ee5d8bbb0",
+    "originalPassed": 32,
+    "mutantFailed": 1
+  },
+  "failure": {
+    "file": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/tautest-blank-id.test.ts",
+    "ancestorTitles": [],
+    "fullName": "drops blank IDs from the fireteam identity while retaining a real member",
+    "status": "failed",
+    "title": "drops blank IDs from the fireteam identity while retaining a real member",
+    "duration": 15.386799999999994,
+    "failureMessages": [
+      "AssertionError: expected { activityHash: 123, …(1) } to deeply equal { activityHash: 123, …(1) }\n    at C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/tautest-blank-id.test.ts:8:9\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64"
+    ],
+    "meta": {},
+    "tags": []
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T06:43:49.525Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+          "sha256": "24cebcd957136ae531ff644410aed41230c66534fab177e1b0159cb415ec8f3a",
+          "file": "src/lib/active-session/roster.ts",
+          "sourceSha256": "95d7af08c6854ee37c8324ce3e5fc0f447def61987a19114656ad969ffb0336f"
+        },
+        "target": {
+          "originalId": "10",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 153,
+              "column": 80
+            },
+            "end": {
+              "line": 153,
+              "column": 93
+            }
+          },
+          "replacement": "id.length >= 0"
+        },
+        "candidate": {
+          "file": "src/lib/active-session/tautest-blank-id.test.ts",
+          "sha256": "23547df106e1a31a8faa6c70c8033940e62c8f861931f7028526602ee5d8bbb0"
+        },
+        "testsCompleted": 10,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify\\run-2HRxmd",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify\\run-2HRxmd\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify\\run-2HRxmd\\engine.log"
+        }
+      },
+      "mutant": {
+        "id": "10",
+        "mutatorName": "EqualityOperator",
+        "replacement": "id.length >= 0",
+        "statusReason": "expected { activityHash: 123, …(1) } to deeply equal { activityHash: 123, …(1) }",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 10,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17"
+        ],
+        "location": {
+          "end": {
+            "column": 93,
+            "line": 153
+          },
+          "start": {
+            "column": 80,
+            "line": 153
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "src/lib/active-session/tautest-blank-id.test.ts",
+          "id": "0",
+          "name": "drops blank IDs from the fireteam identity while retaining a real member"
+        }
+      ],
+      "fingerprint": {
+        "file": "src/lib/active-session/roster.ts",
+        "sourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+        "location": {
+          "end": {
+            "column": 93,
+            "line": 153
+          },
+          "start": {
+            "column": 80,
+            "line": 153
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "id.length >= 0"
+      }
+    },
+    {
+      "label": "verify-repeat",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T06:44:10.606Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+          "sha256": "24cebcd957136ae531ff644410aed41230c66534fab177e1b0159cb415ec8f3a",
+          "file": "src/lib/active-session/roster.ts",
+          "sourceSha256": "95d7af08c6854ee37c8324ce3e5fc0f447def61987a19114656ad969ffb0336f"
+        },
+        "target": {
+          "originalId": "10",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 153,
+              "column": 80
+            },
+            "end": {
+              "line": 153,
+              "column": 93
+            }
+          },
+          "replacement": "id.length >= 0"
+        },
+        "candidate": {
+          "file": "src/lib/active-session/tautest-blank-id.test.ts",
+          "sha256": "23547df106e1a31a8faa6c70c8033940e62c8f861931f7028526602ee5d8bbb0"
+        },
+        "testsCompleted": 10,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify-repeat\\run-DRycIF",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify-repeat\\run-DRycIF\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify-repeat\\run-DRycIF\\engine.log"
+        }
+      },
+      "mutant": {
+        "id": "10",
+        "mutatorName": "EqualityOperator",
+        "replacement": "id.length >= 0",
+        "statusReason": "expected { activityHash: 123, …(1) } to deeply equal { activityHash: 123, …(1) }",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 10,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17"
+        ],
+        "location": {
+          "end": {
+            "column": 93,
+            "line": 153
+          },
+          "start": {
+            "column": 80,
+            "line": 153
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "src/lib/active-session/tautest-blank-id.test.ts",
+          "id": "0",
+          "name": "drops blank IDs from the fireteam identity while retaining a real member"
+        }
+      ],
+      "fingerprint": {
+        "file": "src/lib/active-session/roster.ts",
+        "sourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+        "location": {
+          "end": {
+            "column": 93,
+            "line": 153
+          },
+          "start": {
+            "column": 80,
+            "line": 153
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "id.length >= 0"
+      }
+    }
+  ],
+  "config": {
+    "testRunner": "vitest",
+    "vitest": {
+      "configFile": "vitest.tautest-pilot.config.mts",
+      "related": false
+    },
+    "coverageAnalysis": "perTest",
+    "checkers": [],
+    "tsconfigFile": "tsconfig.stryker.json",
+    "ignoreStatic": true,
+    "reporters": [
+      "json"
+    ],
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    },
+    "concurrency": 1,
+    "ignorePatterns": [
+      "data",
+      ".next",
+      "tmp",
+      "dist",
+      "gos10k/*.db*",
+      "coverage",
+      "test-results",
+      "playwright-report",
+      "blob-report",
+      "maintenance-snapshots",
+      "visual-check",
+      "reports"
+    ],
+    "tempDirName": ".stryker-tmp",
+    "cleanTempDir": "always",
+    "plugins": [
+      "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+    ],
+    "mutate": [
+      "src/lib/active-session/roster.ts:153-153"
+    ],
+    "incremental": false,
+    "logLevel": "error",
+    "inPlace": false,
+    "mutator": {
+      "excludedMutations": [
+        "ArithmeticOperator",
+        "ArrayDeclaration",
+        "ArrowFunction",
+        "BlockStatement",
+        "BooleanLiteral",
+        "ConditionalExpression",
+        "CallExpression",
+        "LogicalOperator",
+        "MethodExpression",
+        "ObjectLiteral",
+        "StringLiteral",
+        "UnaryOperator",
+        "UpdateOperator",
+        "Regex",
+        "OptionalChaining",
+        "AssignmentOperator"
+      ]
+    }
+  },
+  "steps": [
+    {
+      "label": "published-version",
+      "startedAt": "2026-10-23T06:42:44.704Z",
+      "elapsedMs": 869,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "--version"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "engine-selection-baseline",
+      "startedAt": "2026-10-23T06:42:45.580Z",
+      "elapsedMs": 2792,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "--config",
+          "vitest.tautest-pilot.config.mts",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\engine-selection-baseline.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "direct-before",
+      "startedAt": "2026-10-23T06:42:48.375Z",
+      "elapsedMs": 13238,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\prove.mjs",
+          "--engine",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\direct-request.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "analyze",
+      "startedAt": "2026-10-23T06:43:01.616Z",
+      "elapsedMs": 1536,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "analyze",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\review",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "candidate-on-original",
+      "startedAt": "2026-10-23T06:43:03.154Z",
+      "elapsedMs": 1880,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "src/lib/active-session/roster.test.ts",
+          "src/lib/active-session/tautest-blank-id.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\candidate-on-original.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-existing",
+      "startedAt": "2026-10-23T06:43:05.036Z",
+      "elapsedMs": 4579,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "src/lib/active-session/roster.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\manual-mutant-existing.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "manual-mutant-candidate",
+      "startedAt": "2026-10-23T06:43:09.644Z",
+      "elapsedMs": 4533,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "src/lib/active-session/roster.test.ts",
+          "src/lib/active-session/tautest-blank-id.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\manual-mutant-candidate.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 1,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify",
+      "startedAt": "2026-10-23T06:43:14.185Z",
+      "elapsedMs": 35472,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+          "--file",
+          "src/lib/active-session/roster.ts",
+          "--mutant",
+          "10",
+          "--test",
+          "src/lib/active-session/tautest-blank-id.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify",
+          "--budget",
+          "120",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    },
+    {
+      "label": "verify-repeat",
+      "startedAt": "2026-10-23T06:43:49.681Z",
+      "elapsedMs": 20951,
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+          "verify",
+          "--from",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+          "--file",
+          "src/lib/active-session/roster.ts",
+          "--mutant",
+          "10",
+          "--test",
+          "src/lib/active-session/tautest-blank-id.test.ts",
+          "--runner",
+          "vitest",
+          "--report-dir",
+          "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify-repeat",
+          "--budget",
+          "120",
+          "--json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null
+    }
+  ],
+  "independentTrial": false,
+  "userValidatedBenefit": false,
+  "repeatUse": false,
+  "limits": [
+    "Owner already identifies this gap in #181; not new discovery.",
+    "Not full repository score, final owner threshold or current diff quality; only two active blank-filter EqualityOperator mutants.",
+    "Project default checkers[] retained; no final --typecheck claim.",
+    "No app build, native SQLite, API, services or browser proof.",
+    "Original setupFiles, alias and no-network guard retained; only selected roster tests.",
+    "Stryker creates mutants; Tautest imports context and verifies the selected candidate against the same full fingerprint.",
+    "Two technical verifications are not independent repeat use."
+  ]
+}

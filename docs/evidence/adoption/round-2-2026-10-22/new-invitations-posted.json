@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-23T07:05:17.798Z",
+  "proofSha": "80ccfb72befc0ac7aea8fcab1901049caa418c99",
+  "sent": [
+    {
+      "repo": "toxroxmysox/Waypoint",
+      "issue": 551,
+      "url": "https://github.com/toxroxmysox/Waypoint/issues/551#issuecomment-6359463334",
+      "id": 6359463334,
+      "createdAt": "2026-10-23T07:05:12Z",
+      "body": "I work on Tautest. For #551 I tried just `tripTz` at pinned `dfbc0ce`: the existing 15 tests pass while removing `.trim()` survives. One small padded-timezone test passes original code and fails that exact replacement (UTC instead of Europe/Madrid); published Tautest 2.1.5 verifies the same target twice.\n\nHere is a [report preview](https://github.com/canblmz1/tautest/blob/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/waypoint/pilot-2.1.5-2026-10-23/review-preview.md), with [the patch, commands and fingerprints](https://github.com/canblmz1/tautest/tree/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/waypoint/pilot-2.1.5-2026-10-23). This tests the existing trim contract; whether padded stored timezones matter is your call, not a production-bug claim.\n\nWould you be willing to try the README's small report-only first look and share the first result or setup error here? That step needs no project or Stryker setup; the full test/verify recipe is separate. It would help establish whether the survivor context and exact-test verification are useful for your #551 workflow.\r\n",
+      "independentAcceptance": false,
+      "independentTrial": false
+    },
+    {
+      "repo": "agrorithms/destiny-public",
+      "issue": 181,
+      "url": "https://github.com/agrorithms/destiny-public/issues/181#issuecomment-6359464469",
+      "id": 6359464469,
+      "createdAt": "2026-10-23T07:05:16Z",
+      "body": "Your #181 already identifies the blank-ID filter; I am not claiming a new finding. I reproduced just that case at pinned `61954b0`: the 31 existing roster tests allow `id.length >= 0`, while one new `sessionIdentity` output assertion passes original code and catches the exact replacement. Published Tautest 2.1.5 matches and verifies that target twice.\n\nI work on Tautest. Here is a [report preview](https://github.com/canblmz1/tautest/blob/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/destiny/pilot-2.1.5-2026-10-23/review-preview.md) and [the small reproducible patch/verification bundle](https://github.com/canblmz1/tautest/tree/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/destiny/pilot-2.1.5-2026-10-23). This complements your existing `mutate:diff` pipeline from #182; it is not a new full-file score or gate.\n\nWould you be willing to try the README's report-only first look and share whether this view helps your triage? It needs no new project dependency or CI change. The complete one-target `verify` recipe is separate; the first output or setup error here is enough to start.\r\n",
+      "independentAcceptance": false,
+      "independentTrial": false
+    }
+  ]
+}

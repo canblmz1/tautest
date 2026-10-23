@@ -1,0 +1,214 @@
+[
+  {
+    "label": "published-version",
+    "startedAt": "2026-10-23T06:42:44.704Z",
+    "elapsedMs": 869,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "--version"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "engine-selection-baseline",
+    "startedAt": "2026-10-23T06:42:45.580Z",
+    "elapsedMs": 2792,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.tautest-pilot.config.mts",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\engine-selection-baseline.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "direct-before",
+    "startedAt": "2026-10-23T06:42:48.375Z",
+    "elapsedMs": 13238,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\prove.mjs",
+        "--engine",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\direct-request.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "analyze",
+    "startedAt": "2026-10-23T06:43:01.616Z",
+    "elapsedMs": 1536,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "analyze",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\review",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "candidate-on-original",
+    "startedAt": "2026-10-23T06:43:03.154Z",
+    "elapsedMs": 1880,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/lib/active-session/roster.test.ts",
+        "src/lib/active-session/tautest-blank-id.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\candidate-on-original.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-mutant-existing",
+    "startedAt": "2026-10-23T06:43:05.036Z",
+    "elapsedMs": 4579,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/lib/active-session/roster.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\manual-mutant-existing.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "manual-mutant-candidate",
+    "startedAt": "2026-10-23T06:43:09.644Z",
+    "elapsedMs": 4533,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/lib/active-session/roster.test.ts",
+        "src/lib/active-session/tautest-blank-id.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\manual-mutant-candidate.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 1,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify",
+    "startedAt": "2026-10-23T06:43:14.185Z",
+    "elapsedMs": 35472,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+        "--file",
+        "src/lib/active-session/roster.ts",
+        "--mutant",
+        "10",
+        "--test",
+        "src/lib/active-session/tautest-blank-id.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  },
+  {
+    "label": "verify-repeat",
+    "startedAt": "2026-10-23T06:43:49.681Z",
+    "elapsedMs": 20951,
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\before.raw.json",
+        "--file",
+        "src/lib/active-session/roster.ts",
+        "--mutant",
+        "10",
+        "--test",
+        "src/lib/active-session/tautest-blank-id.test.ts",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\results-equality\\verify-repeat",
+        "--budget",
+        "120",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "error": null
+  }
+]

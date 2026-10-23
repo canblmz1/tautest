@@ -1,0 +1,234 @@
+{
+  "checkedAt": "2026-10-22T20:43:53.233Z",
+  "project": "kstackhq/kstack",
+  "sourceSha": "6a9daf730a423fd034ff990b495b6ce8ecf30d20",
+  "base": "f11f8f24a08db178154878d6c4fef2c9b5ba2405",
+  "cliVersion": "2.1.5",
+  "node": "v24.14.0",
+  "command": {
+    "node": "C:/Users/cumac/AppData/Local/nvm/v24.14.0/node.exe",
+    "args": [
+      "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/vimgym-215/tools/node_modules/tautest/dist/index.js",
+      "run",
+      "--base",
+      "f11f8f24a08db178154878d6c4fef2c9b5ba2405",
+      "--dry-run",
+      "--json"
+    ],
+    "cwd": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/kstack-project"
+  },
+  "exitCode": 0,
+  "error": null,
+  "before": {
+    "package.json": "f7bfe68085a32e80c8de8151464c8a3cc1e3df0cb7ec59ffbe416427ad34bc6a",
+    "pnpm-lock.yaml": "e8e23050e860d694b8504477cfc0294c07f8332d5d3b98cff1f399c51e1c8e26",
+    "vite.config.ts": "18ac83900ce6229c2b2113504ac428a784cfbff81ba3e0a3afef6cadd33fa0b1"
+  },
+  "after": {
+    "package.json": "f7bfe68085a32e80c8de8151464c8a3cc1e3df0cb7ec59ffbe416427ad34bc6a",
+    "pnpm-lock.yaml": "e8e23050e860d694b8504477cfc0294c07f8332d5d3b98cff1f399c51e1c8e26",
+    "vite.config.ts": "18ac83900ce6229c2b2113504ac428a784cfbff81ba3e0a3afef6cadd33fa0b1"
+  },
+  "protectedUnchanged": true,
+  "trackedStatus": "",
+  "engineExecuted": false,
+  "testsExecuted": false,
+  "independentAdoption": false,
+  "limitation": "Read-only changed-line planning only; no project install, baseline tests, mutation result, speed or full multilingual gate claim. Kstack invitation deferred for contribution-policy review.",
+  "plan": {
+    "status": "dry-run",
+    "runner": "vitest",
+    "mutatePatterns": [
+      "src/components/widgets/ansi-text.tsx:1-58",
+      "src/components/widgets/log-viewer/context-menu.tsx:17-17",
+      "src/components/widgets/log-viewer/context-menu.tsx:44-46",
+      "src/components/widgets/log-viewer/row.tsx:18-22",
+      "src/components/widgets/log-viewer/row.tsx:27-27",
+      "src/components/widgets/log-viewer/row.tsx:53-53",
+      "src/components/widgets/log-viewer/row.tsx:161-166",
+      "src/components/widgets/log-viewer/row.tsx:202-202",
+      "src/components/widgets/log-viewer/selection.ts:18-18",
+      "src/components/widgets/log-viewer/selection.ts:55-55",
+      "src/components/widgets/log-viewer/selection.ts:77-77",
+      "src/components/widgets/logs-view-inline.tsx:18-19",
+      "src/components/widgets/logs-view-inline.tsx:84-84"
+    ],
+    "totalChangedSourceLines": 82,
+    "included": [
+      {
+        "path": "src/components/widgets/ansi-text.tsx",
+        "ranges": [
+          {
+            "start": 1,
+            "end": 58
+          }
+        ],
+        "lines": 58
+      },
+      {
+        "path": "src/components/widgets/log-viewer/context-menu.tsx",
+        "ranges": [
+          {
+            "start": 17,
+            "end": 17
+          },
+          {
+            "start": 44,
+            "end": 46
+          }
+        ],
+        "lines": 4
+      },
+      {
+        "path": "src/components/widgets/log-viewer/row.tsx",
+        "ranges": [
+          {
+            "start": 18,
+            "end": 22
+          },
+          {
+            "start": 27,
+            "end": 27
+          },
+          {
+            "start": 53,
+            "end": 53
+          },
+          {
+            "start": 161,
+            "end": 166
+          },
+          {
+            "start": 202,
+            "end": 202
+          }
+        ],
+        "lines": 14
+      },
+      {
+        "path": "src/components/widgets/log-viewer/selection.ts",
+        "ranges": [
+          {
+            "start": 18,
+            "end": 18
+          },
+          {
+            "start": 55,
+            "end": 55
+          },
+          {
+            "start": 77,
+            "end": 77
+          }
+        ],
+        "lines": 3
+      },
+      {
+        "path": "src/components/widgets/logs-view-inline.tsx",
+        "ranges": [
+          {
+            "start": 18,
+            "end": 19
+          },
+          {
+            "start": 84,
+            "end": 84
+          }
+        ],
+        "lines": 3
+      }
+    ],
+    "excluded": [
+      {
+        "path": "docs/TODO.md",
+        "reason": "non-source file"
+      },
+      {
+        "path": "docs/security-model.md",
+        "reason": "non-source file"
+      },
+      {
+        "path": "docs/security/2026-10-19-log-lines-keep-their-colours.md",
+        "reason": "non-source file"
+      },
+      {
+        "path": "package.json",
+        "reason": "non-source file"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "reason": "non-source file"
+      },
+      {
+        "path": "pnpm-workspace.yaml",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/cluster/caches_test.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/CLAUDE.md",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/clean.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/clean_test.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/fetch.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/fetch_test.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/fetcher.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/fetcher_test.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/formodel.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/services/logs/record.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "sidecar/internal/tools/bash/bash_unix_test.go",
+        "reason": "non-source file"
+      },
+      {
+        "path": "src/CLAUDE.md",
+        "reason": "non-source file"
+      },
+      {
+        "path": "src/components/widgets/ansi-text.test.tsx",
+        "reason": "test file"
+      },
+      {
+        "path": "src/components/widgets/log-viewer/row.test.tsx",
+        "reason": "test file"
+      },
+      {
+        "path": "src/components/widgets/log-viewer/selection.test.tsx",
+        "reason": "test file"
+      },
+      {
+        "path": "src/index.css",
+        "reason": "non-source file"
+      }
+    ]
+  },
+  "contactStatus": "not sent",
+  "reason": "Deferred: contribution policy requires human participation for entirely LLM-authored contributions; autonomous issue-comment scope is not explicit. No permission change or human-approval request was introduced."
+}

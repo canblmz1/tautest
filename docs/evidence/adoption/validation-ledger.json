@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-22T20:19:49.096Z",
+  "recordedAt": "2026-10-23T07:08:08.817Z",
   "definition": "Only independent maintainer-owned execution/confirmation counts. Our pilots and CI do not count.",
   "milestones": {
     "firstTrialsBy": "2026-11-05",
@@ -16,7 +16,8 @@
     "confirmedTestImprovements": 0,
     "confirmedRepeatProjects": 0,
     "actualGlobalUsers": null,
-    "actualGlobalUsersStatus": "unknown"
+    "actualGlobalUsersStatus": "unknown",
+    "confirmedTrialAcceptances": 0
   },
   "downloads": {
     "name": "last30",
@@ -39,7 +40,9 @@
       "kind": "maintainer-owned-technical-proof",
       "lastInvitation": {
         "url": "https://github.com/oller/vimgym/issues/35#issuecomment-6265939618",
-        "date": "2026-10-19T11:16:38Z"
+        "date": "2026-10-19T11:16:38Z",
+        "editedInPlaceOn": "2026-10-23",
+        "editEvidence": "round-2-2026-10-22/existing-invitation-updates.json"
       },
       "laterOtherRepliesFound": 0,
       "confirmedIndependentTrial": false,
@@ -74,7 +77,17 @@
         "projectSha": "e65d98ca48f6432779b6bf2cb677d1a9116400d8"
       },
       "currentSourceEngineRerun": true,
-      "currentPublishedVersionEngineRerun": true
+      "currentPublishedVersionEngineRerun": true,
+      "lastThreadCheck": {
+        "checkedAt": "2026-10-23T06:38:20.281Z",
+        "source": "round-2-2026-10-22/existing-outreach.json",
+        "independentTrialEvidenceFound": false
+      },
+      "latestPublishedReportImport": {
+        "version": "2.1.5",
+        "engineExecuted": false,
+        "evidence": "round-2-2026-10-22/first-look-controls.json"
+      }
     },
     {
       "repo": "Thang4869/TriAD-Backend",
@@ -86,7 +99,9 @@
       "kind": "maintainer-owned-technical-proof",
       "lastInvitation": {
         "url": "https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597",
-        "date": "2026-10-18T19:07:42Z"
+        "date": "2026-10-18T19:07:42Z",
+        "editedInPlaceOn": "2026-10-23",
+        "editEvidence": "round-2-2026-10-22/existing-invitation-updates.json"
       },
       "laterOtherRepliesFound": 0,
       "confirmedIndependentTrial": false,
@@ -121,7 +136,17 @@
         "projectSha": "902dec9b1178e84dc927499705b75f083a95dd90"
       },
       "currentSourceEngineRerun": true,
-      "currentPublishedVersionEngineRerun": false
+      "currentPublishedVersionEngineRerun": false,
+      "lastThreadCheck": {
+        "checkedAt": "2026-10-23T06:38:20.449Z",
+        "source": "round-2-2026-10-22/existing-outreach.json",
+        "independentTrialEvidenceFound": false
+      },
+      "latestPublishedReportImport": {
+        "version": "2.1.5",
+        "engineExecuted": false,
+        "evidence": "round-2-2026-10-22/first-look-controls.json"
+      }
     },
     {
       "repo": "sleepypod/core",
@@ -145,7 +170,12 @@
       "laterOtherRepliesFound": 0,
       "laterOtherReplies": [],
       "limitation": "Historical independent Stryker mutation work predates our invitation and is not Tautest adoption. No maintainer response after our invitation.",
-      "nextAction": "Use the existing invitation for a maintainer response; do not repeat it or run broad service mutation scans."
+      "nextAction": "Use the existing invitation for a maintainer response; do not repeat it or run broad service mutation scans.",
+      "lastThreadCheck": {
+        "checkedAt": "2026-10-23T06:38:20.304Z",
+        "source": "round-2-2026-10-22/existing-outreach.json",
+        "independentTrialEvidenceFound": false
+      }
     },
     {
       "repo": "Nodal-stellar/Nodal-AI",
@@ -169,7 +199,12 @@
       "laterOtherRepliesFound": 0,
       "laterOtherReplies": [],
       "limitation": "Normal-suite readiness and independent product trial remain unconfirmed in this continuation.",
-      "nextAction": "Require a passing normal selected-suite baseline before any mutant claim; no repeated invitation."
+      "nextAction": "Require a passing normal selected-suite baseline before any mutant claim; no repeated invitation.",
+      "lastThreadCheck": {
+        "checkedAt": "2026-10-23T06:38:20.604Z",
+        "source": "round-2-2026-10-22/existing-outreach.json",
+        "independentTrialEvidenceFound": false
+      }
     },
     {
       "repo": "KenTaniguchi-R/ledgr",
@@ -193,7 +228,58 @@
       "laterOtherRepliesFound": 0,
       "laterOtherReplies": [],
       "limitation": "Our published proof was planning only. The test gap fixed in PR123 is not a new discovery; integration-test exclusion remains a separate configuration concern.",
-      "nextAction": "Use the existing planning invitation; accept a maintainer-selected small change before running a fresh engine experiment."
+      "nextAction": "Use the existing planning invitation; accept a maintainer-selected small change before running a fresh engine experiment.",
+      "lastThreadCheck": {
+        "checkedAt": "2026-10-23T06:38:20.223Z",
+        "source": "round-2-2026-10-22/existing-outreach.json",
+        "independentTrialEvidenceFound": false
+      }
+    },
+    {
+      "repo": "toxroxmysox/Waypoint",
+      "issue": "https://github.com/toxroxmysox/Waypoint/issues/551",
+      "kind": "tautest-authored-technical-proof",
+      "technicalProofProjectSha": "dfbc0ce81a507c1f80f555b9ca5b2bd0e19d6c69",
+      "technicalProofSource": "https://github.com/canblmz1/tautest/tree/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/waypoint/pilot-2.1.5-2026-10-23",
+      "currentMainComparison": "round-2-2026-10-22/current-heads-2026-10-23.json",
+      "lastInvitation": {
+        "url": "https://github.com/toxroxmysox/Waypoint/issues/551#issuecomment-6359463334",
+        "date": "2026-10-23T07:05:12Z"
+      },
+      "confirmedTrialAcceptance": false,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "limitation": "Existing trim contract; production occurrence and maintainer intent unconfirmed. One active mutant; our Windows-only proof.",
+      "nextAction": "Respond to the maintainer result or first failure in this thread. Do not repeat the invitation; count report-only import separately from project-engine use."
+    },
+    {
+      "repo": "agrorithms/destiny-public",
+      "issue": "https://github.com/agrorithms/destiny-public/issues/181",
+      "kind": "tautest-authored-technical-proof",
+      "technicalProofProjectSha": "61954b029e818f4e534268f48e0a772495303598",
+      "technicalProofSource": "https://github.com/canblmz1/tautest/tree/80ccfb72befc0ac7aea8fcab1901049caa418c99/docs/evidence/adoption/destiny/pilot-2.1.5-2026-10-23",
+      "currentMainComparison": "round-2-2026-10-22/current-heads-2026-10-23.json",
+      "lastInvitation": {
+        "url": "https://github.com/agrorithms/destiny-public/issues/181#issuecomment-6359464469",
+        "date": "2026-10-23T07:05:16Z"
+      },
+      "confirmedTrialAcceptance": false,
+      "confirmedIndependentTrial": false,
+      "confirmedBenefit": false,
+      "confirmedTestImprovement": false,
+      "confirmedRepeatUse": false,
+      "actualIndependentUsage": null,
+      "actualIndependentUsageStatus": "unknown",
+      "maintainerFirstMeaningfulResultMs": null,
+      "reasonForNoReply": null,
+      "limitation": "Blank-ID gap already identified by owner; existing mutate:diff pipeline is not our contribution. Two active mutants; our Windows-only proof.",
+      "nextAction": "Respond to the maintainer result or first failure in this thread. Do not repeat the invitation; count report-only import separately from project-engine use."
     }
   ],
   "maintainerControls": [
@@ -233,7 +319,7 @@
       "limitation": "Windows Node22 control; full pnpm flow reused its store; no independent trial, speed or full-project score claim."
     }
   ],
-  "scope": "All five existing candidates reread; no new broad candidate search or external invitation. Current-source engine pilots are our technical controls only.",
+  "scope": "Second bounded round explicitly brought forward by the user: existing invitations reread, two edited in place, two evidence-based first invitations posted. Our technical pilots are not independent adoption.",
   "publication": {
     "version": "2.1.5",
     "userExplicitlyApproved": true,
@@ -279,6 +365,38 @@
         "result": "exit0; downloaded both public tarballs and verified integrity",
         "readOnly": true
       }
+    }
+  ],
+  "rounds": [
+    {
+      "startedOn": "2026-10-22",
+      "continuedOn": "2026-10-23",
+      "reason": "User explicitly requested continued pursuit of an accepting maintainer; brought forward the 28 October checkpoint.",
+      "evidence": "round-2-2026-10-22/README.md",
+      "newInvitationCount": 2,
+      "independentTrialAcceptancesConfirmed": 0,
+      "independentTrialsConfirmed": 0
+    }
+  ],
+  "downloadMeasurements": [
+    {
+      "name": "last30",
+      "source": "https://api.npmjs.org/downloads/point/2026-09-22:2026-10-21/tautest",
+      "queriedAt": "2026-10-22T18:41:24.035Z",
+      "downloads": 1558,
+      "start": "2026-09-22",
+      "end": "2026-10-21",
+      "package": "tautest",
+      "note": "Main package only; downloads are not users. Frozen measurement, not a newly queried value."
+    },
+    {
+      "source": "https://api.npmjs.org/downloads/point/2026-09-23:2026-10-22/tautest",
+      "queriedAt": "2026-10-23T07:07:48.662Z",
+      "downloads": 1558,
+      "start": "2026-09-23",
+      "end": "2026-10-22",
+      "package": "tautest",
+      "note": "Main tautest only. Download requests are not unique users or active projects."
     }
   ]
 }

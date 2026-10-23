@@ -1,0 +1,33 @@
+{
+  "fingerprint": {
+    "file": "src/lib/shell/trip-time.ts",
+    "sourceSha256LF": "31883fd174d56454a5f46703c6b357a098c8d9f858387c8f70aa8f8a85bdd9a2",
+    "location": {
+      "end": {
+        "column": 34,
+        "line": 18
+      },
+      "start": {
+        "column": 13,
+        "line": 18
+      }
+    },
+    "mutatorName": "MethodExpression",
+    "replacement": "trip.timezone"
+  },
+  "failures": [
+    {
+      "file": "C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/src/lib/shell/tautest-timezone-trim.test.ts",
+      "ancestorTitles": [],
+      "fullName": "preserves a valid stored timezone surrounded by whitespace",
+      "status": "failed",
+      "title": "preserves a valid stored timezone surrounded by whitespace",
+      "duration": 43.48939999999999,
+      "failureMessages": [
+        "AssertionError: expected 'UTC' to be 'Europe/Madrid' // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/src/lib/shell/tautest-timezone-trim.test.ts:5:52\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/roadmap-continue/waypoint-215/project/node_modules/.pnpm/@vitest+runner@4.1.4/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64"
+      ],
+      "meta": {},
+      "tags": []
+    }
+  ]
+}

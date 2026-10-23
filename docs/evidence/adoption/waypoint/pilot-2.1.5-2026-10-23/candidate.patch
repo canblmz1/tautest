@@ -1,0 +1,11 @@
+diff --git a/src/lib/shell/tautest-timezone-trim.test.ts b/src/lib/shell/tautest-timezone-trim.test.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/shell/tautest-timezone-trim.test.ts
+@@ -0,0 +1,6 @@
++import { expect, it } from 'vitest';
++import { tripTz } from './trip-time';
++
++it('preserves a valid stored timezone surrounded by whitespace', () => {
++	expect(tripTz({ timezone: '  Europe/Madrid  ' })).toBe('Europe/Madrid');
++});

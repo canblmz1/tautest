@@ -1,0 +1,15 @@
+{
+  "protectedFilesUnchanged": {
+    "package.json": true,
+    "package-lock.json": true,
+    "vitest.config.ts": true,
+    "stryker.config.mjs": true,
+    "tsconfig.stryker.json": true,
+    "tests/setup/test-db-path.ts": true,
+    "tests/setup/no-network.ts": true,
+    "src/lib/active-session/roster.ts": true,
+    "src/lib/active-session/roster.test.ts": true
+  },
+  "trackedStatus": "",
+  "temporaryFilesRemoved": true
+}

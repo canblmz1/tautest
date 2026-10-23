@@ -1,0 +1,145 @@
+{
+  "numPassedTests": 32,
+  "numFailedTests": 0,
+  "success": true,
+  "testResults": [
+    {
+      "file": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/roster.test.ts",
+      "assertionResults": [
+        {
+          "fullName": "findFireteamLeader picks the member whose status has the PartyLeader bit among combined statuses",
+          "status": "passed"
+        },
+        {
+          "fullName": "findFireteamLeader treats 9 and 15 as leaders and 3 and 7 as not",
+          "status": "passed"
+        },
+        {
+          "fullName": "findFireteamLeader does not take a status above 8 without the PartyLeader bit as a leader",
+          "status": "passed"
+        },
+        {
+          "fullName": "findFireteamLeader finds no leader when nobody in the Roster is flagged",
+          "status": "passed"
+        },
+        {
+          "fullName": "fireteamTitle titles the row after the Fireteam Leader, not the tracked player",
+          "status": "passed"
+        },
+        {
+          "fullName": "fireteamTitle falls back to the tracked player when no Roster member is flagged as leader",
+          "status": "passed"
+        },
+        {
+          "fullName": "fireteamTitle shows \"Unknown player\" with the ID kept when the leader's name is a raw membership ID",
+          "status": "passed"
+        },
+        {
+          "fullName": "fireteamTitle shows \"Unknown player\" when the tracked player it falls back to has no name either",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity matches the same members in the same raid, in any order",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity matches a Roster that grew between polls",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity matches a Roster that shrank between polls",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity matches when the tracked player changed but the Roster did not",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity does not match the same members in a different raid",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity does not match unrelated or partly overlapping Rosters in the same raid",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity follows an open fireteam across polls as its Roster changes",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity forgets an open fireteam that is no longer on the page",
+          "status": "passed"
+        },
+        {
+          "fullName": "session identity toggles one fireteam open and shut, leaving other open fireteams alone",
+          "status": "passed"
+        },
+        {
+          "fullName": "otherRosterMembers leaves out the Fireteam Leader, who titles the row",
+          "status": "passed"
+        },
+        {
+          "fullName": "otherRosterMembers leaves out the tracked player when nobody is flagged as leader",
+          "status": "passed"
+        },
+        {
+          "fullName": "otherRosterMembers leaves out the titled member when the title reads \"Unknown player\"",
+          "status": "passed"
+        },
+        {
+          "fullName": "otherRosterMembers lists a member the Roster repeats only once",
+          "status": "passed"
+        },
+        {
+          "fullName": "joinCommand names the Fireteam Leader when the leader's full Name#Code is known",
+          "status": "passed"
+        },
+        {
+          "fullName": "joinCommand falls back to the first member with a full Name#Code when the leader has no code",
+          "status": "passed"
+        },
+        {
+          "fullName": "joinCommand finds no target when no member has a full Name#Code",
+          "status": "passed"
+        },
+        {
+          "fullName": "joinCommand passes over bare names and raw IDs on the way to the first full Name#Code",
+          "status": "passed"
+        },
+        {
+          "fullName": "joinCommand names the first member with a full Name#Code when nobody is flagged as leader",
+          "status": "passed"
+        },
+        {
+          "fullName": "rosterSizeChip puts each Roster size from 1 to 6 under its own chip",
+          "status": "passed"
+        },
+        {
+          "fullName": "rosterSizeChip puts a Roster larger than 6 under chip 6",
+          "status": "passed"
+        },
+        {
+          "fullName": "rosterSizeChip puts a Roster count below 1 under chip 1",
+          "status": "passed"
+        },
+        {
+          "fullName": "isFullRoster reads a Roster of 6 or more as full and one of 5 as not",
+          "status": "passed"
+        },
+        {
+          "fullName": "isFullRoster agrees with chip 6 for every player count",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/tautest-blank-id.test.ts",
+      "assertionResults": [
+        {
+          "fullName": "drops blank IDs from the fireteam identity while retaining a real member",
+          "status": "passed"
+        }
+      ]
+    }
+  ]
+}

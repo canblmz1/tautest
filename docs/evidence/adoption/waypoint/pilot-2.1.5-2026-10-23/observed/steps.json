@@ -1,0 +1,190 @@
+[
+  {
+    "label": "engine-selection-baseline",
+    "startedAt": "2026-10-23T06:39:37.402Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "vitest.tautest-pilot.config.ts",
+        "--project",
+        "server",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\engine-selection-baseline.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "direct-before",
+    "startedAt": "2026-10-23T06:40:21.745Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\prove.mjs",
+        "--engine",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\request.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "analyze",
+    "startedAt": "2026-10-23T06:41:11.941Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "analyze",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\before.raw.json",
+        "--runner",
+        "vitest",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\analysis",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "candidate-original",
+    "startedAt": "2026-10-23T06:41:22.633Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--project",
+        "server",
+        "src/lib/shell/trip-time.test.ts",
+        "src/lib/shell/tautest-timezone-trim.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\candidate-original.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "manual-existing",
+    "startedAt": "2026-10-23T06:41:28.651Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--project",
+        "server",
+        "src/lib/shell/trip-time.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\manual-existing.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "manual-candidate",
+    "startedAt": "2026-10-23T06:41:34.654Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--project",
+        "server",
+        "src/lib/shell/trip-time.test.ts",
+        "src/lib/shell/tautest-timezone-trim.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+        "--reporter=json",
+        "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\manual-candidate.tests.json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 1,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "verify",
+    "startedAt": "2026-10-23T06:41:42.425Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\before.raw.json",
+        "--file",
+        "src/lib/shell/trip-time.ts",
+        "--mutant",
+        "0",
+        "--test",
+        "src/lib/shell/tautest-timezone-trim.test.ts",
+        "--runner",
+        "vitest",
+        "--budget",
+        "120",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  },
+  {
+    "label": "verify-repeat",
+    "startedAt": "2026-10-23T06:42:18.423Z",
+    "command": {
+      "file": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\tools\\node_modules\\tautest\\dist\\index.js",
+        "verify",
+        "--from",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\before.raw.json",
+        "--file",
+        "src/lib/shell/trip-time.ts",
+        "--mutant",
+        "0",
+        "--test",
+        "src/lib/shell/tautest-timezone-trim.test.ts",
+        "--runner",
+        "vitest",
+        "--budget",
+        "120",
+        "--report-dir",
+        "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify-repeat",
+        "--json"
+      ],
+      "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+    },
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false
+  }
+]
