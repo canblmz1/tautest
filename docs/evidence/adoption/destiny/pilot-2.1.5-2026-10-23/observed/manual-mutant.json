@@ -1,0 +1,32 @@
+{
+  "fingerprint": {
+    "file": "src/lib/active-session/roster.ts",
+    "sourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+    "location": {
+      "end": {
+        "column": 93,
+        "line": 153
+      },
+      "start": {
+        "column": 80,
+        "line": 153
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "id.length >= 0"
+  },
+  "originalExpression": "id.length > 0",
+  "failure": {
+    "file": "C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/tautest-blank-id.test.ts",
+    "ancestorTitles": [],
+    "fullName": "drops blank IDs from the fireteam identity while retaining a real member",
+    "status": "failed",
+    "title": "drops blank IDs from the fireteam identity while retaining a real member",
+    "duration": 15.386799999999994,
+    "failureMessages": [
+      "AssertionError: expected { activityHash: 123, …(1) } to deeply equal { activityHash: 123, …(1) }\n    at C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/src/lib/active-session/tautest-blank-id.test.ts:8:9\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-22/adoption-round-2/destiny-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64"
+    ],
+    "meta": {},
+    "tags": []
+  }
+}

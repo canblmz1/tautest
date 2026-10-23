@@ -1,0 +1,12 @@
+{
+  "unchanged": {
+    "package.json": true,
+    "pnpm-lock.yaml": true,
+    "vite.config.ts": true,
+    "svelte.config.js": true,
+    "tsconfig.json": true,
+    "src/lib/shell/trip-time.ts": true,
+    "src/lib/shell/trip-time.test.ts": true
+  },
+  "trackedStatus": ""
+}

@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-23T06:53:52.620Z",
+  "purpose": "analyze-only minimal source excerpt; never use this sample as verify input",
+  "cli": "2.1.5",
+  "node": "v22.23.2",
+  "exitCode": 0,
+  "projectSha": "61954b029e818f4e534268f48e0a772495303598",
+  "sourceFile": "src/lib/active-session/roster.ts",
+  "originalSourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+  "sampleSourceSha256": "dcec1a854b89eb5add020e7d2fc911537a919e5b6f50e96bd99b4b2830a75fc5",
+  "fullRawReportSha256": "24cebcd957136ae531ff644410aed41230c66534fab177e1b0159cb415ec8f3a",
+  "sampleInputSha256": "880673d9fb59ac5f14f535b971288dbd2c07d4ea991ebbf45159284b1368d8e1",
+  "sourceExcerpt": "Only original line153 plus blank padding preserves the original location; full source omitted.",
+  "rawMutantRecordsUnchanged": true,
+  "recordedRelevantTestSubsetOnly": true,
+  "recordedTestsIncluded": 9,
+  "noThresholdEvaluated": true,
+  "falseThresholdPassed": false,
+  "engineExecuted": false,
+  "independentAdoption": false
+}

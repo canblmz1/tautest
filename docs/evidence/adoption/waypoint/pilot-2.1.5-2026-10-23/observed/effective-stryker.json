@@ -1,0 +1,48 @@
+{
+  "testRunner": "vitest",
+  "plugins": [
+    "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\tools\\node_modules\\.pnpm\\@stryker-mutator+vitest-run_81fab1941e9a6abfdef86ee23cd24842\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+  ],
+  "mutate": [
+    "src/lib/shell/trip-time.ts:18-18"
+  ],
+  "vitest": {
+    "configFile": "vitest.tautest-pilot.config.ts",
+    "related": false
+  },
+  "reporters": [
+    "json"
+  ],
+  "coverageAnalysis": "perTest",
+  "concurrency": 1,
+  "incremental": false,
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  },
+  "logLevel": "error",
+  "inPlace": false,
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": "always",
+  "mutator": {
+    "excludedMutations": [
+      "ArithmeticOperator",
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "BlockStatement",
+      "BooleanLiteral",
+      "ConditionalExpression",
+      "CallExpression",
+      "EqualityOperator",
+      "LogicalOperator",
+      "ObjectLiteral",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator",
+      "Regex",
+      "OptionalChaining",
+      "AssignmentOperator"
+    ]
+  }
+}

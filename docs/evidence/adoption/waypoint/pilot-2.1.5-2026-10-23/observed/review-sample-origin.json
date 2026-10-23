@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-23T06:53:51.675Z",
+  "purpose": "analyze-only minimal source excerpt; never use this sample as verify input",
+  "cli": "2.1.5",
+  "node": "v22.23.2",
+  "exitCode": 0,
+  "projectSha": "dfbc0ce81a507c1f80f555b9ca5b2bd0e19d6c69",
+  "sourceFile": "src/lib/shell/trip-time.ts",
+  "originalSourceSha256LF": "31883fd174d56454a5f46703c6b357a098c8d9f858387c8f70aa8f8a85bdd9a2",
+  "sampleSourceSha256": "9903da7ab337bca32b3a63fa0c5b4ce63ee40eefa48581f5c30cad760c1d431f",
+  "fullRawReportSha256": "aa3ee9bec43c9385359ff3a64e7a79ce7908e80a7489fd5540ec18235fb33617",
+  "sampleInputSha256": "179d173a2b55dc49ae26f44960cb5048871f5721f7b89363bb9d8fe57f092664",
+  "sourceExcerpt": "Only original line18 plus blank padding preserves the original location; full source omitted.",
+  "rawMutantRecordsUnchanged": true,
+  "recordedRelevantTestSubsetOnly": true,
+  "recordedTestsIncluded": 3,
+  "noThresholdEvaluated": true,
+  "falseThresholdPassed": false,
+  "engineExecuted": false,
+  "independentAdoption": false
+}

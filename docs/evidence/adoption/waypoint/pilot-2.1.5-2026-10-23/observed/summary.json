@@ -1,0 +1,502 @@
+{
+  "checkedAt": "2026-10-23T06:42:46.728Z",
+  "project": "toxroxmysox/Waypoint",
+  "projectSha": "dfbc0ce81a507c1f80f555b9ca5b2bd0e19d6c69",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "versions": {
+    "tautest": "2.1.5",
+    "@tautest/core": "2.1.5",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "vitest": "4.1.4",
+    "vite": "8.1.0",
+    "typescript": "6.0.2"
+  },
+  "runnerVitest": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\.pnpm\\vitest@4.1.4_@types+node@24_49631912b7f6b789fc0945f6fdd7279d\\node_modules\\vitest\\package.json",
+  "baseline": {
+    "checkedAt": "2026-10-22T20:46:34.693Z",
+    "projectSha": "dfbc0ce81a507c1f80f555b9ca5b2bd0e19d6c69",
+    "node": "v22.23.2",
+    "platform": "win32",
+    "dummyCiEnvironment": {
+      "PUBLIC_PB_URL": "http://127.0.0.1:8090",
+      "PUBLIC_APP_URL": "http://127.0.0.1:5173",
+      "WAYPOINT_DEV_MODE": "true"
+    },
+    "files": {
+      "package.json": "4231a61b5429f5e07c2ac9a7f5ed854b8b40ce4a3d35dafc1aad463e6dac22d5",
+      "pnpm-lock.yaml": "16e754adedc3a8db49b7272f8880294ae447ae8e2cd592fdc351992f01d08b98",
+      "vite.config.ts": "dbcb89978f1ac6081ff77300c550d23c3a4e00f56c6f8f62c71522e09e20a922",
+      "svelte.config.js": "3e2c97979af178de3430c6fb320790917f7ac764c2c4e235c628fc076e190d46",
+      "tsconfig.json": "7320db7779adff391cab7445007b8539bfe2300e6121f3c0a1cac4404c9690b7",
+      "src/lib/shell/trip-time.ts": "31f728d21da11e397f7827eec59724d37803213a141c632d0e4a6c3548f55ea3",
+      "src/lib/shell/trip-time.test.ts": "15d82c8e461a8f1440a7d096ea9079c42e537dbb4b0b2c12d0c7af300ab13c21"
+    },
+    "records": [
+      {
+        "label": "svelte-kit-sync",
+        "startedAt": "2026-10-22T20:45:49.956Z",
+        "elapsedMs": 30257,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\@sveltejs\\kit\\svelte-kit.js",
+            "sync"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+        },
+        "exitCode": 0,
+        "error": null
+      },
+      {
+        "label": "baseline-1",
+        "startedAt": "2026-10-22T20:46:20.219Z",
+        "elapsedMs": 7576,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "--project",
+            "server",
+            "src/lib/shell/trip-time.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\baseline.json.baseline-1.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+        },
+        "exitCode": 0,
+        "error": null,
+        "passed": 15,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "src/lib/shell/trip-time.test.ts",
+            "tests": [
+              {
+                "name": "tripTz returns the trip timezone when set",
+                "status": "passed"
+              },
+              {
+                "name": "tripTz falls back to UTC when blank",
+                "status": "passed"
+              },
+              {
+                "name": "tripTz falls back to UTC when the stored value is not a valid IANA zone",
+                "status": "passed"
+              },
+              {
+                "name": "isValidTimeZone accepts canonical IANA zones",
+                "status": "passed"
+              },
+              {
+                "name": "isValidTimeZone rejects bare city names and garbage",
+                "status": "passed"
+              },
+              {
+                "name": "tripNow returns a Date whose UTC fields equal the trip-local wall clock",
+                "status": "passed"
+              },
+              {
+                "name": "tripNow is identity (UTC fields) when tz is UTC",
+                "status": "passed"
+              },
+              {
+                "name": "tripToday gives the trip-local calendar date",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime combines a day date and a time-of-day into a naive-local UTC-suffixed string",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime accepts a day date that carries its own time/zone suffix",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime returns empty string when either part is missing",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays shifts a timed value across a year, keeping the clock",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays handles negative shifts and leap days",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays '' and a zero shift pass through",
+                "status": "passed"
+              },
+              {
+                "name": "daysBetween counts whole days between date parts",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "startedAt": "2026-10-22T20:46:27.796Z",
+        "elapsedMs": 6896,
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "--project",
+            "server",
+            "src/lib/shell/trip-time.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\baseline.json.baseline-2.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\project"
+        },
+        "exitCode": 0,
+        "error": null,
+        "passed": 15,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "src/lib/shell/trip-time.test.ts",
+            "tests": [
+              {
+                "name": "tripTz returns the trip timezone when set",
+                "status": "passed"
+              },
+              {
+                "name": "tripTz falls back to UTC when blank",
+                "status": "passed"
+              },
+              {
+                "name": "tripTz falls back to UTC when the stored value is not a valid IANA zone",
+                "status": "passed"
+              },
+              {
+                "name": "isValidTimeZone accepts canonical IANA zones",
+                "status": "passed"
+              },
+              {
+                "name": "isValidTimeZone rejects bare city names and garbage",
+                "status": "passed"
+              },
+              {
+                "name": "tripNow returns a Date whose UTC fields equal the trip-local wall clock",
+                "status": "passed"
+              },
+              {
+                "name": "tripNow is identity (UTC fields) when tz is UTC",
+                "status": "passed"
+              },
+              {
+                "name": "tripToday gives the trip-local calendar date",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime combines a day date and a time-of-day into a naive-local UTC-suffixed string",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime accepts a day date that carries its own time/zone suffix",
+                "status": "passed"
+              },
+              {
+                "name": "combineDateTime returns empty string when either part is missing",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays shifts a timed value across a year, keeping the clock",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays handles negative shifts and leap days",
+                "status": "passed"
+              },
+              {
+                "name": "shiftStoredDays '' and a zero shift pass through",
+                "status": "passed"
+              },
+              {
+                "name": "daysBetween counts whole days between date parts",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "success": true,
+    "scope": "Only the existing server-project trip-time unit test file; no full unit suite, E2E, PocketBase, app server or mutation execution."
+  },
+  "protectedHashes": {
+    "package.json": "4231a61b5429f5e07c2ac9a7f5ed854b8b40ce4a3d35dafc1aad463e6dac22d5",
+    "pnpm-lock.yaml": "16e754adedc3a8db49b7272f8880294ae447ae8e2cd592fdc351992f01d08b98",
+    "vite.config.ts": "dbcb89978f1ac6081ff77300c550d23c3a4e00f56c6f8f62c71522e09e20a922",
+    "svelte.config.js": "3e2c97979af178de3430c6fb320790917f7ac764c2c4e235c628fc076e190d46",
+    "tsconfig.json": "7320db7779adff391cab7445007b8539bfe2300e6121f3c0a1cac4404c9690b7",
+    "src/lib/shell/trip-time.ts": "31f728d21da11e397f7827eec59724d37803213a141c632d0e4a6c3548f55ea3",
+    "src/lib/shell/trip-time.test.ts": "15d82c8e461a8f1440a7d096ea9079c42e537dbb4b0b2c12d0c7af300ab13c21"
+  },
+  "fingerprint": {
+    "file": "src/lib/shell/trip-time.ts",
+    "sourceSha256LF": "31883fd174d56454a5f46703c6b357a098c8d9f858387c8f70aa8f8a85bdd9a2",
+    "location": {
+      "end": {
+        "column": 34,
+        "line": 18
+      },
+      "start": {
+        "column": 13,
+        "line": 18
+      }
+    },
+    "mutatorName": "MethodExpression",
+    "replacement": "trip.timezone"
+  },
+  "before": {
+    "id": "0",
+    "mutatorName": "MethodExpression",
+    "replacement": "trip.timezone",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 3,
+    "coveredBy": [
+      "0",
+      "1",
+      "2"
+    ],
+    "location": {
+      "end": {
+        "column": 34,
+        "line": 18
+      },
+      "start": {
+        "column": 13,
+        "line": 18
+      }
+    }
+  },
+  "coveredBy": [
+    {
+      "file": "src/lib/shell/trip-time.test.ts",
+      "id": "0",
+      "name": "tripTz returns the trip timezone when set"
+    },
+    {
+      "file": "src/lib/shell/trip-time.test.ts",
+      "id": "1",
+      "name": "tripTz falls back to UTC when blank"
+    },
+    {
+      "file": "src/lib/shell/trip-time.test.ts",
+      "id": "2",
+      "name": "tripTz falls back to UTC when the stored value is not a valid IANA zone"
+    }
+  ],
+  "analysis": {
+    "rawSummary": {
+      "verdict": "WEAK",
+      "mutationScore": 0,
+      "total": 2,
+      "killed": 0,
+      "survived": 1,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 1
+    },
+    "status": "analyzed"
+  },
+  "candidate": {
+    "file": "src/lib/shell/tautest-timezone-trim.test.ts",
+    "sha256": "d9b23d2bfea3f8d7cca0108e4c40f4c02c02b513900e80cc583583def679b99e"
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T06:42:18.388Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\before.raw.json",
+          "sha256": "aa3ee9bec43c9385359ff3a64e7a79ce7908e80a7489fd5540ec18235fb33617",
+          "file": "src/lib/shell/trip-time.ts",
+          "sourceSha256": "31f728d21da11e397f7827eec59724d37803213a141c632d0e4a6c3548f55ea3"
+        },
+        "target": {
+          "originalId": "0",
+          "mutatorName": "MethodExpression",
+          "location": {
+            "start": {
+              "line": 18,
+              "column": 13
+            },
+            "end": {
+              "line": 18,
+              "column": 34
+            }
+          },
+          "replacement": "trip.timezone"
+        },
+        "candidate": {
+          "file": "src/lib/shell/tautest-timezone-trim.test.ts",
+          "sha256": "d9b23d2bfea3f8d7cca0108e4c40f4c02c02b513900e80cc583583def679b99e"
+        },
+        "testsCompleted": 4,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify\\run-KNqmhw",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify\\run-KNqmhw\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify\\run-KNqmhw\\engine.log"
+        }
+      },
+      "target": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "trip.timezone",
+        "statusReason": "expected 'UTC' to be 'Europe/Madrid' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 4,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "location": {
+          "end": {
+            "column": 34,
+            "line": 18
+          },
+          "start": {
+            "column": 13,
+            "line": 18
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "src/lib/shell/tautest-timezone-trim.test.ts",
+          "id": "0",
+          "name": "preserves a valid stored timezone surrounded by whitespace"
+        }
+      ]
+    },
+    {
+      "label": "verify-repeat",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T06:42:46.696Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\before.raw.json",
+          "sha256": "aa3ee9bec43c9385359ff3a64e7a79ce7908e80a7489fd5540ec18235fb33617",
+          "file": "src/lib/shell/trip-time.ts",
+          "sourceSha256": "31f728d21da11e397f7827eec59724d37803213a141c632d0e4a6c3548f55ea3"
+        },
+        "target": {
+          "originalId": "0",
+          "mutatorName": "MethodExpression",
+          "location": {
+            "start": {
+              "line": 18,
+              "column": 13
+            },
+            "end": {
+              "line": 18,
+              "column": 34
+            }
+          },
+          "replacement": "trip.timezone"
+        },
+        "candidate": {
+          "file": "src/lib/shell/tautest-timezone-trim.test.ts",
+          "sha256": "d9b23d2bfea3f8d7cca0108e4c40f4c02c02b513900e80cc583583def679b99e"
+        },
+        "testsCompleted": 4,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify-repeat\\run-vFs1UN",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify-repeat\\run-vFs1UN\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-22\\roadmap-continue\\waypoint-215\\results-215\\verify-repeat\\run-vFs1UN\\engine.log"
+        }
+      },
+      "target": {
+        "id": "0",
+        "mutatorName": "MethodExpression",
+        "replacement": "trip.timezone",
+        "statusReason": "expected 'UTC' to be 'Europe/Madrid' // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 4,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "location": {
+          "end": {
+            "column": 34,
+            "line": 18
+          },
+          "start": {
+            "column": 13,
+            "line": 18
+          }
+        }
+      },
+      "killers": [
+        {
+          "file": "src/lib/shell/tautest-timezone-trim.test.ts",
+          "id": "0",
+          "name": "preserves a valid stored timezone surrounded by whitespace"
+        }
+      ]
+    }
+  ],
+  "independentTrial": false,
+  "benefitConfirmedByMaintainer": false,
+  "repeatUse": false,
+  "limits": [
+    "Maintainer-authored Stryker engine; Tautest contributes imported report review and exact mutant verify.",
+    "One line, MethodExpression-only, not full suite or project score.",
+    "Our controlled checkout, no independent adoption.",
+    "No speed comparison, app server, PocketBase or E2E.",
+    "New test demonstrates existing trim contract; issue551 scope must be checked before outreach."
+  ],
+  "toolLockSha256": "9cdc8336b34c0c94dafd21e54fb6b4255ce4c92f34cd6ed4e40e8882bfaaff63",
+  "rawEvidenceNote": "Full local raw source reports were source-redacted in public excerpts. Public excerpts cannot be used for verify; rerun helper for full raw reports."
+}

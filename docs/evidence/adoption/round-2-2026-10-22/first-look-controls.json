@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "checkedAt": "2026-10-22T20:51:13.650Z",
+      "name": "vimgym",
+      "source": "https://raw.githubusercontent.com/canblmz1/tautest/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/vimsplain/pilot-2.1.5-2026-10-22/observed/before.target.json",
+      "sha256": "d346ed1fbe9c1342888307f99659916d2c6b95fa6b90f62878ff2e44ed784a6c",
+      "inputUnchanged": true,
+      "cli": "2.1.5",
+      "node": "v22.23.2",
+      "exitCode": 0,
+      "noThresholdEvaluated": true,
+      "falseThresholdPassed": false,
+      "engineExecuted": false
+    },
+    {
+      "checkedAt": "2026-10-22T20:51:15.516Z",
+      "name": "triad",
+      "source": "https://raw.githubusercontent.com/canblmz1/tautest/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/triad-address/pilot-2026-10-22/results-214-final/before.raw.json",
+      "sha256": "8389cfad6a743243d6294a4671c7cfc4f6563273ad339d565d068af50854501f",
+      "inputUnchanged": true,
+      "cli": "2.1.5",
+      "node": "v22.23.2",
+      "exitCode": 0,
+      "noThresholdEvaluated": true,
+      "falseThresholdPassed": false,
+      "engineExecuted": false
+    }
+  ],
+  "note": "Actual installed registry CLI2.1.5 entry was invoked; commands above use equivalent npx entry. These report imports do not run project tests or an engine."
+}

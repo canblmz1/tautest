@@ -1,0 +1,12 @@
+{
+  "name": "destiny",
+  "executedAt": "2026-10-23T06:56:06.858Z",
+  "node": "v22.23.2",
+  "command": "npx --yes tautest@2.1.5 analyze --from before.review-sample.json --runner vitest",
+  "exitCode": 0,
+  "elapsedMs": 4754,
+  "error": null,
+  "ownEmptyUserConfig": true,
+  "registry": "https://registry.npmjs.org",
+  "note": "Observed invocation duration only; not a speed or maintainer time-to-value claim. Second invocation may reuse first download."
+}

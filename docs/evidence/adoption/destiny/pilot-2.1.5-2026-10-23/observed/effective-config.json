@@ -1,0 +1,65 @@
+{
+  "testRunner": "vitest",
+  "vitest": {
+    "configFile": "vitest.tautest-pilot.config.mts",
+    "related": false
+  },
+  "coverageAnalysis": "perTest",
+  "checkers": [],
+  "tsconfigFile": "tsconfig.stryker.json",
+  "ignoreStatic": true,
+  "reporters": [
+    "json"
+  ],
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  },
+  "concurrency": 1,
+  "ignorePatterns": [
+    "data",
+    ".next",
+    "tmp",
+    "dist",
+    "gos10k/*.db*",
+    "coverage",
+    "test-results",
+    "playwright-report",
+    "blob-report",
+    "maintenance-snapshots",
+    "visual-check",
+    "reports"
+  ],
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": "always",
+  "plugins": [
+    "C:\\dev\\tautest-product-evidence\\2026-10-22\\adoption-round-2\\destiny-215\\project\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+  ],
+  "mutate": [
+    "src/lib/active-session/roster.ts:153-153"
+  ],
+  "incremental": false,
+  "logLevel": "error",
+  "inPlace": false,
+  "mutator": {
+    "excludedMutations": [
+      "ArithmeticOperator",
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "BlockStatement",
+      "BooleanLiteral",
+      "ConditionalExpression",
+      "CallExpression",
+      "LogicalOperator",
+      "MethodExpression",
+      "ObjectLiteral",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator",
+      "Regex",
+      "OptionalChaining",
+      "AssignmentOperator"
+    ]
+  }
+}

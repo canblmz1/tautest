@@ -1,0 +1,317 @@
+{
+  "kind": "source-redacted-raw-report-excerpt-not-analyze-input",
+  "fingerprint": {
+    "file": "src/lib/active-session/roster.ts",
+    "sourceSha256LF": "29be1a06c5329df56ef074cd2524e27c0489bc79873a5405c889d4aef7f13cae",
+    "location": {
+      "end": {
+        "column": 93,
+        "line": 153
+      },
+      "start": {
+        "column": 80,
+        "line": 153
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "id.length >= 0"
+  },
+  "schemaVersion": "1.0",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  },
+  "files": {
+    "src/lib/active-session/roster.ts": {
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "MethodExpression",
+          "replacement": "Array.from(new Set(ids.map(id => String(id || '')).filter(id => id.length > 0)))",
+          "statusReason": "Ignored because of excluded mutation \"MethodExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 103,
+              "line": 153
+            },
+            "start": {
+              "column": 12,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "1",
+          "mutatorName": "MethodExpression",
+          "replacement": "ids.map(id => String(id || ''))",
+          "statusReason": "Ignored because of excluded mutation \"MethodExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 94,
+              "line": 153
+            },
+            "start": {
+              "column": 31,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "2",
+          "mutatorName": "ArrowFunction",
+          "replacement": "() => undefined",
+          "statusReason": "Ignored because of excluded mutation \"ArrowFunction\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 63,
+              "line": 153
+            },
+            "start": {
+              "column": 39,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "3",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 62,
+              "line": 153
+            },
+            "start": {
+              "column": 54,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "4",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 62,
+              "line": 153
+            },
+            "start": {
+              "column": 54,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "5",
+          "mutatorName": "LogicalOperator",
+          "replacement": "id && ''",
+          "statusReason": "Ignored because of excluded mutation \"LogicalOperator\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 62,
+              "line": 153
+            },
+            "start": {
+              "column": 54,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "6",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "statusReason": "Ignored because of excluded mutation \"StringLiteral\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 62,
+              "line": 153
+            },
+            "start": {
+              "column": 60,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "7",
+          "mutatorName": "ArrowFunction",
+          "replacement": "() => undefined",
+          "statusReason": "Ignored because of excluded mutation \"ArrowFunction\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 93,
+              "line": 153
+            },
+            "start": {
+              "column": 72,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "8",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 93,
+              "line": 153
+            },
+            "start": {
+              "column": 80,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "9",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "Ignored because of excluded mutation \"ConditionalExpression\"",
+          "status": "Ignored",
+          "static": false,
+          "location": {
+            "end": {
+              "column": 93,
+              "line": 153
+            },
+            "start": {
+              "column": 80,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "10",
+          "mutatorName": "EqualityOperator",
+          "replacement": "id.length >= 0",
+          "status": "Survived",
+          "static": false,
+          "testsCompleted": 9,
+          "coveredBy": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16"
+          ],
+          "location": {
+            "end": {
+              "column": 93,
+              "line": 153
+            },
+            "start": {
+              "column": 80,
+              "line": 153
+            }
+          }
+        },
+        {
+          "id": "11",
+          "mutatorName": "EqualityOperator",
+          "replacement": "id.length <= 0",
+          "statusReason": "expected true to be false // Object.is equality",
+          "status": "Killed",
+          "static": false,
+          "testsCompleted": 6,
+          "killedBy": [
+            "13"
+          ],
+          "coveredBy": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16"
+          ],
+          "location": {
+            "end": {
+              "column": 93,
+              "line": 153
+            },
+            "start": {
+              "column": 80,
+              "line": 153
+            }
+          }
+        }
+      ],
+      "omittedNonTargetMutants": 11,
+      "source": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    return Array.from(new Set(ids.map((id) => String(id || '')).filter((id) => id.length > 0))).sort();\n"
+    }
+  },
+  "testFiles": {
+    "src/lib/active-session/roster.test.ts": {
+      "tests": [
+        {
+          "id": "8",
+          "name": "session identity matches the same members in the same raid, in any order"
+        },
+        {
+          "id": "9",
+          "name": "session identity matches a Roster that grew between polls"
+        },
+        {
+          "id": "10",
+          "name": "session identity matches a Roster that shrank between polls"
+        },
+        {
+          "id": "11",
+          "name": "session identity matches when the tracked player changed but the Roster did not"
+        },
+        {
+          "id": "12",
+          "name": "session identity does not match the same members in a different raid"
+        },
+        {
+          "id": "13",
+          "name": "session identity does not match unrelated or partly overlapping Rosters in the same raid"
+        },
+        {
+          "id": "14",
+          "name": "session identity follows an open fireteam across polls as its Roster changes"
+        },
+        {
+          "id": "15",
+          "name": "session identity forgets an open fireteam that is no longer on the page"
+        },
+        {
+          "id": "16",
+          "name": "session identity toggles one fireteam open and shut, leaving other open fireteams alone"
+        }
+      ]
+    }
+  }
+}

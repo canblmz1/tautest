@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-23T06:41:42.178Z",
+  "scope": "Two original comment IDs edited in place, no new invitation comments or added mentions. Original bodies retained in local snapshot.",
+  "records": [
+    {
+      "repo": "oller/vimgym",
+      "url": "https://github.com/oller/vimgym/issues/35#issuecomment-6265939618",
+      "commentId": 6265939618,
+      "updatedAt": "2026-10-23T06:38:08Z",
+      "newCommentCreated": false,
+      "bodyReadbackMatches": true,
+      "change": "Replace stale command examples with verified published2.1.5 report import and smaller first ask; retain engine proof version/source distinctions and maintainer disclosure.",
+      "body": "Updated 2026-10-23: the [runnable whitespace pilot](https://github.com/canblmz1/tautest/tree/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/vimsplain/pilot-2.1.5-2026-10-22) now uses published Tautest/core **2.1.5** on the same `e65d98c` source.\n\nFor a small optional first look, Node 22/24 is enough:\n\n```sh\ncurl -fL https://raw.githubusercontent.com/canblmz1/tautest/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/vimsplain/pilot-2.1.5-2026-10-22/observed/before.target.json -o vimgym-before.json\nnpx --yes tautest@2.1.5 analyze --from vimgym-before.json --runner vitest\n```\n\nOpen `.tautest/review/report.md`: one recorded Survived target (`cmd.trim()` -> `cmd`), source and covering-test names. This reads the supplied report; it runs no project tests and evaluates no new quality gate. I reran this import with 2.1.5. On PowerShell use `curl.exe`.\n\nThe full pilot records 372 original tests passing, the new public-output assertion passing on original code and failing for that exact replacement, and two successful `verify` runs. Line 22 remains old baseline debt outside the recent diff, not a new PR finding.\n\nWould you be willing to try the report-only step and reply here with the first result or setup error? Disclosure: I work on Tautest; the pilot runs above are ours."
+    },
+    {
+      "repo": "Thang4869/TriAD-Backend",
+      "url": "https://github.com/Thang4869/TriAD-Backend/issues/145#issuecomment-6253934597",
+      "commentId": 6253934597,
+      "updatedAt": "2026-10-23T06:40:13Z",
+      "newCommentCreated": false,
+      "bodyReadbackMatches": true,
+      "change": "Replace stale command examples with verified published2.1.5 report import and smaller first ask; retain engine proof version/source distinctions and maintainer disclosure.",
+      "body": "Updated 2026-10-23: I refreshed the [small Address boundary pilot](https://github.com/canblmz1/tautest/tree/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/triad-address/pilot-2026-10-22) at pinned `902dec9`. It uses only the selected pure unit tests, with no PostgreSQL/Redis or integration suite.\n\nFor a small optional report-only first look, Node 22/24 is enough:\n\n```sh\ncurl -fL https://raw.githubusercontent.com/canblmz1/tautest/8d8bb0308875493daace737c04c2988770230182/docs/evidence/adoption/triad-address/pilot-2026-10-22/results-214-final/before.raw.json -o triad-before.json\nnpx --yes tautest@2.1.5 analyze --from triad-before.json --runner vitest\n```\n\nOpen `.tautest/review/report.md` for the recorded `normalized.length >= 500` survivor and its covering-test context. This reads the supplied narrow report; it runs no project tests and evaluates no new gate. I reran this import with published 2.1.5. On PowerShell use `curl.exe`.\n\nThe separate engine proof is pinned to published 2.1.4: original 3 tests pass twice; proposed 500/501 boundary cases pass on original code; the exact replacement survives old tests but fails the new 500-character assertion, and `verify` matches it as Killed twice. This is the earlier gap reproduced on current source, not a new discovery or a full-service score.\n\nWould you be willing to try the report-only step and reply here with the first result or setup error? Disclosure: I work on Tautest; the pilot runs above are ours."
+    }
+  ]
+}
