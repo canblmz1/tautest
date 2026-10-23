@@ -1,0 +1,60 @@
+{
+  "testRunner": "vitest",
+  "plugins": [
+    "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+  ],
+  "vitest": {
+    "configFile": "packages/xezar/vitest.tautest-pilot.config.ts",
+    "related": false
+  },
+  "mutate": [
+    "packages/xezar/src/mcp/api-reference.ts:109-109"
+  ],
+  "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
+  "concurrency": 1,
+  "timeoutMS": 10000,
+  "timeoutFactor": 1.5,
+  "dryRunTimeoutMinutes": 10,
+  "thresholds": {
+    "high": 90,
+    "low": 80,
+    "break": 0
+  },
+  "reporters": [
+    "json"
+  ],
+  "htmlReporter": {
+    "fileName": ".local/mutation/mcp/index.html"
+  },
+  "jsonReporter": {
+    "fileName": ".local/mutation/mcp/report.json"
+  },
+  "tempDirName": ".local/stryker-tmp",
+  "cleanTempDir": "always",
+  "ignorePatterns": [
+    "/.local"
+  ],
+  "buildCommand": "chmod +x packages/xezar/scripts/mock-claude.mjs packages/xezar/src/core/__fixtures__/claude/stub-ignores-eof-exits-143.mjs packages/xezar/src/core/__fixtures__/codex/mock-codex-app-server.mjs",
+  "incremental": false,
+  "logLevel": "error",
+  "mutator": {
+    "excludedMutations": [
+      "ArithmeticOperator",
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "BlockStatement",
+      "BooleanLiteral",
+      "ConditionalExpression",
+      "LogicalOperator",
+      "MethodExpression",
+      "ObjectLiteral",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator",
+      "Regex",
+      "OptionalChaining",
+      "AssignmentOperator"
+    ]
+  }
+}

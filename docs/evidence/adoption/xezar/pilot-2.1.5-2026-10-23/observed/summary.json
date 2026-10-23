@@ -1,0 +1,491 @@
+{
+  "observedAt": "2026-10-23T07:31:21.048Z",
+  "project": "qodeca/xezar",
+  "issue": "https://github.com/qodeca/xezar/issues/338",
+  "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "versions": {
+    "vitest": "4.1.11",
+    "typescript": "7.0.2",
+    "@stryker-mutator/core": "9.6.1",
+    "@stryker-mutator/vitest-runner": "9.6.1",
+    "tautest": "2.1.5",
+    "@tautest/core": "2.1.5"
+  },
+  "baseline": {
+    "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+    "node": "v22.23.2",
+    "platform": "win32",
+    "hashes": {
+      "package.json": "0203512df64b526ba8e40ca9afeee2d41fbac40ea3e7407519896113faf91984",
+      "package-lock.json": "0cf50c9ea1d38766194c99a03dcd16401d9c2398ca103ffc495c67393d07c535",
+      "vitest.config.ts": "da63316c9964ac6c0d4e6d85e864143565237927b4afe1380d60de3dedaa86b0",
+      "packages/xezar/vitest.config.ts": "a454ca941667855bf7aba8dee29798ae5ba4ee26b9406fb6a5429db314b12b61",
+      "packages/xezar/vitest.mutation.config.ts": "c5a848779909045ee520e87c46e6aa2e3144928d93d81dcde3080ca0bc2e584b",
+      "packages/xezar/vitest.setup.ts": "5beb86065674986399939e8f6c325fad43becca7174fe5c96d9efeb71d3580f2",
+      "scripts/test-local-state.mjs": "17f579a6af50c3fea57684358c1cc79338419692b8eec5390462660671cb010f",
+      "packages/xezar/stryker.config.mjs": "08c9b1f8f3ef20ba420d7fb384a7613daa0c6d55a783f9605d9436391de0a4f9",
+      "packages/xezar/src/mcp/api-reference.ts": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+      "packages/xezar/src/mcp/api-reference.test.ts": "d74e0ccb45d5c46fc42cd7b3ed7dd057a7d5a2eb4821f10c292f8b081b3a6ad1"
+    },
+    "records": [
+      {
+        "label": "baseline-1",
+        "startedAt": "2026-10-23T07:16:50.805Z",
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+            "test",
+            "--",
+            "--project",
+            "server",
+            "packages/xezar/src/mcp/api-reference.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\baseline-1.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+        },
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "passed": 4,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/api-reference.test.ts",
+            "tests": [
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) derives everyCall by probing a guard-carrying tool that has no action discriminator",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) reads what a listing declares, not what the tool behind it enforces",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) shows a refused argument only while the live listing still describes it",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "startedAt": "2026-10-23T07:17:01.053Z",
+        "command": {
+          "file": "C:\\nvm4w\\nodejs\\node.exe",
+          "args": [
+            "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+            "test",
+            "--",
+            "--project",
+            "server",
+            "packages/xezar/src/mcp/api-reference.test.ts",
+            "--maxWorkers=1",
+            "--no-file-parallelism",
+            "--reporter=json",
+            "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\baseline-2.tests.json"
+          ],
+          "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+        },
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "passed": 4,
+        "failed": 0,
+        "tests": [
+          {
+            "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/api-reference.test.ts",
+            "tests": [
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) derives everyCall by probing a guard-carrying tool that has no action discriminator",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) reads what a listing declares, not what the tool behind it enforces",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) shows a refused argument only while the live listing still describes it",
+                "status": "passed"
+              },
+              {
+                "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else",
+                "status": "passed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "protectedHashes": {
+    "package.json": "0203512df64b526ba8e40ca9afeee2d41fbac40ea3e7407519896113faf91984",
+    "package-lock.json": "0cf50c9ea1d38766194c99a03dcd16401d9c2398ca103ffc495c67393d07c535",
+    "vitest.config.ts": "da63316c9964ac6c0d4e6d85e864143565237927b4afe1380d60de3dedaa86b0",
+    "packages/xezar/vitest.config.ts": "a454ca941667855bf7aba8dee29798ae5ba4ee26b9406fb6a5429db314b12b61",
+    "packages/xezar/vitest.mutation.config.ts": "c5a848779909045ee520e87c46e6aa2e3144928d93d81dcde3080ca0bc2e584b",
+    "packages/xezar/vitest.setup.ts": "5beb86065674986399939e8f6c325fad43becca7174fe5c96d9efeb71d3580f2",
+    "scripts/test-local-state.mjs": "17f579a6af50c3fea57684358c1cc79338419692b8eec5390462660671cb010f",
+    "packages/xezar/stryker.config.mjs": "08c9b1f8f3ef20ba420d7fb384a7613daa0c6d55a783f9605d9436391de0a4f9",
+    "packages/xezar/src/mcp/api-reference.ts": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+    "packages/xezar/src/mcp/api-reference.test.ts": "d74e0ccb45d5c46fc42cd7b3ed7dd057a7d5a2eb4821f10c292f8b081b3a6ad1"
+  },
+  "toolLockSha256": "023a4b2899eeef0f78f5e0da656bfce4df547645948350892fbaab3dbd69aa32",
+  "fingerprint": {
+    "file": "packages/xezar/src/mcp/api-reference.ts",
+    "sourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+    "location": {
+      "end": {
+        "column": 73,
+        "line": 109
+      },
+      "start": {
+        "column": 52,
+        "line": 109
+      }
+    },
+    "mutatorName": "EqualityOperator",
+    "replacement": "performing.length >= 0"
+  },
+  "before": {
+    "id": "5",
+    "mutatorName": "EqualityOperator",
+    "replacement": "performing.length >= 0",
+    "status": "Survived",
+    "static": false,
+    "testsCompleted": 4,
+    "coveredBy": [
+      "3"
+    ],
+    "location": {
+      "end": {
+        "column": 73,
+        "line": 109
+      },
+      "start": {
+        "column": 52,
+        "line": 109
+      }
+    }
+  },
+  "coveringTests": [
+    {
+      "file": "packages/xezar/src/mcp/api-reference.test.ts",
+      "id": "3",
+      "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else"
+    }
+  ],
+  "candidate": {
+    "file": "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+    "sha256": "6267123856a28013f4aeda0c54964fb955d6be9b2ee0168c36d657eac36100b2"
+  },
+  "analysis": {
+    "rawSummary": {
+      "verdict": "WEAK",
+      "mutationScore": 33.33333333333333,
+      "total": 9,
+      "killed": 1,
+      "survived": 2,
+      "noCoverage": 0,
+      "timeout": 0,
+      "runtimeError": 0,
+      "compileError": 0,
+      "ignored": 6
+    },
+    "status": "analyzed"
+  },
+  "failure": {
+    "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+    "ancestorTitles": [],
+    "fullName": "does not describe a guard as required on every call when every action is refusal-only",
+    "status": "failed",
+    "title": "does not describe a guard as required on every call when every action is refusal-only",
+    "duration": 19.516399999999976,
+    "failureMessages": [
+      "AssertionError: expected true to be false // Object.is equality\n    at C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/tautest-refusal-only.test.ts:20:42\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "meta": {},
+    "tags": []
+  },
+  "verifications": [
+    {
+      "label": "verify",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T07:30:39.905Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\before.raw.json",
+          "sha256": "f03db6f09635dc7c70a9562e105ccc3399b6a7719f9b3848311163ffe3bbae02",
+          "file": "packages/xezar/src/mcp/api-reference.ts",
+          "sourceSha256": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb"
+        },
+        "target": {
+          "originalId": "5",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 109,
+              "column": 52
+            },
+            "end": {
+              "line": 109,
+              "column": 73
+            }
+          },
+          "replacement": "performing.length >= 0"
+        },
+        "candidate": {
+          "file": "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+          "sha256": "6267123856a28013f4aeda0c54964fb955d6be9b2ee0168c36d657eac36100b2"
+        },
+        "testsCompleted": 1,
+        "killedBy": [
+          "0"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify\\run-ax56Z3",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify\\run-ax56Z3\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify\\run-ax56Z3\\engine.log"
+        }
+      },
+      "target": {
+        "id": "5",
+        "mutatorName": "EqualityOperator",
+        "replacement": "performing.length >= 0",
+        "statusReason": "expected true to be false // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 1,
+        "killedBy": [
+          "0"
+        ],
+        "coveredBy": [
+          "0",
+          "4"
+        ],
+        "location": {
+          "end": {
+            "column": 73,
+            "line": 109
+          },
+          "start": {
+            "column": 52,
+            "line": 109
+          }
+        }
+      },
+      "fingerprint": {
+        "file": "packages/xezar/src/mcp/api-reference.ts",
+        "sourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+        "location": {
+          "end": {
+            "column": 73,
+            "line": 109
+          },
+          "start": {
+            "column": 52,
+            "line": 109
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "performing.length >= 0"
+      },
+      "killers": [
+        {
+          "file": "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+          "id": "0",
+          "name": "does not describe a guard as required on every call when every action is refusal-only"
+        }
+      ]
+    },
+    {
+      "label": "verify-repeat",
+      "result": {
+        "version": "1",
+        "status": "verified",
+        "reason": "The original suite passed, and an executed test in the selected candidate file killed the exact target mutant.",
+        "createdAt": "2026-10-23T07:31:21.019Z",
+        "source": {
+          "report": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\before.raw.json",
+          "sha256": "f03db6f09635dc7c70a9562e105ccc3399b6a7719f9b3848311163ffe3bbae02",
+          "file": "packages/xezar/src/mcp/api-reference.ts",
+          "sourceSha256": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb"
+        },
+        "target": {
+          "originalId": "5",
+          "mutatorName": "EqualityOperator",
+          "location": {
+            "start": {
+              "line": 109,
+              "column": 52
+            },
+            "end": {
+              "line": 109,
+              "column": 73
+            }
+          },
+          "replacement": "performing.length >= 0"
+        },
+        "candidate": {
+          "file": "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+          "sha256": "6267123856a28013f4aeda0c54964fb955d6be9b2ee0168c36d657eac36100b2"
+        },
+        "testsCompleted": 5,
+        "killedBy": [
+          "4"
+        ],
+        "execution": {
+          "exitCode": 0,
+          "budgetExceeded": false
+        },
+        "budgetSeconds": 120,
+        "paths": {
+          "directory": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify-repeat\\run-LRi6r9",
+          "evidence": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify-repeat\\run-LRi6r9\\verification.json",
+          "log": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\results-recovery\\verify-repeat\\run-LRi6r9\\engine.log"
+        }
+      },
+      "target": {
+        "id": "5",
+        "mutatorName": "EqualityOperator",
+        "replacement": "performing.length >= 0",
+        "statusReason": "expected true to be false // Object.is equality",
+        "status": "Killed",
+        "static": false,
+        "testsCompleted": 5,
+        "killedBy": [
+          "4"
+        ],
+        "coveredBy": [
+          "3",
+          "4"
+        ],
+        "location": {
+          "end": {
+            "column": 73,
+            "line": 109
+          },
+          "start": {
+            "column": 52,
+            "line": 109
+          }
+        }
+      },
+      "fingerprint": {
+        "file": "packages/xezar/src/mcp/api-reference.ts",
+        "sourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+        "location": {
+          "end": {
+            "column": 73,
+            "line": 109
+          },
+          "start": {
+            "column": 52,
+            "line": 109
+          }
+        },
+        "mutatorName": "EqualityOperator",
+        "replacement": "performing.length >= 0"
+      },
+      "killers": [
+        {
+          "file": "packages/xezar/src/mcp/tautest-refusal-only.test.ts",
+          "id": "4",
+          "name": "does not describe a guard as required on every call when every action is refusal-only"
+        }
+      ]
+    }
+  ],
+  "effectiveConfig": {
+    "testRunner": "vitest",
+    "plugins": [
+      "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project\\node_modules\\@stryker-mutator\\vitest-runner\\dist\\src\\index.js"
+    ],
+    "vitest": {
+      "configFile": "packages/xezar/vitest.tautest-pilot.config.ts",
+      "related": false
+    },
+    "mutate": [
+      "packages/xezar/src/mcp/api-reference.ts:109-109"
+    ],
+    "coverageAnalysis": "perTest",
+    "ignoreStatic": true,
+    "concurrency": 1,
+    "timeoutMS": 10000,
+    "timeoutFactor": 1.5,
+    "dryRunTimeoutMinutes": 10,
+    "thresholds": {
+      "high": 90,
+      "low": 80,
+      "break": 0
+    },
+    "reporters": [
+      "json"
+    ],
+    "htmlReporter": {
+      "fileName": ".local/mutation/mcp/index.html"
+    },
+    "jsonReporter": {
+      "fileName": ".local/mutation/mcp/report.json"
+    },
+    "tempDirName": ".local/stryker-tmp",
+    "cleanTempDir": "always",
+    "ignorePatterns": [
+      "/.local"
+    ],
+    "buildCommand": "chmod +x packages/xezar/scripts/mock-claude.mjs packages/xezar/src/core/__fixtures__/claude/stub-ignores-eof-exits-143.mjs packages/xezar/src/core/__fixtures__/codex/mock-codex-app-server.mjs",
+    "incremental": false,
+    "logLevel": "error",
+    "mutator": {
+      "excludedMutations": [
+        "ArithmeticOperator",
+        "ArrayDeclaration",
+        "ArrowFunction",
+        "BlockStatement",
+        "BooleanLiteral",
+        "ConditionalExpression",
+        "LogicalOperator",
+        "MethodExpression",
+        "ObjectLiteral",
+        "StringLiteral",
+        "UnaryOperator",
+        "UpdateOperator",
+        "Regex",
+        "OptionalChaining",
+        "AssignmentOperator"
+      ]
+    }
+  },
+  "extraEnvironment": {
+    "PATHPrefix": "C:/Program Files/Git/usr/bin",
+    "purpose": "Use preinstalled GitforWindows chmod for unchanged originalStrykerbuildCommand"
+  },
+  "independentTrial": false,
+  "maintainerBenefit": false,
+  "repeatUse": false,
+  "limits": [
+    "Owner-known everyCallgap, no new discovery.",
+    "Selected original4tests only; not wholeMCPscope, finalmutationfloor, or fullrepoquality.",
+    "OriginalStryker9.6.1/Vitest4.1.11 retained; publishedTautest2.1.5 imports and verifies, Strykercreatesmutants.",
+    "No appserver, realagentCLI, browser or network toolcall.",
+    "No source/dependencyupgrade; configscopedandsetupretained.",
+    "Outside-teamPRsnotaccepted; no upstreamPRorcomment."
+  ]
+}

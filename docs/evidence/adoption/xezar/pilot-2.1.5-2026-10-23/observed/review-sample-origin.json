@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-10-23T07:37:31.096Z",
+  "kind": "Analyze-only one-line source sample; not a verify input",
+  "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+  "fullRawSha256": "f03db6f09635dc7c70a9562e105ccc3399b6a7719f9b3848311163ffe3bbae02",
+  "fullSourceSha256LF": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+  "sampleSha256": "36fd1baaba4a275c450162c0df8dc5e9acc260f33f6d01169468be89079532a5",
+  "sampleSourceSha256LF": "9c44f4d5e40e9ef81a38d7648f8a07483687129fee936774bf0492b2d2f1bcd3",
+  "retainedSourceLine": 109,
+  "rawMutantRecordsUnchanged": true,
+  "allNineMutantRecordsRetained": true,
+  "fullRawSummary": {
+    "verdict": "WEAK",
+    "mutationScore": 33.33333333333333,
+    "total": 9,
+    "killed": 1,
+    "survived": 2,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 6
+  },
+  "sampleSummary": {
+    "verdict": "WEAK",
+    "mutationScore": 33.33333333333333,
+    "total": 9,
+    "killed": 1,
+    "survived": 2,
+    "noCoverage": 0,
+    "timeout": 0,
+    "runtimeError": 0,
+    "compileError": 0,
+    "ignored": 6
+  },
+  "engineExecutedBySampleImport": false,
+  "independentAdoption": false
+}

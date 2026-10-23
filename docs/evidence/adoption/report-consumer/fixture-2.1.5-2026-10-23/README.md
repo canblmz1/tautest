@@ -30,3 +30,7 @@ Read `.tautest/review/report.json` and `.tautest/review/review.json`. [control.j
 - A consumer needing current-commit evidence must establish that association from its own trusted producer/CI record, with report hash, source/test/config/environment identity and execution provenance. If unavailable or mismatched, retain the uncertainty rather than using this example's render timestamp as freshness evidence. No new attestation feature is implemented here.
 
 The files retain this machine's harmless local paths as actual output; consumers regenerate their own paths. The toy source and test are ours under [MIT](LICENSE.txt). No upstream project source is copied, no project installation/configuration/tests run during the first-look command, and no claim about Playwright/Cypress execution is made. Current built-in mutation runners remain Vitest and Jest; this fixture does not add a browser-aware runner.
+
+## Outreach status
+
+One [technical invitation](https://github.com/TzolkinB/skills/issues/259#issuecomment-6359803414) was posted on 23 October after this experiment was prepared. This records sending only; acceptance, independent execution, confirmed benefit and reuse remain unconfirmed. The earlier draft and experiment are historical preparation, not a second invitation.

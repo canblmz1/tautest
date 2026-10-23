@@ -1,0 +1,16 @@
+{
+  "protectedFilesUnchanged": {
+    "package.json": true,
+    "package-lock.json": true,
+    "vitest.config.ts": true,
+    "packages/xezar/vitest.config.ts": true,
+    "packages/xezar/vitest.mutation.config.ts": true,
+    "packages/xezar/vitest.setup.ts": true,
+    "scripts/test-local-state.mjs": true,
+    "packages/xezar/stryker.config.mjs": true,
+    "packages/xezar/src/mcp/api-reference.ts": true,
+    "packages/xezar/src/mcp/api-reference.test.ts": true
+  },
+  "trackedStatus": "",
+  "temporaryFilesRemoved": true
+}

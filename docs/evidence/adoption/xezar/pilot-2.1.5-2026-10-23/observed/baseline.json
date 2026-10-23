@@ -1,0 +1,115 @@
+{
+  "projectSha": "00b37e6d5d0aabb3ba305004b97ecda1a1f57ee8",
+  "node": "v22.23.2",
+  "platform": "win32",
+  "hashes": {
+    "package.json": "0203512df64b526ba8e40ca9afeee2d41fbac40ea3e7407519896113faf91984",
+    "package-lock.json": "0cf50c9ea1d38766194c99a03dcd16401d9c2398ca103ffc495c67393d07c535",
+    "vitest.config.ts": "da63316c9964ac6c0d4e6d85e864143565237927b4afe1380d60de3dedaa86b0",
+    "packages/xezar/vitest.config.ts": "a454ca941667855bf7aba8dee29798ae5ba4ee26b9406fb6a5429db314b12b61",
+    "packages/xezar/vitest.mutation.config.ts": "c5a848779909045ee520e87c46e6aa2e3144928d93d81dcde3080ca0bc2e584b",
+    "packages/xezar/vitest.setup.ts": "5beb86065674986399939e8f6c325fad43becca7174fe5c96d9efeb71d3580f2",
+    "scripts/test-local-state.mjs": "17f579a6af50c3fea57684358c1cc79338419692b8eec5390462660671cb010f",
+    "packages/xezar/stryker.config.mjs": "08c9b1f8f3ef20ba420d7fb384a7613daa0c6d55a783f9605d9436391de0a4f9",
+    "packages/xezar/src/mcp/api-reference.ts": "85aedeecf2cb095331e57fdb3b479b4edaff63ebef89ab5955771c56c1fcccfb",
+    "packages/xezar/src/mcp/api-reference.test.ts": "d74e0ccb45d5c46fc42cd7b3ed7dd057a7d5a2eb4821f10c292f8b081b3a6ad1"
+  },
+  "records": [
+    {
+      "label": "baseline-1",
+      "startedAt": "2026-10-23T07:16:50.805Z",
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+          "test",
+          "--",
+          "--project",
+          "server",
+          "packages/xezar/src/mcp/api-reference.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\baseline-1.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "passed": 4,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/api-reference.test.ts",
+          "tests": [
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) derives everyCall by probing a guard-carrying tool that has no action discriminator",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) reads what a listing declares, not what the tool behind it enforces",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) shows a refused argument only while the live listing still describes it",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "baseline-2",
+      "startedAt": "2026-10-23T07:17:01.053Z",
+      "command": {
+        "file": "C:\\nvm4w\\nodejs\\node.exe",
+        "args": [
+          "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+          "test",
+          "--",
+          "--project",
+          "server",
+          "packages/xezar/src/mcp/api-reference.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--reporter=json",
+          "--outputFile=C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\baseline-2.tests.json"
+        ],
+        "cwd": "C:\\dev\\tautest-product-evidence\\2026-10-23\\xezar-215\\project"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "passed": 4,
+      "failed": 0,
+      "tests": [
+        {
+          "file": "C:/dev/tautest-product-evidence/2026-10-23/xezar-215/project/packages/xezar/src/mcp/api-reference.test.ts",
+          "tests": [
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) derives everyCall by probing a guard-carrying tool that has no action discriminator",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) reads what a listing declares, not what the tool behind it enforces",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) shows a refused argument only while the live listing still describes it",
+              "status": "passed"
+            },
+            {
+              "name": "buildMcpApiReference — the listings the live registry does not produce (#352) #450 T-30: the real leader_events listing shows operationId required by ack, attach and stop, and by nothing else",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

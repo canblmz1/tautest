@@ -65,3 +65,7 @@ Scope is `src/lib/shell/trip-time.ts:18-18`, MethodExpression only: one active m
 ## Invitation draft
 
 I maintain Tautest. For #551 I tried one bounded Stryker/Vitest case on pinned `dfbc0ce`: removing `tripTz`'s trim survives your existing tests, while a six-line padded-timezone test passes original code and fails that exact mutant (UTC instead of Europe/Madrid). Published Tautest 2.1.5 can review the report and verify the selected mutant with that test. The linked handoff includes the commands, patch and matching fingerprints; no full score or production bug claim. If preserving padded valid timezones is intended, would you try this one case and tell me whether the report-to-test verification is useful? If it is not intended, that decision is useful feedback too.
+
+## Outreach status
+
+One [technical invitation](https://github.com/toxroxmysox/Waypoint/issues/551#issuecomment-6359463334) was posted on 23 October after this experiment was prepared. This records sending only; acceptance, independent execution, confirmed benefit and reuse remain unconfirmed. The earlier draft and experiment are historical preparation, not a second invitation.

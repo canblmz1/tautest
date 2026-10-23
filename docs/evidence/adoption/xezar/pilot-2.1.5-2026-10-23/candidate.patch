@@ -1,0 +1,29 @@
+diff --git a/packages/xezar/src/mcp/tautest-refusal-only.test.ts b/packages/xezar/src/mcp/tautest-refusal-only.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/xezar/src/mcp/tautest-refusal-only.test.ts
+@@ -0,0 +1,24 @@
++import { expect, it, vi } from 'vitest';
++import { z } from 'zod';
++import { buildMcpApiReference } from './api-reference.ts';
++import { defineTool, textResult, type McpTool } from './tool.ts';
++import { REFUSED_ACTIONS } from './tools/project-config.ts';
++
++const registry = vi.hoisted(() => ({ tools: [] as McpTool[] }));
++vi.mock('./tools/index.ts', () => ({ tools: registry.tools }));
++
++it('does not describe a guard as required on every call when every action is refusal-only', () => {
++  const refusedAction = Object.keys(REFUSED_ACTIONS)[0]!;
++  registry.tools.splice(0, registry.tools.length, defineTool({
++    name: 'project_config',
++    description: 'A legal listing whose only action is refused',
++    inputSchema: z.object({ action: z.enum([refusedAction]), expectedVersion: z.string().optional() }),
++    call: async () => textResult('unused: reference construction never invokes a tool'),
++  }));
++  const reference = buildMcpApiReference('0.0.0-test');
++  if (!reference.available) throw new Error('Reference construction must be available for this legal listing');
++  expect(reference.guards[0]?.everyCall).toBe(false);
++  expect(reference.guards).toEqual([
++    { tool: 'project_config', argument: 'expectedVersion', everyCall: false, requiredBy: [] },
++  ]);
++});
